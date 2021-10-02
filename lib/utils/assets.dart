@@ -17,7 +17,7 @@ mixin AppAssets {
   static const String AUTH_SVG_DIR = '$SVG_DIR/auth';
   static const String ONBOARDING_SVG_DIR = '$SVG_DIR/onboarding';
   static const String DASHBOARD_SVG_DIR = '$SVG_DIR/dashboard';
-  static const String AVATAR_SVG_DIR = '$DASHBOARD_SVG_DIR/avatars';
+  static const String AVATAR_IMAGES_DIR = '$DASHBOARD_IMAGES_DIR/avatars';
 
   /////////////////////////////////////////////////////
   /////////////////////////////////////////////////////
@@ -41,62 +41,23 @@ mixin AppAssets {
   static const String unnamed = '$IMAGES_DIR/unnamed.png';
   static const String avatarImg = '$IMAGES_DIR/avatar_png.png';
   static const String businessManAvatar =
-      '$AVATAR_SVG_DIR/business_man_avatar.png';
+      '$AVATAR_IMAGES_DIR/business_man_avatar.png';
   static const String businessLadyAvatar =
-      '$AVATAR_SVG_DIR/business_woman_avatar.png';
-  static const String femaleAvatar = '$AVATAR_SVG_DIR/female_avatar.png';
-  static const String dudeAvatar = '$AVATAR_SVG_DIR/dude_avatar.png';
+      '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
+  static const String femaleAvatar = '$AVATAR_IMAGES_DIR/female_avatar.png';
+  static const String dudeAvatar = '$AVATAR_IMAGES_DIR/dude_avatar.png';
+  static const String avatar = '$DASHBOARD_SVG_DIR/avatar_illustration.svg';
 
   /// DASHBOARD
   static const String bottomNavHome = '$DASHBOARD_SVG_DIR/dashboard_home.svg';
-  static const String bottomNavExplore =
-      '$DASHBOARD_SVG_DIR/dashboard_explore.svg';
-  static const String bottomNavFav =
-      '$DASHBOARD_SVG_DIR/dashboard_favorite.svg';
-  static const String bottomNavCart = '$DASHBOARD_SVG_DIR/dashboard_cart.svg';
-  static const String bottomNavProfile =
-      '$DASHBOARD_SVG_DIR/dashboard_cart.svg';
-  static const String avatar = '$DASHBOARD_SVG_DIR/avatar_illustration.svg';
+  static const String bottomNavDocument =
+      '$DASHBOARD_SVG_DIR/dashboard_document.svg';
+  static const String bottomNavActivity =
+      '$DASHBOARD_SVG_DIR/dashboard_activity.svg';
 
   static const String slider0 = '$DASHBOARD_IMAGES_DIR/first_home_slider.png';
   static const String slider1 = '$DASHBOARD_IMAGES_DIR/second_home_slider.png';
   static const String slider2 = '$DASHBOARD_IMAGES_DIR/third_home_slider.png';
-
-  // CATEGORIES
-  static const String catAll =
-      '$DASHBOARD_SVG_DIR/categories/all_categories.svg';
-  static const String catGroceries =
-      '$DASHBOARD_SVG_DIR/categories/cate_groceries.svg';
-  static const String catRestaurants =
-      '$DASHBOARD_SVG_DIR/categories/cate_restaurants.svg';
-  static const String catSoftDrink =
-      '$DASHBOARD_SVG_DIR/categories/cate_soft_drink.svg';
-
-  // CUISINES
-  static const String cuisine01 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_1.png';
-  static const String cuisine02 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_2.png';
-  static const String cuisine03 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_3.png';
-  static const String cuisine04 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_4.png';
-  static const String cuisine05 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_5.png';
-  static const String cuisine06 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_6.png';
-  static const String cuisine07 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_7.png';
-  static const String cuisine08 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_8.png';
-  static const String cuisine09 =
-      '$DASHBOARD_SVG_DIR/cuisines/restaurant_9.png';
-
-  // CART
-  static const String orderedFood01 =
-      '$DASHBOARD_IMAGES_DIR/ordered_food_1.png';
-  static const String orderedFood02 =
-      '$DASHBOARD_IMAGES_DIR/ordered_food_2.png';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
@@ -130,10 +91,6 @@ mixin AppAssets {
     forgotPassword,
     onboarding1,
     avatar,
-    catAll,
-    catGroceries,
-    catRestaurants,
-    catSoftDrink,
     _featherSearch,
     _noConnectivity,
     _noHistory,

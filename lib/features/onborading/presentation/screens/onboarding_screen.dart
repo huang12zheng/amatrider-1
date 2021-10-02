@@ -1,18 +1,18 @@
 import 'package:amatrider/core/presentation/widgets/adaptive_alertdialog.dart';
+import 'package:amatrider/features/onborading/domain/onboarding.dart';
+import 'package:amatrider/features/onborading/presentation/managers/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dartz/dartz.dart' hide State;
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:amatrider/features/onborading/domain/onboarding.dart';
-import 'package:amatrider/features/onborading/presentation/managers/index.dart';
-import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/widgets/widgets.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
@@ -36,8 +36,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
                 controller: s.controller,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, i) => OnBoardingItemBuilder(
-                  item:
-                      context.read<OnboardingCubit>().items.elementAtOrNull(i),
+                  item: c.read<OnboardingCubit>().items.elementAtOrNull(i),
                 ),
               ),
             ),
@@ -51,7 +50,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
               builder: (c, s) => Center(
                 child: AnimatedSmoothIndicator(
                   activeIndex: s.currentIndex,
-                  count: context.read<OnboardingCubit>().items.size,
+                  count: c.read<OnboardingCubit>().items.size,
                   effect: ExpandingDotsEffect(
                     expansionFactor: 3.5,
                     activeDotColor: App.theme.colorScheme.secondary,
@@ -182,7 +181,10 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 .watch<OnboardingCubit>()
                                 .isLast(left(widget.item!))
                             ? c.read<OnboardingCubit>().next
-                            : () {},
+                            : () => navigator.pushAndPopUntil(
+                                  const DashboardRoute(),
+                                  predicate: (_) => false,
+                                ),
                       ),
                     ),
                     //
@@ -222,7 +224,10 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 color: Palette.accentColor,
                               ),
                               secondBgColor: Palette.accent20,
-                              onFirstPressed: () {},
+                              onFirstPressed: () => navigator.pushAndPopUntil(
+                                const DashboardRoute(),
+                                predicate: (_) => false,
+                              ),
                               onSecondPressed: () {},
                             ),
                           ),

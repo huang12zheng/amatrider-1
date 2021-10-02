@@ -219,8 +219,6 @@ flutter:
     - assets/svgs/logo/
     - assets/svgs/onboarding/
     - assets/svgs/dashboard/
-    - assets/svgs/dashboard/categories/
-    - assets/svgs/dashboard/cuisines/
     - assets/videos/
 
   fonts:

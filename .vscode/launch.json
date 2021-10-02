@@ -7,7 +7,7 @@
     {
       "name": "dev",
       "request": "launch",
-      "program": "lib/main.dart",
+      "program": "lib/main_dev.dart",
       "type": "dart",
       "flutterMode": "debug",
       "args": [

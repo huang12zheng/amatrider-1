@@ -5,14 +5,16 @@
 // **************************************************************************
 
 import 'package:amatrider/core/data/index.dart' as _i3;
+import 'package:amatrider/features/home/presentation/managers/tab_navigation/tab_navigation_cubit.dart'
+    as _i15;
 import 'package:amatrider/features/onborading/presentation/managers/onboarding/onboarding_cubit.dart'
     as _i12;
-import 'package:amatrider/manager/locator/modules/modules.dart' as _i18;
+import 'package:amatrider/manager/locator/modules/modules.dart' as _i19;
 import 'package:amatrider/manager/settings/external/preference_repository.dart'
-    as _i16;
-import 'package:amatrider/manager/settings/manager/global_app_preference_cubit.dart'
     as _i17;
-import 'package:amatrider/manager/theme/manager/theme_cubit.dart' as _i15;
+import 'package:amatrider/manager/settings/manager/global_app_preference_cubit.dart'
+    as _i18;
+import 'package:amatrider/manager/theme/manager/theme_cubit.dart' as _i16;
 import 'package:amatrider/utils/utils.dart' as _i4;
 import 'package:connectivity/connectivity.dart' as _i5;
 import 'package:dio/dio.dart' as _i6;
@@ -55,15 +57,16 @@ extension GetItInjectableX on _i1.GetIt {
     await gh.factoryAsync<_i13.SharedPreferences>(() => modules.preferences,
         preResolve: true);
     gh.lazySingleton<_i14.SweetSheet>(() => modules.sweetSheet);
-    gh.factory<_i15.ThemeCubit>(() => _i15.ThemeCubit());
-    gh.singleton<_i16.PreferenceRepository>(
-        _i16.PreferenceRepository(get<_i13.SharedPreferences>()));
-    gh.singleton<_i17.GlobalAppPreferenceCubit>(
-        _i17.GlobalAppPreferenceCubit(get<_i16.PreferenceRepository>()));
+    gh.factory<_i15.TabNavigationCubit>(() => _i15.TabNavigationCubit());
+    gh.factory<_i16.ThemeCubit>(() => _i16.ThemeCubit());
+    gh.singleton<_i17.PreferenceRepository>(
+        _i17.PreferenceRepository(get<_i13.SharedPreferences>()));
+    gh.singleton<_i18.GlobalAppPreferenceCubit>(
+        _i18.GlobalAppPreferenceCubit(get<_i17.PreferenceRepository>()));
     return this;
   }
 }
 
-class _$Modules extends _i18.Modules {}
+class _$Modules extends _i19.Modules {}
 
-class _$ServiceModules extends _i18.ServiceModules {}
+class _$ServiceModules extends _i19.ServiceModules {}
