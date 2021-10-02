@@ -1,0 +1,23 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  language:
+    strict-raw-types: true
+  strong-mode:
+    implicit-casts: false
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    curly_braces_in_flow_control_structures: ignore
+    invalid_annotation_target: ignore
+    dead_code: info
+
+linter:
+  rules:
+    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    always_declare_return_types: true
+    # cancel_subscriptions: ignore
+    await_only_futures: true
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
