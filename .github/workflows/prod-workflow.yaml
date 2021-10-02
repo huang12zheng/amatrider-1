@@ -95,6 +95,7 @@ jobs:
           cd android/app/keystores/
           echo "${{ secrets.DEBUG_KEYSTORE_JKS }}" > debug-key.jks.asc
           echo "${{ secrets.PROD_KEYSTORE_JKS }}" > prod-key.jks.asc
+          ls
           gpg -d --passphrase "${{ secrets.DEBUG_KEYSTORE_PASSPHRASE }}" --batch debug-key.jks.asc > debug-key.jks
           gpg -d --passphrase "${{ secrets.PROD_KEYSTORE_PASSPHRASE }}" --batch prod-key.jks.asc > prod-key.jks
 
