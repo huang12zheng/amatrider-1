@@ -92,6 +92,7 @@ jobs:
       - name: Decode & store Keystore from GitHub Secrets
         run: |
           cd android/app
+          ls
           echo "${{ secrets.PROD_KEYSTORE_JKS }}" > prod-key.jks.asc
           gpg -d --passphrase "${{ secrets.PROD_KEYSTORE_PASSPHRASE }}" --batch prod-key.jks.asc > prod-key.jks
 
