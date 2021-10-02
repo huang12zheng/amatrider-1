@@ -91,10 +91,12 @@ jobs:
 
       - name: Decode & store Keystore from GitHub Secrets
         run: |
-          cd android/app
-          ls
+          mkdir android/app/keystores/
+          cd android/app/keystores/
           echo "${{ secrets.PROD_KEYSTORE_JKS }}" > prod-key.jks.asc
           gpg -d --passphrase "${{ secrets.PROD_KEYSTORE_PASSPHRASE }}" --batch prod-key.jks.asc > prod-key.jks
+          pwd
+          ls
 
       - name: Prepare NDK dir for Cache / Restore
         run: |
