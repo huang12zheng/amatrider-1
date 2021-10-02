@@ -95,7 +95,6 @@ jobs:
           cd android/app/keystores/
           echo "${{ secrets.DEBUG_KEYSTORE_JKS }}" > debug-key.jks.asc
           echo "${{ secrets.PROD_KEYSTORE_JKS }}" > prod-key.jks.asc
-          ls
           gpg -d --passphrase "${{ secrets.DEBUG_KEYSTORE_PASSPHRASE }}" --batch debug-key.jks.asc > debug-key.jks
           gpg -d --passphrase "${{ secrets.PROD_KEYSTORE_PASSPHRASE }}" --batch prod-key.jks.asc > prod-key.jks
 
@@ -263,16 +262,11 @@ jobs:
     env:
       APP_NAME: "AmatRider"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      API_KEY: ${{ secrets.PUSH_TECHULUS_API_KEY }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
     steps:
       - name: Send Push Notification
-        uses: techulus/push-github-action@1.0.0
-        env:
-          API_KEY: ${{ env.API_KEY }}
-          TITLE: Version bump notification
-          MESSAGE: AmatRider, new version available. Download at -> ${{ needs.bump_version.outputs.release_url }}
-          LINK: ${{ needs.bump_version.outputs.release_url }}
+        run: |
+          echo "Nothing to see!"
