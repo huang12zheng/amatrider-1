@@ -89,6 +89,12 @@ jobs:
           path: "amatrider"
           fetch-depth: 0
 
+      - name: Decode & store Keystore from GitHub Secrets
+        run: |
+          cd android/app
+          echo "${{ secrets.PROD_KEYSTORE_JKS }}" > prod-key.jks.asc
+          gpg -d --passphrase "${{ secrets.PROD_KEYSTORE_PASSPHRASE }}" --batch prod-key.jks.asc > prod-key.jks
+
       - name: Prepare NDK dir for Cache / Restore
         run: |
           sudo mkdir -p /usr/local/lib/android/sdk/ndk
