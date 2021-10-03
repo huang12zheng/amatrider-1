@@ -128,7 +128,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   }
 
   Widget defaultImage(TabNavigationState s, Destination i) => CircleAvatar(
-        backgroundImage: Image.asset(AppAssets.unnamed).image,
+        backgroundImage: Image.asset(AppAssets.guestAvatarPng).image,
         maxRadius: s.currentIndex == i.id ? 16 : 15,
         minRadius: 14,
         backgroundColor: Colors.transparent,

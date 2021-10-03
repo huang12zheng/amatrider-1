@@ -13,14 +13,21 @@ import 'package:amatrider/_404.dart';
     AdaptiveRoute(
       initial: true,
       fullMatch: true,
-      page: SplashScreen,
       maintainState: true,
+      page: SplashScreen,
     ),
     //
     AdaptiveRoute(
       fullMatch: true,
-      page: OnboardingScreen,
       maintainState: true,
+      page: OnboardingScreen,
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: RideAcceptedScreen,
+      path: 'ride-accepted-screen',
     ),
     //
     dashboardRouter,
@@ -34,16 +41,16 @@ import 'package:amatrider/_404.dart';
     //
     AdaptiveRoute(
       fullMatch: true,
-      page: NoHistoryScreen,
       maintainState: true,
+      page: NoHistoryScreen,
       path: 'no-history-screen',
     ),
     //
     AdaptiveRoute(
       path: '*',
+      maintainState: true,
       cupertinoPageTitle: 'Error 404',
       page: UnknownScreen,
-      maintainState: true,
     ),
   ],
 )

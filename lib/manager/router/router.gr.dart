@@ -29,6 +29,12 @@ class AppRouter extends _i5.RootStackRouter {
       return _i5.AdaptivePage<dynamic>(
           routeData: routeData, child: _i1.OnboardingScreen());
     },
+    RideAcceptedRoute.name: (routeData) {
+      final args = routeData.argsAs<RideAcceptedRouteArgs>(
+          orElse: () => const RideAcceptedRouteArgs());
+      return _i5.AdaptivePage<dynamic>(
+          routeData: routeData, child: _i2.RideAcceptedScreen(key: args.key));
+    },
     DashboardRoute.name: (routeData) {
       return _i5.AdaptivePage<dynamic>(
           routeData: routeData, child: const _i2.DashboardScreen());
@@ -86,6 +92,8 @@ class AppRouter extends _i5.RootStackRouter {
         _i5.RouteConfig(SplashRoute.name, path: '/', fullMatch: true),
         _i5.RouteConfig(OnboardingRoute.name,
             path: '/onboarding-screen', fullMatch: true),
+        _i5.RouteConfig(RideAcceptedRoute.name,
+            path: 'ride-accepted-screen', fullMatch: true),
         _i5.RouteConfig(DashboardRoute.name,
             path: 'bottom-navigation',
             fullMatch: true,
@@ -131,6 +139,22 @@ class OnboardingRoute extends _i5.PageRouteInfo<void> {
   const OnboardingRoute() : super(name, path: '/onboarding-screen');
 
   static const String name = 'OnboardingRoute';
+}
+
+/// generated route for [_i2.RideAcceptedScreen]
+class RideAcceptedRoute extends _i5.PageRouteInfo<RideAcceptedRouteArgs> {
+  RideAcceptedRoute({_i7.Key? key})
+      : super(name,
+            path: 'ride-accepted-screen',
+            args: RideAcceptedRouteArgs(key: key));
+
+  static const String name = 'RideAcceptedRoute';
+}
+
+class RideAcceptedRouteArgs {
+  const RideAcceptedRouteArgs({this.key});
+
+  final _i7.Key? key;
 }
 
 /// generated route for [_i2.DashboardScreen]

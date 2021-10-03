@@ -1,4 +1,5 @@
 import 'package:amatrider/core/data/index.dart';
+import 'package:amatrider/features/home/domain/repositories/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
@@ -61,8 +62,8 @@ abstract class ServiceModules {
   AppHttpClient get httpClient => _HttpClients._clientv2();
 }
 
-// @module
-// abstract class GPSModules {
-//   @lazySingleton
-//   LocationService get locationManager => LocationService();
-// }
+@module
+abstract class GPSModules {
+  @lazySingleton
+  LocationService get locationManager => LocationService();
+}

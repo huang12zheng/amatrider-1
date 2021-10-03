@@ -10,6 +10,9 @@ class Headline extends StatelessWidget {
   final double minFontSize;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
+  final Color? textColor;
+  final Color? textColorLight;
+  final Color? textColorDark;
 
   // ignore: prefer_const_constructors_in_immutables
   Headline(
@@ -20,6 +23,9 @@ class Headline extends StatelessWidget {
     this.minFontSize = 12,
     this.textAlign,
     this.fontWeight,
+    this.textColor,
+    this.textColorLight,
+    this.textColorDark,
   }) : super(key: key);
 
   @override
@@ -36,15 +42,14 @@ class Headline extends StatelessWidget {
         letterSpacing: Utils.letterSpacing,
         fontStyle: FontStyle.normal,
         color: Theme.of(context).platform.fold(
-              material: () => Utils.foldTheme(
-                context: context,
-                light: () => Palette.text100,
-                dark: () => Palette.headingDark,
+              material: () => App.resolveColor(
+                textColor ?? textColorLight ?? Palette.text100,
+                dark: textColor ?? textColorDark ?? Palette.headingDark,
               ),
               cupertino: () => CupertinoDynamicColor.resolve(
-                const CupertinoDynamicColor.withBrightness(
-                  color: Palette.text100,
-                  darkColor: Palette.headingDark,
+                CupertinoDynamicColor.withBrightness(
+                  color: textColor ?? textColorLight ?? Palette.text100,
+                  darkColor: textColor ?? textColorDark ?? Palette.headingDark,
                 ),
                 context,
               ),

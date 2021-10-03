@@ -17,6 +17,7 @@ mixin AppAssets {
   static const String AUTH_SVG_DIR = '$SVG_DIR/auth';
   static const String ONBOARDING_SVG_DIR = '$SVG_DIR/onboarding';
   static const String DASHBOARD_SVG_DIR = '$SVG_DIR/dashboard';
+  static const String INSIGHTS_SVG_DIR = '$DASHBOARD_SVG_DIR/insights';
   static const String AVATAR_IMAGES_DIR = '$DASHBOARD_IMAGES_DIR/avatars';
 
   /////////////////////////////////////////////////////
@@ -46,7 +47,9 @@ mixin AppAssets {
       '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
   static const String femaleAvatar = '$AVATAR_IMAGES_DIR/female_avatar.png';
   static const String dudeAvatar = '$AVATAR_IMAGES_DIR/dude_avatar.png';
-  static const String avatar = '$DASHBOARD_SVG_DIR/avatar_illustration.svg';
+  static const String blackAvatar = '$AVATAR_IMAGES_DIR/black-dude.png';
+  static const String guestAvatarSvg = '$DASHBOARD_SVG_DIR/guest_user.svg';
+  static const String guestAvatarPng = '$DASHBOARD_IMAGES_DIR/guest_user.png';
 
   /// DASHBOARD
   static const String bottomNavHome = '$DASHBOARD_SVG_DIR/dashboard_home.svg';
@@ -58,6 +61,15 @@ mixin AppAssets {
   static const String slider0 = '$DASHBOARD_IMAGES_DIR/first_home_slider.png';
   static const String slider1 = '$DASHBOARD_IMAGES_DIR/second_home_slider.png';
   static const String slider2 = '$DASHBOARD_IMAGES_DIR/third_home_slider.png';
+  static const String request1 = '$DASHBOARD_IMAGES_DIR/request_1.png';
+  static const String request2 = '$DASHBOARD_IMAGES_DIR/request_2.png';
+  static const String request3 = '$DASHBOARD_IMAGES_DIR/request_3.png';
+
+  static const String timelinePinAsset = '$DASHBOARD_SVG_DIR/timeline_pin.svg';
+  static const String _cashHand = '$INSIGHTS_SVG_DIR/cash_hand.svg';
+  static const String _checkCircle = '$INSIGHTS_SVG_DIR/check_circle.svg';
+  static const String _progressIcon = '$INSIGHTS_SVG_DIR/progress_icon.svg';
+  static const String _targetIcon = '$INSIGHTS_SVG_DIR/target_icon.svg';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
@@ -83,6 +95,7 @@ mixin AppAssets {
     businessLadyAvatar,
     femaleAvatar,
     dudeAvatar,
+    guestAvatarPng,
   ];
 
   static const List<String> svgs = [
@@ -90,10 +103,15 @@ mixin AppAssets {
     verifyAccount,
     forgotPassword,
     onboarding1,
-    avatar,
+    guestAvatarSvg,
     _featherSearch,
     _noConnectivity,
     _noHistory,
+    timelinePinAsset,
+    _cashHand,
+    _checkCircle,
+    _progressIcon,
+    _targetIcon,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -248,18 +266,38 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  // static SvgPicture onboarding0 = SvgPicture.asset(
-  //   '$ONBOARDING_SVG_DIR/location_search.svg',
-  //   fit: BoxFit.contain,
-  // );
+  static SvgPicture timelinePin = SvgPicture.asset(
+    timelinePinAsset,
+    height: 23,
+    width: 23,
+    fit: BoxFit.contain,
+  );
 
-  // static SvgPicture onboarding1 = SvgPicture.asset(
-  //   '$ONBOARDING_SVG_DIR/location_search.svg',
-  //   fit: BoxFit.contain,
-  // );
+  static SvgPicture progressIcon = SvgPicture.asset(
+    _progressIcon,
+    height: 23,
+    width: 23,
+    color: Palette.accentYellow,
+  );
 
-  // static SvgPicture onboarding2 = SvgPicture.asset(
-  //   '$ONBOARDING_SVG_DIR/location_search.svg',
-  //   fit: BoxFit.contain,
-  // );
+  static SvgPicture targetIcon = SvgPicture.asset(
+    _targetIcon,
+    height: 23,
+    width: 23,
+    color: Palette.accentBlue,
+  );
+
+  static SvgPicture cashHand = SvgPicture.asset(
+    _cashHand,
+    height: 23,
+    width: 23,
+    color: Palette.accentPurple,
+  );
+
+  static SvgPicture checkCircle = SvgPicture.asset(
+    _checkCircle,
+    height: 23,
+    width: 23,
+    color: Palette.accentGreen,
+  );
 }

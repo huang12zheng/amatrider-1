@@ -205,13 +205,10 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                           backgroundColor: Palette.accent20,
                           onPressed: () => App.showAlertDialog(
                             context: c,
-                            useRootNavigator: true,
-                            useSafeArea: true,
                             barrierDismissible: false,
-                            barrierColor: Utils.foldTheme(
-                              light: () =>
-                                  Colors.grey.shade800.withOpacity(0.55),
-                              dark: () => Colors.white54,
+                            barrierColor: App.resolveColor(
+                              Colors.grey.shade800.withOpacity(0.55),
+                              dark: Colors.white54,
                             ),
                             builder: (_) => AdaptiveAlertdialog(
                               title: 'Continue as Guest?',

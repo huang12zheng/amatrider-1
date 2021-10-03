@@ -167,6 +167,11 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   # A flag Flutter package for Android / iOS / Web.
   flag: ^5.0.1
+  # A powerful & easy to use timeline package for Flutter.
+  # All UI components in this package are separate widgets.
+  timelines: ^0.1.0
+  # A draggable Flutter widget that makes implementing a SlidingUpPanel much easier!
+  sliding_up_panel: ^2.0.0+1
   ###### Google Maps & Location Services ######
   #############################################
   # This plugin for Flutter handles getting a location on Android and iOS.
@@ -219,6 +224,7 @@ flutter:
     - assets/svgs/logo/
     - assets/svgs/onboarding/
     - assets/svgs/dashboard/
+    - assets/svgs/dashboard/insights/
     - assets/videos/
 
   fonts:

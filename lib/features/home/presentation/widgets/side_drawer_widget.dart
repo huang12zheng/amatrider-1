@@ -16,9 +16,9 @@ class SideDrawerWidget extends ConsumerWidget {
 
   Widget get defaultImage => CircleAvatar(
         backgroundImage:
-            Image.asset(AppAssets.femaleAvatar, fit: BoxFit.contain).image,
+            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
         foregroundImage:
-            Image.asset(AppAssets.femaleAvatar, fit: BoxFit.contain).image,
+            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
         minRadius: 0.1.sw,
         backgroundColor: App.resolveColor(Palette.accentColor.shade600),
       );
@@ -75,12 +75,6 @@ class SideDrawerWidget extends ConsumerWidget {
                 ),
                 //
                 DrawerListTile(
-                  title: 'History',
-                  icon: AmatNow.drawer_history,
-                  onPressed: () {},
-                ),
-                //
-                DrawerListTile(
                   title: 'Notification',
                   icon: AmatNow.drawer_bell,
                   onPressed: () {},
@@ -94,15 +88,8 @@ class SideDrawerWidget extends ConsumerWidget {
                 //
                 DrawerListTile(
                   title: 'Invite Friends',
-                  size: 19,
+                  size: 18,
                   icon: AmatNow.drawer_add_person,
-                  onPressed: () {},
-                ),
-                //
-                DrawerListTile(
-                  title: 'Become a Rider',
-                  size: 19,
-                  icon: AmatNow.bike,
                   onPressed: () {},
                 ),
                 //
@@ -119,8 +106,8 @@ class SideDrawerWidget extends ConsumerWidget {
                 ),
                 //
                 DrawerListTile(
-                  title: 'About AmatNow',
-                  size: 19,
+                  title: 'About AmatNinja',
+                  size: 18,
                   icon: AmatNow.drawer_people,
                   onPressed: () {},
                 ),
@@ -132,7 +119,7 @@ class SideDrawerWidget extends ConsumerWidget {
               child: ListTile(
                 dense: true,
                 title: AdaptiveText(
-                  'Become a seller',
+                  'Download AmatNow',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,
@@ -141,7 +128,7 @@ class SideDrawerWidget extends ConsumerWidget {
                   ),
                 ),
                 subtitle: AdaptiveText(
-                  'Reach a wider audience in one click.',
+                  'Your one stop shop for african meals',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,

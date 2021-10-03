@@ -31,6 +31,14 @@ class AdaptiveText extends StatelessWidget {
   final Key? textKey;
   final double? textScaleFactor;
   final bool wrapWords;
+  //
+  final Color? textColor;
+  final Color? textColorDark;
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  final double? height;
+  final double? letterSpacing;
+  final TextDecoration? decoration;
   final _AutoSizeTextType _type;
 
   const AdaptiveText(
@@ -54,6 +62,13 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
+    this.textColor,
+    this.textColorDark,
+    this.fontSize,
+    this.fontWeight,
+    this.height,
+    this.letterSpacing,
+    this.decoration,
   })  : _type = _AutoSizeTextType.standard,
         textSpan = const TextSpan(),
         super(key: key);
@@ -79,6 +94,13 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
+    this.textColor,
+    this.textColorDark,
+    this.fontSize,
+    this.fontWeight,
+    this.height,
+    this.letterSpacing,
+    this.decoration,
   })  : _type = _AutoSizeTextType.rich,
         data = '',
         super(key: key);
@@ -102,9 +124,24 @@ class AdaptiveText extends StatelessWidget {
             stepGranularity: stepGranularity,
             strutStyle: strutStyle,
             style: Theme.of(context).platform.fold(
-                  material: () => style,
-                  cupertino: () =>
-                      AppTheme.cupertinoTextStyle(context)?.merge(style),
+                  material: () => TextStyle(
+                    color: App.resolveColor(textColor, dark: textColorDark),
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    height: height,
+                    letterSpacing: letterSpacing,
+                    decoration: decoration,
+                  ).merge(style),
+                  cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
+                    TextStyle(
+                      color: App.resolveColor(textColor, dark: textColorDark),
+                      fontSize: fontSize,
+                      fontWeight: fontWeight,
+                      height: height,
+                      letterSpacing: letterSpacing,
+                      decoration: decoration,
+                    ).merge(style),
+                  ),
                 ),
             textAlign: textAlign,
             textDirection: textDirection,
@@ -127,7 +164,26 @@ class AdaptiveText extends StatelessWidget {
             softWrap: softWrap,
             stepGranularity: stepGranularity,
             strutStyle: strutStyle,
-            style: style,
+            style: Theme.of(context).platform.fold(
+                  material: () => TextStyle(
+                    color: App.resolveColor(textColor, dark: textColorDark),
+                    fontSize: fontSize,
+                    fontWeight: fontWeight,
+                    height: height,
+                    letterSpacing: letterSpacing,
+                    decoration: decoration,
+                  ).merge(style),
+                  cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
+                    TextStyle(
+                      color: App.resolveColor(textColor, dark: textColorDark),
+                      fontSize: fontSize,
+                      fontWeight: fontWeight,
+                      height: height,
+                      letterSpacing: letterSpacing,
+                      decoration: decoration,
+                    ).merge(style),
+                  ),
+                ),
             textAlign: textAlign,
             textDirection: textDirection,
             textKey: textKey,

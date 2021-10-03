@@ -154,15 +154,20 @@ class Palette {
   static const Color accentYellow = Color(0xFFF5CB4C);
   static const Color accentGreen = Color(0xFF33CC3C);
   static const Color accentBlue = Color(0xFF2FA9D0);
+  static const Color accentPurple = Color(0xFFBB6BD9);
 
   static const Color accent20 = Color(0xFFFCE8E8);
   static const Color accent40 = Color(0xFFE69F96);
   static const Color accent60 = Color(0xFFE87E70);
 
-  static const Color accentLightYellow = Color(0xFFFAF5E5);
+  static const Color pastelPurple = Color(0xFFFAEEFF);
+  static const Color pastelYellow = Color(0xFFFAF5E5);
+  static const Color accentLightYellow = pastelYellow;
   static const Color accentLightYellow2 = Color(0xFFFFF9DB);
-  static const Color accentLightGreen = Color(0xFFE7F9E8);
+  static const Color pastelGreen = Color(0xFFE7F9E8);
+  static const Color accentLightGreen = pastelGreen;
   static const Color accentLightBlue = Color(0xFFE3F6FC);
+  static const Color pastelBlue = Color(0xFFDAF2FF);
 
   static const Color text100 = Color(0xFF030D25);
   static const Color text80 = Color(0xFF353D51);
@@ -180,7 +185,7 @@ class Palette {
 
   static const Color flutterwave = Color(0xFFEBA12A);
   static const Color stripe2 = Color(0xFF2697D4);
-  static const Color addressDefaultBlue = Color(0xffDAF2FF);
+  static const Color addressDefaultBlue = pastelBlue;
 
   // Dark Mode Colors
   static const Color accentDark = Color(0xFFD27D7D);
