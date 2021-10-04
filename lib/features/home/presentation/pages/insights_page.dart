@@ -138,7 +138,10 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                 sliver: SliverToBoxAdapter(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: App.resolveColor(
+                        Colors.white,
+                        dark: Palette.secondaryColor.shade700,
+                      ),
                       borderRadius: BorderRadius.circular(
                         Utils.inputBorderRadius,
                       ),
@@ -197,7 +200,10 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                 sliver: SliverToBoxAdapter(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: App.resolveColor(
+                        Colors.white,
+                        dark: Palette.secondaryColor.shade700,
+                      ),
                       borderRadius: BorderRadius.circular(
                         Utils.inputBorderRadius,
                       ),
@@ -268,8 +274,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 cupertinoHeight: 0.028.sh,
                                 width: 0.3.sw,
                                 cupertinoWidth: 0.3.sw,
-                                onPressed: () =>
-                                    navigator.push(RideAcceptedRoute()),
+                                onPressed: () {},
                               ),
                             ),
                           ],

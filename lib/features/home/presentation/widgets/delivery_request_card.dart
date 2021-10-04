@@ -15,6 +15,7 @@ part 'delivery_history_card.dart';
 class DeliveryRequestCard extends StatelessWidget {
   final String? asset;
   final bool showActionButtons;
+  final bool isOrder;
   final bool initialExpanded;
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
@@ -22,6 +23,7 @@ class DeliveryRequestCard extends StatelessWidget {
   const DeliveryRequestCard({
     Key? key,
     this.asset,
+    this.isOrder = true,
     this.showActionButtons = true,
     this.initialExpanded = false,
     this.onAccept,
@@ -47,6 +49,8 @@ class DeliveryRequestCard extends StatelessWidget {
             tapHeaderToExpand: true,
             tapBodyToCollapse: false,
             iconColor: Palette.accentColor,
+            iconPadding:
+                const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
             useInkWell: Utils.platform_(material: true, cupertino: false),
             headerAlignment: ExpandablePanelHeaderAlignment.center,
             inkWellBorderRadius: const BorderRadius.all(
@@ -83,9 +87,9 @@ class DeliveryRequestCard extends StatelessWidget {
                   ),
                 ),
                 expanded: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                  ).copyWith(bottom: 10.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 0.04.sw,
+                  ).copyWith(bottom: 0.02.sw),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -143,25 +147,18 @@ class DeliveryRequestCard extends StatelessWidget {
           padding: const EdgeInsets.only(top: 5.0),
           child: Row(
             children: [
-              DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Palette.accentLightBlue,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
+              if (isOrder)
+                const CustomChipWidget(
+                  'Order',
+                  backgroundColor: Palette.pastelBlue,
+                  textColor: Palette.accentBlue,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 4.0),
-                  child: AdaptiveText(
-                    'Order',
-                    style: TextStyle(
-                      color: Palette.accentBlue,
-                      fontSize: 15.sp,
-                    ),
-                  ),
+              if (!isOrder)
+                const CustomChipWidget(
+                  'Packages',
+                  backgroundColor: Palette.pastelYellow,
+                  textColor: Palette.accentYellow,
                 ),
-              ),
               //
               HorizontalSpace(width: 0.015.sw),
               //
@@ -188,8 +185,9 @@ class DeliveryRequestCard extends StatelessWidget {
           ),
         ),
         trailing: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Flexible(
               child: AdaptiveText(
@@ -212,10 +210,10 @@ class DeliveryRequestCard extends StatelessWidget {
         dense: true,
         horizontalTitleGap: 8.0,
         minVerticalPadding: 10.0,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 15.0,
-        ),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: 0.01.sh,
+          horizontal: 0.04.sw,
+        ).copyWith(right: 0.01.sw),
       );
 }
 
@@ -246,6 +244,7 @@ class _ActionButtons extends StatelessWidget {
         AdaptiveButton(
           text: 'Accept',
           textColor: Colors.white,
+          // textColorDark: Palette.,
           splashColor: Colors.white24,
           height: 0.028.sh,
           cupertinoHeight: 0.028.sh,

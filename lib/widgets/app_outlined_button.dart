@@ -11,16 +11,22 @@ class AppOutlinedButton extends StatelessWidget {
   final double? cupertinoHeight;
   final double? cupertinoWidth;
   final String? text;
+  final Color? textColor;
+  final Color? textColorDark;
   final Widget? child;
   final double? fontSize;
   final EdgeInsetsGeometry? padding;
   final FontWeight? fontWeight;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final Color? borderColor;
+  final Color? borderColorDark;
 
   const AppOutlinedButton({
     Key? key,
     this.text,
+    this.textColor,
+    this.textColorDark,
     this.height,
     this.width = double.infinity,
     this.cupertinoHeight,
@@ -32,6 +38,8 @@ class AppOutlinedButton extends StatelessWidget {
     this.onPressed,
     this.padding,
     this.isLoading = false,
+    this.borderColor,
+    this.borderColorDark,
   }) : super(key: key);
 
   @override
@@ -48,8 +56,8 @@ class AppOutlinedButton extends StatelessWidget {
       padding: padding,
       isLoading: isLoading,
       textColor: App.resolveColor(
-        Palette.accentColor,
-        dark: Colors.white,
+        textColor ?? Palette.accentColor,
+        dark: textColorDark ?? textColor ?? Colors.white,
       ),
       textStyle: const TextStyle(
         letterSpacing: Utils.labelLetterSpacing,
@@ -59,7 +67,12 @@ class AppOutlinedButton extends StatelessWidget {
         light: () => Colors.grey.shade300,
         dark: () => Colors.grey.shade700,
       ),
-      side: const BorderSide(color: Palette.accentColor),
+      side: BorderSide(
+        color: App.resolveColor(
+          borderColor ?? Palette.accentColor,
+          dark: borderColorDark ?? borderColor ?? Palette.accentColor,
+        )!,
+      ),
       onPressed: onPressed,
       child: child,
     );

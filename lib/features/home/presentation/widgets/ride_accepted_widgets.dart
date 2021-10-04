@@ -25,25 +25,29 @@ class _PanelBuilder extends StatelessWidget {
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed([
               GestureDetector(
-                onTap: panelController != null && panelController!.isPanelOpen
-                    ? panelController?.close
-                    : panelController?.close,
-                child: Center(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.grey.shade300,
+                onTap: panelController?.open,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.0),
+                          color: Colors.grey.shade300,
+                        ),
+                        child: SizedBox(height: 0.008.sh, width: 0.2.sw),
+                      ),
                     ),
-                    child: SizedBox(height: 0.008.sh, width: 0.2.sw),
-                  ),
+                    //
+                    VerticalSpace(height: 0.02.sh),
+                    //
+                    Center(child: Headline('Arriving at Pickup in 9 minutes')),
+                    //
+                    VerticalSpace(height: 0.01.sh),
+                    //
+                  ],
                 ),
               ),
-              //
-              VerticalSpace(height: 0.02.sh),
-              //
-              Center(child: Headline('Arriving at Pickup in 9 minutes')),
-              //
-              VerticalSpace(height: 0.01.sh),
               //
               TimelineStatusWidget(
                 padding: EdgeInsets.zero,
@@ -93,7 +97,36 @@ class _PanelBuilder extends StatelessWidget {
                 text: 'Confirm Pickup',
                 textColor: Colors.white,
                 splashColor: Colors.white24,
-                onPressed: () {},
+                onPressed: () async => App.showAlertDialog(
+                  context: context,
+                  barrierColor: App.resolveColor(
+                    Colors.grey.shade800.withOpacity(0.55),
+                    dark: Colors.white54,
+                  ),
+                  builder: (_) => AdaptiveAlertdialog(
+                    title: 'Confirm Pickup',
+                    content: 'Confirm that you have '
+                        'received the package from the Sender?',
+                    buttonDirection: Axis.horizontal,
+                    secondButtonText: 'Yes, Confirm',
+                    secondSplashColor: Colors.black12,
+                    secondTextStyle: const TextStyle(color: Colors.white),
+                    secondBgColor: Palette.accentColor,
+                    onSecondPressed: () {},
+                    materialFirstButton: AppOutlinedButton(
+                      text: 'No, Go Back',
+                      textColor: Palette.text100,
+                      textColorDark: Palette.text100Dark,
+                      borderColor: Palette.text100,
+                      borderColorDark: Palette.text100Dark,
+                      height: 0.028.sh,
+                      cupertinoHeight: 0.028.sh,
+                      width: 0.3.sw,
+                      cupertinoWidth: 0.3.sw,
+                      onPressed: navigator.pop,
+                    ),
+                  ),
+                ),
               ),
             ]),
           ),

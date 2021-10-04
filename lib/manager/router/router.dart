@@ -1,5 +1,6 @@
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/home/presentation/pages/index.dart';
+import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart';
 import 'package:amatrider/features/home/presentation/screens/index.dart';
 import 'package:amatrider/features/onborading/presentation/screens/index.dart';
 import 'package:auto_route/annotations.dart';
@@ -23,6 +24,29 @@ import 'package:amatrider/_404.dart';
       page: OnboardingScreen,
     ),
     //
+    dashboardRouter,
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: AccountVerificationScreen,
+      path: 'account-verification-screen',
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: DocumentUploadScreen,
+      path: 'document-upload-screen',
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: EditBankDetailsScreen,
+      path: 'edit-bank-details-screen',
+    ),
+    //
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
@@ -30,7 +54,12 @@ import 'package:amatrider/_404.dart';
       path: 'ride-accepted-screen',
     ),
     //
-    dashboardRouter,
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: ReferralScreen,
+      path: 'account-referral-screen',
+    ),
     //
     AdaptiveRoute(
       fullMatch: true,

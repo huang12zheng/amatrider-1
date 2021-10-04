@@ -77,10 +77,17 @@ class _ContentBuilder extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            status.title?.let((it) => AdaptiveText('$it')) ?? Utils.nothing,
+            status.title?.let((it) => AdaptiveText(
+                      '$it',
+                      minFontSize: 14,
+                      overflow: TextOverflow.ellipsis,
+                    )) ??
+                Utils.nothing,
             //
             status.subtitle?.let((it) => AdaptiveText(
                       '$it',
+                      minFontSize: 14,
+                      overflow: TextOverflow.ellipsis,
                       style: DefaultTextStyle.of(context).style.copyWith(
                             fontWeight: FontWeight.w400,
                             fontSize: 17.5.sp,

@@ -29,14 +29,6 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
     return Future.delayed(const Duration(seconds: 5));
   }
 
-  static const _processes = [
-    'Prospect',
-    'Tour',
-    'Offer',
-    'Contract',
-    'Settled',
-  ];
-
   Color getColor(int index) {
     if (index == _processIndex) {
       return inProgressColor;
@@ -147,6 +139,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                           secondSplashColor: Colors.black12,
                           secondTextStyle: const TextStyle(color: Colors.white),
                           secondBgColor: Palette.accentColor,
+                          onSecondPressed: () =>
+                              navigator.popAndPush(RideAcceptedRoute()),
                           materialFirstButton: AppOutlinedButton(
                             text: 'No, Go Back',
                             height: 0.028.sh,
@@ -160,11 +154,26 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                       onDecline: () {},
                     ),
                     //
+                    ...env.flavor.fold(
+                      dev: () => [],
+                      prod: () => [
+                        VerticalSpace(height: 0.04.sw),
+                        //
+                        DeliveryRequestCard(
+                          asset: AppAssets.request3,
+                          initialExpanded: true,
+                          isOrder: false,
+                          onAccept: () {},
+                          onDecline: () {},
+                        ),
+                      ],
+                    ),
+                    //
                     VerticalSpace(height: 0.08.sw),
                     //
                     Row(
                       children: [
-                        Headline('Upcoming Requests', fontSize: 17.sp),
+                        Headline('Potential Requests', fontSize: 17.sp),
                         //
                         Headline(
                           '(14)',
@@ -182,6 +191,20 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                       showActionButtons: false,
                     ),
                     //
+                    ...env.flavor.fold(
+                      dev: () => [],
+                      prod: () => [
+                        VerticalSpace(height: 0.04.sw),
+                        //
+                        const DeliveryRequestCard(
+                          asset: AppAssets.blackAvatar,
+                          initialExpanded: true,
+                          isOrder: false,
+                          showActionButtons: false,
+                        ),
+                      ],
+                    ),
+                    //
                     VerticalSpace(height: 0.04.sw),
                     //
                     const DeliveryRequestCard(
@@ -195,6 +218,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                       asset: AppAssets.request3,
                       showActionButtons: false,
                     ),
+                    //
+                    VerticalSpace(height: 0.04.sw),
                   ]),
                 ),
               ),

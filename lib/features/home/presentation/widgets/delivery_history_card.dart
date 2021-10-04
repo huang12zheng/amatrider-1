@@ -150,8 +150,9 @@ class DeliveryHistoryCard extends StatelessWidget {
           ),
         ),
         trailing: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Flexible(
               child: AdaptiveText(

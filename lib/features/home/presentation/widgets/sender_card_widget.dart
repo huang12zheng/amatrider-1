@@ -3,6 +3,7 @@ import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 /// A stateless widget to render SenderCardWidget.
 class SenderCardWidget extends StatelessWidget {
@@ -46,6 +47,21 @@ class SenderCardWidget extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ],
+              ),
+            ),
+            //
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: Palette.pastelBlue,
+                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+              ),
+              child: PlatformIconButton(
+                color: Palette.accentBlue,
+                materialIcon: const Icon(Icons.phone_sharp),
+                cupertinoIcon: const Icon(CupertinoIcons.phone),
+                material: (_, __) =>
+                    MaterialIconButtonData(tooltip: 'Call Sender'),
+                onPressed: () {},
               ),
             ),
           ],

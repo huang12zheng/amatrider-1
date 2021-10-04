@@ -199,6 +199,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
       firstButtonText?.let(
         (it) => AdaptiveButton(
           text: firstButtonText,
+          height: 0.028.sh,
+          cupertinoHeight: 0.028.sh,
           textColor: Colors.white,
           fontSize: 19.sp,
           padding: App.platform.cupertino(EdgeInsets.zero),
@@ -227,6 +229,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
           navigator.pop();
         },
         text: secondButtonText,
+        height: 0.028.sh,
+        cupertinoHeight: 0.028.sh,
         textColor: App.resolveColor(Palette.accentColor),
         textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing)
             .merge(secondTextStyle),

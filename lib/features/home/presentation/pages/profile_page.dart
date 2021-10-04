@@ -81,31 +81,26 @@ class _ProfilePageState extends State<ProfilePage>
                                 ),
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
-                                    color: App.platform.fold(
-                                      material: () => Utils.foldTheme(
-                                        light: () => Colors.white,
-                                        dark: () =>
-                                            Palette.secondaryColor.shade400,
-                                      ),
-                                      cupertino: () =>
-                                          CupertinoDynamicColor.resolve(
-                                        CupertinoDynamicColor.withBrightness(
-                                          color: Colors.white,
-                                          darkColor:
-                                              Palette.secondaryColor.shade400,
-                                        ),
-                                        context,
+                                    color: Utils.platform_(
+                                      cupertino: App.resolveColor(
+                                        Colors.white,
+                                        dark: Palette.secondaryColor.shade400,
                                       ),
                                     ),
                                   ),
                                   child: AdaptiveListTile(
+                                    focusColor: Colors.black,
+                                    hoverColor: Colors.black,
+                                    selectedTileColor: Colors.black,
                                     onTap: e.onPressed,
+                                    tileColor: App.resolveColor(
+                                      Colors.white,
+                                      dark: Palette.secondaryColor.shade600,
+                                    ),
                                     title: AdaptiveText(
                                       e.title,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17.0.sp,
-                                      ),
+                                      fontSize: 17.0.sp,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                     trailing: Icon(
                                       Theme.of(context).platform.fold(
@@ -164,11 +159,11 @@ class _ProfileItem {
   static List<_ProfileItem> get items => [
         _ProfileItem(
           title: 'Verification',
-          onPressed: () {},
+          onPressed: () => navigator.push(const AccountVerificationRoute()),
         ),
         _ProfileItem(
           title: 'Account Information',
-          onPressed: () {},
+          onPressed: () => navigator.push(const EditBankDetailsRoute()),
         ),
         _ProfileItem(
           title: 'Language',

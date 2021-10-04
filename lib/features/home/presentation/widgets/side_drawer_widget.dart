@@ -89,8 +89,8 @@ class SideDrawerWidget extends ConsumerWidget {
                 DrawerListTile(
                   title: 'Invite Friends',
                   size: 18,
-                  icon: AmatNow.drawer_add_person,
-                  onPressed: () {},
+                  icon: AmatNow.drawer_add_people,
+                  onPressed: () => navigator.push(const ReferralRoute()),
                 ),
                 //
                 DrawerListTile(
@@ -138,7 +138,10 @@ class SideDrawerWidget extends ConsumerWidget {
                 ),
                 trailing: const SizedBox(
                   width: 18,
-                  child: Icon(Icons.chevron_right_outlined),
+                  child: Icon(
+                    Icons.chevron_right_outlined,
+                    color: Palette.accentColor,
+                  ),
                 ),
                 tileColor: Palette.accent20,
                 shape: RoundedRectangleBorder(
@@ -179,6 +182,10 @@ class DrawerListTile extends StatelessWidget {
           onPressed.call();
         },
         horizontalTitleGap: 0.0,
+        tileColor: App.resolveColor(
+          Colors.white,
+          dark: Palette.secondaryColor.shade600,
+        ),
         leading: Icon(icon, size: size ?? 23, color: Palette.text40),
         title: AdaptiveText(
           title,

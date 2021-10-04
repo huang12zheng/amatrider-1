@@ -259,7 +259,7 @@ class AdaptiveButton extends StatelessWidget {
           wordSpacing: wordSpacing,
           color: App.resolveColor(
             textColor ?? Palette.text100,
-            dark: textColorDark ?? Palette.text100Dark,
+            dark: textColorDark ?? textColor ?? Palette.text100Dark,
           ),
         ).merge(textStyle),
       );

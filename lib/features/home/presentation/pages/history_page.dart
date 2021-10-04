@@ -37,17 +37,21 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
         actions: [
           Row(
             children: [
-              Headline('Status: ', fontSize: 16.sp),
+              Headline('Status: ', fontSize: 17.sp),
               //
               AdaptiveText(
                 'Inactive',
-                fontSize: 16.sp,
+                fontSize: 17.sp,
                 textColor: Palette.text40,
                 fontWeight: FontWeight.w400,
               ),
               //
               PlatformSwitch(
                 value: false,
+                material: (_, __) => MaterialSwitchData(
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey.shade300,
+                ),
                 onChanged: (value) {},
               ),
             ],
@@ -97,7 +101,7 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Headline('20-12-2021', fontWeight: FontWeight.normal),
+                        Headline('20-08-2022', fontWeight: FontWeight.normal),
                         //
                         Material(
                           color: App.resolveColor(Colors.transparent),
@@ -123,30 +127,116 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
                     //
                     VerticalSpace(height: 0.03.sw),
                     //
-                    const DeliveryHistoryCard(
-                      asset: AppAssets.request1,
-                      initialExpanded: true,
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, i) => DeliveryHistoryCard(
+                        asset: AppAssets.request1,
+                        initialExpanded: i % 2 == 0,
+                      ),
+                      separatorBuilder: (_, i) => i != 3
+                          ? VerticalSpace(height: 0.03.sw)
+                          : Utils.nothing,
+                      itemCount: 3,
                     ),
                     //
-                    VerticalSpace(height: 0.03.sw),
-                    //
-                    const DeliveryHistoryCard(
-                      asset: AppAssets.request2,
-                      initialExpanded: true,
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                    //
-                    const DeliveryHistoryCard(
-                      asset: AppAssets.request3,
-                      initialExpanded: true,
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                    //
-                    const DeliveryHistoryCard(
-                      asset: AppAssets.blackAvatar,
-                      initialExpanded: true,
+                    ...env.flavor.fold(
+                      dev: () => [],
+                      prod: () => [
+                        VerticalSpace(height: 0.05.sw),
+                        //
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Headline(
+                              '14-06-2022',
+                              fontWeight: FontWeight.normal,
+                            ),
+                            //
+                            Material(
+                              color: App.resolveColor(Colors.transparent),
+                              borderRadius:
+                                  BorderRadius.circular(Utils.buttonRadius),
+                              child: InkWell(
+                                onTap: () {},
+                                borderRadius:
+                                    BorderRadius.circular(Utils.buttonRadius),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AdaptiveText(
+                                    'See all',
+                                    textColor: Palette.accentColor,
+                                    fontSize: 17.sp,
+                                    letterSpacing: Utils.letterSpacing,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //
+                        VerticalSpace(height: 0.03.sw),
+                        //
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, i) => DeliveryHistoryCard(
+                            asset: AppAssets.request3,
+                            initialExpanded: i % 2 == 0,
+                          ),
+                          separatorBuilder: (_, i) => i != 4
+                              ? VerticalSpace(height: 0.03.sw)
+                              : Utils.nothing,
+                          itemCount: 4,
+                        ),
+                        //
+                        VerticalSpace(height: 0.05.sw),
+                        //
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Headline(
+                              '04-03-2022',
+                              fontWeight: FontWeight.normal,
+                            ),
+                            //
+                            Material(
+                              color: App.resolveColor(Colors.transparent),
+                              borderRadius:
+                                  BorderRadius.circular(Utils.buttonRadius),
+                              child: InkWell(
+                                onTap: () {},
+                                borderRadius:
+                                    BorderRadius.circular(Utils.buttonRadius),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AdaptiveText(
+                                    'See all',
+                                    textColor: Palette.accentColor,
+                                    fontSize: 17.sp,
+                                    letterSpacing: Utils.letterSpacing,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //
+                        VerticalSpace(height: 0.03.sw),
+                        //
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (_, i) => DeliveryHistoryCard(
+                            asset: AppAssets.request2,
+                            initialExpanded: i % 3 == 0,
+                          ),
+                          separatorBuilder: (_, i) => i != 4
+                              ? VerticalSpace(height: 0.03.sw)
+                              : Utils.nothing,
+                          itemCount: 7,
+                        ),
+                      ],
                     ),
                   ]),
                 ),
