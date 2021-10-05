@@ -162,7 +162,7 @@ class _ProfileItem {
           onPressed: () => navigator.push(const AccountVerificationRoute()),
         ),
         _ProfileItem(
-          title: 'Account Information',
+          title: 'Bank Account Information',
           onPressed: () => navigator.push(const EditBankDetailsRoute()),
         ),
         _ProfileItem(

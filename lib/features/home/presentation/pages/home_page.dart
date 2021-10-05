@@ -133,8 +133,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                         ),
                         builder: (_) => AdaptiveAlertdialog(
                           title: 'Accept Request',
-                          content:
-                              'Are you sure you want to accept this request?',
+                          content: 'Are you sure you '
+                              'want to accept this request?',
                           buttonDirection: Axis.horizontal,
                           secondButtonText: 'Yes, Accept',
                           secondSplashColor: Colors.black12,
@@ -201,6 +201,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                           asset: AppAssets.blackAvatar,
                           initialExpanded: true,
                           isOrder: false,
+                          time: '120 Mins',
                           showActionButtons: false,
                         ),
                       ],
@@ -211,6 +212,7 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                     const DeliveryRequestCard(
                       asset: AppAssets.request2,
                       showActionButtons: false,
+                      time: '20 Mins',
                     ),
                     //
                     VerticalSpace(height: 0.04.sw),

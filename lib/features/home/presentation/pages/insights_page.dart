@@ -204,10 +204,8 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                 sliver: SliverToBoxAdapter(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: App.resolveColor(
-                        Colors.white,
-                        dark: Palette.secondaryColor.shade700,
-                      ),
+                      color: App.resolveColor(Colors.white,
+                          dark: Palette.secondaryColor.shade700),
                       borderRadius: BorderRadius.circular(
                         Utils.inputBorderRadius,
                       ),
@@ -231,6 +229,28 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 subtitle: '12',
                                 color: Palette.accent20,
                                 icon: AmatNow.gift_box,
+                                icon2: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: App.resolveColor(
+                                      Palette.neutralF5,
+                                      dark: Palette.neutralMoonDark,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                        Utils.inputBorderRadius),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 0.03.sw,
+                                      vertical: 0.02.sw,
+                                    ),
+                                    child: Headline(
+                                      '\$32',
+                                      fontSize: 15.sp,
+                                      textColor: Palette.neutralLabel,
+                                      textColorDark: Palette.neutralLabel,
+                                    ),
+                                  ),
+                                ),
                                 iconColor: Palette.accentColor,
                                 padding: EdgeInsets.all(0.02.sw),
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -326,6 +346,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
 
 class _InsightColumn extends StatelessWidget {
   final IconData? icon;
+  final Widget? icon2;
   final String title;
   final double? titleFontSize;
   final String subtitle;
@@ -338,6 +359,7 @@ class _InsightColumn extends StatelessWidget {
   const _InsightColumn({
     Key? key,
     this.icon,
+    this.icon2,
     required this.title,
     this.titleFontSize,
     required this.subtitle,
@@ -356,15 +378,30 @@ class _InsightColumn extends StatelessWidget {
       children: [
         Flexible(
           flex: 6,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Padding(
-              padding: padding ?? EdgeInsets.all(0.013.sw),
-              child: Icon(icon, color: iconColor),
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Padding(
+                  padding: padding ?? EdgeInsets.all(0.013.sw),
+                  child: Icon(icon, color: iconColor),
+                ),
+              ),
+              //
+              icon2?.let(
+                    (child) => Row(
+                      children: [
+                        HorizontalSpace(width: 0.02.sw),
+                        child,
+                      ],
+                    ),
+                  ) ??
+                  Utils.nothing,
+            ],
           ),
         ),
         //

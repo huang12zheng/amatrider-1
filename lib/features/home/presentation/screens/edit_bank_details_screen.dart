@@ -28,7 +28,7 @@ class EditBankDetailsScreen extends StatelessWidget with AutoRouteWrapper {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AdaptiveText(
-                'Account Information',
+                'Bank Account Information',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w600,

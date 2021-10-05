@@ -16,6 +16,7 @@ class DeliveryRequestCard extends StatelessWidget {
   final String? asset;
   final bool showActionButtons;
   final bool isOrder;
+  final String? time;
   final bool initialExpanded;
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
@@ -24,6 +25,7 @@ class DeliveryRequestCard extends StatelessWidget {
     Key? key,
     this.asset,
     this.isOrder = true,
+    this.time,
     this.showActionButtons = true,
     this.initialExpanded = false,
     this.onAccept,
@@ -192,27 +194,31 @@ class DeliveryRequestCard extends StatelessWidget {
                   Flexible(child: HorizontalSpace(width: 0.015.sw)),
                   //
                   Expanded(
-                    flex: 9,
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        color: Palette.accentLightGreen,
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 0.014.sw, vertical: 0.004.sh),
-                        child: AdaptiveText(
-                          '5hrs 10mins',
-                          // maxLines: 1,
-                          minFontSize: 14,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Palette.accentGreen,
-                            fontSize: 15.sp,
+                    flex: 10,
+                    child: Row(
+                      children: [
+                        DecoratedBox(
+                          decoration: const BoxDecoration(
+                            color: Palette.accentLightGreen,
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0.014.sw, vertical: 0.004.sh),
+                            child: AdaptiveText(
+                              time ?? '5hrs 10mins',
+                              maxLines: 1,
+                              minFontSize: 13,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Palette.accentGreen,
+                                fontSize: 15.sp,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
