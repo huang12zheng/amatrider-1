@@ -182,7 +182,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                             const Flexible(
                               child: _InsightColumn(
                                 title: 'Progress',
-                                subtitle: '60%',
+                                subtitle: '100%',
                                 color: Palette.pastelYellow,
                                 icon: AmatNow.progress_icon,
                                 iconColor: Palette.accentYellow,
