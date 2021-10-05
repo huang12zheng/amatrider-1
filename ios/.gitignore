@@ -10,7 +10,9 @@
 **/DerivedData/
 Icon?
 **/Pods/
+.symlinks/
 **/.symlinks/
+/build/
 profile
 xcuserdata
 **/.generated/
