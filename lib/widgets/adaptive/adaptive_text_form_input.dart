@@ -62,6 +62,11 @@ class AdaptiveTextFormInput extends StatefulWidget {
   final CupertinoFormType? _formType;
   final VoidCallback? onTap;
 
+  final TextAlign textAlign;
+  final TextSelectionControls? selectionControls;
+  final TextAlignVertical? textAlignVertical;
+  final TextDirection? textDirection;
+
   const AdaptiveTextFormInput({
     Key? key,
     this.maxLines = 1,
@@ -113,6 +118,10 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.cupertinoInputMargin = 8.0,
     CupertinoFormType? cupertinoFormType,
     this.onTap,
+    this.textAlign = TextAlign.start,
+    this.selectionControls,
+    this.textAlignVertical,
+    this.textDirection,
   })  : _formType = cupertinoFormType ?? CupertinoFormType.row,
         _prefixMode = prefixMode ?? OverlayVisibilityMode.editing,
         _suffixMode = suffixMode ?? OverlayVisibilityMode.editing,
@@ -170,6 +179,10 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.cupertinoInputMargin = 8.0,
     CupertinoFormType? cupertinoFormType,
     this.onTap,
+    this.textAlign = TextAlign.start,
+    this.selectionControls,
+    this.textAlignVertical,
+    this.textDirection,
   })  : _formType = cupertinoFormType ?? CupertinoFormType.row,
         _prefixMode = prefixMode ?? OverlayVisibilityMode.editing,
         _suffixMode = suffixMode ?? OverlayVisibilityMode.editing,
@@ -293,6 +306,10 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
           ),
         ).merge(widget.hintStyle),
         toolbarOptions: widget.toolbarOptions,
+        textAlign: widget.textAlign,
+        selectionControls: widget.selectionControls,
+        textAlignVertical: widget.textAlignVertical,
+        textDirection: widget.textDirection,
         onChanged: widget.onChanged,
         validator: (value) =>
             widget.cupertinoUseValidator ? widget.errorText : null,
@@ -350,6 +367,10 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
           ),
         ).merge(widget.hintStyle),
         toolbarOptions: widget.toolbarOptions,
+        textAlign: widget.textAlign,
+        selectionControls: widget.selectionControls,
+        textAlignVertical: widget.textAlignVertical,
+        textDirection: widget.textDirection,
         onChanged: widget.onChanged,
         onSubmitted: (_) => widget.next == null
             ? FocusScope.of(c).unfocus()
@@ -410,6 +431,10 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
                 LengthLimitingTextInputFormatter(widget.maxLength),
               ...widget.inputFormatters,
             ],
+            textAlign: widget.textAlign,
+            selectionControls: widget.selectionControls,
+            textAlignVertical: widget.textAlignVertical,
+            textDirection: widget.textDirection,
             toolbarOptions: widget.toolbarOptions,
             style: widget.style,
             autovalidateMode: widget.validate

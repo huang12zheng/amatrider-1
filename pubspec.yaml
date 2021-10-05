@@ -224,7 +224,6 @@ flutter:
     - assets/svgs/logo/
     - assets/svgs/onboarding/
     - assets/svgs/dashboard/
-    - assets/svgs/dashboard/insights/
     - assets/videos/
 
   fonts:

@@ -57,6 +57,7 @@ import 'package:amatrider/_404.dart';
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
+      fullscreenDialog: true,
       page: ReferralScreen,
       path: 'account-referral-screen',
     ),

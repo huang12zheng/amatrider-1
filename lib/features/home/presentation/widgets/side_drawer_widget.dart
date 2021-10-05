@@ -182,10 +182,6 @@ class DrawerListTile extends StatelessWidget {
           onPressed.call();
         },
         horizontalTitleGap: 0.0,
-        tileColor: App.resolveColor(
-          Colors.white,
-          dark: Palette.secondaryColor.shade600,
-        ),
         leading: Icon(icon, size: size ?? 23, color: Palette.text40),
         title: AdaptiveText(
           title,

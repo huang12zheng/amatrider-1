@@ -45,12 +45,12 @@ class DeliveryHistoryCard extends StatelessWidget {
             child: ScrollOnExpand(
               child: ExpandablePanel(
                 header: PlatformBuilder(
+                  cupertino: (_) => header,
                   material: (_) => Material(
                     elevation: 0.0,
                     color: Colors.transparent,
                     child: header,
                   ),
-                  cupertino: (_) => header,
                 ),
                 collapsed: const SizedBox.shrink(),
                 expanded: Padding(
@@ -116,44 +116,20 @@ class DeliveryHistoryCard extends StatelessWidget {
           child: asset?.let((it) => Image.asset(it)) ??
               Image.asset(AppAssets.blackAvatar),
         ),
-        title: AdaptiveText(
-          'Emily Restaurant',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 17.sp,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Row(
-            children: [
-              DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Palette.accentLightBlue,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 4.0),
-                  child: AdaptiveText(
-                    'Order',
-                    style: TextStyle(
-                      color: Palette.accentBlue,
-                      fontSize: 15.sp,
-                    ),
-                  ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: AdaptiveText(
+                'Emily Restaurant',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17.sp,
                 ),
               ),
-            ],
-          ),
-        ),
-        trailing: Column(
-          // mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
+            ),
             Flexible(
               child: AdaptiveText(
                 '\$12',
@@ -163,8 +139,39 @@ class DeliveryHistoryCard extends StatelessWidget {
                 ),
               ),
             ),
+          ],
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Row(
+                children: [
+                  DecoratedBox(
+                    decoration: const BoxDecoration(
+                      color: Palette.accentLightBlue,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 0.02.sw, vertical: 0.005.sh),
+                      child: AdaptiveText(
+                        'Order',
+                        style: TextStyle(
+                          color: Palette.accentBlue,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             //
             Flexible(
+              flex: 2,
               child: AdaptiveText(
                 'Card(POS)',
                 style: TextStyle(fontSize: 15.sp),

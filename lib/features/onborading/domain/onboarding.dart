@@ -19,21 +19,21 @@ class OnboardingItem<Pixel> with _$OnboardingItem<Pixel> {
   }) = _OnboardingItem;
 
   static KtList<OnboardingItem<String>> get list => KtList.from([
-        const OnboardingItem(
-          title: 'Restaurants At Your Doorsteps',
-          description: 'Lorem ipsum dolor sit amet, consectetur'
-              'adipiscing elit, sed do eiusmod tempor'
-              'incididunt ut labore et dolore magna aliqua.',
-          image: AppAssets.onboarding0,
-        ),
-        //
-        const OnboardingItem(
-          title: 'Restaurants At Your Doorsteps',
-          description: 'Lorem ipsum dolor sit amet, consectetur'
-              'adipiscing elit, sed do eiusmod tempor'
-              'incididunt ut labore et dolore magna aliqua.',
-          image: AppAssets.onboarding1,
-        ),
+        // const OnboardingItem(
+        //   title: 'Restaurants At Your Doorsteps',
+        //   description: 'Lorem ipsum dolor sit amet, consectetur'
+        //       'adipiscing elit, sed do eiusmod tempor'
+        //       'incididunt ut labore et dolore magna aliqua.',
+        //   image: AppAssets.onboarding0,
+        // ),
+        // //
+        // const OnboardingItem(
+        //   title: 'Restaurants At Your Doorsteps',
+        //   description: 'Lorem ipsum dolor sit amet, consectetur'
+        //       'adipiscing elit, sed do eiusmod tempor'
+        //       'incididunt ut labore et dolore magna aliqua.',
+        //   image: AppAssets.onboarding1,
+        // ),
         //
         const OnboardingItem(
           title: 'Restaurants At Your Doorsteps',

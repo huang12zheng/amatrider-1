@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 /// A stateless widget to render CustomChipWidget.
 class CustomChipWidget extends StatelessWidget {
   final String text;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
   final Color backgroundColor;
   final Color textColor;
 
   const CustomChipWidget(
     this.text, {
     Key? key,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+    this.padding,
     required this.backgroundColor,
     required this.textColor,
   }) : super(key: key);
@@ -26,9 +26,13 @@ class CustomChipWidget extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(4)),
       ),
       child: Padding(
-        padding: padding,
+        padding: EdgeInsets.symmetric(horizontal: 0.014.sw, vertical: 0.004.sh),
         child: AdaptiveText(
           '$text',
+          maxLines: 1,
+          minFontSize: 13,
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: textColor,
             fontSize: 15.sp,

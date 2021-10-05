@@ -66,10 +66,7 @@ mixin AppAssets {
   static const String request3 = '$DASHBOARD_IMAGES_DIR/request_3.png';
 
   static const String timelinePinAsset = '$DASHBOARD_SVG_DIR/timeline_pin.svg';
-  static const String _cashHand = '$INSIGHTS_SVG_DIR/cash_hand.svg';
-  static const String _checkCircle = '$INSIGHTS_SVG_DIR/check_circle.svg';
-  static const String _progressIcon = '$INSIGHTS_SVG_DIR/progress_icon.svg';
-  static const String _targetIcon = '$INSIGHTS_SVG_DIR/target_icon.svg';
+  static const String _inviteFriends = '$DASHBOARD_SVG_DIR/friendship.svg';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
@@ -108,10 +105,7 @@ mixin AppAssets {
     _noConnectivity,
     _noHistory,
     timelinePinAsset,
-    _cashHand,
-    _checkCircle,
-    _progressIcon,
-    _targetIcon,
+    _inviteFriends,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -273,31 +267,8 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  static SvgPicture progressIcon = SvgPicture.asset(
-    _progressIcon,
-    height: 23,
-    width: 23,
-    color: Palette.accentYellow,
-  );
-
-  static SvgPicture targetIcon = SvgPicture.asset(
-    _targetIcon,
-    height: 23,
-    width: 23,
-    color: Palette.accentBlue,
-  );
-
-  static SvgPicture cashHand = SvgPicture.asset(
-    _cashHand,
-    height: 23,
-    width: 23,
-    color: Palette.accentPurple,
-  );
-
-  static SvgPicture checkCircle = SvgPicture.asset(
-    _checkCircle,
-    height: 23,
-    width: 23,
-    color: Palette.accentGreen,
+  static SvgPicture inviteFriends = SvgPicture.asset(
+    _inviteFriends,
+    fit: BoxFit.contain,
   );
 }

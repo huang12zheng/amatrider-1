@@ -26,6 +26,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
       adaptiveToolbar: AdaptiveToolbar(
         tooltip: 'Menu',
         showCustomLeading: true,
+        leadingAction: () {},
         leadingIcon: Consumer(
           builder: (_, ref, child) => PlatformIconButton(
             materialIcon: const Icon(Icons.menu),
@@ -157,31 +158,34 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Flexible(
+                            const Flexible(
                               child: _InsightColumn(
                                 title: 'Completed',
                                 subtitle: '20',
                                 color: Palette.pastelGreen,
-                                icon: AppAssets.checkCircle,
+                                icon: AmatNow.check_circle,
+                                iconColor: Palette.accentGreen,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                               ),
                             ),
                             //
-                            Flexible(
+                            const Flexible(
                               child: _InsightColumn(
                                 title: 'Target',
                                 subtitle: '50',
                                 color: Palette.pastelBlue,
-                                icon: AppAssets.targetIcon,
+                                icon: AmatNow.target_icon,
+                                iconColor: Palette.accentBlue,
                               ),
                             ),
                             //
-                            Flexible(
+                            const Flexible(
                               child: _InsightColumn(
                                 title: 'Progress',
                                 subtitle: '60%',
                                 color: Palette.pastelYellow,
-                                icon: AppAssets.progressIcon,
+                                icon: AmatNow.progress_icon,
+                                iconColor: Palette.accentYellow,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                               ),
                             ),
@@ -209,7 +213,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                       ),
                     ),
                     child: SizedBox(
-                      height: 0.17.sh,
+                      height: 0.16.sh,
                       width: double.infinity,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
@@ -220,52 +224,80 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              flex: 5,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              flex: 8,
+                              child: _InsightColumn(
+                                title: 'Extra Deliveries',
+                                titleFontSize: 19.0.sp,
+                                subtitle: '12',
+                                color: Palette.accent20,
+                                icon: AmatNow.gift_box,
+                                iconColor: Palette.accentColor,
+                                padding: EdgeInsets.all(0.02.sw),
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    flex: 7,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        color: Palette.pastelPurple,
-                                        borderRadius:
-                                            BorderRadius.circular(200),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(0.02.sw),
-                                        child: AppAssets.cashHand,
-                                      ),
-                                    ),
-                                  ),
-                                  //
-                                  Flexible(
-                                    flex: 5,
-                                    child: AdaptiveText(
-                                      'Total Cash at Hand',
-                                      fontSize: 19.0.sp,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: Utils.letterSpacing,
-                                    ),
-                                  ),
-                                  //
-                                  Flexible(
-                                    flex: 4,
-                                    child: AdaptiveText(
-                                      '\$10,000',
-                                      fontSize: 20.0.sp,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: Utils.letterSpacing,
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                             //
                             Flexible(
-                              flex: 3,
+                              flex: 5,
+                              child: AppOutlinedButton(
+                                text: 'Claim Bonus',
+                                height: 0.028.sh,
+                                cupertinoHeight: 0.028.sh,
+                                width: 0.3.sw,
+                                cupertinoWidth: 0.3.sw,
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: App.sidePadding,
+                ).copyWith(top: 0.04.sw),
+                sliver: SliverToBoxAdapter(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: App.resolveColor(
+                        Colors.white,
+                        dark: Palette.secondaryColor.shade700,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        Utils.inputBorderRadius,
+                      ),
+                    ),
+                    child: SizedBox(
+                      height: 0.16.sh,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 0.035.sw,
+                          vertical: 0.03.sw,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 8,
+                              child: _InsightColumn(
+                                title: 'Total Cash at Hand',
+                                titleFontSize: 19.0.sp,
+                                subtitle: '\$10,000',
+                                color: Palette.pastelPurple,
+                                icon: AmatNow.cash_hand,
+                                iconColor: Palette.accentPurple,
+                                padding: EdgeInsets.all(0.02.sw),
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                            ),
+                            //
+                            Flexible(
+                              flex: 5,
                               child: AdaptiveButton(
                                 text: 'Deposit Cash',
                                 textColor: Colors.white,
@@ -293,18 +325,26 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
 }
 
 class _InsightColumn extends StatelessWidget {
-  final Widget? icon;
+  final IconData? icon;
   final String title;
+  final double? titleFontSize;
   final String subtitle;
+  final double? subtitleFontSize;
   final Color? color;
+  final Color? iconColor;
+  final EdgeInsets? padding;
   final CrossAxisAlignment crossAxisAlignment;
 
   const _InsightColumn({
     Key? key,
     this.icon,
     required this.title,
+    this.titleFontSize,
     required this.subtitle,
+    this.subtitleFontSize,
     this.color,
+    this.iconColor,
+    this.padding,
     this.crossAxisAlignment = CrossAxisAlignment.center,
   }) : super(key: key);
 
@@ -322,8 +362,8 @@ class _InsightColumn extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
             ),
             child: Padding(
-              padding: EdgeInsets.all(0.013.sw),
-              child: icon,
+              padding: padding ?? EdgeInsets.all(0.013.sw),
+              child: Icon(icon, color: iconColor),
             ),
           ),
         ),
@@ -332,7 +372,7 @@ class _InsightColumn extends StatelessWidget {
           flex: 5,
           child: AdaptiveText(
             '$title',
-            fontSize: 16.0.sp,
+            fontSize: titleFontSize ?? 16.0.sp,
             fontWeight: FontWeight.w500,
             letterSpacing: Utils.letterSpacing,
           ),
@@ -342,7 +382,7 @@ class _InsightColumn extends StatelessWidget {
           flex: 4,
           child: AdaptiveText(
             '$subtitle',
-            fontSize: 20.0.sp,
+            fontSize: subtitleFontSize ?? 20.0.sp,
             fontWeight: FontWeight.w600,
             letterSpacing: Utils.letterSpacing,
           ),

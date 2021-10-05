@@ -27,6 +27,7 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
       adaptiveToolbar: AdaptiveToolbar(
         tooltip: 'Menu',
         showCustomLeading: true,
+        leadingAction: () {},
         leadingIcon: Consumer(
           builder: (_, ref, child) => PlatformIconButton(
             materialIcon: const Icon(Icons.menu),

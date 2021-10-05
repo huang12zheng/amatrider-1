@@ -30,11 +30,13 @@ class AmatRider extends StatelessWidget {
             title: Const.appName.capitalizeFirst(),
             debugShowCheckedModeBanner: false,
             material: (_, __) => MaterialAppRouterData(
-              theme: app.themeData(),
-              darkTheme: AppTheme.dark().themeData(),
+              theme: AppTheme.light().themeData(),
+              darkTheme: AppTheme.light().themeData(),
+              // theme: app.themeData(),
+              // darkTheme: AppTheme.dark().themeData(),
             ),
             cupertino: (_, __) => CupertinoAppRouterData(
-              theme: app.cupertinoThemeData(_),
+              // theme: app.cupertinoThemeData(_),
               color: Palette.accentColor,
             ),
             locale: env.flavor.fold(

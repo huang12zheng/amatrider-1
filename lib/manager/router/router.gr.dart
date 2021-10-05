@@ -4,7 +4,7 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'dart:async' as _i9;
+import 'dart:async' as _i10;
 
 import 'package:amatrider/_404.dart' as _i5;
 import 'package:amatrider/core/presentation/index.dart' as _i4;
@@ -15,6 +15,7 @@ import 'package:amatrider/features/home/presentation/screens/index.dart' as _i2;
 import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/cupertino.dart' as _i9;
 import 'package:flutter/material.dart' as _i8;
 
 class AppRouter extends _i6.RootStackRouter {
@@ -55,7 +56,9 @@ class AppRouter extends _i6.RootStackRouter {
     },
     ReferralRoute.name: (routeData) {
       return _i6.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i2.ReferralScreen());
+          routeData: routeData,
+          child: const _i2.ReferralScreen(),
+          fullscreenDialog: true);
     },
     NotConnectedRoute.name: (routeData) {
       final args = routeData.argsAs<NotConnectedRouteArgs>();
@@ -199,7 +202,7 @@ class EditBankDetailsRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for [_i2.RideAcceptedScreen]
 class RideAcceptedRoute extends _i6.PageRouteInfo<RideAcceptedRouteArgs> {
-  RideAcceptedRoute({_i8.Key? key})
+  RideAcceptedRoute({_i9.Key? key})
       : super(name,
             path: 'ride-accepted-screen',
             args: RideAcceptedRouteArgs(key: key));
@@ -210,7 +213,7 @@ class RideAcceptedRoute extends _i6.PageRouteInfo<RideAcceptedRouteArgs> {
 class RideAcceptedRouteArgs {
   const RideAcceptedRouteArgs({this.key});
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 }
 
 /// generated route for [_i2.ReferralScreen]
@@ -222,7 +225,7 @@ class ReferralRoute extends _i6.PageRouteInfo<void> {
 
 /// generated route for [_i4.NotConnectedScreen]
 class NotConnectedRoute extends _i6.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i8.Key? key, required _i9.Future<dynamic> future})
+  NotConnectedRoute({_i9.Key? key, required _i10.Future<dynamic> future})
       : super(name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -233,9 +236,9 @@ class NotConnectedRoute extends _i6.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
-  final _i9.Future<dynamic> future;
+  final _i10.Future<dynamic> future;
 }
 
 /// generated route for [_i4.NoHistoryScreen]

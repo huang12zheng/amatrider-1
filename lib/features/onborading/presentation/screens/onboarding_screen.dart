@@ -114,6 +114,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                         image: image,
                         width: 0.85.sw,
                         fit: BoxFit.contain,
+                        gaplessPlayback: false,
                       )
                     : SvgPicture.asset(
                         widget.item!.image,
@@ -189,48 +190,6 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                     ),
                     //
                     VerticalSpace(height: 0.03.sw),
-                    //
-                    Flexible(
-                      child: Visibility(
-                        visible: c
-                            .watch<OnboardingCubit>()
-                            .isLast(left(widget.item!)),
-                        child: AdaptiveButton(
-                          text: 'Continue As Guest',
-                          fontSize: 18.sp,
-                          textColorDark: Colors.black87,
-                          splashColor: Colors.black.withOpacity(0.06),
-                          fontWeight: FontWeight.w600,
-                          textColor: Palette.accentColor,
-                          backgroundColor: Palette.accent20,
-                          onPressed: () => App.showAlertDialog(
-                            context: c,
-                            barrierDismissible: false,
-                            barrierColor: App.resolveColor(
-                              Colors.grey.shade800.withOpacity(0.55),
-                              dark: Colors.white54,
-                            ),
-                            builder: (_) => AdaptiveAlertdialog(
-                              title: 'Continue as Guest?',
-                              content:
-                                  'Limited functionality until registration.',
-                              firstButtonText: 'Continue',
-                              secondButtonText: 'Free Sign Up',
-                              secondSplashColor: Colors.black12,
-                              secondTextStyle: const TextStyle(
-                                color: Palette.accentColor,
-                              ),
-                              secondBgColor: Palette.accent20,
-                              onFirstPressed: () => navigator.pushAndPopUntil(
-                                const DashboardRoute(),
-                                predicate: (_) => false,
-                              ),
-                              onSecondPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

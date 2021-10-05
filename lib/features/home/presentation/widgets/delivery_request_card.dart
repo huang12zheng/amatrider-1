@@ -73,12 +73,12 @@ class DeliveryRequestCard extends StatelessWidget {
                   constraints: BoxConstraints(
                     maxWidth: 1.sw,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                    ).copyWith(bottom: 10.0),
-                    child: Visibility(
-                      visible: showActionButtons,
+                  child: Visibility(
+                    visible: showActionButtons,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0,
+                      ).copyWith(bottom: 10.0),
                       child: _ActionButtons(
                         onAccept: onAccept,
                         onDecline: onDecline,
@@ -136,59 +136,20 @@ class DeliveryRequestCard extends StatelessWidget {
           child: asset?.let((it) => Image.asset(it)) ??
               Image.asset(AppAssets.blackAvatar),
         ),
-        title: AdaptiveText(
-          'Emily Restaurant',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 17.sp,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Row(
-            children: [
-              if (isOrder)
-                const CustomChipWidget(
-                  'Order',
-                  backgroundColor: Palette.pastelBlue,
-                  textColor: Palette.accentBlue,
-                ),
-              if (!isOrder)
-                const CustomChipWidget(
-                  'Packages',
-                  backgroundColor: Palette.pastelYellow,
-                  textColor: Palette.accentYellow,
-                ),
-              //
-              HorizontalSpace(width: 0.015.sw),
-              //
-              DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Palette.accentLightGreen,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(4),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 4.0),
-                  child: AdaptiveText(
-                    '10 Minutes',
-                    style: TextStyle(
-                      color: Palette.accentGreen,
-                      fontSize: 15.sp,
-                    ),
-                  ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: AdaptiveText(
+                'Emily Restaurant',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17.sp,
                 ),
               ),
-            ],
-          ),
-        ),
-        trailing: Column(
-          // mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
+            ),
             Flexible(
               child: AdaptiveText(
                 '\$12',
@@ -198,8 +159,68 @@ class DeliveryRequestCard extends StatelessWidget {
                 ),
               ),
             ),
+          ],
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 6,
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (isOrder)
+                    const Flexible(
+                      flex: 8,
+                      child: CustomChipWidget(
+                        'Order',
+                        backgroundColor: Palette.pastelBlue,
+                        textColor: Palette.accentBlue,
+                      ),
+                    ),
+                  if (!isOrder)
+                    const Flexible(
+                      flex: 8,
+                      child: CustomChipWidget(
+                        'Packages',
+                        backgroundColor: Palette.pastelYellow,
+                        textColor: Palette.accentYellow,
+                      ),
+                    ),
+                  //
+                  Flexible(child: HorizontalSpace(width: 0.015.sw)),
+                  //
+                  Expanded(
+                    flex: 9,
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: Palette.accentLightGreen,
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.014.sw, vertical: 0.004.sh),
+                        child: AdaptiveText(
+                          '5 hrs 10 mins',
+                          // maxLines: 1,
+                          minFontSize: 14,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Palette.accentGreen,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             //
             Flexible(
+              flex: 3,
               child: AdaptiveText(
                 'Card(POS)',
                 style: TextStyle(fontSize: 15.sp),
