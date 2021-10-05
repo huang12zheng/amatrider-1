@@ -183,7 +183,7 @@ class DeliveryRequestCard extends StatelessWidget {
                     const Flexible(
                       flex: 8,
                       child: CustomChipWidget(
-                        'Packages',
+                        'Package',
                         backgroundColor: Palette.pastelYellow,
                         textColor: Palette.accentYellow,
                       ),
@@ -202,7 +202,7 @@ class DeliveryRequestCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: 0.014.sw, vertical: 0.004.sh),
                         child: AdaptiveText(
-                          '5 hrs 10 mins',
+                          '5hrs 10mins',
                           // maxLines: 1,
                           minFontSize: 14,
                           softWrap: true,
