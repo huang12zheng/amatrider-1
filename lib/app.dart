@@ -32,6 +32,7 @@ class AmatRider extends StatelessWidget {
             material: (_, __) => MaterialAppRouterData(
               theme: AppTheme.light().themeData(),
               darkTheme: AppTheme.light().themeData(),
+              themeMode: ThemeMode.light,
               // theme: app.themeData(),
               // darkTheme: AppTheme.dark().themeData(),
             ),
