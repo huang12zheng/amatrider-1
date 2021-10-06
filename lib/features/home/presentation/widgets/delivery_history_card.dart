@@ -44,13 +44,11 @@ class DeliveryHistoryCard extends StatelessWidget {
             initialExpanded: initialExpanded,
             child: ScrollOnExpand(
               child: ExpandablePanel(
-                header: PlatformBuilder(
-                  cupertino: (_) => header,
-                  material: (_) => Material(
-                    elevation: 0.0,
-                    color: Colors.transparent,
-                    child: header,
-                  ),
+                header: Material(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.transparent,
+                  elevation: 0.0,
+                  child: header,
                 ),
                 collapsed: const SizedBox.shrink(),
                 expanded: Padding(
@@ -110,81 +108,86 @@ class DeliveryHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget get header => ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
-          child: asset?.let((it) => Image.asset(it)) ??
-              Image.asset(AppAssets.blackAvatar),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: AdaptiveText(
-                'Emily Restaurant',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17.sp,
+  Widget get header => Material(
+        borderRadius: BorderRadius.circular(5.0),
+        color: Colors.transparent,
+        elevation: 0.0,
+        child: ListTile(
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(5.0),
+            child: asset?.let((it) => Image.asset(it)) ??
+                Image.asset(AppAssets.blackAvatar),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: AdaptiveText(
+                  'Emily Restaurant',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 17.sp,
+                  ),
                 ),
               ),
-            ),
-            Flexible(
-              child: AdaptiveText(
-                '\$12',
-                style: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.bold,
+              Flexible(
+                child: AdaptiveText(
+                  '\$12',
+                  style: TextStyle(
+                    fontSize: 21.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Row(
-                children: [
-                  DecoratedBox(
-                    decoration: const BoxDecoration(
-                      color: Palette.accentLightBlue,
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.02.sw, vertical: 0.005.sh),
-                      child: AdaptiveText(
-                        'Order',
-                        style: TextStyle(
-                          color: Palette.accentBlue,
-                          fontSize: 15.sp,
+            ],
+          ),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Row(
+                  children: [
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: Palette.accentLightBlue,
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 0.02.sw, vertical: 0.005.sh),
+                        child: AdaptiveText(
+                          'Order',
+                          style: TextStyle(
+                            color: Palette.accentBlue,
+                            fontSize: 15.sp,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            //
-            Flexible(
-              flex: 2,
-              child: AdaptiveText(
-                'Card(POS)',
-                style: TextStyle(fontSize: 15.sp),
+              //
+              Flexible(
+                flex: 2,
+                child: AdaptiveText(
+                  'Card(POS)',
+                  style: TextStyle(fontSize: 15.sp),
+                ),
               ),
-            ),
-          ],
-        ),
-        dense: true,
-        horizontalTitleGap: 8.0,
-        minVerticalPadding: 10.0,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 15.0,
+            ],
+          ),
+          dense: true,
+          horizontalTitleGap: 8.0,
+          minVerticalPadding: 10.0,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 15.0,
+          ),
         ),
       );
 }

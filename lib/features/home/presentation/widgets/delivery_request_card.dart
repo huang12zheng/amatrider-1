@@ -63,13 +63,11 @@ class DeliveryRequestCard extends StatelessWidget {
             initialExpanded: initialExpanded,
             child: ScrollOnExpand(
               child: ExpandablePanel(
-                header: PlatformBuilder(
-                  material: (_) => Material(
-                    elevation: 0.0,
-                    color: Colors.transparent,
-                    child: header,
-                  ),
-                  cupertino: (_) => header,
+                header: Material(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.transparent,
+                  elevation: 0.0,
+                  child: header,
                 ),
                 collapsed: ConstrainedBox(
                   constraints: BoxConstraints(
@@ -168,7 +166,7 @@ class DeliveryRequestCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 6,
+              flex: 10,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -183,7 +181,7 @@ class DeliveryRequestCard extends StatelessWidget {
                     ),
                   if (!isOrder)
                     const Flexible(
-                      flex: 8,
+                      flex: 10,
                       child: CustomChipWidget(
                         'Package',
                         backgroundColor: Palette.pastelYellow,
@@ -194,26 +192,29 @@ class DeliveryRequestCard extends StatelessWidget {
                   Flexible(child: HorizontalSpace(width: 0.015.sw)),
                   //
                   Expanded(
-                    flex: 10,
+                    flex: 14,
                     child: Row(
                       children: [
-                        DecoratedBox(
-                          decoration: const BoxDecoration(
-                            color: Palette.accentLightGreen,
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0.014.sw, vertical: 0.004.sh),
-                            child: AdaptiveText(
-                              time ?? '5hrs 10mins',
-                              maxLines: 1,
-                              minFontSize: 13,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Palette.accentGreen,
-                                fontSize: 15.sp,
+                        Flexible(
+                          child: DecoratedBox(
+                            decoration: const BoxDecoration(
+                              color: Palette.accentLightGreen,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 0.014.sw, vertical: 0.004.sh),
+                              child: AdaptiveText(
+                                time ?? '5hrs 10mins',
+                                maxLines: 1,
+                                minFontSize: 13,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Palette.accentGreen,
+                                  fontSize: 15.sp,
+                                ),
                               ),
                             ),
                           ),
@@ -226,9 +227,14 @@ class DeliveryRequestCard extends StatelessWidget {
             ),
             //
             Flexible(
-              flex: 3,
+              flex: 5,
               child: AdaptiveText(
                 'Card(POS)',
+                minFontSize: 13,
+                maxLines: 1,
+                softWrap: true,
+                textAlign: TextAlign.right,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 15.sp),
               ),
             ),
@@ -261,8 +267,9 @@ class _ActionButtons extends StatelessWidget {
       children: [
         AppOutlinedButton(
           text: 'Decline',
+          textColor: Palette.accentColor,
           height: 0.028.sh,
-          cupertinoHeight: 0.028.sh,
+          cupertinoHeight: 0.05.sh,
           width: 0.3.sw,
           cupertinoWidth: 0.3.sw,
           onPressed: onDecline,
@@ -271,10 +278,10 @@ class _ActionButtons extends StatelessWidget {
         AdaptiveButton(
           text: 'Accept',
           textColor: Colors.white,
-          // textColorDark: Palette.,
+          backgroundColor: Palette.accentColor,
           splashColor: Colors.white24,
           height: 0.028.sh,
-          cupertinoHeight: 0.028.sh,
+          cupertinoHeight: 0.05.sh,
           width: 0.3.sw,
           cupertinoWidth: 0.3.sw,
           onPressed: onAccept,

@@ -224,11 +224,11 @@ class Utils {
           CupertinoDynamicColor.withBrightness(
             color: cupertino?.call()?.value1 ??
                 light ??
-                theme.scaffoldBackgroundColor,
+                Utils.computeLuminance(Palette.primaryColor),
             darkColor: cupertino?.call()?.value2 ??
                 dark ??
                 light ??
-                theme.scaffoldBackgroundColor,
+                Utils.computeLuminance(Palette.secondaryColor),
           ),
           context,
         ),

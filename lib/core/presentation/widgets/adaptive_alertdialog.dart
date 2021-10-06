@@ -18,6 +18,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
   final TextStyle? contentTextStyle;
   final String? firstButtonText;
   final String secondButtonText;
+  final String? cupertinoFirstButtonText;
+  final String cupertinoSecondButtonText;
   final VoidCallback? onFirstPressed;
   final Color? firstBgColor;
   final Color? firstSplashColor;
@@ -25,8 +27,11 @@ class AdaptiveAlertdialog extends StatelessWidget {
   final VoidCallback? onSecondPressed;
   final Color? secondBgColor;
   final Color? secondSplashColor;
+  final bool isFirstDefaultAction;
+  final bool isSecondDefaultAction;
+  final bool isFirstDestructive;
+  final bool isSecondDestructive;
   final TextStyle? secondTextStyle;
-  final bool useDestructiveAction;
   final Axis buttonDirection;
   final Widget? materialFirstButton;
   final Widget? materialSecondButton;
@@ -43,6 +48,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
     this.contentTextStyle,
     this.firstButtonText,
     this.secondButtonText = 'Close',
+    String? cupertinoFirstButtonText,
+    String? cupertinoSecondButtonText,
     this.onFirstPressed,
     this.onSecondPressed,
     this.firstBgColor,
@@ -51,11 +58,17 @@ class AdaptiveAlertdialog extends StatelessWidget {
     this.secondSplashColor,
     this.firstTextStyle,
     this.secondTextStyle,
-    this.useDestructiveAction = false,
+    this.isFirstDefaultAction = false,
+    this.isSecondDefaultAction = false,
+    this.isFirstDestructive = true,
+    this.isSecondDestructive = false,
     this.buttonDirection = Axis.vertical,
     this.materialFirstButton,
     this.materialSecondButton,
   })  : _width = width ?? 0.85.sw,
+        cupertinoFirstButtonText = cupertinoFirstButtonText ?? firstButtonText,
+        cupertinoSecondButtonText = secondButtonText,
+        assert(isFirstDestructive || isSecondDestructive),
         super(key: key);
 
   @override
@@ -89,9 +102,10 @@ class AdaptiveAlertdialog extends StatelessWidget {
         cupertino: (_, __) => CupertinoAlertDialogData(
           scrollController: ScrollController(),
           actions: [
-            firstButtonText?.let(
+            cupertinoFirstButtonText?.let(
                   (it) => CupertinoDialogAction(
-                    isDefaultAction: true,
+                    isDefaultAction: isFirstDefaultAction,
+                    isDestructiveAction: isFirstDestructive,
                     onPressed: onFirstPressed,
                     child: Text('$it'),
                   ),
@@ -99,10 +113,10 @@ class AdaptiveAlertdialog extends StatelessWidget {
                 Utils.nothing,
             //
             CupertinoDialogAction(
-              isDefaultAction: true,
-              isDestructiveAction: useDestructiveAction,
+              isDefaultAction: isSecondDefaultAction,
+              isDestructiveAction: isSecondDestructive,
               onPressed: onSecondPressed ?? navigator.pop,
-              child: Text('$secondButtonText'),
+              child: Text('$cupertinoSecondButtonText'),
             ),
           ],
         ),
@@ -140,25 +154,41 @@ class AdaptiveAlertdialog extends StatelessWidget {
                       centerContent ? Alignment.center : Alignment.centerLeft,
                   child: body ??
                       content?.let(
-                        (it) => AdaptiveText(
-                          '$content',
-                          softWrap: true,
-                          wrapWords: true,
-                          minFontSize: 14,
-                          textAlign: centerContent
-                              ? TextAlign.center
-                              : TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 17.sp,
-                            fontWeight: FontWeight.w400,
-                          ).merge(contentTextStyle),
+                        (it) => Utils.platform_(
+                          material: AdaptiveText(
+                            '$content',
+                            softWrap: true,
+                            wrapWords: true,
+                            minFontSize: 14,
+                            textAlign: centerContent
+                                ? TextAlign.center
+                                : TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w400,
+                            ).merge(contentTextStyle),
+                          ),
+                          cupertino: Text(
+                            '$content',
+                            softWrap: true,
+                            textAlign: centerContent
+                                ? TextAlign.center
+                                : TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.w400,
+                            ).merge(contentTextStyle),
+                          ),
                         ),
                       ) ??
                       Utils.nothing,
                 ),
                 //
                 if (body != null || content != null)
-                  VerticalSpace(height: 0.07.sw),
+                  Theme.of(context)
+                          .platform
+                          .material(VerticalSpace(height: 0.07.sw)) ??
+                      Utils.nothing,
                 //
                 App.platform.fold(
                   cupertino: () => const SizedBox.shrink(),

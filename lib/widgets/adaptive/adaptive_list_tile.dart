@@ -214,12 +214,14 @@ class AdaptiveListTile extends StatelessWidget {
           subtitle: subtitle,
           title: title,
           trailing: trailing,
+          border: cupertinoBorder,
           pressColor: cupertinoPressedColor,
         ),
         switchType: () => CupertinoFormRow(
           padding: EdgeInsets.zero,
           child: MergeSemantics(
             child: CupertinoListTile(
+              key: key,
               autofocus: autofocus,
               contentPadding: contentPadding,
               dense: dense,
@@ -232,6 +234,10 @@ class AdaptiveListTile extends StatelessWidget {
               selected: selected,
               subtitle: subtitle,
               title: title,
+              border: cupertinoBorder,
+              onTap: onTap,
+              mouseCursor: mouseCursor,
+              onLongPress: onLongPress,
               pressColor: cupertinoPressedColor,
               trailing: CupertinoSwitch(
                 key: key,

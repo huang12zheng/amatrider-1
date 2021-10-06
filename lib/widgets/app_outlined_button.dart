@@ -11,8 +11,8 @@ class AppOutlinedButton extends StatelessWidget {
   final double? cupertinoHeight;
   final double? cupertinoWidth;
   final String? text;
-  final Color? textColor;
-  final Color? textColorDark;
+  final Color textColor;
+  final Color textColorDark;
   final Widget? child;
   final double? fontSize;
   final EdgeInsetsGeometry? padding;
@@ -25,8 +25,8 @@ class AppOutlinedButton extends StatelessWidget {
   const AppOutlinedButton({
     Key? key,
     this.text,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.height,
     this.width = double.infinity,
     this.cupertinoHeight,
@@ -40,7 +40,9 @@ class AppOutlinedButton extends StatelessWidget {
     this.isLoading = false,
     this.borderColor,
     this.borderColorDark,
-  }) : super(key: key);
+  })  : textColor = textColor ?? Palette.accentColor,
+        textColorDark = textColorDark ?? textColor ?? Palette.accentColor,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +55,11 @@ class AppOutlinedButton extends StatelessWidget {
       disabled: disabled,
       fontSize: fontSize,
       fontWeight: fontWeight,
-      padding: padding,
+      padding: App.platform.cupertino(EdgeInsets.zero),
       isLoading: isLoading,
-      textColor: App.resolveColor(
-        textColor ?? Palette.accentColor,
-        dark: textColorDark ?? textColor ?? Colors.white,
-      ),
-      textStyle: const TextStyle(
-        letterSpacing: Utils.labelLetterSpacing,
-      ),
+      textColor: textColor,
+      textColorDark: textColorDark,
+      textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
       backgroundColor: Colors.transparent,
       splashColor: Utils.foldTheme(
         light: () => Colors.grey.shade300,

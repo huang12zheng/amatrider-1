@@ -37,7 +37,7 @@ class AmatRider extends StatelessWidget {
               // darkTheme: AppTheme.dark().themeData(),
             ),
             cupertino: (_, __) => CupertinoAppRouterData(
-              // theme: app.cupertinoThemeData(_),
+              theme: app.cupertinoThemeData(_),
               color: Palette.accentColor,
             ),
             locale: env.flavor.fold(

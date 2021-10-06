@@ -32,8 +32,8 @@ class AdaptiveText extends StatelessWidget {
   final double? textScaleFactor;
   final bool wrapWords;
   //
-  final Color? textColor;
-  final Color? textColorDark;
+  final Color textColor;
+  final Color textColorDark;
   final double? fontSize;
   final FontWeight? fontWeight;
   final double? height;
@@ -62,8 +62,8 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.fontSize,
     this.fontWeight,
     this.height,
@@ -71,6 +71,8 @@ class AdaptiveText extends StatelessWidget {
     this.decoration,
   })  : _type = _AutoSizeTextType.standard,
         textSpan = const TextSpan(),
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? Palette.text100Dark,
         super(key: key);
 
   const AdaptiveText.rich(
@@ -94,8 +96,8 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.fontSize,
     this.fontWeight,
     this.height,
@@ -103,6 +105,8 @@ class AdaptiveText extends StatelessWidget {
     this.decoration,
   })  : _type = _AutoSizeTextType.rich,
         data = '',
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? Palette.text100Dark,
         super(key: key);
 
   @override

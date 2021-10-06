@@ -135,6 +135,8 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                           title: 'Accept Request',
                           content: 'Are you sure you '
                               'want to accept this request?',
+                          cupertinoFirstButtonText: 'No, Go Back',
+                          onFirstPressed: navigator.pop,
                           buttonDirection: Axis.horizontal,
                           secondButtonText: 'Yes, Accept',
                           secondSplashColor: Colors.black12,
