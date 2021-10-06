@@ -35,11 +35,13 @@ class AppTheme extends HiveObject {
   final TextTheme? _textTheme;
   final Color? _toggleableActiveColor;
   final VisualDensity? _visualDensity;
+  final ThemeMode themeMode;
 
   final String id;
 
   AppTheme._({
     required this.id,
+    required this.themeMode,
     Brightness? brightness,
     Brightness? accentColorBrightness,
     Color? primaryColor,
@@ -99,6 +101,7 @@ class AppTheme extends HiveObject {
   static AppTheme light() {
     return AppTheme._(
       id: LIGHT_THEME_ID,
+      themeMode: ThemeMode.system,
       brightness: Brightness.light,
       accentColorBrightness: Brightness.light,
       primaryColor: platform(cupertino: () => Palette.accentColor),
@@ -174,6 +177,7 @@ class AppTheme extends HiveObject {
   static AppTheme dark() {
     return AppTheme._(
       id: DARK_THEME_ID,
+      themeMode: ThemeMode.system,
       brightness: Brightness.dark,
       accentColorBrightness: Brightness.dark,
       primaryColor: platform(cupertino: () => Palette.accentColor),
@@ -314,6 +318,7 @@ class AppTheme extends HiveObject {
   }
 
   AppTheme copyWith({
+    ThemeMode? themeMode,
     Brightness? brightness,
     Brightness? accentColorBrightness,
     Color? primaryColor,
@@ -339,6 +344,7 @@ class AppTheme extends HiveObject {
   }) {
     return AppTheme._(
       id: id,
+      themeMode: themeMode ?? this.themeMode,
       brightness: brightness ?? _brightness,
       accentColorBrightness: accentColorBrightness ?? _accentColorBrightness,
       primaryColor: primaryColor ?? _primaryColor,

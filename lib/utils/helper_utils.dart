@@ -330,14 +330,15 @@ class Utils {
   }) {
     var isDarkMode =
         BlocProvider.of<ThemeCubit>(context ?? App.context).isDarkMode ||
-            (MediaQuery.of(context ?? App.context).platformBrightness ==
-                Brightness.dark);
+            ((MediaQuery.of(context ?? App.context).platformBrightness ==
+                Brightness.dark));
 
-    if (isDarkMode) {
-      if (dark == null) return light.call();
-      return dark.call();
-    } else
-      return light.call();
+    // if (isDarkMode) {
+    //   if (dark == null) return light.call();
+    //   return dark.call();
+    // } else
+    //   return light.call();
+    return light.call();
   }
 
   static Color computeLuminance(Color color) =>
