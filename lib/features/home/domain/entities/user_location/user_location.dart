@@ -30,23 +30,23 @@ class UserLocation extends LocationBase with _$UserLocation {
     bool? isMock,
   }) = _UserLocation;
 
-  factory UserLocation.fromLocation(LocationData data) {
+  factory UserLocation.fromLocation(LocationData? data) {
     return UserLocation(
-      accuracy: data.accuracy,
-      altitude: data.altitude,
-      heading: data.heading,
-      isMock: data.isMock,
-      lat: BasicTextField(data.latitude),
-      lng: BasicTextField(data.longitude),
-      speed: data.speed,
-      speedAccuracy: data.speedAccuracy,
-      time: data.time,
-      elapsedRealtimeNanos: data.elapsedRealtimeNanos,
-      elapsedRealtimeUncertaintyNanos: data.elapsedRealtimeUncertaintyNanos,
-      headingAccuracy: data.headingAccuracy,
-      provider: data.provider,
-      satelliteNumber: data.satelliteNumber,
-      verticalAccuracy: data.verticalAccuracy,
+      accuracy: data?.accuracy,
+      altitude: data?.altitude,
+      heading: data?.heading,
+      isMock: data?.isMock,
+      lat: BasicTextField(data?.latitude),
+      lng: BasicTextField(data?.longitude),
+      speed: data?.speed,
+      speedAccuracy: data?.speedAccuracy,
+      time: data?.time,
+      elapsedRealtimeNanos: data?.elapsedRealtimeNanos,
+      elapsedRealtimeUncertaintyNanos: data?.elapsedRealtimeUncertaintyNanos,
+      headingAccuracy: data?.headingAccuracy,
+      provider: data?.provider,
+      satelliteNumber: data?.satelliteNumber,
+      verticalAccuracy: data?.verticalAccuracy,
     );
   }
 }

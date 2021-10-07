@@ -15,16 +15,15 @@ class LocationService {
   bool _isPermissionGranted = false;
   bool _isBackgroundModeEnabled = false;
 
-  Future<bool> get isServiceEnabled async => await _location.serviceEnabled();
+  Future<bool> get isServiceEnabled async => await requestService();
 
-  Future<bool> get hasPermission async =>
-      (await _location.hasPermission()) == PermissionStatus.granted;
+  Future<bool> get hasPermission async => await requestPermissions();
 
   Future<bool> get backgroundEnabled async =>
       await _location.isBackgroundModeEnabled();
 
   Future<bool> requestService() async {
-    _isServiceEnabled = await isServiceEnabled;
+    _isServiceEnabled = await _location.serviceEnabled();
 
     if (!_isServiceEnabled) {
       _isServiceEnabled = await _location.requestService();
@@ -52,7 +51,7 @@ class LocationService {
     return _isPermissionGranted;
   }
 
-  Future<bool> requestBackgroundMode(bool enable) async {
+  Future<bool> requestBackgroundMode([bool enable = true]) async {
     _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
 
     if (enable && !_isBackgroundModeEnabled) {
@@ -65,7 +64,7 @@ class LocationService {
 
   Future<bool> changeSettings({
     PositionAccuracy accuracy = PositionAccuracy.high,
-    int interval = 800,
+    int interval = 500,
     double distanceFilter = 0,
   }) async {
     return _location.changeSettings(
@@ -88,6 +87,7 @@ class LocationService {
   }) async {
     if (enforce) {
       while (!(await hasPermission)) await requestPermissions();
+      while (!(await backgroundEnabled)) await requestBackgroundMode();
       while (!(await isServiceEnabled)) await requestService();
     }
 
@@ -109,6 +109,7 @@ class LocationService {
   ]) async* {
     if (enforce) {
       while (!(await hasPermission)) await requestPermissions();
+      while (!(await backgroundEnabled)) await requestBackgroundMode();
       while (!(await isServiceEnabled)) await requestService();
     }
 
