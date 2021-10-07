@@ -65,5 +65,5 @@ abstract class ServiceModules {
 @module
 abstract class GPSModules {
   @lazySingleton
-  LocationService get locationManager => LocationService();
+  LocationService get locationManager => LocationService()..changeSettings();
 }
