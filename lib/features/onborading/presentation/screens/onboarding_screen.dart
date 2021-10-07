@@ -168,15 +168,13 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                     VerticalSpace(height: 0.06.sw),
                     //
                     Flexible(
-                      child: AdaptiveButton(
+                      child: AppButton(
                         text: !c
                                 .watch<OnboardingCubit>()
                                 .isLast(left(widget.item!))
                             ? 'Next'
                             : 'Get Started',
                         fontSize: 18.sp,
-                        textColor: Colors.white,
-                        textColorDark: Colors.white,
                         fontWeight: FontWeight.w600,
                         onPressed: !c
                                 .watch<OnboardingCubit>()

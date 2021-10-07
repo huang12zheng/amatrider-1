@@ -33,18 +33,22 @@ class SenderCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AdaptiveText(
-                    'Sender',
-                    fontSize: 16.sp,
-                    textColor: Colors.grey.shade800,
-                    textColorDark: Colors.white24,
-                    fontWeight: FontWeight.w400,
+                  Flexible(
+                    child: AdaptiveText(
+                      'Sender',
+                      fontSize: 16.sp,
+                      textColor: Colors.grey.shade800,
+                      textColorDark: Colors.white24,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   //
-                  AdaptiveText(
-                    'Racheal Matasky',
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
+                  Flexible(
+                    child: AdaptiveText(
+                      'Racheal Matasky',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),

@@ -93,10 +93,8 @@ class _PanelBuilder extends StatelessWidget {
               //
               VerticalSpace(height: 0.02.sh),
               //
-              AdaptiveButton(
+              AppButton(
                 text: 'Confirm Pickup',
-                textColor: Colors.white,
-                splashColor: Colors.white24,
                 onPressed: () async => App.showAlertDialog(
                   context: context,
                   barrierColor: App.resolveColor(

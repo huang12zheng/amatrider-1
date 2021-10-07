@@ -88,6 +88,7 @@ class _RideAcceptedScreenState extends State<RideAcceptedScreen> {
             bottom: _fabHeight,
             child: FloatingActionButton(
               tooltip: 'Your Location',
+              heroTag: 'user-location-tag',
               elevation: 1.0,
               focusElevation: 1.8,
               highlightElevation: 1.8,
@@ -111,6 +112,7 @@ class _RideAcceptedScreenState extends State<RideAcceptedScreen> {
             bottom: _trafficHeight,
             child: FloatingActionButton(
               tooltip: 'Toggle Traffic',
+              heroTag: 'traffic-toggle-tag',
               elevation: 1.0,
               focusElevation: 1.8,
               highlightElevation: 1.8,
