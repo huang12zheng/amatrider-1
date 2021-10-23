@@ -374,69 +374,54 @@ class _$_UserLocation extends _UserLocation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserLocation &&
-            (identical(other.lat, lat) ||
-                const DeepCollectionEquality().equals(other.lat, lat)) &&
-            (identical(other.lng, lng) ||
-                const DeepCollectionEquality().equals(other.lng, lng)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UserLocation &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng) &&
             (identical(other.accuracy, accuracy) ||
-                const DeepCollectionEquality()
-                    .equals(other.accuracy, accuracy)) &&
+                other.accuracy == accuracy) &&
             (identical(other.altitude, altitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.altitude, altitude)) &&
-            (identical(other.speed, speed) ||
-                const DeepCollectionEquality().equals(other.speed, speed)) &&
+                other.altitude == altitude) &&
+            (identical(other.speed, speed) || other.speed == speed) &&
             (identical(other.speedAccuracy, speedAccuracy) ||
-                const DeepCollectionEquality()
-                    .equals(other.speedAccuracy, speedAccuracy)) &&
-            (identical(other.heading, heading) ||
-                const DeepCollectionEquality()
-                    .equals(other.heading, heading)) &&
-            (identical(other.time, time) ||
-                const DeepCollectionEquality().equals(other.time, time)) &&
+                other.speedAccuracy == speedAccuracy) &&
+            (identical(other.heading, heading) || other.heading == heading) &&
+            (identical(other.time, time) || other.time == time) &&
             (identical(other.elapsedRealtimeNanos, elapsedRealtimeNanos) ||
-                const DeepCollectionEquality().equals(
-                    other.elapsedRealtimeNanos, elapsedRealtimeNanos)) &&
+                other.elapsedRealtimeNanos == elapsedRealtimeNanos) &&
             (identical(other.elapsedRealtimeUncertaintyNanos,
                     elapsedRealtimeUncertaintyNanos) ||
-                const DeepCollectionEquality().equals(
-                    other.elapsedRealtimeUncertaintyNanos,
-                    elapsedRealtimeUncertaintyNanos)) &&
+                other.elapsedRealtimeUncertaintyNanos ==
+                    elapsedRealtimeUncertaintyNanos) &&
             (identical(other.headingAccuracy, headingAccuracy) ||
-                const DeepCollectionEquality()
-                    .equals(other.headingAccuracy, headingAccuracy)) &&
+                other.headingAccuracy == headingAccuracy) &&
             (identical(other.provider, provider) ||
-                const DeepCollectionEquality()
-                    .equals(other.provider, provider)) &&
+                other.provider == provider) &&
             (identical(other.satelliteNumber, satelliteNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.satelliteNumber, satelliteNumber)) &&
+                other.satelliteNumber == satelliteNumber) &&
             (identical(other.verticalAccuracy, verticalAccuracy) ||
-                const DeepCollectionEquality()
-                    .equals(other.verticalAccuracy, verticalAccuracy)) &&
-            (identical(other.isMock, isMock) ||
-                const DeepCollectionEquality().equals(other.isMock, isMock)));
+                other.verticalAccuracy == verticalAccuracy) &&
+            (identical(other.isMock, isMock) || other.isMock == isMock));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(lat) ^
-      const DeepCollectionEquality().hash(lng) ^
-      const DeepCollectionEquality().hash(accuracy) ^
-      const DeepCollectionEquality().hash(altitude) ^
-      const DeepCollectionEquality().hash(speed) ^
-      const DeepCollectionEquality().hash(speedAccuracy) ^
-      const DeepCollectionEquality().hash(heading) ^
-      const DeepCollectionEquality().hash(time) ^
-      const DeepCollectionEquality().hash(elapsedRealtimeNanos) ^
-      const DeepCollectionEquality().hash(elapsedRealtimeUncertaintyNanos) ^
-      const DeepCollectionEquality().hash(headingAccuracy) ^
-      const DeepCollectionEquality().hash(provider) ^
-      const DeepCollectionEquality().hash(satelliteNumber) ^
-      const DeepCollectionEquality().hash(verticalAccuracy) ^
-      const DeepCollectionEquality().hash(isMock);
+  int get hashCode => Object.hash(
+      runtimeType,
+      lat,
+      lng,
+      accuracy,
+      altitude,
+      speed,
+      speedAccuracy,
+      heading,
+      time,
+      elapsedRealtimeNanos,
+      elapsedRealtimeUncertaintyNanos,
+      headingAccuracy,
+      provider,
+      satelliteNumber,
+      verticalAccuracy,
+      isMock);
 
   @JsonKey(ignore: true)
   @override
@@ -464,36 +449,35 @@ abstract class _UserLocation extends UserLocation {
   const _UserLocation._() : super._();
 
   @override
-  BasicTextField<double?> get lat => throw _privateConstructorUsedError;
+  BasicTextField<double?> get lat;
   @override
-  BasicTextField<double?> get lng => throw _privateConstructorUsedError;
+  BasicTextField<double?> get lng;
   @override
-  double? get accuracy => throw _privateConstructorUsedError;
+  double? get accuracy;
   @override
-  double? get altitude => throw _privateConstructorUsedError;
+  double? get altitude;
   @override
-  double? get speed => throw _privateConstructorUsedError;
+  double? get speed;
   @override
-  double? get speedAccuracy => throw _privateConstructorUsedError;
+  double? get speedAccuracy;
   @override
-  double? get heading => throw _privateConstructorUsedError;
+  double? get heading;
   @override
-  double? get time => throw _privateConstructorUsedError;
+  double? get time;
   @override
-  double? get elapsedRealtimeNanos => throw _privateConstructorUsedError;
+  double? get elapsedRealtimeNanos;
   @override
-  double? get elapsedRealtimeUncertaintyNanos =>
-      throw _privateConstructorUsedError;
+  double? get elapsedRealtimeUncertaintyNanos;
   @override
-  double? get headingAccuracy => throw _privateConstructorUsedError;
+  double? get headingAccuracy;
   @override
-  String? get provider => throw _privateConstructorUsedError;
+  String? get provider;
   @override
-  int? get satelliteNumber => throw _privateConstructorUsedError;
+  int? get satelliteNumber;
   @override
-  double? get verticalAccuracy => throw _privateConstructorUsedError;
+  double? get verticalAccuracy;
   @override
-  bool? get isMock => throw _privateConstructorUsedError;
+  bool? get isMock;
   @override
   @JsonKey(ignore: true)
   _$UserLocationCopyWith<_UserLocation> get copyWith =>

@@ -149,22 +149,17 @@ class _$_OnboardingItem<Pixel> extends _OnboardingItem<Pixel> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OnboardingItem<Pixel> &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _OnboardingItem<Pixel> &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)));
+                other.description == description) &&
+            const DeepCollectionEquality().equals(other.image, image));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(image);
+  int get hashCode => Object.hash(runtimeType, title, description,
+      const DeepCollectionEquality().hash(image));
 
   @JsonKey(ignore: true)
   @override
@@ -181,11 +176,11 @@ abstract class _OnboardingItem<Pixel> extends OnboardingItem<Pixel> {
   const _OnboardingItem._() : super._();
 
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  Pixel get image => throw _privateConstructorUsedError;
+  Pixel get image;
   @override
   @JsonKey(ignore: true)
   _$OnboardingItemCopyWith<Pixel, _OnboardingItem<Pixel>> get copyWith =>

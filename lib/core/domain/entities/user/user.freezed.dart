@@ -312,52 +312,31 @@ class _$_User extends _User with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _User &&
-            (identical(other.uid, uid) ||
-                const DeepCollectionEquality().equals(other.uid, uid)) &&
+        (other.runtimeType == runtimeType &&
+            other is _User &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.firstName, firstName) ||
-                const DeepCollectionEquality()
-                    .equals(other.firstName, firstName)) &&
+                other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastName, lastName)) &&
+                other.lastName == lastName) &&
             (identical(other.fullName, fullName) ||
-                const DeepCollectionEquality()
-                    .equals(other.fullName, fullName)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.phone, phone) ||
-                const DeepCollectionEquality().equals(other.phone, phone)) &&
+                other.fullName == fullName) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
-            (identical(other.photo, photo) ||
-                const DeepCollectionEquality().equals(other.photo, photo)) &&
+                other.password == password) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
+                other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
+                other.updatedAt == updatedAt) &&
             (identical(other.deletedAt, deletedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.deletedAt, deletedAt)));
+                other.deletedAt == deletedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uid) ^
-      const DeepCollectionEquality().hash(firstName) ^
-      const DeepCollectionEquality().hash(lastName) ^
-      const DeepCollectionEquality().hash(fullName) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(phone) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(photo) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(deletedAt);
+  int get hashCode => Object.hash(runtimeType, uid, firstName, lastName,
+      fullName, email, phone, password, photo, createdAt, updatedAt, deletedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -381,27 +360,27 @@ abstract class _User extends User {
   const _User._() : super._();
 
   @override
-  UniqueId<String?> get uid => throw _privateConstructorUsedError;
+  UniqueId<String?> get uid;
   @override
-  DisplayName get firstName => throw _privateConstructorUsedError;
+  DisplayName get firstName;
   @override
-  DisplayName get lastName => throw _privateConstructorUsedError;
+  DisplayName get lastName;
   @override
-  DisplayName? get fullName => throw _privateConstructorUsedError;
+  DisplayName? get fullName;
   @override
-  EmailAddress get email => throw _privateConstructorUsedError;
+  EmailAddress get email;
   @override
-  Phone get phone => throw _privateConstructorUsedError;
+  Phone get phone;
   @override
-  Password get password => throw _privateConstructorUsedError;
+  Password get password;
   @override
-  PhotoField get photo => throw _privateConstructorUsedError;
+  PhotoField get photo;
   @override
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;

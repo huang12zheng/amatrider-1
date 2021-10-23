@@ -407,70 +407,54 @@ class _$_UserAddress extends _UserAddress {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserAddress &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UserAddress &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.latitude, latitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.latitude, latitude)) &&
+                other.latitude == latitude) &&
             (identical(other.longitude, longitude) ||
-                const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)) &&
-            (identical(other.zip, zip) ||
-                const DeepCollectionEquality().equals(other.zip, zip)) &&
-            (identical(other.country, country) ||
-                const DeepCollectionEquality()
-                    .equals(other.country, country)) &&
+                other.longitude == longitude) &&
+            (identical(other.zip, zip) || other.zip == zip) &&
+            (identical(other.country, country) || other.country == country) &&
             (identical(other.isPrimary, isPrimary) ||
-                const DeepCollectionEquality()
-                    .equals(other.isPrimary, isPrimary)) &&
-            (identical(other.alias, alias) ||
-                const DeepCollectionEquality().equals(other.alias, alias)) &&
+                other.isPrimary == isPrimary) &&
+            (identical(other.alias, alias) || other.alias == alias) &&
             (identical(other.additionalInfo, additionalInfo) ||
-                const DeepCollectionEquality()
-                    .equals(other.additionalInfo, additionalInfo)) &&
+                other.additionalInfo == additionalInfo) &&
             (identical(other.apartment, apartment) ||
-                const DeepCollectionEquality()
-                    .equals(other.apartment, apartment)) &&
-            (identical(other.street, street) ||
-                const DeepCollectionEquality().equals(other.street, street)) &&
-            (identical(other.city, city) ||
-                const DeepCollectionEquality().equals(other.city, city)) &&
+                other.apartment == apartment) &&
+            (identical(other.street, street) || other.street == street) &&
+            (identical(other.city, city) || other.city == city) &&
             (identical(other.landmark, landmark) ||
-                const DeepCollectionEquality()
-                    .equals(other.landmark, landmark)) &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)) &&
+                other.landmark == landmark) &&
+            (identical(other.state, state) || other.state == state) &&
             (identical(other.entrance, entrance) ||
-                const DeepCollectionEquality()
-                    .equals(other.entrance, entrance)) &&
+                other.entrance == entrance) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
+                other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                other.updatedAt == updatedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude) ^
-      const DeepCollectionEquality().hash(zip) ^
-      const DeepCollectionEquality().hash(country) ^
-      const DeepCollectionEquality().hash(isPrimary) ^
-      const DeepCollectionEquality().hash(alias) ^
-      const DeepCollectionEquality().hash(additionalInfo) ^
-      const DeepCollectionEquality().hash(apartment) ^
-      const DeepCollectionEquality().hash(street) ^
-      const DeepCollectionEquality().hash(city) ^
-      const DeepCollectionEquality().hash(landmark) ^
-      const DeepCollectionEquality().hash(state) ^
-      const DeepCollectionEquality().hash(entrance) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      latitude,
+      longitude,
+      zip,
+      country,
+      isPrimary,
+      alias,
+      additionalInfo,
+      apartment,
+      street,
+      city,
+      landmark,
+      state,
+      entrance,
+      createdAt,
+      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -499,38 +483,37 @@ abstract class _UserAddress extends UserAddress {
   const _UserAddress._() : super._();
 
   @override
-  UniqueId<String?> get id => throw _privateConstructorUsedError;
+  UniqueId<String?> get id;
   @override
-  BasicTextField<double?> get latitude => throw _privateConstructorUsedError;
+  BasicTextField<double?> get latitude;
   @override
-  BasicTextField<double?> get longitude => throw _privateConstructorUsedError;
+  BasicTextField<double?> get longitude;
   @override
-  BasicTextField<String?> get zip => throw _privateConstructorUsedError;
+  BasicTextField<String?> get zip;
   @override
-  Country? get country => throw _privateConstructorUsedError;
+  Country? get country;
   @override
-  bool get isPrimary => throw _privateConstructorUsedError;
+  bool get isPrimary;
   @override
-  BasicTextField<String?> get alias => throw _privateConstructorUsedError;
+  BasicTextField<String?> get alias;
   @override
-  BasicTextField<String?> get additionalInfo =>
-      throw _privateConstructorUsedError;
+  BasicTextField<String?> get additionalInfo;
   @override
-  BasicTextField<String?> get apartment => throw _privateConstructorUsedError;
+  BasicTextField<String?> get apartment;
   @override
-  BasicTextField<String?> get street => throw _privateConstructorUsedError;
+  BasicTextField<String?> get street;
   @override
-  BasicTextField<String?> get city => throw _privateConstructorUsedError;
+  BasicTextField<String?> get city;
   @override
-  BasicTextField<String?> get landmark => throw _privateConstructorUsedError;
+  BasicTextField<String?> get landmark;
   @override
-  BasicTextField<String?> get state => throw _privateConstructorUsedError;
+  BasicTextField<String?> get state;
   @override
-  BasicTextField<String?> get entrance => throw _privateConstructorUsedError;
+  BasicTextField<String?> get entrance;
   @override
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$UserAddressCopyWith<_UserAddress> get copyWith =>

@@ -19,7 +19,7 @@ class AnyResponse with _$AnyResponse {
 
   const AnyResponse._();
 
-  @Implements.fromString('Failure')
+  @With<Failure>()
   const factory AnyResponse.error({
     int? code,
     String? status,
@@ -47,7 +47,8 @@ class AnyResponse with _$AnyResponse {
   factory AnyResponse.fromJson(Map<String, dynamic> json) =>
       _$AnyResponseFromJson(json);
 
-  @With.fromString('Response, Success')
+  @With<Response>()
+  @With<Success>()
   const factory AnyResponse.success({
     @JsonKey(ignore: true) String? uuid,
     String? status,

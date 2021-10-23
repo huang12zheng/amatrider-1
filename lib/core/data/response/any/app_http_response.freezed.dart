@@ -31,7 +31,7 @@ class _$AppHttpResponseTearOff {
     );
   }
 
-  AppHttpResponse fromJson(Map<String, Object> json) {
+  AppHttpResponse fromJson(Map<String, Object?> json) {
     return AppHttpResponse.fromJson(json);
   }
 }
@@ -179,23 +179,18 @@ class _$_AppHttpResponse extends _AppHttpResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AppHttpResponse &&
+        (other.runtimeType == runtimeType &&
+            other is _AppHttpResponse &&
             (identical(other.response, response) ||
-                const DeepCollectionEquality()
-                    .equals(other.response, response)) &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)) &&
+                other.response == response) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.exception, exception) ||
-                const DeepCollectionEquality()
-                    .equals(other.exception, exception)));
+                other.exception == exception));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(response) ^
-      const DeepCollectionEquality().hash(data) ^
-      const DeepCollectionEquality().hash(exception);
+  int get hashCode => Object.hash(runtimeType, response,
+      const DeepCollectionEquality().hash(data), exception);
 
   @JsonKey(ignore: true)
   @override
@@ -219,13 +214,13 @@ abstract class _AppHttpResponse extends AppHttpResponse {
 
   @override
   @AnyResponseSerializer()
-  AnyResponse get response => throw _privateConstructorUsedError;
+  AnyResponse get response;
   @override
   @JsonKey(ignore: true)
-  dynamic get data => throw _privateConstructorUsedError;
+  dynamic get data;
   @override
   @JsonKey(ignore: true)
-  _d.DioError? get exception => throw _privateConstructorUsedError;
+  _d.DioError? get exception;
   @override
   @JsonKey(ignore: true)
   _$AppHttpResponseCopyWith<_AppHttpResponse> get copyWith =>

@@ -149,23 +149,17 @@ class _$_TabNavigationState implements _TabNavigationState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TabNavigationState &&
+        (other.runtimeType == runtimeType &&
+            other is _TabNavigationState &&
             (identical(other.currentIndex, currentIndex) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentIndex, currentIndex)) &&
+                other.currentIndex == currentIndex) &&
             (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
-            (identical(other.isInit, isInit) ||
-                const DeepCollectionEquality().equals(other.isInit, isInit)));
+                other.isLoading == isLoading) &&
+            (identical(other.isInit, isInit) || other.isInit == isInit));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(currentIndex) ^
-      const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(isInit);
+  int get hashCode => Object.hash(runtimeType, currentIndex, isLoading, isInit);
 
   @JsonKey(ignore: true)
   @override
@@ -178,11 +172,11 @@ abstract class _TabNavigationState implements TabNavigationState {
       {int currentIndex, bool isLoading, bool isInit}) = _$_TabNavigationState;
 
   @override
-  int get currentIndex => throw _privateConstructorUsedError;
+  int get currentIndex;
   @override
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading;
   @override
-  bool get isInit => throw _privateConstructorUsedError;
+  bool get isInit;
   @override
   @JsonKey(ignore: true)
   _$TabNavigationStateCopyWith<_TabNavigationState> get copyWith =>

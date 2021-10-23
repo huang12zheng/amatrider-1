@@ -72,7 +72,7 @@ class _$UserDTOTearOff {
     );
   }
 
-  UserDTO fromJson(Map<String, Object> json) {
+  UserDTO fromJson(Map<String, Object?> json) {
     return UserDTO.fromJson(json);
   }
 }
@@ -469,63 +469,50 @@ class _$_UserDTO extends _UserDTO {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UserDTO &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UserDTO &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.token, token) || other.token == token) &&
             (identical(other.firstName, firstName) ||
-                const DeepCollectionEquality()
-                    .equals(other.firstName, firstName)) &&
+                other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastName, lastName)) &&
+                other.lastName == lastName) &&
             (identical(other.fullName, fullName) ||
-                const DeepCollectionEquality()
-                    .equals(other.fullName, fullName)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.phone, phone) ||
-                const DeepCollectionEquality().equals(other.phone, phone)) &&
+                other.fullName == fullName) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
+                other.password == password) &&
             (identical(other.oldPassword, oldPassword) ||
-                const DeepCollectionEquality()
-                    .equals(other.oldPassword, oldPassword)) &&
+                other.oldPassword == oldPassword) &&
             (identical(other.confirmation, confirmation) ||
-                const DeepCollectionEquality()
-                    .equals(other.confirmation, confirmation)) &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)) &&
+                other.confirmation == confirmation) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
+                other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
+                other.updatedAt == updatedAt) &&
             (identical(other.deletedAt, deletedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.deletedAt, deletedAt)));
+                other.deletedAt == deletedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(token) ^
-      const DeepCollectionEquality().hash(firstName) ^
-      const DeepCollectionEquality().hash(lastName) ^
-      const DeepCollectionEquality().hash(fullName) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(phone) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(oldPassword) ^
-      const DeepCollectionEquality().hash(confirmation) ^
-      const DeepCollectionEquality().hash(image) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(deletedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      token,
+      firstName,
+      lastName,
+      fullName,
+      email,
+      phone,
+      password,
+      oldPassword,
+      confirmation,
+      image,
+      createdAt,
+      updatedAt,
+      deletedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -579,49 +566,49 @@ abstract class _UserDTO extends UserDTO {
   @override
   @primaryKey
   @JsonKey(includeIfNull: false)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @JsonKey(includeIfNull: false)
-  String? get token => throw _privateConstructorUsedError;
+  String? get token;
   @override
   @JsonKey(includeIfNull: false, name: 'first_name')
-  String? get firstName => throw _privateConstructorUsedError;
+  String? get firstName;
   @override
   @JsonKey(includeIfNull: false, name: 'last_name')
-  String? get lastName => throw _privateConstructorUsedError;
+  String? get lastName;
   @override
   @JsonKey(includeIfNull: false, name: 'full_name')
-  String? get fullName => throw _privateConstructorUsedError;
+  String? get fullName;
   @override
   @JsonKey(includeIfNull: false)
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
   @JsonKey(includeIfNull: false)
-  String? get phone => throw _privateConstructorUsedError;
+  String? get phone;
   @override
   @JsonKey(includeIfNull: false)
-  String? get password => throw _privateConstructorUsedError;
+  String? get password;
   @override
   @JsonKey(includeIfNull: false, name: 'current_password')
-  String? get oldPassword => throw _privateConstructorUsedError;
+  String? get oldPassword;
   @override
   @JsonKey(includeIfNull: false, name: 'password_confirmation')
-  String? get confirmation => throw _privateConstructorUsedError;
+  String? get confirmation;
   @override
   @JsonKey(includeIfNull: false, name: 'profile_image')
-  String? get image => throw _privateConstructorUsedError;
+  String? get image;
   @override
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
   @JsonKey(includeIfNull: false, name: 'updated_at')
   @TimestampConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @JsonKey(includeIfNull: false, name: 'deleted_at')
   @TimestampConverter()
-  DateTime? get deletedAt => throw _privateConstructorUsedError;
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$UserDTOCopyWith<_UserDTO> get copyWith =>

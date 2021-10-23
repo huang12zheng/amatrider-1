@@ -213,19 +213,14 @@ class _$_NoInternetConnectivity extends _NoInternetConnectivity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NoInternetConnectivity &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _NoInternetConnectivity &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(show);
+  int get hashCode => Object.hash(runtimeType, message, show);
 
   @JsonKey(ignore: true)
   @override
@@ -315,9 +310,9 @@ abstract class _NoInternetConnectivity extends NetworkFailure {
   const _NoInternetConnectivity._() : super._();
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$NoInternetConnectivityCopyWith<_NoInternetConnectivity> get copyWith =>
@@ -385,19 +380,14 @@ class _$_PoorInternetConnection extends _PoorInternetConnection {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PoorInternetConnection &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _PoorInternetConnection &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(show);
+  int get hashCode => Object.hash(runtimeType, message, show);
 
   @JsonKey(ignore: true)
   @override
@@ -487,9 +477,9 @@ abstract class _PoorInternetConnection extends NetworkFailure {
   const _PoorInternetConnection._() : super._();
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$PoorInternetConnectionCopyWith<_PoorInternetConnection> get copyWith =>
@@ -560,19 +550,14 @@ class _$_NetworkFailureReceiveTimeout extends _NetworkFailureReceiveTimeout {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NetworkFailureReceiveTimeout &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _NetworkFailureReceiveTimeout &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(show);
+  int get hashCode => Object.hash(runtimeType, message, show);
 
   @JsonKey(ignore: true)
   @override
@@ -662,9 +647,9 @@ abstract class _NetworkFailureReceiveTimeout extends NetworkFailure {
   const _NetworkFailureReceiveTimeout._() : super._();
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$NetworkFailureReceiveTimeoutCopyWith<_NetworkFailureReceiveTimeout>
@@ -732,19 +717,14 @@ class _$_NetworkFailureTimeout extends _NetworkFailureTimeout {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NetworkFailureTimeout &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _NetworkFailureTimeout &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(show);
+  int get hashCode => Object.hash(runtimeType, message, show);
 
   @JsonKey(ignore: true)
   @override
@@ -834,9 +814,9 @@ abstract class _NetworkFailureTimeout extends NetworkFailure {
   const _NetworkFailureTimeout._() : super._();
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$NetworkFailureTimeoutCopyWith<_NetworkFailureTimeout> get copyWith =>

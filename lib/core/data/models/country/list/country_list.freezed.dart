@@ -28,7 +28,7 @@ class _$CountryDTOListTearOff {
     );
   }
 
-  CountryDTOList fromJson(Map<String, Object> json) {
+  CountryDTOList fromJson(Map<String, Object?> json) {
     return CountryDTOList.fromJson(json);
   }
 }
@@ -132,14 +132,14 @@ class _$_CountryDTOList extends _CountryDTOList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CountryDTOList &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)));
+        (other.runtimeType == runtimeType &&
+            other is _CountryDTOList &&
+            const DeepCollectionEquality().equals(other.data, data));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(data);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
@@ -163,7 +163,7 @@ abstract class _CountryDTOList extends CountryDTOList {
 
   @override
   @JsonKey(includeIfNull: false)
-  List<CountryDTO> get data => throw _privateConstructorUsedError;
+  List<CountryDTO> get data;
   @override
   @JsonKey(ignore: true)
   _$CountryDTOListCopyWith<_CountryDTOList> get copyWith =>

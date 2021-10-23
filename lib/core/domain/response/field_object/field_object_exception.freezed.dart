@@ -127,14 +127,13 @@ class _$_FieldObjectException<T>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FieldObjectException<T> &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+        (other.runtimeType == runtimeType &&
+            other is _FieldObjectException<T> &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -148,7 +147,7 @@ abstract class _FieldObjectException<T> implements FieldObjectException<T> {
       _$_FieldObjectException<T>;
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
   @JsonKey(ignore: true)
   _$FieldObjectExceptionCopyWith<T, _FieldObjectException<T>> get copyWith =>

@@ -1,3 +1,7 @@
+// **************************************************************************
+// AutoRouteGenerator
+// **************************************************************************
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -117,26 +121,54 @@ class AppRouter extends _i6.RootStackRouter {
             path: 'bottom-navigation',
             fullMatch: true,
             children: [
-              _i6.RouteConfig(HomeRouter.name, path: 'home', children: [
-                _i6.RouteConfig(HomePage.name, path: ''),
-                _i6.RouteConfig('*#redirect',
-                    path: '*', redirectTo: '', fullMatch: true)
-              ]),
-              _i6.RouteConfig(HistoryRouter.name, path: 'history', children: [
-                _i6.RouteConfig(HistoryPage.name, path: ''),
-                _i6.RouteConfig('*#redirect',
-                    path: '*', redirectTo: '', fullMatch: true)
-              ]),
-              _i6.RouteConfig(InsightRouter.name, path: 'insights', children: [
-                _i6.RouteConfig(InsightsPage.name, path: ''),
-                _i6.RouteConfig('*#redirect',
-                    path: '*', redirectTo: '', fullMatch: true)
-              ]),
-              _i6.RouteConfig(ProfileRouter.name, path: 'account', children: [
-                _i6.RouteConfig(ProfilePage.name, path: ''),
-                _i6.RouteConfig('*#redirect',
-                    path: '*', redirectTo: '', fullMatch: true)
-              ])
+              _i6.RouteConfig(HomeRouter.name,
+                  path: 'home',
+                  parent: DashboardRoute.name,
+                  children: [
+                    _i6.RouteConfig(HomePage.name,
+                        path: '', parent: HomeRouter.name),
+                    _i6.RouteConfig('*#redirect',
+                        path: '*',
+                        parent: HomeRouter.name,
+                        redirectTo: '',
+                        fullMatch: true)
+                  ]),
+              _i6.RouteConfig(HistoryRouter.name,
+                  path: 'history',
+                  parent: DashboardRoute.name,
+                  children: [
+                    _i6.RouteConfig(HistoryPage.name,
+                        path: '', parent: HistoryRouter.name),
+                    _i6.RouteConfig('*#redirect',
+                        path: '*',
+                        parent: HistoryRouter.name,
+                        redirectTo: '',
+                        fullMatch: true)
+                  ]),
+              _i6.RouteConfig(InsightRouter.name,
+                  path: 'insights',
+                  parent: DashboardRoute.name,
+                  children: [
+                    _i6.RouteConfig(InsightsPage.name,
+                        path: '', parent: InsightRouter.name),
+                    _i6.RouteConfig('*#redirect',
+                        path: '*',
+                        parent: InsightRouter.name,
+                        redirectTo: '',
+                        fullMatch: true)
+                  ]),
+              _i6.RouteConfig(ProfileRouter.name,
+                  path: 'account',
+                  parent: DashboardRoute.name,
+                  children: [
+                    _i6.RouteConfig(ProfilePage.name,
+                        path: '', parent: ProfileRouter.name),
+                    _i6.RouteConfig('*#redirect',
+                        path: '*',
+                        parent: ProfileRouter.name,
+                        redirectTo: '',
+                        fullMatch: true)
+                  ])
             ]),
         _i6.RouteConfig(AccountVerificationRoute.name,
             path: 'account-verification-screen', fullMatch: true),

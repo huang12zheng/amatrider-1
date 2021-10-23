@@ -153,24 +153,19 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _GlobalPreferenceState &&
+        (other.runtimeType == runtimeType &&
+            other is _GlobalPreferenceState &&
             (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
+                other.isLoading == isLoading) &&
             (identical(other.isFirstLaunch, isFirstLaunch) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFirstLaunch, isFirstLaunch)) &&
+                other.isFirstLaunch == isFirstLaunch) &&
             (identical(other.signedInRecently, signedInRecently) ||
-                const DeepCollectionEquality()
-                    .equals(other.signedInRecently, signedInRecently)));
+                other.signedInRecently == signedInRecently));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(isFirstLaunch) ^
-      const DeepCollectionEquality().hash(signedInRecently);
+      Object.hash(runtimeType, isLoading, isFirstLaunch, signedInRecently);
 
   @JsonKey(ignore: true)
   @override
@@ -186,11 +181,11 @@ abstract class _GlobalPreferenceState implements GlobalPreferenceState {
       bool signedInRecently}) = _$_GlobalPreferenceState;
 
   @override
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading;
   @override
-  bool get isFirstLaunch => throw _privateConstructorUsedError;
+  bool get isFirstLaunch;
   @override
-  bool get signedInRecently => throw _privateConstructorUsedError;
+  bool get signedInRecently;
   @override
   @JsonKey(ignore: true)
   _$GlobalPreferenceStateCopyWith<_GlobalPreferenceState> get copyWith =>

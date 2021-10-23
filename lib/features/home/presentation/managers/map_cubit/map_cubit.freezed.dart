@@ -361,66 +361,49 @@ class _$_MapState implements _MapState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MapState &&
-            (identical(other.maxZoom, maxZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxZoom, maxZoom)) &&
-            (identical(other.minZoom, minZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.minZoom, minZoom)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MapState &&
+            (identical(other.maxZoom, maxZoom) || other.maxZoom == maxZoom) &&
+            (identical(other.minZoom, minZoom) || other.minZoom == minZoom) &&
             (identical(other.currentZoom, currentZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentZoom, currentZoom)) &&
-            (identical(other.mapType, mapType) ||
-                const DeepCollectionEquality()
-                    .equals(other.mapType, mapType)) &&
-            (identical(other.tilt, tilt) ||
-                const DeepCollectionEquality().equals(other.tilt, tilt)) &&
-            (identical(other.bearing, bearing) ||
-                const DeepCollectionEquality()
-                    .equals(other.bearing, bearing)) &&
+                other.currentZoom == currentZoom) &&
+            (identical(other.mapType, mapType) || other.mapType == mapType) &&
+            (identical(other.tilt, tilt) || other.tilt == tilt) &&
+            (identical(other.bearing, bearing) || other.bearing == bearing) &&
             (identical(other.cameraTarget, cameraTarget) ||
-                const DeepCollectionEquality()
-                    .equals(other.cameraTarget, cameraTarget)) &&
+                other.cameraTarget == cameraTarget) &&
             (identical(other.trafficEnabled, trafficEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.trafficEnabled, trafficEnabled)) &&
+                other.trafficEnabled == trafficEnabled) &&
             (identical(other.buildingsEnabled, buildingsEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.buildingsEnabled, buildingsEnabled)) &&
+                other.buildingsEnabled == buildingsEnabled) &&
             (identical(other.initialPosition, initialPosition) ||
-                const DeepCollectionEquality()
-                    .equals(other.initialPosition, initialPosition)) &&
+                other.initialPosition == initialPosition) &&
             (identical(other.mapController, mapController) ||
-                const DeepCollectionEquality()
-                    .equals(other.mapController, mapController)) &&
+                other.mapController == mapController) &&
             (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
+                other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
-                const DeepCollectionEquality()
-                    .equals(other.validate, validate)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+                other.validate == validate) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(maxZoom) ^
-      const DeepCollectionEquality().hash(minZoom) ^
-      const DeepCollectionEquality().hash(currentZoom) ^
-      const DeepCollectionEquality().hash(mapType) ^
-      const DeepCollectionEquality().hash(tilt) ^
-      const DeepCollectionEquality().hash(bearing) ^
-      const DeepCollectionEquality().hash(cameraTarget) ^
-      const DeepCollectionEquality().hash(trafficEnabled) ^
-      const DeepCollectionEquality().hash(buildingsEnabled) ^
-      const DeepCollectionEquality().hash(initialPosition) ^
-      const DeepCollectionEquality().hash(mapController) ^
-      const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(validate) ^
-      const DeepCollectionEquality().hash(status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      maxZoom,
+      minZoom,
+      currentZoom,
+      mapType,
+      tilt,
+      bearing,
+      cameraTarget,
+      trafficEnabled,
+      buildingsEnabled,
+      initialPosition,
+      mapController,
+      isLoading,
+      validate,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -446,33 +429,33 @@ abstract class _MapState implements MapState {
       Option<AppHttpResponse?> status}) = _$_MapState;
 
   @override
-  double get maxZoom => throw _privateConstructorUsedError;
+  double get maxZoom;
   @override
-  double get minZoom => throw _privateConstructorUsedError;
+  double get minZoom;
   @override
-  double get currentZoom => throw _privateConstructorUsedError;
+  double get currentZoom;
   @override
-  MapType get mapType => throw _privateConstructorUsedError;
+  MapType get mapType;
   @override
-  double get tilt => throw _privateConstructorUsedError;
+  double get tilt;
   @override
-  double get bearing => throw _privateConstructorUsedError;
+  double get bearing;
   @override
-  LatLng get cameraTarget => throw _privateConstructorUsedError;
+  LatLng get cameraTarget;
   @override
-  bool get trafficEnabled => throw _privateConstructorUsedError;
+  bool get trafficEnabled;
   @override
-  bool get buildingsEnabled => throw _privateConstructorUsedError;
+  bool get buildingsEnabled;
   @override
-  CameraPosition get initialPosition => throw _privateConstructorUsedError;
+  CameraPosition get initialPosition;
   @override
-  GoogleMapController? get mapController => throw _privateConstructorUsedError;
+  GoogleMapController? get mapController;
   @override //
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading;
   @override
-  bool get validate => throw _privateConstructorUsedError;
+  bool get validate;
   @override
-  Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
+  Option<AppHttpResponse?> get status;
   @override
   @JsonKey(ignore: true)
   _$MapStateCopyWith<_MapState> get copyWith =>
