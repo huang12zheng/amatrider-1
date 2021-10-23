@@ -113,7 +113,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   # Defines the annotations used by json_serializable
   # to create code for JSON serialization and deserialization.
-  json_annotation: ^4.1.0
+  json_annotation: ^4.3.0
   # retrofit.dart is a type conversion dio client generator
   # using source_gen and inspired by Chopper and Retrofit.
   retrofit: ^2.0.1
