@@ -8,8 +8,10 @@ class Headline extends StatelessWidget {
   final int? maxLines;
   final double? fontSize;
   final double minFontSize;
+  final double maxFontSize;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
+  final TextStyle? style;
   final Color? textColor;
   final Color? textColorLight;
   final Color? textColorDark;
@@ -21,8 +23,10 @@ class Headline extends StatelessWidget {
     this.maxLines,
     this.fontSize,
     this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
     this.textAlign,
     this.fontWeight,
+    this.style,
     this.textColor,
     this.textColorLight,
     this.textColorDark,
@@ -35,6 +39,7 @@ class Headline extends StatelessWidget {
       softWrap: true,
       maxLines: maxLines,
       minFontSize: minFontSize,
+      maxFontSize: maxFontSize,
       textAlign: textAlign,
       style: TextStyle(
         fontSize: fontSize ?? 20.sp,
@@ -54,7 +59,7 @@ class Headline extends StatelessWidget {
                 context,
               ),
             ),
-      ),
+      ).merge(style),
     );
   }
 }

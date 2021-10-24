@@ -81,7 +81,7 @@ class Palette {
       100: Color(0xFF6a6e73),
       200: Color(0xFF51565b),
       300: Color(0xFF393d44),
-      400: Color(0xFF20252c),
+      400: cardColorDark,
       500: Color(_secondaryPrivate),
       600: Color(0xFF060c13),
       700: Color(0xFF060a11),
@@ -151,6 +151,9 @@ class Palette {
   //   darkHighContrastColor: Color(0xff00695c), //teal800
   // );
 
+  static const Color cardColorLight = Colors.white;
+  static const Color cardColorDark = Color(0xff20252c);
+
   static const Color accentYellow = Color(0xFFF5CB4C);
   static const Color accentGreen = Color(0xFF33CC3C);
   static const Color accentBlue = Color(0xFF2FA9D0);
@@ -177,14 +180,17 @@ class Palette {
 
   static const Color neutralMoon = Color(0xFFFAFAFA);
   static const Color neutralF9 = Color(0xFFF9F9F9);
+  static const Color neutralFA = Color(0xFFFAFAFA);
   static const Color neutralF4 = Color(0xFFF4F4F4);
   static const Color neutralF5 = Color(0xFFF5F5F5);
   static const Color neutralC4 = Color(0xFFc4c4c4);
   static const Color neutralC7 = Color(0xFFC7C7C7);
+  static const Color neutralE2 = Color(0xFFE2E2E2);
   static const Color neutralLabel = Color(0xFF6E7191);
 
   static const Color flutterwave = Color(0xFFEBA12A);
   static const Color stripe2 = Color(0xFF2697D4);
+  static const Color paystack = Color(0xFF00C3F7);
   static const Color addressDefaultBlue = pastelBlue;
 
   // Dark Mode Colors
@@ -194,10 +200,12 @@ class Palette {
   static const Color inputTextDark = Color(0xFF212121);
   static const Color toggleDark = Color(0xFF393938);
   static const Color iconDark = Color(0xFFACACAC);
-  static const Color neutralMoonDark = Color(0xFFFAFAFA);
+  static const Color neutralMoonDark = neutralFA;
   static const Color neutralLabelDark = Color(0xFFACACAC);
 
+  static const Color accentDarkPurple = Color(0xFF3B003B);
   static const Color accentDarkYellow = Color(0xFFD8AA1C);
+  static const Color accentDarkYellow2 = Color(0xFFF5C739);
   static const Color accentDarkGreen = Color(0xFF237D28);
   static const Color accentDarkBlue = Color(0xFF3F7695);
 

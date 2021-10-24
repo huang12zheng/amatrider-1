@@ -117,18 +117,26 @@ class AdaptiveToolbar {
         )
       : null;
 
-  Widget get _cupertinoLeading => Tooltip(
-        message: tooltip ?? 'Close',
-        child: GestureDetector(
-          onTap: leadingAction ?? navigator.pop,
-          child: AutoSizeText(
-            cupertinoLeading,
-            style: cupertinoLeadingStyle ??
-                TextStyle(
-                  color: Utils.computeLuminance(
-                      Theme.of(App.context).scaffoldBackgroundColor),
+  Widget get _cupertinoLeading => Semantics.fromProperties(
+        properties: SemanticsProperties(
+          label: tooltip,
+          hint: tooltip,
+          button: true,
+        ),
+        child: Tooltip(
+          message: tooltip ?? 'Close',
+          child: leadingIcon ??
+              GestureDetector(
+                onTap: leadingAction ?? navigator.pop,
+                child: AutoSizeText(
+                  cupertinoLeading,
+                  style: cupertinoLeadingStyle ??
+                      TextStyle(
+                        color: Utils.computeLuminance(
+                            Theme.of(App.context).scaffoldBackgroundColor),
+                      ),
                 ),
-          ),
+              ),
         ),
       );
 

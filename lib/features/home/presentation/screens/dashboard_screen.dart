@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -89,36 +90,43 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
           });
 
           return BlocBuilder<TabNavigationCubit, TabNavigationState>(
-            builder: (c, s) => AdaptiveScaffold(
-              scaffoldKey: ref.watch(scaffoldController),
-              material: (_, __) => MaterialScaffoldData(
-                drawer: const SideDrawerWidget(),
-              ),
-              cupertinoTabBuilder: (_, i) => _tabs[i],
-              body: FadeTransition(opacity: animation, child: child),
-              adaptiveBottomNav: PlatformNavBar(
-                items: navItems(s),
-                currentIndex: s.currentIndex,
-                material: (_, __) => MaterialNavBarData(
-                  elevation: 0.0,
-                  type: BottomNavigationBarType.fixed,
-                  unselectedItemColor: Colors.grey,
-                  selectedItemColor: Utils.foldTheme(
-                    light: () => Palette.accentColor,
-                    dark: () => Palette.accentColor.shade100,
-                  ),
-                ),
-                cupertino: (_, __) => CupertinoTabBarData(
-                  iconSize: 20,
-                  inactiveColor: Colors.grey,
+            builder: (c, s) => InnerDrawer(
+              key: ref.watch(scaffoldController),
+              onTapClose: true,
+              swipe: true,
+              offset: const IDOffset.horizontal(0.5),
+              proportionalChildArea: true, // default true
+              borderRadius: 0,
+              leftAnimationType: InnerDrawerAnimation.static,
+              innerDrawerCallback: (a) => print('Side drawer is open ==> $a'),
+              leftChild: const SideDrawerWidget(),
+              scaffold: AdaptiveScaffold(
+                cupertinoTabBuilder: (_, i) => _tabs[i],
+                body: FadeTransition(opacity: animation, child: child),
+                adaptiveBottomNav: PlatformNavBar(
+                  items: navItems(s),
                   currentIndex: s.currentIndex,
-                  activeColor: Utils.foldTheme(
-                    light: () => Palette.accentColor,
-                    dark: () => Palette.accentColor.shade100,
+                  material: (_, __) => MaterialNavBarData(
+                    elevation: 0.0,
+                    type: BottomNavigationBarType.fixed,
+                    unselectedItemColor: Colors.grey,
+                    selectedItemColor: Utils.foldTheme(
+                      light: () => Palette.accentColor,
+                      dark: () => Palette.accentColor.shade100,
+                    ),
                   ),
+                  cupertino: (_, __) => CupertinoTabBarData(
+                    iconSize: 20,
+                    inactiveColor: Colors.grey,
+                    currentIndex: s.currentIndex,
+                    activeColor: Utils.foldTheme(
+                      light: () => Palette.accentColor,
+                      dark: () => Palette.accentColor.shade100,
+                    ),
+                  ),
+                  itemChanged: (i) =>
+                      c.read<TabNavigationCubit>().setCurrentIndex(c, i),
                 ),
-                itemChanged: (i) =>
-                    c.read<TabNavigationCubit>().setCurrentIndex(c, i),
               ),
             ),
           );

@@ -130,7 +130,7 @@ class Validator with _CreditCardValidator {
     return right(code);
   }
 
-  static Either<FieldObjectException<String>, DateTime?> isValidDate(
+  static Either<FieldObjectException<String>, DateTime?> validDOB(
     DateTime? date,
   ) {
     if (date == null) return left(FieldObjectException.empty());
@@ -151,13 +151,36 @@ class Validator with _CreditCardValidator {
     return right(date);
   }
 
+  static StringValidator<U?> amount<U>(U? input,
+      {num? check, bool min = true, String? msg}) {
+    if (check == null)
+      return left(FieldObjectException.invalid(
+          message: 'Invalid "check" ($check) passed to validator!'));
+
+    if (input == null) return left(FieldObjectException.empty());
+
+    if (input is num) {
+      if (min) {
+        if (input < check)
+          return left(FieldObjectException.exceedsLength(
+              message: msg ?? 'Amount cannot be less than $check'));
+      } else {
+        if (input > check)
+          return left(FieldObjectException.exceedsLength(
+              message: msg ?? 'Amount cannot be more than $check'));
+      }
+    }
+
+    return right(input);
+  }
+
   static StringValidator<U?> exactLength<U>(U? input,
       {int? length, bool enforce = false, String? msg}) {
     if (!enforce && length == null) return right(input);
 
     if (enforce && length == null)
       return left(FieldObjectException.invalid(
-        message: 'Invalid length (null) passed to validator!',
+        message: 'Invalid "length" ($length) passed to validator!',
       ));
 
     if (input == null) return left(FieldObjectException.empty());
@@ -173,12 +196,12 @@ class Validator with _CreditCardValidator {
   }
 
   static StringValidator<U?> minLength<U>(U? input,
-      [int? length, bool enforce = false]) {
+      {int? length, bool enforce = false, String? msg}) {
     if (!enforce && length == null) return right(input);
 
     if (enforce && length == null)
       return left(FieldObjectException.invalid(
-        message: 'Invalid length (null) passed to validator!',
+        message: 'Invalid "length" ($length) passed to validator!',
       ));
 
     if (input == null) return left(FieldObjectException.empty());
@@ -187,19 +210,19 @@ class Validator with _CreditCardValidator {
 
     if (clean.length < length!)
       return left(FieldObjectException.exceedsLength(
-        message: 'Value must be greater than $length',
+        message: msg ?? 'Value must be greater than $length',
       ));
 
     return right(input);
   }
 
   static StringValidator<U?> maxLength<U>(U? input,
-      [int? length, bool enforce = false]) {
+      {int? length, bool enforce = false, String? msg}) {
     if (!enforce && length == null) return right(input);
 
     if (enforce && length == null)
       return left(FieldObjectException.invalid(
-        message: 'Invalid length (null) passed to validator!',
+        message: 'Invalid "length" ($length) passed to validator!',
       ));
 
     if (input == null) return left(FieldObjectException.empty());
@@ -208,7 +231,7 @@ class Validator with _CreditCardValidator {
 
     if (clean.length > length!)
       return left(FieldObjectException.exceedsLength(
-        message: 'Value must be less than $length',
+        message: msg ?? 'Value must be less than $length',
       ));
 
     return right(input);

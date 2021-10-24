@@ -14,6 +14,8 @@ dependencies:
   # Contains utility classes in the style of
   # dart:async to work with asynchronous computations.
   async: any
+  # Flutter package for generating palette colors from a source image.
+  palette_generator: ^0.3.1
   # RxDart extends the capabilities of Dart Streams and StreamControllers.
   rxdart: ^0.27.2
   # A simple widget to add in the widget tree when you want to
@@ -37,6 +39,16 @@ dependencies:
   # google_sign_in: ^5.0.4
   # Customize App font
   google_fonts: ^2.1.0
+  ###### Google Maps & Location Services ######
+  #############################################
+  # This plugin for Flutter handles getting a location on Android and iOS.
+  # It also provides callbacks when the location is changed.
+  location: ^4.3.0
+  # A Flutter plugin that provides a Google Maps widget.
+  google_maps_flutter: ^2.0.11
+  # A flutter package to get polyline points by either
+  # passing the coordinates or google encoded polyline string
+  flutter_polyline_points: ^1.0.0
   # Flutter Plugin to login via Facebook.
   # Easily add Facebook login feature in your application. User profile information included.
   flutter_login_facebook: ^1.1.0
@@ -152,8 +164,16 @@ dependencies:
   cupertino_list_tile: ^0.2.0
   # Create awesome and powerful modal bottom sheets.
   modal_bottom_sheet: ^2.0.0
+  # Inner Drawer is an easy way to create an internal side section (left/right)
+  # where you can insert a list menu or other.
+  flutter_inner_drawer:
+    git:
+      url: git://github.com/bikcrum/flutter_inner_drawer.git
+      ref: bugfix/type-casting
   # A Flutter widget that can be expanded or collapsed by the user.
   expandable: ^5.0.1
+  # A draggable Flutter widget that makes implementing a SlidingUpPanel much easier!
+  sliding_up_panel: ^2.0.0+1
   # A Flutter implementation of slidable list item
   # with directional slide actions that can be dismissed.
   flutter_slidable: ^1.0.0-dev.9
@@ -167,18 +187,29 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   # A flag Flutter package for Android / iOS / Web.
   flag: ^5.0.1
+  # Lite version of smart_select package, zero dependencies,
+  # an easy way to provide a single or multiple choice chips.
+  chips_choice_null_safety: ^2.0.2
   # A powerful & easy to use timeline package for Flutter.
   # All UI components in this package are separate widgets.
   timelines: ^0.1.0
-  # A draggable Flutter widget that makes implementing a SlidingUpPanel much easier!
-  sliding_up_panel: ^2.0.0+1
-  ###### Google Maps & Location Services ######
-  #############################################
-  # This plugin for Flutter handles getting a location on Android and iOS.
-  # It also provides callbacks when the location is changed.
-  location: ^4.3.0
-  # A Flutter plugin that provides a Google Maps widget.
-  google_maps_flutter: ^2.0.11
+  # Masked text input for flutter.
+  flutter_masked_text2:
+    git:
+      url: git://github.com/Flutter-Fox/flutter_masked_text.git
+      ref: hotfix-0.9.1
+  # A Flutter plugin for making payments via Paystack Payment Gateway.
+  flutter_paystack: ^1.0.5+1
+  # Flutterwave official flutter library to accept payment via card, USSD, Mobile Money etc.
+  flutterwave_standard:
+    git:
+      url: git://github.com/f0rx/flutter_standard.git
+      ref: fix-exception
+  # Port of official Laravel Echo package for your Flutter apps.
+  laravel_echo: ^1.0.0-beta.1
+  # A Pusher Channels client plugin for Flutter targeting Android and iOS.
+  # It wraps pusher-websocket-java v2.2.5 and pusher-websocket-swift v8.0.0.
+  pusher_client: ^2.0.0
 
 dependency_overrides:
   provider: ^6.0.1

@@ -14,25 +14,28 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     extends StatelessWidget {
   late ReactiveState _state;
 
-  final String? prefix;
-  final Widget? prefixWidget;
   final bool Function(ReactiveState)? validate;
   final bool Function(ReactiveState)? disabled;
   final String? Function(ReactiveState)? initial;
   final FieldObject<String?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
   final int? Function(ReactiveState)? maxLength;
+  final bool? Function(ReactiveState)? readOnly;
   final Option<AppHttpResponse?> Function(ReactiveState)? response;
   final TextEditingController? Function(ReactiveState)? controller;
-  final FocusNode? focus;
-  final FocusNode? next;
-  final String? heroTag;
-  final EdgeInsets? padding;
-  final CupertinoFormType? cupertinoFormType;
-  final BorderRadius? borderRadius;
+  final List<String?>? Function(ErrorResponse)? errorField;
   final InputBorder? border;
+  final BorderRadius? borderRadius;
+  final CupertinoFormType? cupertinoFormType;
+  final EdgeInsets? cupertinoPadding;
   final InputBorder? errorBorder;
+  final FocusNode? focus;
   final InputBorder? focusedErrorBorder;
+  final String? heroTag;
+  final EdgeInsets? materialPadding;
+  final FocusNode? next;
+  final String? prefix;
+  final Widget? prefixWidget;
 
   PhoneFormField({
     Key? key,
@@ -43,14 +46,17 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.initial,
     this.field,
     this.onChanged,
+    this.readOnly,
     this.focus,
     this.next,
     this.response,
+    this.errorField,
     this.controller,
     this.heroTag,
     this.maxLength,
     this.cupertinoFormType,
-    this.padding,
+    this.materialPadding,
+    this.cupertinoPadding,
     this.borderRadius,
     this.border,
     this.errorBorder,
@@ -69,15 +75,14 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
 
         var _input = AdaptiveTextFormInput(
           cupertinoFormType: cupertinoFormType,
-          padding: padding,
-          prefix: App.platform.fold(
-            material: () => prefixWidget,
-            cupertino: () =>
-                prefix == null ? null : TextFormInputLabel(text: prefix!),
-          ),
+          cupertinoPadding: cupertinoPadding,
+          materialPadding: materialPadding,
+          prefixIcon: prefixWidget,
+          prefix: prefix == null ? null : TextFormInputLabel(text: prefix!),
           initial: initial?.call(s),
           disabled: disabled?.call(s) ?? false,
           validate: validate?.call(s) ?? false,
+          readOnly: readOnly?.call(s),
           controller: controller?.call(s),
           capitalization: TextCapitalization.none,
           keyboardType: TextInputType.phone,
@@ -102,7 +107,9 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
                 (_) => response?.call(s).fold(
                       () => null,
                       (http) => http?.response.maybeMap(
-                        error: (f) => f.errors?.phone?.firstOrNone,
+                        error: (f) =>
+                            f.errors?.phone?.firstOrNone ??
+                            errorField?.call(f)?.firstOrNone,
                         orElse: () => null,
                       ),
                     ),

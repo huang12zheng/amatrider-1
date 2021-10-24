@@ -11,6 +11,7 @@ class TextFormInputLabel extends StatelessWidget {
   final double? letterSpacing;
   final TextDecoration? decoration;
   final Color? textColor;
+  final Color? textColorDark;
   final int? maxLines;
   final TextAlign? textAlign;
   final VoidCallback? onPressed;
@@ -24,6 +25,7 @@ class TextFormInputLabel extends StatelessWidget {
     this.letterSpacing,
     this.decoration,
     this.textColor,
+    this.textColorDark,
     this.maxLines,
     this.textAlign,
     this.onPressed,
@@ -31,22 +33,24 @@ class TextFormInputLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: AdaptiveText(
-          text,
-          style: style ??
-              TextStyle(
-                color: textColor,
-                decoration: decoration,
-                fontSize: fontSize ?? 15.5.sp,
-                fontWeight: fontWeight ?? FontWeight.w500,
-                letterSpacing: letterSpacing ?? Utils.labelLetterSpacing,
-              ),
-          maxLines: maxLines,
-          textAlign: textAlign,
+    return Material(
+      type: MaterialType.transparency,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          child: AdaptiveText(
+            text,
+            textColor: textColor,
+            textColorDark: textColorDark,
+            decoration: decoration,
+            fontSize: fontSize ?? 15.5.sp,
+            fontWeight: fontWeight ?? FontWeight.w500,
+            letterSpacing: letterSpacing ?? Utils.labelLetterSpacing,
+            style: style,
+            maxLines: maxLines,
+            textAlign: textAlign,
+          ),
         ),
       ),
     );

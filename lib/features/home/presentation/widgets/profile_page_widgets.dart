@@ -207,15 +207,15 @@ class _GuestCard extends StatelessWidget {
                     flex: 2,
                     child: AdaptiveButton(
                       text: 'Login',
-                      height: 18.0,
-                      cupertinoHeight: 0.093.sw,
+                      height: 0.08.sw,
+                      cupertinoHeight: 0.08.sw,
                       width: 0.22.sw,
-                      fontSize: 30.0.sp,
+                      fontSize: 15.0.sp,
+                      maxFontSize: 16,
                       textColor: App.resolveColor(Colors.white),
-                      padding: App.platform.fold(
-                        material: () => null,
-                        cupertino: () => const EdgeInsets.only(right: 10.0),
-                      ),
+                      padding: EdgeInsets.symmetric(
+                              vertical: 0.015.sw, horizontal: 0.015.sw)
+                          .copyWith(right: 15),
                       trailing: Padding(
                         padding: EdgeInsets.only(left: 0.02.sw),
                         child: Icon(

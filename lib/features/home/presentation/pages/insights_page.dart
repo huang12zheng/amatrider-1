@@ -261,7 +261,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                               flex: 5,
                               child: AppOutlinedButton(
                                 text: 'Claim Bonus',
-                                height: 0.028.sh,
+                                height: 0.09.sw,
                                 cupertinoHeight: 0.028.sh,
                                 width: 0.3.sw,
                                 cupertinoWidth: 0.3.sw,
@@ -322,7 +322,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 text: 'Deposit Cash',
                                 textColor: Colors.white,
                                 splashColor: Colors.white24,
-                                height: 0.028.sh,
+                                height: 0.09.sw,
                                 cupertinoHeight: 0.028.sh,
                                 width: 0.3.sw,
                                 cupertinoWidth: 0.3.sw,

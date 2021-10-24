@@ -10,8 +10,10 @@ class EmailAddress extends FieldObject<String?> {
   @override
   final Either<FieldObjectException<String>, String?> value;
 
-  factory EmailAddress(String? email) {
-    return EmailAddress._(Validator.emailValidator(email));
+  factory EmailAddress(String? email, {bool validate = true}) {
+    return EmailAddress._(
+      !validate ? right(email) : Validator.emailValidator(email),
+    );
   }
 
   const EmailAddress._(this.value);

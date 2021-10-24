@@ -19,6 +19,5 @@ export 'extensions/flutter_extensions.dart';
 export 'helper_utils.dart';
 export 'amat_now_icons.dart';
 export 'smartlets_icons.dart';
-export 'dialogs/bottom_alert_dialog.dart';
 export 'endpoints.dart';
 export 'input_formatters/masked_input_formatter.dart';

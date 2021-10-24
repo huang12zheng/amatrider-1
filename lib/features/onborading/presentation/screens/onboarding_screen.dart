@@ -1,4 +1,4 @@
-import 'package:amatrider/core/presentation/widgets/adaptive_alertdialog.dart';
+import 'package:amatrider/widgets/adaptive/adaptive_alertdialog.dart';
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';

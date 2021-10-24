@@ -18,7 +18,7 @@ class TimelineStatusWidget extends StatelessWidget {
   const TimelineStatusWidget({
     Key? key,
     this.itemHeight,
-    this.padding,
+    this.padding = EdgeInsets.zero,
     this.connectorColor = Palette.accentColor,
     this.builder,
     this.statuses = const [],
@@ -42,17 +42,17 @@ class TimelineStatusWidget extends StatelessWidget {
           child: statuses[i].asset?.let((it) => SvgPicture.asset(it,
                   fit: BoxFit.contain, color: statuses[i].assetColor)) ??
               statuses[i].icon ??
-              AppAssets.timelinePin,
+              AppAssets.timelinePin(),
         ),
         connectorBuilder: (_, __, type) => DashedLineConnector(
           indent: type == ConnectorType.start ? 0 : 2.0,
           endIndent: type == ConnectorType.end ? 0 : 2.0,
-          color: connectorColor ?? const Color(0xffE69F96),
+          color: connectorColor ?? Palette.accent20,
           thickness: 0.8,
         ),
         contentsBuilder: (_, i) =>
             builder?.call(context, statuses[i]) ?? _ContentBuilder(statuses[i]),
-        itemExtentBuilder: itemHeight ?? (_, __) => 0.065.sh,
+        itemExtentBuilder: itemHeight ?? (_, __) => 0.13.sw,
         itemCount: statuses.length,
       ),
     );
@@ -75,22 +75,32 @@ class _ContentBuilder extends StatelessWidget {
         margin: EdgeInsets.only(left: 0.05.sw),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            status.title?.let((it) => AdaptiveText('$it',
-                    minFontSize: 14,
-                    overflow: TextOverflow.ellipsis,
-                    style: DefaultTextStyle.of(context)
-                        .style
-                        .copyWith(color: Palette.neutralLabel))) ??
+            status.title?.let((it) => Align(
+                      alignment: Alignment.centerLeft,
+                      child: AdaptiveText('$it',
+                          minFontSize: 14,
+                          maxFontSize: 16,
+                          // maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: DefaultTextStyle.of(context)
+                              .style
+                              .copyWith(color: Palette.neutralLabel)),
+                    )) ??
                 Utils.nothing,
             //
-            status.subtitle?.let((it) => AdaptiveText(
-                      '$it',
-                      minFontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                      style: DefaultTextStyle.of(context).style.copyWith(
-                          fontWeight: FontWeight.w400, fontSize: 16.5.sp),
+            status.subtitle?.let((it) => Align(
+                      alignment: Alignment.centerLeft,
+                      child: AdaptiveText(
+                        '$it',
+                        minFontSize: 14,
+                        maxFontSize: 16,
+                        // maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: DefaultTextStyle.of(context).style.copyWith(
+                            fontWeight: FontWeight.w400, fontSize: 16.5.sp),
+                      ),
                     )) ??
                 Utils.nothing,
           ],

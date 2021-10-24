@@ -124,7 +124,7 @@ class _$PopupDialog {
     PopupDialogDismissDirection? dismissDirection,
     this.colorScheme = ConfirmationDialogColor.kdefault,
   })  : _type = type,
-        duration = duration ?? const Duration(seconds: 12),
+        duration = duration ?? const Duration(seconds: 2, milliseconds: 500),
         margin = margin ?? const EdgeInsets.all(8.0),
         padding = padding ?? const EdgeInsets.all(16.0),
         borderRadius =

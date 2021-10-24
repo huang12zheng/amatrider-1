@@ -44,111 +44,100 @@ class _RideAcceptedScreenState extends State<RideAcceptedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveScaffold(
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          SlidingUpPanel(
-            controller: panelController,
-            maxHeight: RideAcceptedScreen._panelHeightOpened,
-            minHeight: RideAcceptedScreen._panelHeightClosed,
-            backdropEnabled: true,
-            backdropTapClosesPanel: true,
-            backdropColor: App.resolveColor(Colors.transparent)!,
-            backdropOpacity: 0.0,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            parallaxEnabled: true,
-            parallaxOffset: 0.5,
-            defaultPanelState: PanelState.OPEN,
-            body: const MapWidget(),
-            panelBuilder: (controller) => _PanelBuilder(
-              controller,
-              panelController: panelController,
-            ),
-            onPanelSlide: (position) {
-              final panelMaxScrollExtent =
-                  RideAcceptedScreen._panelHeightOpened -
-                      RideAcceptedScreen._panelHeightClosed;
-
-              final newFabHeight = (position * panelMaxScrollExtent) +
-                  RideAcceptedScreen._fabHeightClosed;
-
-              final newTrafficHeight = (position * panelMaxScrollExtent) +
-                  RideAcceptedScreen._trafficHeightClosed;
-
-              setState(() {
-                _fabHeight = newFabHeight;
-                _trafficHeight = newTrafficHeight;
-              });
-            },
-          ),
-          //
-          Positioned(
-            right: 0.04.sw,
-            bottom: _fabHeight,
-            child: FloatingActionButton(
-              tooltip: 'Your Location',
-              heroTag: 'user-location-tag',
-              elevation: 1.0,
-              focusElevation: 1.8,
-              highlightElevation: 1.8,
-              backgroundColor: App.resolveColor(
-                Palette.neutralF9,
-                dark: Palette.secondaryColor,
-              )!,
-              onPressed: context.read<MapCubit>().getCurrentLocation,
-              child: Icon(
-                Theme.of(context).platform.fold(
-                    material: () => Icons.gps_fixed_rounded,
-                    cupertino: () => CupertinoIcons.location_fill),
-                color: Palette.accentColor,
-                size: 27,
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: AdaptiveScaffold(
+        body: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            SlidingUpPanel(
+              controller: panelController,
+              maxHeight: RideAcceptedScreen._panelHeightOpened,
+              minHeight: RideAcceptedScreen._panelHeightClosed,
+              backdropEnabled: true,
+              backdropTapClosesPanel: true,
+              backdropColor: App.resolveColor(Colors.transparent)!,
+              backdropOpacity: 0.0,
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(24)),
+              parallaxEnabled: true,
+              parallaxOffset: 0.5,
+              defaultPanelState: PanelState.OPEN,
+              body: const MapWidget(),
+              panelBuilder: (controller) => _PanelBuilder(
+                controller,
+                panelController: panelController,
               ),
+              onPanelSlide: (position) {
+                final panelMaxScrollExtent =
+                    RideAcceptedScreen._panelHeightOpened -
+                        RideAcceptedScreen._panelHeightClosed;
+
+                final newFabHeight = (position * panelMaxScrollExtent) +
+                    RideAcceptedScreen._fabHeightClosed;
+
+                final newTrafficHeight = (position * panelMaxScrollExtent) +
+                    RideAcceptedScreen._trafficHeightClosed;
+
+                setState(() {
+                  _fabHeight = newFabHeight;
+                  _trafficHeight = newTrafficHeight;
+                });
+              },
             ),
-          ),
-          //
-          Positioned(
-            right: 0.04.sw,
-            bottom: _trafficHeight,
-            child: FloatingActionButton(
-              tooltip: 'Toggle Traffic',
-              heroTag: 'traffic-toggle-tag',
-              elevation: 1.0,
-              focusElevation: 1.8,
-              highlightElevation: 1.8,
-              backgroundColor: App.resolveColor(
-                Palette.neutralF9,
-                dark: Palette.secondaryColor,
-              )!,
-              onPressed: context.read<MapCubit>().toogleTraffic,
-              child: BlocBuilder<MapCubit, MapState>(
-                buildWhen: (p, c) => p.trafficEnabled != c.trafficEnabled,
-                builder: (c, s) => Icon(
-                  Icons.traffic_outlined,
-                  color: s.trafficEnabled ? Palette.accentGreen : Colors.grey,
+            //
+            Positioned(
+              right: 0.04.sw,
+              bottom: _fabHeight,
+              child: FloatingActionButton(
+                tooltip: 'Your Location',
+                heroTag: 'user-location-tag',
+                elevation: 1.0,
+                focusElevation: 1.8,
+                highlightElevation: 1.8,
+                backgroundColor: App.resolveColor(
+                  Palette.neutralF9,
+                  dark: Palette.secondaryColor,
+                )!,
+                onPressed: context.read<MapCubit>().getCurrentLocation,
+                child: Icon(
+                  Theme.of(context).platform.fold(
+                      material: () => Icons.gps_fixed_rounded,
+                      cupertino: () => CupertinoIcons.location_fill),
+                  color: Palette.accentColor,
                   size: 27,
                 ),
               ),
             ),
-          ),
-          // Positioned(
-          //   top: 0.02.sw,
-          //   left: 0.02.sw,
-          //   child: SafeArea(
-          //     child: FloatingActionButton(
-          //       backgroundColor: App.resolveColor(
-          //         Palette.neutralF9,
-          //         dark: Palette.secondaryColor,
-          //       )!,
-          //       onPressed: navigator.pop,
-          //       child: Icon(
-          //         Icons.keyboard_backspace_rounded,
-          //         color: App.resolveColor(Colors.black87, dark: Colors.white),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
+            //
+            Positioned(
+              right: 0.04.sw,
+              bottom: _trafficHeight,
+              child: FloatingActionButton(
+                tooltip: 'Toggle Traffic',
+                heroTag: 'traffic-toggle-tag',
+                elevation: 1.0,
+                focusElevation: 1.8,
+                highlightElevation: 1.8,
+                backgroundColor: App.resolveColor(
+                  Palette.neutralF9,
+                  dark: Palette.secondaryColor,
+                )!,
+                onPressed: context.read<MapCubit>().toogleTraffic,
+                child: BlocBuilder<MapCubit, MapState>(
+                  buildWhen: (p, c) => p.trafficEnabled != c.trafficEnabled,
+                  builder: (c, s) => Icon(
+                    Icons.traffic_outlined,
+                    color: s.trafficEnabled ? Palette.accentGreen : Colors.grey,
+                    size: 27,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

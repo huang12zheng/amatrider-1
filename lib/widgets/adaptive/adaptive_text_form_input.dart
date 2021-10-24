@@ -46,7 +46,8 @@ class AdaptiveTextFormInput extends StatefulWidget {
   final int? minLines;
   final FocusNode? next;
   final bool obscureText;
-  final EdgeInsets? padding;
+  final EdgeInsets? cupertinoPadding;
+  final EdgeInsets? materialPadding;
   final Widget? prefix;
   final Widget? prefixIcon;
   //
@@ -114,7 +115,8 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.label,
     this.border,
     this.focusBorder,
-    this.padding,
+    this.cupertinoPadding,
+    this.materialPadding,
     this.cupertinoInputMargin = 8.0,
     CupertinoFormType? cupertinoFormType,
     this.onTap,
@@ -175,7 +177,8 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.label,
     this.border,
     this.focusBorder,
-    this.padding,
+    this.cupertinoPadding,
+    this.materialPadding,
     this.cupertinoInputMargin = 8.0,
     CupertinoFormType? cupertinoFormType,
     this.onTap,
@@ -195,18 +198,18 @@ class AdaptiveTextFormInput extends StatefulWidget {
 
 class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
     with AutomaticKeepAliveClientMixin<AdaptiveTextFormInput> {
-  late TextEditingController textEditingController;
+  late TextEditingController _textEditingController;
   bool didUpdateInitial = false;
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    _textEditingController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    textEditingController =
+    _textEditingController =
         widget.controller ?? TextEditingController(text: widget.initial);
 
     super.initState();
@@ -215,10 +218,10 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
   @override
   void didUpdateWidget(covariant AdaptiveTextFormInput oldWidget) {
     if (widget.controller == null) if (widget.initial !=
-            textEditingController.text &&
+            _textEditingController.text &&
         !didUpdateInitial)
       setState(() {
-        textEditingController = TextEditingController(text: widget.initial);
+        _textEditingController = TextEditingController(text: widget.initial);
         didUpdateInitial = true;
       });
     super.didUpdateWidget(oldWidget);
@@ -227,9 +230,17 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
   @override
   bool get wantKeepAlive => true;
 
+  Iterable<String>? get _autoFillHints {
+    if (widget.disabled) return null;
+    if (widget.readOnly != null && widget.readOnly!) return null;
+    return widget.autoFillHints;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    // log.wtf('New Phone number ===> ${widget.controller?.text}');
 
     return PlatformBuilder(
       cupertino: (c) => widget._formType!.fold(
@@ -244,7 +255,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
           padding: widget.prefix == null
               ? EdgeInsets.zero
               : const EdgeInsets.symmetric(vertical: 9.5, horizontal: 12.0)
-                  .merge(widget.padding),
+                  .merge(widget.cupertinoPadding),
           child: _cupertinoTextField(c),
         ),
         row: CupertinoFormRow(
@@ -256,7 +267,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
               : nil,
           padding: widget.prefix == null
               ? EdgeInsets.zero
-              : widget.padding ??
+              : widget.cupertinoPadding ??
                   const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
           child: _cupertinoTextFormField(c),
         ),
@@ -275,7 +286,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
         obscureText: widget.obscureText,
         autofocus: widget.autoFocus,
         autocorrect: widget.autoCorrect,
-        autofillHints: !widget.disabled ? widget.autoFillHints : null,
+        autofillHints: _autoFillHints,
         showCursor: widget.showCursor,
         keyboardType: widget.keyboardType,
         textCapitalization: widget.capitalization,
@@ -284,12 +295,12 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
             : widget.action ?? TextInputAction.next,
         cursorColor: widget.cursorColor ??
             CupertinoColors.systemGrey.resolveFrom(context),
-        controller: textEditingController,
+        controller: _textEditingController,
         enableInteractiveSelection: widget.enableInteractiveSelection,
         focusNode: widget.focus,
         readOnly: widget.readOnly ?? widget.disabled,
         enabled: !widget.disabled,
-        padding: widget.padding ??
+        padding: widget.cupertinoPadding ??
             const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
         inputFormatters: [
           if (widget.maxLength != null)
@@ -331,7 +342,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
         obscureText: widget.obscureText,
         autofocus: widget.autoFocus,
         autocorrect: widget.autoCorrect,
-        autofillHints: !widget.disabled ? widget.autoFillHints : null,
+        autofillHints: _autoFillHints,
         showCursor: widget.showCursor,
         keyboardType: widget.keyboardType,
         textCapitalization: widget.capitalization,
@@ -340,7 +351,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
             : widget.action ?? TextInputAction.next,
         cursorColor: widget.cursorColor ??
             CupertinoColors.systemGrey.resolveFrom(context),
-        controller: textEditingController,
+        controller: _textEditingController,
         enableInteractiveSelection: widget.enableInteractiveSelection,
         focusNode: widget.focus,
         readOnly: widget.readOnly ?? widget.disabled,
@@ -351,7 +362,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
         suffix: widget.suffix,
         suffixMode: widget._suffixMode,
         onTap: widget.onTap,
-        padding: widget.padding ??
+        padding: widget.cupertinoPadding ??
             const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
         inputFormatters: [
           if (widget.maxLength != null)
@@ -378,10 +389,8 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
       );
 
   Widget _materialTextFormField(BuildContext c) => Material(
-        color: Colors.transparent,
+        type: MaterialType.transparency,
         elevation: 0,
-        // borderRadius: widget.borderRadius ??
-        //     const BorderRadius.all(Radius.circular(Utils.inputBorderRadius)),
         child: Center(
           child: TextFormField(
             maxLines: widget.minLines == null ? widget.maxLines : null,
@@ -394,7 +403,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
             obscureText: widget.obscureText,
             autocorrect: widget.autoCorrect,
             autofocus: widget.autoFocus,
-            controller: textEditingController,
+            controller: _textEditingController,
             showCursor: widget.showCursor,
             cursorColor: widget.cursorColor ??
                 Utils.foldTheme(
@@ -419,13 +428,13 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput>
               focusedErrorBorder: widget.focusedErrorBorder,
               errorBorder: widget.errorBorder,
               filled: widget.filled,
-              contentPadding: widget.padding,
+              contentPadding: widget.materialPadding,
               focusedBorder: widget.focusBorder ?? widget.border,
-              prefixIcon: widget.prefix,
+              prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffix,
               enabled: !widget.disabled,
             ).merge(widget.decoration),
-            autofillHints: !widget.disabled ? widget.autoFillHints : null,
+            autofillHints: _autoFillHints,
             inputFormatters: [
               if (widget.maxLength != null)
                 LengthLimitingTextInputFormatter(widget.maxLength),

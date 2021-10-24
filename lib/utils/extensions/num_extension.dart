@@ -7,4 +7,6 @@ extension NumX<T extends num> on T {
   }
 
   bool isBtw(num from, num to) => from < this && to > this;
+
+  bool get isInteger => this is int || this == roundToDouble();
 }

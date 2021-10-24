@@ -2,7 +2,6 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 /// A stateless widget to render AdaptiveAlertdialog.
@@ -96,7 +95,7 @@ class AdaptiveAlertdialog extends StatelessWidget {
             vertical: 0.04.sw,
           ).copyWith(top: title != null ? 0.0 : null),
           titleTextStyle: DefaultTextStyle.of(context).style.merge(
-              TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600)
+              TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)
                   .merge(titleTextStyle)),
         ),
         cupertino: (_, __) => CupertinoAlertDialogData(
@@ -134,7 +133,7 @@ class AdaptiveAlertdialog extends StatelessWidget {
                 style: Theme.of(context).platform.fold(
                     material: () => null,
                     cupertino: () => DefaultTextStyle.of(context).style.merge(
-                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600)
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)
                             .merge(titleTextStyle))),
               ),
             ),
@@ -163,10 +162,9 @@ class AdaptiveAlertdialog extends StatelessWidget {
                             textAlign: centerContent
                                 ? TextAlign.center
                                 : TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w400,
-                            ).merge(contentTextStyle),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            style: contentTextStyle,
                           ),
                           cupertino: Text(
                             '$content',
@@ -175,7 +173,7 @@ class AdaptiveAlertdialog extends StatelessWidget {
                                 ? TextAlign.center
                                 : TextAlign.start,
                             style: TextStyle(
-                              fontSize: 17.sp,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w400,
                             ).merge(contentTextStyle),
                           ),
@@ -197,7 +195,7 @@ class AdaptiveAlertdialog extends StatelessWidget {
                           _firstButton(buttonDirection),
                           //
                           firstButtonText?.let(
-                                  (it) => VerticalSpace(height: 0.02.sw)) ??
+                                  (it) => VerticalSpace(height: 0.05.sw)) ??
                               Utils.nothing,
                           //
                           _secondButton(buttonDirection),
@@ -229,10 +227,10 @@ class AdaptiveAlertdialog extends StatelessWidget {
       firstButtonText?.let(
         (it) => AdaptiveButton(
           text: firstButtonText,
-          height: 0.028.sh,
+          height: 0.09.sw,
           cupertinoHeight: 0.028.sh,
+          fontSize: 15.sp,
           textColor: Colors.white,
-          fontSize: 19.sp,
           padding: App.platform.cupertino(EdgeInsets.zero),
           textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing)
               .merge(firstTextStyle),
@@ -259,8 +257,9 @@ class AdaptiveAlertdialog extends StatelessWidget {
           navigator.pop();
         },
         text: secondButtonText,
-        height: 0.028.sh,
+        height: 0.09.sw,
         cupertinoHeight: 0.028.sh,
+        fontSize: 15.sp,
         textColor: App.resolveColor(Palette.accentColor),
         textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing)
             .merge(secondTextStyle),

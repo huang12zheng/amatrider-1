@@ -146,8 +146,9 @@ class HomePage extends StatelessWidget with AutoRouteWrapper {
                               navigator.popAndPush(RideAcceptedRoute()),
                           materialFirstButton: AppOutlinedButton(
                             text: 'No, Go Back',
-                            height: 0.028.sh,
+                            height: 0.09.sw,
                             cupertinoHeight: 0.028.sh,
+                            fontSize: 15.sp,
                             width: 0.3.sw,
                             cupertinoWidth: 0.3.sw,
                             onPressed: navigator.pop,

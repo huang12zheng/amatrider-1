@@ -2,6 +2,8 @@ mixin EndPoints {
   static const String APP_DOMAIN = 'api.manuelsnr.design';
   static const String API_ENDPOINT = '/api/v1';
   static const String BASE_URL = 'https://$APP_DOMAIN$API_ENDPOINT';
+  static const String PUSHER_AUTH_URL =
+      'https://api.manuelsnr.design/broadcasting/auth';
   static const String SLEEP = '/sleep';
 
   //.....///.....// AUTHENTICATION ENDPOINTS ....////././//...//

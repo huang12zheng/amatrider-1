@@ -82,29 +82,35 @@ class AppIconButton extends StatelessWidget {
     return Tooltip(
       message: tooltip,
       child: PlatformBuilder(
-        cupertino: (_) => buttonType.fold(
-          elevated: () => CupertinoButton.filled(
-            key: key,
-            alignment: alignment,
-            borderRadius: borderRadius,
-            pressedOpacity: pressedOpacity,
-            minSize: minSize,
-            disabledColor: disabledColor,
-            padding: padding,
-            onPressed: onPressed,
-            child: Center(child: child),
+        cupertino: (_) => ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: height ?? double.infinity,
+            maxWidth: width ?? double.infinity,
           ),
-          flat: () => CupertinoButton(
-            key: key,
-            alignment: alignment,
-            borderRadius: borderRadius,
-            pressedOpacity: pressedOpacity,
-            // color: backgroundColor,
-            minSize: minSize,
-            disabledColor: disabledColor,
-            padding: padding,
-            onPressed: onPressed,
-            child: Center(child: child),
+          child: buttonType.fold(
+            elevated: () => CupertinoButton.filled(
+              key: key,
+              alignment: alignment,
+              borderRadius: borderRadius,
+              pressedOpacity: pressedOpacity,
+              minSize: minSize,
+              disabledColor: disabledColor,
+              padding: padding,
+              onPressed: onPressed,
+              child: Center(child: child),
+            ),
+            flat: () => CupertinoButton(
+              key: key,
+              alignment: alignment,
+              borderRadius: borderRadius,
+              pressedOpacity: pressedOpacity,
+              // color: backgroundColor,
+              minSize: minSize,
+              disabledColor: disabledColor,
+              padding: padding,
+              onPressed: onPressed,
+              child: Center(child: child),
+            ),
           ),
         ),
         material: (_) => ConstrainedBox(

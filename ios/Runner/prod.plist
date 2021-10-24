@@ -45,18 +45,18 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-
-	<!-- App Permissions -->
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) needs access to your camera to take photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) needs access to your Photo Library to select/preview photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location when in background.</string>
+	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device&apos;s location when in background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location.</string>
+	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device&apos;s location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location.</string>
+	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device&apos;s location.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

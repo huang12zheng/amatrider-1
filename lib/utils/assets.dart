@@ -216,38 +216,41 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  static SvgPicture featherSearch = SvgPicture.asset(
-    _featherSearch,
-    height: 40,
-    width: 40,
-    color: App.resolveColor(
-      Palette.neutralC7,
-      dark: Colors.white70,
-    ),
-    fit: BoxFit.contain,
-  );
+  static SvgPicture featherSearch([Size size = const Size(40, 40)]) =>
+      SvgPicture.asset(
+        _featherSearch,
+        height: size.height,
+        width: size.width,
+        color: App.resolveColor(
+          Palette.neutralC7,
+          dark: Colors.white70,
+        ),
+        fit: BoxFit.contain,
+      );
 
-  static SvgPicture noConnectivity = SvgPicture.asset(
-    _noConnectivity,
-    height: 23,
-    width: 23,
-    color: App.resolveColor(
-      Palette.neutralC7,
-      dark: Colors.white70,
-    ),
-    fit: BoxFit.contain,
-  );
+  static SvgPicture noConnectivity([Size size = const Size(23, 23)]) =>
+      SvgPicture.asset(
+        _noConnectivity,
+        height: size.height,
+        width: size.width,
+        color: App.resolveColor(
+          Palette.neutralC7,
+          dark: Colors.white70,
+        ),
+        fit: BoxFit.contain,
+      );
 
-  static SvgPicture noHistory = SvgPicture.asset(
-    _noHistory,
-    height: 23,
-    width: 23,
-    color: App.resolveColor(
-      Palette.neutralC7,
-      dark: Colors.white70,
-    ),
-    fit: BoxFit.contain,
-  );
+  static SvgPicture noHistory([Size size = const Size(23, 23)]) =>
+      SvgPicture.asset(
+        _noHistory,
+        height: size.height,
+        width: size.width,
+        color: App.resolveColor(
+          Palette.neutralC7,
+          dark: Colors.white70,
+        ),
+        fit: BoxFit.contain,
+      );
 
   static SvgPicture bigHeart = SvgPicture.asset(
     _bigHeart,
@@ -260,12 +263,13 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  static SvgPicture timelinePin = SvgPicture.asset(
-    timelinePinAsset,
-    height: 23,
-    width: 23,
-    fit: BoxFit.contain,
-  );
+  static SvgPicture timelinePin([Color? color]) => SvgPicture.asset(
+        timelinePinAsset,
+        height: 23,
+        width: 23,
+        color: color,
+        fit: BoxFit.contain,
+      );
 
   static SvgPicture inviteFriends = SvgPicture.asset(
     _inviteFriends,

@@ -1,6 +1,7 @@
 library delivery_request_card.dart;
 
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/horizontal_chip_widget.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:expandable/expandable.dart';
@@ -12,7 +13,7 @@ import 'package:flutter/widgets.dart';
 part 'delivery_history_card.dart';
 
 /// A stateless widget to render DeliveryRequestCard.
-class DeliveryRequestCard extends StatelessWidget {
+class DeliveryRequestCard extends StatefulWidget {
   final String? asset;
   final bool showActionButtons;
   final bool isOrder;
@@ -33,6 +34,25 @@ class DeliveryRequestCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DeliveryRequestCard> createState() => _DeliveryRequestCardState();
+}
+
+class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
+  ExpandableController? controller;
+
+  @override
+  void initState() {
+    controller = ExpandableController(initialExpanded: widget.initialExpanded);
+    // log.i(controller?.expanded);
+    // controller?.addListener(() {
+    //   log.w(controller?.expanded);
+    //   // log.w(controller?.value);
+    //   // controller?.notifyListeners();
+    // });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(
@@ -47,7 +67,7 @@ class DeliveryRequestCard extends StatelessWidget {
         ),
         child: ExpandableTheme(
           data: ExpandableThemeData(
-            hasIcon: true,
+            hasIcon: false,
             tapHeaderToExpand: true,
             tapBodyToCollapse: false,
             iconColor: Palette.accentColor,
@@ -60,28 +80,24 @@ class DeliveryRequestCard extends StatelessWidget {
             ),
           ),
           child: ExpandableNotifier(
-            initialExpanded: initialExpanded,
+            // initialExpanded: widget.initialExpanded,
+            controller: controller,
             child: ScrollOnExpand(
               child: ExpandablePanel(
-                header: Material(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.transparent,
-                  elevation: 0.0,
-                  child: header,
-                ),
+                header: header,
                 collapsed: ConstrainedBox(
                   constraints: BoxConstraints(
                     maxWidth: 1.sw,
                   ),
                   child: Visibility(
-                    visible: showActionButtons,
+                    visible: widget.showActionButtons,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15.0,
                       ).copyWith(bottom: 10.0),
                       child: _ActionButtons(
-                        onAccept: onAccept,
-                        onDecline: onDecline,
+                        onAccept: widget.onAccept,
+                        onDecline: widget.onDecline,
                       ),
                     ),
                   ),
@@ -111,12 +127,12 @@ class DeliveryRequestCard extends StatelessWidget {
                         ],
                       ),
                       //
-                      if (showActionButtons) ...[
+                      if (widget.showActionButtons) ...[
                         VerticalSpace(height: 0.015.sw),
                         //
                         _ActionButtons(
-                          onAccept: onAccept,
-                          onDecline: onDecline,
+                          onAccept: widget.onAccept,
+                          onDecline: widget.onDecline,
                         ),
                       ]
                     ],
@@ -130,123 +146,104 @@ class DeliveryRequestCard extends StatelessWidget {
     );
   }
 
-  Widget get header => ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
-          child: asset?.let((it) => Image.asset(it)) ??
-              Image.asset(AppAssets.blackAvatar),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: AdaptiveText(
-                'Emily Restaurant',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17.sp,
-                ),
-              ),
+  Widget get header => Material(
+        borderRadius: BorderRadius.circular(5.0),
+        type: MaterialType.transparency,
+        elevation: 0.0,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(5.0),
+              child: widget.asset?.let((it) => Image.asset(it,
+                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill)) ??
+                  Image.asset(AppAssets.slider0,
+                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
             ),
-            Flexible(
-              child: AdaptiveText(
-                '\$12',
-                style: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 10,
+            title: Center(
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (isOrder)
-                    const Flexible(
-                      flex: 8,
-                      child: CustomChipWidget(
-                        'Order',
-                        backgroundColor: Palette.pastelBlue,
-                        textColor: Palette.accentBlue,
-                      ),
-                    ),
-                  if (!isOrder)
-                    const Flexible(
-                      flex: 10,
-                      child: CustomChipWidget(
-                        'Package',
-                        backgroundColor: Palette.pastelYellow,
-                        textColor: Palette.accentYellow,
-                      ),
-                    ),
-                  //
-                  Flexible(child: HorizontalSpace(width: 0.015.sw)),
-                  //
                   Expanded(
-                    flex: 14,
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: DecoratedBox(
-                            decoration: const BoxDecoration(
-                              color: Palette.accentLightGreen,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0.014.sw, vertical: 0.004.sh),
-                              child: AdaptiveText(
-                                time ?? '5hrs 10mins',
-                                maxLines: 1,
-                                minFontSize: 13,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Palette.accentGreen,
-                                  fontSize: 15.sp,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    flex: 4,
+                    child: AdaptiveText(
+                      'Emily Restaurant',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  //
+                  Flexible(
+                    child: AdaptiveText(
+                      '12'.asCurrency(),
+                      minFontSize: 14,
+                      maxFontSize: 17,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
             ),
-            //
-            Flexible(
-              flex: 5,
-              child: AdaptiveText(
-                'Card(POS)',
-                minFontSize: 13,
-                maxLines: 1,
-                softWrap: true,
-                textAlign: TextAlign.right,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 15.sp),
+            subtitle: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 0.015.sw),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: HorizontalChipWidget(
+                        widgetPadding: EdgeInsets.symmetric(vertical: 0.004.sh),
+                        scrollMargin: EdgeInsets.only(right: 0.02.sw),
+                        wrapped: false,
+                        tags: [
+                          HorizontalChip(
+                            label: widget.isOrder ? 'Order' : 'Package',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentDarkBlue,
+                            backgroundColor: Palette.pastelBlue,
+                            type: HorizontalChipType.none,
+                          ),
+                          //
+                          HorizontalChip(
+                            label: widget.time ?? '5hrs 10mins',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentGreen,
+                            backgroundColor: Palette.pastelGreen,
+                            type: HorizontalChipType.none,
+                          ),
+                        ],
+                      ),
+                    ),
+                    //
+                    Flexible(
+                      flex: 2,
+                      child: AdaptiveText(
+                        'Card(POS)',
+                        minFontSize: 12,
+                        maxLines: 1,
+                        softWrap: true,
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
+            dense: false,
+            horizontalTitleGap: 8.0,
+            minVerticalPadding: 8.0,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 0.01.sw,
+              horizontal: 0.03.sw,
+            ),
+          ),
         ),
-        dense: true,
-        horizontalTitleGap: 8.0,
-        minVerticalPadding: 10.0,
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 0.01.sh,
-          horizontal: 0.04.sw,
-        ).copyWith(right: 0.01.sw),
       );
 }
 
@@ -268,8 +265,8 @@ class _ActionButtons extends StatelessWidget {
         AppOutlinedButton(
           text: 'Decline',
           textColor: Palette.accentColor,
-          height: 0.028.sh,
-          cupertinoHeight: 0.05.sh,
+          height: 0.09.sw,
+          cupertinoHeight: 0.09.sw,
           width: 0.3.sw,
           cupertinoWidth: 0.3.sw,
           onPressed: onDecline,
@@ -280,8 +277,8 @@ class _ActionButtons extends StatelessWidget {
           textColor: Colors.white,
           backgroundColor: Palette.accentColor,
           splashColor: Colors.white24,
-          height: 0.028.sh,
-          cupertinoHeight: 0.05.sh,
+          height: 0.09.sw,
+          cupertinoHeight: 0.09.sw,
           width: 0.3.sw,
           cupertinoWidth: 0.3.sw,
           onPressed: onAccept,
