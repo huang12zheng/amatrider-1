@@ -1,13 +1,17 @@
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/pages/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/manager/settings/index.dart';
 import 'package:amatrider/utils/utils.dart'
     hide HomePage, HistoryPage, InsightsPage, ProfilePage;
 import 'package:amatrider/widgets/adaptive/adaptive.dart';
 import 'package:amatrider/widgets/widgets.dart';
+import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,22 +29,21 @@ class DashboardScreen extends ConsumerStatefulWidget with AutoRouteWrapper {
   _DashboardScreenState createState() => _DashboardScreenState();
 
   @override
-  Widget wrappedRoute(BuildContext context) => BlocProvider(
-        create: (_) => getIt<TabNavigationCubit>(),
-        child: this,
-      );
+  Widget wrappedRoute(BuildContext context) =>
+      BlocProvider(create: (_) => getIt<TabNavigationCubit>(), child: this);
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen>
     with AutomaticKeepAliveClientMixin<DashboardScreen> {
-  DateTime _timestampPressed = DateTime.now();
-
   static final _tabs = [
     const HomePage(),
     const HistoryPage(),
     const InsightsPage(),
     const ProfilePage(),
   ];
+
+  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
+  DateTime _timestampPressed = DateTime.now();
 
   @override
   bool get wantKeepAlive => true;
@@ -66,6 +69,81 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
       await Fluttertoast.cancel();
       return Future.value(true);
     }
+  }
+
+  @override
+  void dispose() {
+    BlocProvider.of<AuthWatcherCubit>(App.context).unsubscribeAuthChanges;
+    BlocProvider.of<AuthWatcherCubit>(App.context).unsubscribeUserChanges;
+    super.dispose();
+  }
+
+  Widget guestUserImage(TabNavigationState s, Destination i) => CircleAvatar(
+        backgroundImage: Image.asset(AppAssets.guestAvatarPng).image,
+        maxRadius: s.currentIndex == i.id ? 16 : 15,
+        minRadius: 14,
+        backgroundColor: Colors.transparent,
+      );
+
+  Widget defaultImage(TabNavigationState s, Destination i) => CircleAvatar(
+        backgroundImage: Image.asset(AppAssets.unnamed).image,
+        maxRadius: s.currentIndex == i.id ? 16 : 15,
+        minRadius: 14,
+        backgroundColor: Colors.transparent,
+      );
+
+  List<BottomNavigationBarItem> navItems(TabNavigationState s) {
+    return Destination.list
+        .map(
+          (i) => BottomNavigationBarItem(
+            label: i.title,
+            icon: i == Destination.list.last
+                ? BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
+                    buildWhen: (p, c) => p.user?.photo != c.user?.photo,
+                    builder: (c, _s) {
+                      if (_s.user == null) return guestUserImage(s, i);
+
+                      return _s.user!.photo.ensure(
+                        (it) => CachedNetworkImage(
+                          imageUrl: '${it.getOrEmpty}',
+                          fit: BoxFit.contain,
+                          height: s.currentIndex == i.id ? 30 : 25,
+                          imageBuilder: (c, img) => CircleAvatar(
+                            backgroundImage: img,
+                            maxRadius: s.currentIndex == i.id ? 16 : 15,
+                            minRadius: 14,
+                            backgroundColor: Colors.transparent,
+                          ),
+                          progressIndicatorBuilder: (_, url, download) =>
+                              Center(
+                            child: CircularProgressBar.adaptive(
+                              value: download.progress,
+                              strokeWidth: 2,
+                              width: 30,
+                              height: 30,
+                            ),
+                          ),
+                          errorWidget: (_, url, error) => defaultImage(s, i),
+                        ),
+                        orElse: (_) => defaultImage(s, i),
+                      );
+                    },
+                  )
+                : SvgPicture.asset(
+                    i.icon,
+                    height: s.currentIndex == i.id ? 30 : 25,
+                    width: s.currentIndex == i.id ? 30 : 25,
+                    fit: BoxFit.contain,
+                    color: s.currentIndex == i.id
+                        ? Utils.foldTheme(
+                            light: () => Palette.accentColor,
+                            dark: () => Palette.accentColor.shade100,
+                          )
+                        : Colors.grey,
+                  ),
+          ),
+        )
+        .toList();
   }
 
   @override
@@ -95,37 +173,44 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               onTapClose: true,
               swipe: true,
               offset: const IDOffset.horizontal(0.5),
-              proportionalChildArea: true, // default true
+              proportionalChildArea: true,
               borderRadius: 0,
               leftAnimationType: InnerDrawerAnimation.static,
-              innerDrawerCallback: (a) => print('Side drawer is open ==> $a'),
               leftChild: const SideDrawerWidget(),
-              scaffold: AdaptiveScaffold(
-                cupertinoTabBuilder: (_, i) => _tabs[i],
-                body: FadeTransition(opacity: animation, child: child),
-                adaptiveBottomNav: PlatformNavBar(
-                  items: navItems(s),
-                  currentIndex: s.currentIndex,
-                  material: (_, __) => MaterialNavBarData(
-                    elevation: 0.0,
-                    type: BottomNavigationBarType.fixed,
-                    unselectedItemColor: Colors.grey,
-                    selectedItemColor: Utils.foldTheme(
-                      light: () => Palette.accentColor,
-                      dark: () => Palette.accentColor.shade100,
-                    ),
-                  ),
-                  cupertino: (_, __) => CupertinoTabBarData(
-                    iconSize: 20,
-                    inactiveColor: Colors.grey,
+              scaffold: FutureBuilder(
+                future: _memoizer.runOnce(() async {
+                  await BlocProvider.of<AuthWatcherCubit>(App.context)
+                      .subscribeUserChanges();
+
+                  return 0;
+                }),
+                builder: (_, __) => AdaptiveScaffold(
+                  cupertinoTabBuilder: (_, i) => _tabs[i],
+                  body: FadeTransition(opacity: animation, child: child),
+                  adaptiveBottomNav: PlatformNavBar(
+                    items: navItems(s),
                     currentIndex: s.currentIndex,
-                    activeColor: Utils.foldTheme(
-                      light: () => Palette.accentColor,
-                      dark: () => Palette.accentColor.shade100,
+                    material: (_, __) => MaterialNavBarData(
+                      elevation: 0.0,
+                      type: BottomNavigationBarType.fixed,
+                      unselectedItemColor: Colors.grey,
+                      selectedItemColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
+                      ),
                     ),
+                    cupertino: (_, __) => CupertinoTabBarData(
+                      iconSize: 20,
+                      inactiveColor: Colors.grey,
+                      currentIndex: s.currentIndex,
+                      activeColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
+                      ),
+                    ),
+                    itemChanged: (i) =>
+                        c.read<TabNavigationCubit>().setCurrentIndex(c, i),
                   ),
-                  itemChanged: (i) =>
-                      c.read<TabNavigationCubit>().setCurrentIndex(c, i),
                 ),
               ),
             ),
@@ -133,36 +218,5 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
         },
       ),
     );
-  }
-
-  Widget defaultImage(TabNavigationState s, Destination i) => CircleAvatar(
-        backgroundImage: Image.asset(AppAssets.guestAvatarPng).image,
-        maxRadius: s.currentIndex == i.id ? 16 : 15,
-        minRadius: 14,
-        backgroundColor: Colors.transparent,
-      );
-
-  List<BottomNavigationBarItem> navItems(TabNavigationState s) {
-    return Destination.list
-        .map(
-          (i) => BottomNavigationBarItem(
-            label: i.title,
-            icon: i == Destination.list.last
-                ? defaultImage(s, i)
-                : SvgPicture.asset(
-                    i.icon,
-                    height: s.currentIndex == i.id ? 30 : 25,
-                    width: s.currentIndex == i.id ? 30 : 25,
-                    fit: BoxFit.contain,
-                    color: s.currentIndex == i.id
-                        ? Utils.foldTheme(
-                            light: () => Palette.accentColor,
-                            dark: () => Palette.accentColor.shade100,
-                          )
-                        : Colors.grey,
-                  ),
-          ),
-        )
-        .toList();
   }
 }

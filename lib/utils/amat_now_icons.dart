@@ -41,7 +41,12 @@ class AmatNow {
   static const IconData delivery_man = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData eye_closed = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData eye_open = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData waving_hand = IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData star = IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData drawer_history = IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData compact_box = IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData apple_store = IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dollar_hand = IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData drawer_support = IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cash_hand = IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData check_circle = IconData(0xe81c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -57,4 +62,8 @@ class AmatNow {
   static const IconData drawer_privacy = IconData(0xe826, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData drawer_profile = IconData(0xe827, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData talk_support = IconData(0xe828, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData play_store = IconData(0xe829, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData waiter_service = IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData gallery_plus = IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData paystack = IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

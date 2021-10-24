@@ -250,6 +250,7 @@ flutter:
     - assets/images/
     - assets/images/logo/
     - assets/images/dashboard/
+    - assets/images/onboarding/
     - assets/images/dashboard/avatars/
     - assets/svgs/
     - assets/svgs/auth/

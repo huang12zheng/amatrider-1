@@ -38,6 +38,7 @@ class AdaptiveText extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? height;
   final double? letterSpacing;
+  final double? wordSpacing;
   final TextDecoration? decoration;
   final _AutoSizeTextType _type;
 
@@ -68,6 +69,7 @@ class AdaptiveText extends StatelessWidget {
     this.fontWeight,
     this.height,
     this.letterSpacing,
+    this.wordSpacing,
     this.decoration,
   })  : _type = _AutoSizeTextType.standard,
         textSpan = const TextSpan(),
@@ -102,6 +104,7 @@ class AdaptiveText extends StatelessWidget {
     this.fontWeight,
     this.height,
     this.letterSpacing,
+    this.wordSpacing,
     this.decoration,
   })  : _type = _AutoSizeTextType.rich,
         data = '',
@@ -135,6 +138,7 @@ class AdaptiveText extends StatelessWidget {
                     height: height,
                     letterSpacing: letterSpacing,
                     decoration: decoration,
+                    wordSpacing: wordSpacing,
                   ).merge(style),
                   cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
                     TextStyle(
@@ -144,6 +148,7 @@ class AdaptiveText extends StatelessWidget {
                       height: height,
                       letterSpacing: letterSpacing,
                       decoration: decoration,
+                      wordSpacing: wordSpacing,
                     ).merge(style),
                   ),
                 ),
@@ -176,6 +181,7 @@ class AdaptiveText extends StatelessWidget {
                     height: height,
                     letterSpacing: letterSpacing,
                     decoration: decoration,
+                    wordSpacing: wordSpacing,
                   ).merge(style),
                   cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
                     TextStyle(
@@ -185,6 +191,7 @@ class AdaptiveText extends StatelessWidget {
                       height: height,
                       letterSpacing: letterSpacing,
                       decoration: decoration,
+                      wordSpacing: wordSpacing,
                     ).merge(style),
                   ),
                 ),

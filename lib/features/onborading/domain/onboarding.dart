@@ -15,32 +15,36 @@ class OnboardingItem<Pixel> with _$OnboardingItem<Pixel> {
   const factory OnboardingItem({
     required String title,
     required String description,
+    required Color bgColor,
     required Pixel image,
   }) = _OnboardingItem;
 
   static KtList<OnboardingItem<String>> get list => KtList.from([
-        // const OnboardingItem(
-        //   title: 'Restaurants At Your Doorsteps',
-        //   description: 'Lorem ipsum dolor sit amet, consectetur'
-        //       'adipiscing elit, sed do eiusmod tempor'
-        //       'incididunt ut labore et dolore magna aliqua.',
-        //   image: AppAssets.onboarding0,
-        // ),
-        // //
-        // const OnboardingItem(
-        //   title: 'Restaurants At Your Doorsteps',
-        //   description: 'Lorem ipsum dolor sit amet, consectetur'
-        //       'adipiscing elit, sed do eiusmod tempor'
-        //       'incididunt ut labore et dolore magna aliqua.',
-        //   image: AppAssets.onboarding1,
-        // ),
+        const OnboardingItem(
+          title: 'Title Goes Here',
+          description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+              'Vestibulum porta ipsumLorem ipsum dolor sit amet',
+          bgColor: Palette.pastelYellow,
+          image: AppAssets.onboarding1,
+        ),
         //
         const OnboardingItem(
-          title: 'Restaurants At Your Doorsteps',
-          description: 'Lorem ipsum dolor sit amet, consectetur'
-              'adipiscing elit, sed do eiusmod tempor'
-              'incididunt ut labore et dolore magna aliqua.',
+          title: 'Title Goes Here',
+          description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+              'Vestibulum porta ipsumLorem ipsum dolor sit amet',
+          bgColor: Palette.pastelBlue,
           image: AppAssets.onboarding2,
+        ),
+        //
+        const OnboardingItem(
+          title: 'Title Goes Here',
+          description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+              'Vestibulum porta ipsumLorem ipsum dolor sit amet',
+          bgColor: Palette.pastelGreen,
+          image: AppAssets.onboarding3,
         ),
       ]);
 }

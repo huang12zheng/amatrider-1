@@ -47,12 +47,12 @@ class _HttpClients {
 
     interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // final result = getIt<AccessTokenManager>().get();
-        // options.headers.putIfAbsent(
-        //   'Authorization',
-        //   () => result.accessToken.getOrEmpty,
-        // );
-        // return handler.next(options);
+        final result = getIt<AccessTokenManager>().get();
+        options.headers.putIfAbsent(
+          'Authorization',
+          () => result.accessToken.getOrEmpty,
+        );
+        return handler.next(options);
       },
     ));
 

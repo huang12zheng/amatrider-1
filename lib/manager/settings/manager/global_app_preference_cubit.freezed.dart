@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'global_app_preference_cubit.dart';
+part of global_app_preference_cubit.dart;
 
 // **************************************************************************
 // FreezedGenerator
@@ -19,12 +19,22 @@ class _$GlobalPreferenceStateTearOff {
 
   _GlobalPreferenceState call(
       {bool isLoading = false,
+      bool validate = false,
       bool isFirstLaunch = true,
-      bool signedInRecently = false}) {
+      bool signedInRecently = false,
+      FeedbackType feedbackType = FeedbackType.inquiry,
+      required BasicTextField<String> supportMessage,
+      KtList<File> supportImages = const KtList.empty(),
+      Option<AppHttpResponse?> status = const None()}) {
     return _GlobalPreferenceState(
       isLoading: isLoading,
+      validate: validate,
       isFirstLaunch: isFirstLaunch,
       signedInRecently: signedInRecently,
+      feedbackType: feedbackType,
+      supportMessage: supportMessage,
+      supportImages: supportImages,
+      status: status,
     );
   }
 }
@@ -35,8 +45,14 @@ const $GlobalPreferenceState = _$GlobalPreferenceStateTearOff();
 /// @nodoc
 mixin _$GlobalPreferenceState {
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get validate => throw _privateConstructorUsedError;
   bool get isFirstLaunch => throw _privateConstructorUsedError;
   bool get signedInRecently => throw _privateConstructorUsedError;
+  FeedbackType get feedbackType => throw _privateConstructorUsedError;
+  BasicTextField<String> get supportMessage =>
+      throw _privateConstructorUsedError;
+  KtList<File> get supportImages => throw _privateConstructorUsedError;
+  Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GlobalPreferenceStateCopyWith<GlobalPreferenceState> get copyWith =>
@@ -48,7 +64,15 @@ abstract class $GlobalPreferenceStateCopyWith<$Res> {
   factory $GlobalPreferenceStateCopyWith(GlobalPreferenceState value,
           $Res Function(GlobalPreferenceState) then) =
       _$GlobalPreferenceStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading, bool isFirstLaunch, bool signedInRecently});
+  $Res call(
+      {bool isLoading,
+      bool validate,
+      bool isFirstLaunch,
+      bool signedInRecently,
+      FeedbackType feedbackType,
+      BasicTextField<String> supportMessage,
+      KtList<File> supportImages,
+      Option<AppHttpResponse?> status});
 }
 
 /// @nodoc
@@ -63,13 +87,22 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = freezed,
+    Object? validate = freezed,
     Object? isFirstLaunch = freezed,
     Object? signedInRecently = freezed,
+    Object? feedbackType = freezed,
+    Object? supportMessage = freezed,
+    Object? supportImages = freezed,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      validate: validate == freezed
+          ? _value.validate
+          : validate // ignore: cast_nullable_to_non_nullable
               as bool,
       isFirstLaunch: isFirstLaunch == freezed
           ? _value.isFirstLaunch
@@ -79,6 +112,22 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.signedInRecently
           : signedInRecently // ignore: cast_nullable_to_non_nullable
               as bool,
+      feedbackType: feedbackType == freezed
+          ? _value.feedbackType
+          : feedbackType // ignore: cast_nullable_to_non_nullable
+              as FeedbackType,
+      supportMessage: supportMessage == freezed
+          ? _value.supportMessage
+          : supportMessage // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String>,
+      supportImages: supportImages == freezed
+          ? _value.supportImages
+          : supportImages // ignore: cast_nullable_to_non_nullable
+              as KtList<File>,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Option<AppHttpResponse?>,
     ));
   }
 }
@@ -90,7 +139,15 @@ abstract class _$GlobalPreferenceStateCopyWith<$Res>
           $Res Function(_GlobalPreferenceState) then) =
       __$GlobalPreferenceStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, bool isFirstLaunch, bool signedInRecently});
+  $Res call(
+      {bool isLoading,
+      bool validate,
+      bool isFirstLaunch,
+      bool signedInRecently,
+      FeedbackType feedbackType,
+      BasicTextField<String> supportMessage,
+      KtList<File> supportImages,
+      Option<AppHttpResponse?> status});
 }
 
 /// @nodoc
@@ -107,13 +164,22 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = freezed,
+    Object? validate = freezed,
     Object? isFirstLaunch = freezed,
     Object? signedInRecently = freezed,
+    Object? feedbackType = freezed,
+    Object? supportMessage = freezed,
+    Object? supportImages = freezed,
+    Object? status = freezed,
   }) {
     return _then(_GlobalPreferenceState(
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      validate: validate == freezed
+          ? _value.validate
+          : validate // ignore: cast_nullable_to_non_nullable
               as bool,
       isFirstLaunch: isFirstLaunch == freezed
           ? _value.isFirstLaunch
@@ -123,6 +189,22 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.signedInRecently
           : signedInRecently // ignore: cast_nullable_to_non_nullable
               as bool,
+      feedbackType: feedbackType == freezed
+          ? _value.feedbackType
+          : feedbackType // ignore: cast_nullable_to_non_nullable
+              as FeedbackType,
+      supportMessage: supportMessage == freezed
+          ? _value.supportMessage
+          : supportMessage // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String>,
+      supportImages: supportImages == freezed
+          ? _value.supportImages
+          : supportImages // ignore: cast_nullable_to_non_nullable
+              as KtList<File>,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as Option<AppHttpResponse?>,
     ));
   }
 }
@@ -132,22 +214,41 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
 class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   const _$_GlobalPreferenceState(
       {this.isLoading = false,
+      this.validate = false,
       this.isFirstLaunch = true,
-      this.signedInRecently = false});
+      this.signedInRecently = false,
+      this.feedbackType = FeedbackType.inquiry,
+      required this.supportMessage,
+      this.supportImages = const KtList.empty(),
+      this.status = const None()});
 
   @JsonKey(defaultValue: false)
   @override
   final bool isLoading;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool validate;
   @JsonKey(defaultValue: true)
   @override
   final bool isFirstLaunch;
   @JsonKey(defaultValue: false)
   @override
   final bool signedInRecently;
+  @JsonKey(defaultValue: FeedbackType.inquiry)
+  @override
+  final FeedbackType feedbackType;
+  @override
+  final BasicTextField<String> supportMessage;
+  @JsonKey(defaultValue: const KtList.empty())
+  @override
+  final KtList<File> supportImages;
+  @JsonKey(defaultValue: const None())
+  @override
+  final Option<AppHttpResponse?> status;
 
   @override
   String toString() {
-    return 'GlobalPreferenceState(isLoading: $isLoading, isFirstLaunch: $isFirstLaunch, signedInRecently: $signedInRecently)';
+    return 'GlobalPreferenceState(isLoading: $isLoading, validate: $validate, isFirstLaunch: $isFirstLaunch, signedInRecently: $signedInRecently, feedbackType: $feedbackType, supportMessage: $supportMessage, supportImages: $supportImages, status: $status)';
   }
 
   @override
@@ -157,15 +258,32 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
             other is _GlobalPreferenceState &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.validate, validate) ||
+                other.validate == validate) &&
             (identical(other.isFirstLaunch, isFirstLaunch) ||
                 other.isFirstLaunch == isFirstLaunch) &&
             (identical(other.signedInRecently, signedInRecently) ||
-                other.signedInRecently == signedInRecently));
+                other.signedInRecently == signedInRecently) &&
+            (identical(other.feedbackType, feedbackType) ||
+                other.feedbackType == feedbackType) &&
+            (identical(other.supportMessage, supportMessage) ||
+                other.supportMessage == supportMessage) &&
+            (identical(other.supportImages, supportImages) ||
+                other.supportImages == supportImages) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, isFirstLaunch, signedInRecently);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      validate,
+      isFirstLaunch,
+      signedInRecently,
+      feedbackType,
+      supportMessage,
+      supportImages,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -177,15 +295,30 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
 abstract class _GlobalPreferenceState implements GlobalPreferenceState {
   const factory _GlobalPreferenceState(
       {bool isLoading,
+      bool validate,
       bool isFirstLaunch,
-      bool signedInRecently}) = _$_GlobalPreferenceState;
+      bool signedInRecently,
+      FeedbackType feedbackType,
+      required BasicTextField<String> supportMessage,
+      KtList<File> supportImages,
+      Option<AppHttpResponse?> status}) = _$_GlobalPreferenceState;
 
   @override
   bool get isLoading;
   @override
+  bool get validate;
+  @override
   bool get isFirstLaunch;
   @override
   bool get signedInRecently;
+  @override
+  FeedbackType get feedbackType;
+  @override
+  BasicTextField<String> get supportMessage;
+  @override
+  KtList<File> get supportImages;
+  @override
+  Option<AppHttpResponse?> get status;
   @override
   @JsonKey(ignore: true)
   _$GlobalPreferenceStateCopyWith<_GlobalPreferenceState> get copyWith =>

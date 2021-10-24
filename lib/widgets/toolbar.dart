@@ -1,5 +1,5 @@
 import 'package:amatrider/utils/utils.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
@@ -30,7 +30,7 @@ class Toolbar extends AppBar {
           title: Visibility(
             visible: !title.isBlank,
             replacement: headline,
-            child: AutoSizeText(
+            child: AdaptiveText(
               title,
               style: !titleStyle.isNullOrBlank
                   ? titleStyle

@@ -97,6 +97,29 @@ _$_ServerFieldErrors _$$_ServerFieldErrorsFromJson(Map<String, dynamic> json) =>
       cardName: (json['card_name'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
+      pickupLat: (json['pickup_lat'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      destLat: (json['destination_lat'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      itemName: (json['item_name'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      quantity: (json['quantity'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      images:
+          (json['images'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+      unitPrice: (json['unit_price'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      requiredDate: (json['required_date'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      supportMessage: (json['message'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ServerFieldErrorsToJson(
@@ -148,5 +171,13 @@ Map<String, dynamic> _$$_ServerFieldErrorsToJson(
   writeNotNull('landmark', instance.landmark);
   writeNotNull('card_number', instance.cardNumber);
   writeNotNull('card_name', instance.cardName);
+  writeNotNull('pickup_lat', instance.pickupLat);
+  writeNotNull('destination_lat', instance.destLat);
+  writeNotNull('item_name', instance.itemName);
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull('images', instance.images);
+  writeNotNull('unit_price', instance.unitPrice);
+  writeNotNull('required_date', instance.requiredDate);
+  writeNotNull('message', instance.supportMessage);
   return val;
 }

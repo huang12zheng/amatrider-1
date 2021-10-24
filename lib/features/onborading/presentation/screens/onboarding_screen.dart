@@ -1,17 +1,14 @@
-import 'package:amatrider/widgets/adaptive/adaptive_alertdialog.dart';
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -32,10 +29,10 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
           Positioned.fill(
             child: BlocBuilder<OnboardingCubit, OnboardingState>(
               builder: (c, s) => PageView.builder(
-                itemCount: context.read<OnboardingCubit>().items.size,
+                itemCount: c.read<OnboardingCubit>().items.size,
                 controller: s.controller,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, i) => OnBoardingItemBuilder(
+                itemBuilder: (c, i) => OnBoardingItemBuilder(
                   item: c.read<OnboardingCubit>().items.elementAtOrNull(i),
                 ),
               ),
@@ -43,9 +40,8 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
           ),
           //
           Positioned(
-            top: 0.58.sh,
-            left: 0,
-            right: 0,
+            left: App.sidePadding,
+            bottom: App.longest * 0.02,
             child: BlocBuilder<OnboardingCubit, OnboardingState>(
               builder: (c, s) => Center(
                 child: AnimatedSmoothIndicator(
@@ -83,112 +79,155 @@ class OnBoardingItemBuilder extends StatefulWidget {
 }
 
 class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
-  late AssetImage image;
+  late AssetImage? image;
 
   @override
   void initState() {
     super.initState();
-    image = AssetImage(widget.item!.image);
-  }
-
-  @override
-  void dispose() {
-    image.evict();
-    super.dispose();
+    image = !widget.item!.image.caseInsensitiveContains('.svg')
+        ? AssetImage(widget.item!.image)
+        : null;
   }
 
   @override
   Widget build(BuildContext c) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-      child: SafeArea(
+    return DecoratedBox(
+      decoration: BoxDecoration(color: widget.item!.bgColor),
+      child: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
         child: Stack(
           children: [
-            Positioned.fill(
-              bottom: 0.47.sh,
+            Positioned(
+              top: App.longest * 0.1,
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: Center(
-                child: widget.item!.image.caseInsensitiveContains('.gif')
-                    ? Image(
-                        image: image,
-                        width: 0.85.sw,
-                        fit: BoxFit.contain,
-                        gaplessPlayback: false,
-                      )
-                    : SvgPicture.asset(
-                        widget.item!.image,
-                        width: 0.85.sw,
-                        fit: BoxFit.contain,
-                      ),
+                // alignment: Alignment.center,
+                child: Image(
+                  image: image!,
+                  width: 1.sw,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             //
-            Positioned.fill(
-              top: 0.58.sh,
-              child: Center(
-                child: Column(
-                  children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 0.06.sw),
-                        child: AutoSizeText(
-                          '${widget.item!.title}',
-                          maxLines: 1,
-                          minFontSize: 13,
-                          style: TextStyle(
-                            fontSize: 28.sp,
-                            color: Palette.accentColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          softWrap: true,
-                          wrapWords: true,
-                        ),
-                      ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.04.sw),
-                    //
-                    Flexible(
-                      flex: 2,
-                      child: AutoSizeText(
-                        '${widget.item!.description}',
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                        minFontSize: 13,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          wordSpacing: 2.0,
-                        ),
-                        softWrap: true,
-                        wrapWords: true,
-                      ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.06.sw),
-                    //
-                    Flexible(
-                      child: AppButton(
-                        text: !c
-                                .watch<OnboardingCubit>()
-                                .isLast(left(widget.item!))
-                            ? 'Next'
-                            : 'Get Started',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        onPressed: !c
-                                .watch<OnboardingCubit>()
-                                .isLast(left(widget.item!))
-                            ? c.read<OnboardingCubit>().next
-                            : () => navigator.pushAndPopUntil(
-                                  const DashboardRoute(),
-                                  predicate: (_) => false,
+            // if (false)
+            Positioned(
+              top: App.longest * 0.58,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Material(
+                color: App.resolveColor(
+                  Palette.cardColorLight,
+                  dark: Palette.cardColorDark,
+                ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                ),
+                child: SafeArea(
+                  top: false,
+                  left: true,
+                  right: true,
+                  bottom: true,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: App.longest * 0.03,
+                        left: 0,
+                        right: 0,
+                        bottom: App.longest * 0.02,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: App.sidePadding),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  child: AdaptiveText(
+                                    '${widget.item!.title}',
+                                    maxLines: 1,
+                                    minFontSize: 13,
+                                    fontSize: 25.sp,
+                                    fontWeight: FontWeight.bold,
+                                    softWrap: true,
+                                    wrapWords: true,
+                                  ),
                                 ),
+                                //
+                                VerticalSpace(height: 0.03.sw),
+                                //
+                                Flexible(
+                                  flex: 4,
+                                  child: AdaptiveText(
+                                    '${widget.item!.description}',
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    minFontSize: 13,
+                                    fontSize: 18.sp,
+                                    wordSpacing: 2.0,
+                                    softWrap: true,
+                                    wrapWords: true,
+                                  ),
+                                ),
+                                //
+                                VerticalSpace(height: 0.04.sw),
+                                //
+                                Expanded(
+                                  flex: 6,
+                                  child: Column(
+                                    children: [
+                                      Flexible(
+                                        child: AppButton(
+                                          text: 'Next',
+                                          fontWeight: FontWeight.w600,
+                                          onPressed: !c
+                                                  .watch<OnboardingCubit>()
+                                                  .isLast(left(widget.item!))
+                                              ? c.read<OnboardingCubit>().next
+                                              : () => navigator.pushAndPopUntil(
+                                                    const GetStartedRoute(),
+                                                    predicate: (_) => false,
+                                                  ),
+                                        ),
+                                      ),
+                                      //
+                                      VerticalSpace(height: 0.01.sw),
+                                      //
+                                      Flexible(
+                                        child: AdaptiveButton(
+                                          text: 'Skip',
+                                          fontWeight: FontWeight.w600,
+                                          textColor: Palette.accentColor,
+                                          splashColor: Colors.black12,
+                                          backgroundColor: App.resolveColor(
+                                            Palette.cardColorLight,
+                                            dark: Palette.cardColorDark,
+                                          ),
+                                          onPressed: () =>
+                                              navigator.pushAndPopUntil(
+                                            const GetStartedRoute(),
+                                            predicate: (_) => false,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                //
+                                VerticalSpace(height: App.sidePadding),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

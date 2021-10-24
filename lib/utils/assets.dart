@@ -27,9 +27,9 @@ mixin AppAssets {
 
   // ONBOARDING
   static const String splashVideo = '$VIDEOS_DIR/splash_video.mp4';
-  static const String onboarding0 = '$ONBOARDING_SVG_DIR/health_options.gif';
-  static const String onboarding1 = '$ONBOARDING_SVG_DIR/location_search.svg';
-  static const String onboarding2 = '$ONBOARDING_SVG_DIR/delivery_address.gif';
+  static const String onboarding1 = '$ONBOARDING_IMAGES_DIR/onboarding_1.png';
+  static const String onboarding2 = '$ONBOARDING_IMAGES_DIR/onboarding_2.png';
+  static const String onboarding3 = '$ONBOARDING_IMAGES_DIR/onboarding_3.png';
 
   /// AUTHENTICATION (Login/Signup)
   static const String loginRelaxed = '$AUTH_SVG_DIR/login_relaxed.svg';
@@ -66,7 +66,17 @@ mixin AppAssets {
   static const String request3 = '$DASHBOARD_IMAGES_DIR/request_3.png';
 
   static const String timelinePinAsset = '$DASHBOARD_SVG_DIR/timeline_pin.svg';
-  static const String _inviteFriends = '$DASHBOARD_SVG_DIR/friendship.svg';
+  static const String _friendship = '$DASHBOARD_SVG_DIR/friendship.svg';
+  static const String _contactSupport =
+      '$DASHBOARD_SVG_DIR/contact_support.svg';
+  static const String takeAway = '$DASHBOARD_SVG_DIR/take_away.svg';
+  static const String _balloons = '$DASHBOARD_SVG_DIR/birthday_balloons.svg';
+  static const String _promoDiscount = '$DASHBOARD_SVG_DIR/promo_discount.svg';
+
+  static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
+  static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
+  static const String closeAccount =
+      '$DASHBOARD_IMAGES_DIR/kingdom-completed.jpg';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
@@ -83,8 +93,9 @@ mixin AppAssets {
     female,
     unnamed,
     user,
-    onboarding0,
+    onboarding1,
     onboarding2,
+    onboarding3,
     slider0,
     slider1,
     slider2,
@@ -99,13 +110,16 @@ mixin AppAssets {
     loginRelaxed,
     verifyAccount,
     forgotPassword,
-    onboarding1,
     guestAvatarSvg,
     _featherSearch,
     _noConnectivity,
     _noHistory,
     timelinePinAsset,
-    _inviteFriends,
+    _friendship,
+    _contactSupport,
+    takeAway,
+    _balloons,
+    _promoDiscount,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -271,8 +285,23 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
-  static SvgPicture inviteFriends = SvgPicture.asset(
-    _inviteFriends,
+  static SvgPicture friendship = SvgPicture.asset(
+    _friendship,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture contactSupport = SvgPicture.asset(
+    _contactSupport,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture balloons = SvgPicture.asset(
+    _balloons,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture promoDiscount = SvgPicture.asset(
+    _promoDiscount,
     fit: BoxFit.contain,
   );
 }
