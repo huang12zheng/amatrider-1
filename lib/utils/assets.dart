@@ -73,6 +73,7 @@ mixin AppAssets {
   static const String takeAway = '$DASHBOARD_SVG_DIR/take_away.svg';
   static const String _balloons = '$DASHBOARD_SVG_DIR/birthday_balloons.svg';
   static const String _promoDiscount = '$DASHBOARD_SVG_DIR/promo_discount.svg';
+  static const String _ellipse = '$DASHBOARD_IMAGES_DIR/ellipse.svg';
 
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
@@ -305,4 +306,8 @@ mixin AppAssets {
     _promoDiscount,
     fit: BoxFit.contain,
   );
+
+  static SvgPicture ellipse([Size size = const Size(23, 23)]) =>
+      SvgPicture.asset(_ellipse,
+          width: size.width, height: size.height, fit: BoxFit.contain);
 }

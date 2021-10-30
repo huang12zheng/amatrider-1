@@ -58,9 +58,10 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
           p0.types.containsAll(KtList.from(_county)))
       .firstOrNull();
 
-  Future<void> getRiderLocation(
+  Future<void> request(
     BuildContext c, {
     bool enforce = true,
+    bool background = false,
   }) async {
     await requestPermissions(c, enforce: enforce);
 
@@ -71,6 +72,15 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
 
     // Update request state
     emit(state.copyWith(isRequestingService: false));
+
+    if (background) await requestBackground(c, enforce: enforce);
+  }
+
+  Future<void> getRiderLocation(
+    BuildContext c, {
+    bool enforce = true,
+  }) async {
+    await request(c, enforce: enforce);
 
     final _conn = await connection();
 
@@ -146,7 +156,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
       //
       final _status = await (await showRationale<FutureOr<bool>>(
         c,
-        title: 'Location is turned off!',
+        title: 'Location is disabled',
         content: '${Const.appName} collects location data to '
             'enable tracking your deliveries and calculating '
             'distance travelled even when the app is closed or not in use.',
@@ -160,6 +170,29 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
 
       if (_status == null || !_status)
         await requestService(c, enforce: enforce);
+      return;
+    }
+  }
+
+  Future<void> requestBackground(
+    BuildContext c, {
+    bool enforce = true,
+  }) async {
+    final _backgroundEnabled = await _service.backgroundEnabled;
+
+    if (enforce) if (!_backgroundEnabled) {
+      final _status = await (await showRationale<FutureOr<bool>>(
+        c,
+        title: 'Background location is disabled',
+        content: '${Const.appName} collects location data to '
+            'enable tracking your deliveries and calculating '
+            'distance travelled even when the app is closed or not in use.',
+        btnText: 'Enable background location',
+        onAccept: () async => await _service.requestBackgroundMode(),
+      ));
+
+      if (_status == null || !_status)
+        await requestBackground(c, enforce: enforce);
       return;
     }
   }

@@ -291,36 +291,37 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                       ),
                     ),
                     //
-                    widget.package.paymentMethod!.maybeWhen(
-                      deliveryWithCard: () => Flexible(
-                        flex: 2,
-                        child: AdaptiveText(
-                          '${widget.package.paymentMethod?.formatted}',
-                          minFontSize: 12,
-                          maxLines: 1,
-                          softWrap: true,
-                          textAlign: TextAlign.right,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 18.sp),
-                        ),
-                      ),
-                      deliveryWithCash: () => Flexible(
-                        flex: 2,
-                        child: AdaptiveText(
-                          '${widget.package.paymentMethod?.formatted}',
-                          minFontSize: 12,
-                          maxLines: 1,
-                          softWrap: true,
-                          textAlign: TextAlign.right,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 18.sp),
-                        ),
-                      ),
-                      orElse: () => const Icon(
-                        Icons.check_circle,
-                        color: Palette.accentGreen,
-                      ),
-                    ),
+                    widget.package.paymentMethod?.maybeWhen(
+                          deliveryWithCard: () => Flexible(
+                            flex: 2,
+                            child: AdaptiveText(
+                              '${widget.package.paymentMethod?.formatted}',
+                              minFontSize: 12,
+                              maxLines: 1,
+                              softWrap: true,
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          ),
+                          deliveryWithCash: () => Flexible(
+                            flex: 2,
+                            child: AdaptiveText(
+                              '${widget.package.paymentMethod?.formatted}',
+                              minFontSize: 12,
+                              maxLines: 1,
+                              softWrap: true,
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          ),
+                          orElse: () => const Icon(
+                            Icons.check_circle,
+                            color: Palette.accentGreen,
+                          ),
+                        ) ??
+                        Utils.nothing,
                   ],
                 ),
               ),

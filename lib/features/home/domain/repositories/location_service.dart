@@ -71,24 +71,23 @@ class LocationService {
     return _isBackgroundModeEnabled;
   }
 
-  LocationService changeSettings({
+  Future<LocationService> changeSettings({
     PositionAccuracy accuracy = PositionAccuracy.high,
-    int interval = 500,
-    double distanceFilter = 0,
-  }) {
-    _location = Location()
-      ..changeSettings(
-        interval: interval,
-        distanceFilter: distanceFilter,
-        accuracy: accuracy.fold(
-          balanced: LocationAccuracy.balanced,
-          high: LocationAccuracy.high,
-          low: LocationAccuracy.low,
-          navigation: LocationAccuracy.navigation,
-          powerSave: LocationAccuracy.powerSave,
-          reduced: LocationAccuracy.reduced,
-        ),
-      );
+    int interval = 10500,
+    double distanceFilter = 5,
+  }) async {
+    await _location.changeSettings(
+      interval: interval,
+      distanceFilter: distanceFilter,
+      accuracy: accuracy.fold(
+        balanced: LocationAccuracy.balanced,
+        high: LocationAccuracy.high,
+        low: LocationAccuracy.low,
+        navigation: LocationAccuracy.navigation,
+        powerSave: LocationAccuracy.powerSave,
+        reduced: LocationAccuracy.reduced,
+      ),
+    );
     return this;
   }
 
@@ -109,8 +108,6 @@ class LocationService {
   }
 
   Stream<Either<AnyResponse, RiderLocation?>> liveLocation() async* {
-    changeSettings();
-
     yield* _location.onLocationChanged
         .transform(
           StreamTransformer<LocationData,

@@ -33,19 +33,19 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
   Future<void> allPackages(
     BuildContext c, {
     SendPackageStatus status = SendPackageStatus.ACTIVE,
+    RiderLocation? location,
   }) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(
+      isLoading: true,
+      isLoadingTransitPackages: true,
+      isLoadingActivePackages: true,
+    ));
 
-    status.maybeWhen(
-      active: () => emit(state.copyWith(isLoadingActivePackages: true)),
-      enroute: () => emit(state.copyWith(isLoadingTransitPackages: true)),
-      orElse: () => null,
-    );
-
-    final _locationCubit = BlocProvider.of<LocationCubit>(c);
-    await _locationCubit.getRiderLocation(c);
-
-    final riderLocation = _locationCubit.state.position;
+    if (location == null) {
+      final _locationCubit = BlocProvider.of<LocationCubit>(c);
+      await _locationCubit.getRiderLocation(c);
+      location = _locationCubit.state.position;
+    }
 
     // ignore: unawaited_futures
     connection().then((val) =>
@@ -53,38 +53,37 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
 
     final _result = await _logisticsRepository.all(
       status: status,
-      lat: '${riderLocation?.lat.getOrEmpty}',
-      lng: '${riderLocation?.lng.getOrEmpty}',
+      lat: '${location?.lat.getOrEmpty}',
+      lng: '${location?.lng.getOrEmpty}',
     );
 
     status.maybeWhen(
-      active: () => emit(state.copyWith(activePackages: _result.domain)),
-      enroute: () => emit(state.copyWith(
-        packagesInTransit: _result.domain
-            .plus(state.packagesInTransit)
-            .toSet()
-            .toMutableList(),
+      active: () => emit(state.copyWith(
+        isLoadingActivePackages: false,
+        activePackages: _result.domain,
       )),
+      enroute: () {
+        emit(state.copyWith(
+          isLoadingTransitPackages: false,
+          isLoadingActivePackages: false,
+          packagesInTransit: _result.domain
+              .plus(state.packagesInTransit)
+              .asList()
+              .unique((val) => val.id)
+              .toImmutableList(),
+        ));
+      },
       orElse: () => null,
     );
 
     emit(state.copyWith(isLoading: false));
-
-    status.maybeWhen(
-      active: () => emit(state.copyWith(isLoadingActivePackages: false)),
-      enroute: () => emit(state.copyWith(isLoadingTransitPackages: false)),
-      orElse: () => null,
-    );
   }
 
   Future<void> acceptPackageDelivery(
     BuildContext c,
     SendPackage package,
   ) async {
-    emit(state.copyWith(
-      isLoading: true,
-      isAccepting: true,
-    ));
+    emit(state.copyWith(isLoading: true, isAccepting: true));
 
     try {
       final _conn = await connection();
@@ -102,7 +101,14 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
             lng: '${location?.lng.getOrNull}',
           );
 
-          emit(state.copyWith(currentPackage: package, status: some(_result)));
+          emit(state.copyWith(
+            activePackages: state.activePackages.minusElement(package),
+            currentPackage: package,
+            status: some(_result),
+          ));
+
+          // ignore: unawaited_futures
+          allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
         },
         (e) async => emit(state.copyWith(status: optionOf(e))),
       );
@@ -110,20 +116,14 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       emit(state.copyWith(status: some(e.asResponse())));
     }
 
-    emit(state.copyWith(
-      isLoading: false,
-      isAccepting: false,
-    ));
+    emit(state.copyWith(isLoading: false, isAccepting: false));
   }
 
   Future<void> declinePackageDelivery(
     BuildContext c,
     SendPackage package,
   ) async {
-    emit(state.copyWith(
-      isLoading: true,
-      isDeclining: true,
-    ));
+    emit(state.copyWith(isLoading: true, isDeclining: true));
 
     try {
       final _conn = await connection();
@@ -141,7 +141,11 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
             lng: '${location?.lng.getOrNull}',
           );
 
-          emit(state.copyWith(currentPackage: package, status: some(_result)));
+          emit(state.copyWith(
+            activePackages: state.activePackages.minusElement(package),
+            currentPackage: null,
+            status: some(_result),
+          ));
         },
         (e) async => emit(state.copyWith(status: optionOf(e))),
       );
@@ -149,9 +153,6 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       emit(state.copyWith(status: some(e.asResponse())));
     }
 
-    emit(state.copyWith(
-      isLoading: false,
-      isDeclining: false,
-    ));
+    emit(state.copyWith(isLoading: false, isDeclining: false));
   }
 }

@@ -29,6 +29,8 @@ class _$MapStateTearOff {
       bool buildingsEnabled = true,
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
+      required Set<Marker> markers,
+      required Set<Polyline> polylines,
       bool isLoading = false,
       bool validate = false,
       Option<AppHttpResponse?> status = const None()}) {
@@ -44,6 +46,8 @@ class _$MapStateTearOff {
       buildingsEnabled: buildingsEnabled,
       initialPosition: initialPosition,
       mapController: mapController,
+      markers: markers,
+      polylines: polylines,
       isLoading: isLoading,
       validate: validate,
       status: status,
@@ -66,8 +70,9 @@ mixin _$MapState {
   bool get trafficEnabled => throw _privateConstructorUsedError;
   bool get buildingsEnabled => throw _privateConstructorUsedError;
   CameraPosition get initialPosition => throw _privateConstructorUsedError;
-  GoogleMapController? get mapController =>
-      throw _privateConstructorUsedError; //
+  GoogleMapController? get mapController => throw _privateConstructorUsedError;
+  Set<Marker> get markers => throw _privateConstructorUsedError;
+  Set<Polyline> get polylines => throw _privateConstructorUsedError; //
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
@@ -93,6 +98,8 @@ abstract class $MapStateCopyWith<$Res> {
       bool buildingsEnabled,
       CameraPosition initialPosition,
       GoogleMapController? mapController,
+      Set<Marker> markers,
+      Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status});
@@ -119,6 +126,8 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
     Object? buildingsEnabled = freezed,
     Object? initialPosition = freezed,
     Object? mapController = freezed,
+    Object? markers = freezed,
+    Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? status = freezed,
@@ -168,6 +177,14 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
           ? _value.mapController
           : mapController // ignore: cast_nullable_to_non_nullable
               as GoogleMapController?,
+      markers: markers == freezed
+          ? _value.markers
+          : markers // ignore: cast_nullable_to_non_nullable
+              as Set<Marker>,
+      polylines: polylines == freezed
+          ? _value.polylines
+          : polylines // ignore: cast_nullable_to_non_nullable
+              as Set<Polyline>,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -201,6 +218,8 @@ abstract class _$MapStateCopyWith<$Res> implements $MapStateCopyWith<$Res> {
       bool buildingsEnabled,
       CameraPosition initialPosition,
       GoogleMapController? mapController,
+      Set<Marker> markers,
+      Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status});
@@ -228,6 +247,8 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
     Object? buildingsEnabled = freezed,
     Object? initialPosition = freezed,
     Object? mapController = freezed,
+    Object? markers = freezed,
+    Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? status = freezed,
@@ -277,6 +298,14 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
           ? _value.mapController
           : mapController // ignore: cast_nullable_to_non_nullable
               as GoogleMapController?,
+      markers: markers == freezed
+          ? _value.markers
+          : markers // ignore: cast_nullable_to_non_nullable
+              as Set<Marker>,
+      polylines: polylines == freezed
+          ? _value.polylines
+          : polylines // ignore: cast_nullable_to_non_nullable
+              as Set<Polyline>,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -308,6 +337,8 @@ class _$_MapState implements _MapState {
       this.buildingsEnabled = true,
       required this.initialPosition,
       this.mapController,
+      required this.markers,
+      required this.polylines,
       this.isLoading = false,
       this.validate = false,
       this.status = const None()});
@@ -343,6 +374,10 @@ class _$_MapState implements _MapState {
   final CameraPosition initialPosition;
   @override
   final GoogleMapController? mapController;
+  @override
+  final Set<Marker> markers;
+  @override
+  final Set<Polyline> polylines;
   @JsonKey(defaultValue: false)
   @override //
   final bool isLoading;
@@ -355,7 +390,7 @@ class _$_MapState implements _MapState {
 
   @override
   String toString() {
-    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, isLoading: $isLoading, validate: $validate, status: $status)';
+    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, markers: $markers, polylines: $polylines, isLoading: $isLoading, validate: $validate, status: $status)';
   }
 
   @override
@@ -380,6 +415,8 @@ class _$_MapState implements _MapState {
                 other.initialPosition == initialPosition) &&
             (identical(other.mapController, mapController) ||
                 other.mapController == mapController) &&
+            const DeepCollectionEquality().equals(other.markers, markers) &&
+            const DeepCollectionEquality().equals(other.polylines, polylines) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
@@ -401,6 +438,8 @@ class _$_MapState implements _MapState {
       buildingsEnabled,
       initialPosition,
       mapController,
+      const DeepCollectionEquality().hash(markers),
+      const DeepCollectionEquality().hash(polylines),
       isLoading,
       validate,
       status);
@@ -424,6 +463,8 @@ abstract class _MapState implements MapState {
       bool buildingsEnabled,
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
+      required Set<Marker> markers,
+      required Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status}) = _$_MapState;
@@ -450,6 +491,10 @@ abstract class _MapState implements MapState {
   CameraPosition get initialPosition;
   @override
   GoogleMapController? get mapController;
+  @override
+  Set<Marker> get markers;
+  @override
+  Set<Polyline> get polylines;
   @override //
   bool get isLoading;
   @override

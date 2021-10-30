@@ -26,11 +26,11 @@ class RiderLocationDTO with _$RiderLocationDTO {
   }) = _RiderLocationDTO;
 
   /// Maps RiderLocation to a Data Transfer Object.
-  factory RiderLocationDTO.fromDomain(RiderLocation instance) =>
+  factory RiderLocationDTO.fromDomain(RiderLocation? instance) =>
       RiderLocationDTO(
-        lat: instance.lat.getOrNull,
-        lng: instance.lng.getOrNull,
-        address: instance.address.getOrNull,
+        lat: instance?.lat.getOrNull,
+        lng: instance?.lng.getOrNull,
+        address: instance?.address.getOrNull,
       );
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

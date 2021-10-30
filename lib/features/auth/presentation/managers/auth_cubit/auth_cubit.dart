@@ -33,6 +33,12 @@ class AuthCubit extends Cubit<AuthState>
   AuthCubit(this._auth, this._preferences, this._utils)
       : super(AuthState.initial());
 
+  @override
+  Future<void> close() {
+    state.phoneTextController.dispose();
+    return super.close();
+  }
+
   void init({
     bool loader = false,
     bool countries = true,

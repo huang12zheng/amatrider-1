@@ -37,7 +37,7 @@ abstract class LogisticsRepository {
     @Query('long') required String lng,
   });
 
-  @POST(EndPoints.CONFIRM_RECEIVED_PACKAGE)
+  @POST(EndPoints.UPDATE_PACKAGE_LOCATION)
   Future<AppHttpResponse> updateLocation(
     @Path() String id, {
     @Body() required RiderLocationDTO location,
@@ -50,7 +50,7 @@ abstract class LogisticsRepository {
     @Query('long') required String lng,
   });
 
-  @POST(EndPoints.CONFIRM_RECEIVED_DELIVERED)
+  @POST(EndPoints.CONFIRM_PACKAGE_DELIVERED)
   Future<AppHttpResponse> confirmPackageDelivered(
     @Path() String id, {
     @Query('lat') required String lat,

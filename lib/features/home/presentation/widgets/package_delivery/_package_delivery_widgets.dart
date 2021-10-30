@@ -15,6 +15,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   @override
   void initState() {
     super.initState();
+    context.read<SendPackageCubit>().startTracker(context);
     context.read<SendPackageCubit>().startWebsocket();
   }
 
@@ -37,7 +38,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
               child: Column(
                 children: [
                   Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: GestureDetector(
                       onTap: widget.panelController?.open,
                       child: Column(
@@ -50,10 +51,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                                   borderRadius: BorderRadius.circular(50.0),
                                   color: Colors.grey.shade300,
                                 ),
-                                child: SizedBox(
-                                  height: 0.008.h,
-                                  width: 0.2.sw,
-                                ),
+                                child: SizedBox(height: 0.008.h, width: 0.2.sw),
                               ),
                             ),
                           ),
@@ -73,14 +71,14 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                             ),
                           ),
                           //
-                          VerticalSpace(height: 0.007.h),
+                          VerticalSpace(height: 0.006.h),
                         ],
                       ),
                     ),
                   ),
                   //
                   Flexible(
-                    flex: 6,
+                    flex: 8,
                     child: BlocBuilder<SendPackageCubit, SendPackageState>(
                       builder: (c, s) => TimelineStatusWidget(
                         padding: EdgeInsets.zero,
@@ -128,14 +126,14 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   VerticalSpace(height: 0.017.h),
                   //
                   const Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: SenderCardWidget(),
                   ),
                   //
                   VerticalSpace(height: 0.02.h),
                   //
                   Flexible(
-                    flex: 3,
+                    flex: 4,
                     child: SizedBox(
                       width: double.infinity,
                       child: Row(

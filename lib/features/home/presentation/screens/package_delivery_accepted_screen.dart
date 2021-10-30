@@ -27,7 +27,7 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
   static final double _trafficHeightOpened = _fabHeightOpened + 0.09.h;
   static final double _buttonBottom = 0.029.h;
   static final double _buttonHeight = 0.06.h;
-  static final double _totalBottom = _buttonHeight + _buttonBottom;
+  static final double _totalBottom = _buttonHeight + 0.026.h;
 
   final SendPackage sendPackage;
 
@@ -49,7 +49,26 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
           create: (_) => getIt<SendPackageCubit>()..init(sendPackage),
         ),
       ],
-      child: this,
+      child: BlocListener<SendPackageCubit, SendPackageState>(
+        listenWhen: (p, c) =>
+            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.response.maybeMap(
+                      error: (f) => f.foldCode(orElse: () => false),
+                      orElse: () => false,
+                    ))),
+        listener: (c, s) => s.status.fold(
+          () => null,
+          (it) => it?.response.map(
+            error: (f) => PopupDialog.error(message: f.message).render(c),
+            success: (res) => PopupDialog.success(
+              duration: const Duration(seconds: 2),
+              message: res.message,
+            ).render(c),
+          ),
+        ),
+        child: this,
+      ),
     );
   }
 }
@@ -89,7 +108,10 @@ class _PackageDeliveryAcceptedScreenState
               parallaxEnabled: true,
               parallaxOffset: 0.5,
               defaultPanelState: PanelState.OPEN,
-              body: const MapWidget(),
+              body: MapWidget(
+                start: widget.sendPackage.pickup,
+                end: widget.sendPackage.destination,
+              ),
               panelBuilder: (controller) => _PanelBuilder(
                 controller,
                 panelController: panelController,

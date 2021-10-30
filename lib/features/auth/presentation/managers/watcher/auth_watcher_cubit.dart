@@ -16,20 +16,27 @@ typedef Task = void Function(Either<Failure, Option<Rider?>> either);
 
 @injectable
 class AuthWatcherCubit extends Cubit<AuthWatcherState> {
-  final AuthFacade _facade;
   StreamSubscription<Either<Failure, Option<Rider?>>>? _authStateChanges;
+  final AuthFacade _facade;
   StreamSubscription<Option<Rider?>>? _riderChanges;
 
   AuthWatcherCubit(this._facade) : super(AuthWatcherState.initial());
 
-  void toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  @override
+  Future<void> close() async {
+    await unsubscribeAuthChanges;
+    await unsubscribeUserChanges;
+    return super.close();
+  }
 
   Future<void> get unsubscribeAuthChanges async =>
       await _authStateChanges?.cancel();
 
   Future<void> get unsubscribeUserChanges async =>
       await _riderChanges?.cancel();
+
+  void toggleLoading([bool? isLoading]) =>
+      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
   Future<void> subscribeToAuthChanges(Task actions) async {
     toggleLoading(true);
@@ -108,12 +115,5 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
       rider: null,
       option: none(),
     ));
-  }
-
-  @override
-  Future<void> close() async {
-    await unsubscribeAuthChanges;
-    await unsubscribeUserChanges;
-    return super.close();
   }
 }

@@ -8,7 +8,7 @@ import 'package:timelines/timelines.dart';
 /// A stateless widget to render TimelineStatusWidget.
 class TimelineStatusWidget extends StatelessWidget {
   final double Function(BuildContext, int)? itemHeight;
-  final Widget? Function(BuildContext, TimelineStatus)? builder;
+  final Widget Function(BuildContext, TimelineStatus)? builder;
   final Color? connectorColor;
   final EdgeInsets? padding;
   final List<TimelineStatus> statuses;
@@ -39,7 +39,7 @@ class TimelineStatusWidget extends StatelessWidget {
       keyboardDismissBehavior: keyboardDismissBehavior,
       builder: TimelineTileBuilder.connected(
         indicatorBuilder: (context, i) => Indicator.widget(
-          position: 0.3,
+          position: 0.5,
           child: statuses[i].asset?.let((it) => SvgPicture.asset(it,
                   fit: BoxFit.contain, color: statuses[i].assetColor)) ??
               statuses[i].icon ??
@@ -72,60 +72,44 @@ class _ContentBuilder extends StatelessWidget {
         fontSize: 15.sp,
         color: Palette.neutralLabel,
       ),
-      child: LimitedBox(
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.only(left: 0.05.sw),
-            alignment: Alignment.bottomCenter,
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  status.title?.let((it) => Center(
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: AdaptiveText(
-                                '$it',
-                                minFontSize: 13,
-                                maxFontSize: 16,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.end,
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .copyWith(color: Palette.neutralLabel),
-                              ),
-                            ),
-                          )) ??
-                      Utils.nothing,
-                  //
-                  status.subtitle?.let((it) => Flexible(
-                            child: Center(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: AdaptiveText(
-                                  '$it',
-                                  minFontSize: 13,
-                                  maxFontSize: 16,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.start,
-                                  style: DefaultTextStyle.of(context)
-                                      .style
-                                      .copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16.5.sp,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          )) ??
-                      Utils.nothing,
-                ],
-              ),
-            ),
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.only(left: 0.05.sw),
+          alignment: Alignment.centerLeft,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!status.title.isNullOrBlank)
+                AdaptiveText(
+                  '${status.title}',
+                  minFontSize: 13,
+                  maxFontSize: 16,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                  style: DefaultTextStyle.of(context)
+                      .style
+                      .copyWith(color: Palette.neutralLabel),
+                ),
+              //
+              if (!status.subtitle.isNullOrBlank)
+                Flexible(
+                  child: AdaptiveText(
+                    '${status.subtitle}',
+                    minFontSize: 13,
+                    maxFontSize: 16,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: DefaultTextStyle.of(context).style.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.5.sp,
+                        ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

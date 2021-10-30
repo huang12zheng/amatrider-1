@@ -31,7 +31,7 @@ class MillisecondsToDurationConverter
 
   @override
   Duration? fromJson(dynamic value) {
-    final _value = value is int ? value : int.tryParse(value as String) ?? 0;
+    final _value = value is int ? value : int.tryParse('$value') ?? 0;
 
     var datetime = DateTime.fromMillisecondsSinceEpoch(_value);
 
@@ -47,7 +47,7 @@ class SecondsToDurationConverter implements JsonConverter<Duration?, dynamic> {
 
   @override
   Duration? fromJson(dynamic value) {
-    final _value = value is int ? value : int.tryParse(value as String) ?? 0;
+    final _value = value is int ? value : int.tryParse('$value') ?? 0;
     return Duration(seconds: _value);
   }
 

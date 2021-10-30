@@ -38,7 +38,7 @@ mixin EndPoints {
       '/rider/package/{id}/location'; // (POST)
   static const String CONFIRM_RECEIVED_PACKAGE =
       '/rider/package/{id}/confirm-pickup'; // (POST)
-  static const String CONFIRM_RECEIVED_DELIVERED =
+  static const String CONFIRM_PACKAGE_DELIVERED =
       '/rider/package/{id}/delivered'; // (POST)
 
   //.....///.....// UTILITIES ENDPOINTS ....////././//...//

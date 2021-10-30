@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:flutter_portal/flutter_portal.dart';
 
 class AmatRider extends StatelessWidget {
   /// This is the entry point for AmatRider App

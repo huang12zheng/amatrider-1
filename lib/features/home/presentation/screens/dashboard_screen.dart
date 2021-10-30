@@ -78,13 +78,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     }
   }
 
-  @override
-  void dispose() {
-    BlocProvider.of<AuthWatcherCubit>(App.context).unsubscribeAuthChanges;
-    BlocProvider.of<AuthWatcherCubit>(App.context).unsubscribeUserChanges;
-    super.dispose();
-  }
-
   Widget guestUserImage(TabNavigationState s, Destination i) => CircleAvatar(
         backgroundImage: Image.asset(AppAssets.guestAvatarPng).image,
         maxRadius: s.currentIndex == i.id ? 16 : 15,
@@ -126,8 +119,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                             child: CircularProgressBar.adaptive(
                               value: download.progress,
                               strokeWidth: 2,
-                              width: 30,
-                              height: 30,
+                              width: 25,
+                              height: 25,
                             ),
                           ),
                           errorWidget: (_, url, error) => defaultImage(s, i),
@@ -186,8 +179,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               leftChild: const SideDrawerWidget(),
               scaffold: FutureBuilder(
                 future: _memoizer.runOnce(() async {
-                  await BlocProvider.of<AuthWatcherCubit>(App.context)
-                      .subscribeUserChanges();
+                  final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
+
+                  if (!cubit.state.isListeningForUserChanges)
+                    await cubit.subscribeUserChanges();
 
                   return 0;
                 }),
