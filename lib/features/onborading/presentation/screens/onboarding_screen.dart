@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -7,8 +10,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -60,6 +65,31 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
               ),
             ),
           ),
+          //
+          Positioned(
+            top: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 0.02.sw,
+                  right: 0.02.sw,
+                ),
+                child: AppOutlinedButton(
+                  text: 'Skip',
+                  height: 0.09.sw,
+                  width: 0.18.sw,
+                  fontSize: 18.sp,
+                  splashColor: Colors.black.withOpacity(0.09),
+                  padding: EdgeInsets.all(0.007.sw),
+                  onPressed: () => navigator.pushAndPopUntil(
+                    const GetStartedRoute(),
+                    predicate: (_) => false,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -79,14 +109,12 @@ class OnBoardingItemBuilder extends StatefulWidget {
 }
 
 class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
-  late AssetImage? image;
+  late AssetImage image;
 
   @override
   void initState() {
     super.initState();
-    image = !widget.item!.image.caseInsensitiveContains('.svg')
-        ? AssetImage(widget.item!.image)
-        : null;
+    image = AssetImage('${widget.item!.image}');
   }
 
   @override
@@ -104,18 +132,16 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
               right: 0,
               bottom: 0,
               child: Center(
-                // alignment: Alignment.center,
                 child: Image(
-                  image: image!,
+                  image: image,
                   width: 1.sw,
                   fit: BoxFit.contain,
                 ),
               ),
             ),
             //
-            // if (false)
             Positioned(
-              top: App.longest * 0.58,
+              top: App.longest * 0.63,
               left: 0,
               right: 0,
               bottom: 0,
@@ -148,7 +174,6 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Flexible(
-                                  flex: 3,
                                   child: AdaptiveText(
                                     '${widget.item!.title}',
                                     maxLines: 1,
@@ -163,7 +188,6 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 VerticalSpace(height: 0.03.sw),
                                 //
                                 Flexible(
-                                  flex: 4,
                                   child: AdaptiveText(
                                     '${widget.item!.description}',
                                     textAlign: TextAlign.center,
@@ -178,8 +202,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 //
                                 VerticalSpace(height: 0.04.sw),
                                 //
-                                Expanded(
-                                  flex: 6,
+                                Flexible(
                                   child: Column(
                                     children: [
                                       Flexible(
@@ -194,26 +217,6 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                                     const GetStartedRoute(),
                                                     predicate: (_) => false,
                                                   ),
-                                        ),
-                                      ),
-                                      //
-                                      VerticalSpace(height: 0.01.sw),
-                                      //
-                                      Flexible(
-                                        child: AdaptiveButton(
-                                          text: 'Skip',
-                                          fontWeight: FontWeight.w600,
-                                          textColor: Palette.accentColor,
-                                          splashColor: Colors.black12,
-                                          backgroundColor: App.resolveColor(
-                                            Palette.cardColorLight,
-                                            dark: Palette.cardColorDark,
-                                          ),
-                                          onPressed: () =>
-                                              navigator.pushAndPopUntil(
-                                            const GetStartedRoute(),
-                                            predicate: (_) => false,
-                                          ),
                                         ),
                                       ),
                                     ],

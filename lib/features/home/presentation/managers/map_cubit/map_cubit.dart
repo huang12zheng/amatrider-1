@@ -1,8 +1,7 @@
-import 'dart:async';
+library map_cubit.dart;
 
 import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/presentation/index.dart';
-import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/domain/repositories/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
@@ -11,13 +10,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 
-part 'map_state.dart';
 part 'map_cubit.freezed.dart';
+part 'map_state.dart';
 
 @injectable
 class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   final LocationService _service;
-  StreamSubscription<Either<AnyResponse, UserLocation?>>? _locationSubscription;
 
   MapCubit(this._service) : super(MapState.initial());
 
@@ -29,16 +27,7 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
       emit(state.copyWith(trafficEnabled: !state.trafficEnabled));
 
   Future<void> getCurrentLocation() async {
-    final _result = await _service.getLocation(enforce: true);
-
-    await _locationSubscription?.cancel();
-    _locationSubscription = _service.liveLocation().listen((result) {
-      result.fold(
-        (response) => log.e(response.message),
-        (location) =>
-            log.w('Location updated: ${location?.lat}, ${location?.lng}'),
-      );
-    });
+    final _result = await _service.getLocation();
 
     await _result.fold(
       (response) async => log.e(response),
@@ -62,10 +51,4 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
 
   void onMapCreated(GoogleMapController controller) =>
       emit(state.copyWith(mapController: controller));
-
-  @override
-  Future<void> close() {
-    _locationSubscription?.cancel();
-    return super.close();
-  }
 }

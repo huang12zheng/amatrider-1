@@ -21,6 +21,8 @@ class AppOutlinedButton extends StatelessWidget {
   final bool isLoading;
   final Color? borderColor;
   final Color? borderColorDark;
+  final Color? splashColor;
+  final Color? splashColorDark;
 
   const AppOutlinedButton({
     Key? key,
@@ -40,6 +42,8 @@ class AppOutlinedButton extends StatelessWidget {
     this.isLoading = false,
     this.borderColor,
     this.borderColorDark,
+    this.splashColor,
+    this.splashColorDark,
   })  : textColor = textColor ?? Palette.accentColor,
         textColorDark = textColorDark ?? textColor ?? Palette.accentColor,
         super(key: key);
@@ -62,8 +66,8 @@ class AppOutlinedButton extends StatelessWidget {
       textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
       backgroundColor: Colors.transparent,
       splashColor: Utils.foldTheme(
-        light: () => Colors.grey.shade300,
-        dark: () => Colors.grey.shade700,
+        light: () => splashColor ?? Colors.grey.shade300,
+        dark: () => splashColorDark ?? Colors.grey.shade700,
       ),
       side: BorderSide(
         color: App.resolveColor(

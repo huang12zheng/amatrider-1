@@ -12,13 +12,13 @@ import 'package:injectable/injectable.dart';
 part 'auth_watcher_cubit.freezed.dart';
 part 'auth_watcher_state.dart';
 
-typedef Task = void Function(Either<Failure, Option<User?>> either);
+typedef Task = void Function(Either<Failure, Option<Rider?>> either);
 
 @injectable
 class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   final AuthFacade _facade;
-  StreamSubscription<Either<Failure, Option<User?>>>? _authStateChanges;
-  StreamSubscription<Option<User?>>? _userChanges;
+  StreamSubscription<Either<Failure, Option<Rider?>>>? _authStateChanges;
+  StreamSubscription<Option<Rider?>>? _riderChanges;
 
   AuthWatcherCubit(this._facade) : super(AuthWatcherState.initial());
 
@@ -28,27 +28,28 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   Future<void> get unsubscribeAuthChanges async =>
       await _authStateChanges?.cancel();
 
-  Future<void> get unsubscribeUserChanges async => await _userChanges?.cancel();
+  Future<void> get unsubscribeUserChanges async =>
+      await _riderChanges?.cancel();
 
   Future<void> subscribeToAuthChanges(Task actions) async {
     toggleLoading(true);
 
-    // Get current user
-    final _req = await _facade.currentUser;
-    final user = _req.getOrElse(() => none()).getOrElse(() => null);
+    // Get current rider
+    final _req = await _facade.currentRider;
+    final rider = _req.getOrElse(() => none()).getOrElse(() => null);
 
     // Cancel previous subscription
     await unsubscribeAuthChanges;
 
     // Start new subsrciption
     _authStateChanges ??= _facade.onAuthStateChanges.listen((data) {
-      final _user = data.getOrElse(() => none()).getOrElse(() => null);
+      final _rider = data.getOrElse(() => none()).getOrElse(() => null);
 
       emit(state.copyWith(
         isListeningForAuthChanges: true,
-        isAuthenticated: _user != null,
-        user: _user,
-        option: optionOf(_user),
+        isAuthenticated: _rider != null,
+        rider: _rider,
+        option: optionOf(_rider),
       ));
 
       actions.call(data);
@@ -57,12 +58,12 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     });
 
     emit(state.copyWith(
-      isAuthenticated: user != null,
-      user: user,
-      option: optionOf(user),
+      isAuthenticated: rider != null,
+      rider: rider,
+      option: optionOf(rider),
     ));
 
-    // Only if user is authenticated, then fetch user data (called once!)
+    // Only if rider is authenticated, then fetch rider data (called once!)
     await _req.fold(
       (f) async => f.foldCode(
         is4031: () async => await _facade.sink(),
@@ -79,14 +80,14 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
     await unsubscribeUserChanges;
 
-    _userChanges ??= _facade.onUserChanges.listen((option) {
-      final _user = option.getOrElse(() => null);
+    _riderChanges ??= _facade.onRiderChanges.listen((option) {
+      final _rider = option.getOrElse(() => null);
 
       emit(state.copyWith(
         isListeningForUserChanges: true,
-        isAuthenticated: _user != null,
-        user: _user,
-        option: optionOf(_user),
+        isAuthenticated: _rider != null,
+        rider: _rider,
+        option: optionOf(_rider),
       ));
 
       toggleLoading(false);
@@ -104,7 +105,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
     emit(state.copyWith(
       isAuthenticated: false,
-      user: null,
+      rider: null,
       option: none(),
     ));
   }

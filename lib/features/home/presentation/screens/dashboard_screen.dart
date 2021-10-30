@@ -1,3 +1,5 @@
+library dashboard_screen.dart;
+
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -15,9 +17,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -29,8 +31,13 @@ class DashboardScreen extends ConsumerStatefulWidget with AutoRouteWrapper {
   _DashboardScreenState createState() => _DashboardScreenState();
 
   @override
-  Widget wrappedRoute(BuildContext context) =>
-      BlocProvider(create: (_) => getIt<TabNavigationCubit>(), child: this);
+  Widget wrappedRoute(BuildContext context) {
+    context.read<GlobalAppPreferenceCubit>().updateLaunchSettings();
+    return BlocProvider(
+      create: (_) => getIt<TabNavigationCubit>(),
+      child: this,
+    );
+  }
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen>
@@ -99,11 +106,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
             label: i.title,
             icon: i == Destination.list.last
                 ? BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
-                    buildWhen: (p, c) => p.user?.photo != c.user?.photo,
+                    buildWhen: (p, c) => p.rider?.photo != c.rider?.photo,
                     builder: (c, _s) {
-                      if (_s.user == null) return guestUserImage(s, i);
+                      if (_s.rider == null) return guestUserImage(s, i);
 
-                      return _s.user!.photo.ensure(
+                      return _s.rider!.photo.ensure(
                         (it) => CachedNetworkImage(
                           imageUrl: '${it.getOrEmpty}',
                           fit: BoxFit.contain,

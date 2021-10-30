@@ -1,6 +1,7 @@
 library app.dart;
 
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
 import 'package:amatrider/manager/theme/theme.dart';
@@ -27,53 +28,47 @@ class AmatRider extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => getIt<ThemeCubit>()),
         BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
+        BlocProvider(create: (_) => getIt<LocationCubit>()),
         BlocProvider(create: (_) => getIt<GlobalAppPreferenceCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, AppTheme>(
-        builder: (context, app) => Portal(
-          child: PlatformApp.router(
-            title: Const.appName.capitalizeFirst(),
-            debugShowCheckedModeBanner: false,
-            material: (_, __) => MaterialAppRouterData(
-              theme: AppTheme.light().themeData(),
-              darkTheme: AppTheme.light().themeData(),
-              themeMode: ThemeMode.light,
-              // theme: app.themeData(),
-              // darkTheme: AppTheme.dark().themeData(),
-            ),
-            cupertino: (_, __) => CupertinoAppRouterData(
-              theme: app.cupertinoThemeData(_),
-              color: Palette.accentColor,
-            ),
-            locale: env.flavor.fold(
-              dev: () => DevicePreview.locale(context),
-              prod: () => null,
-            ),
-            localizationsDelegates: [
-              DefaultCupertinoLocalizations.delegate,
-              DefaultMaterialLocalizations.delegate,
-              DefaultWidgetsLocalizations.delegate,
-            ],
-            routeInformationParser: _router.defaultRouteParser(),
-            routerDelegate: AutoRouterDelegate(
-              _router,
-              navigatorObservers: () => <NavigatorObserver>[
-                if (env.flavor == BuildFlavor.prod)
-                  FirebaseAnalyticsObserver(
-                    analytics: getIt<FirebaseAnalytics>(),
-                  ),
-              ],
-            ),
-            builder: (context, widget) => DevicePreview.appBuilder(
-              context,
-              Utils.setup(
-                context,
-                _router,
-                ScreenUtilInit(
-                  designSize: const Size(375, 812),
-                  builder: () => widget!,
+        builder: (context, app) => PlatformApp.router(
+          title: Const.appName.capitalizeFirst(),
+          debugShowCheckedModeBanner: false,
+          material: (_, __) => MaterialAppRouterData(
+            theme: AppTheme.light().themeData(),
+            darkTheme: AppTheme.light().themeData(),
+            themeMode: ThemeMode.light,
+            // theme: app.themeData(),
+            // darkTheme: AppTheme.dark().themeData(),
+          ),
+          cupertino: (_, __) => CupertinoAppRouterData(
+            theme: app.cupertinoThemeData(_),
+            color: Palette.accentColor,
+          ),
+          locale: DevicePreview.locale(context),
+          // useInheritedMediaQuery: true,
+          localizationsDelegates: [
+            DefaultCupertinoLocalizations.delegate,
+            DefaultMaterialLocalizations.delegate,
+            DefaultWidgetsLocalizations.delegate,
+          ],
+          routeInformationParser: _router.defaultRouteParser(),
+          routerDelegate: AutoRouterDelegate(
+            _router,
+            navigatorObservers: () => <NavigatorObserver>[
+              if (env.flavor == BuildFlavor.prod)
+                FirebaseAnalyticsObserver(
+                  analytics: getIt<FirebaseAnalytics>(),
                 ),
-              ),
+            ],
+          ),
+          builder: (context, widget) => Utils.setup(
+            context,
+            _router,
+            ScreenUtilInit(
+              designSize: const Size(375, 812),
+              builder: () => widget!,
             ),
           ),
         ),

@@ -20,7 +20,6 @@ class _$GlobalPreferenceStateTearOff {
   _GlobalPreferenceState call(
       {bool isLoading = false,
       bool validate = false,
-      bool isFirstLaunch = true,
       bool signedInRecently = false,
       FeedbackType feedbackType = FeedbackType.inquiry,
       required BasicTextField<String> supportMessage,
@@ -29,7 +28,6 @@ class _$GlobalPreferenceStateTearOff {
     return _GlobalPreferenceState(
       isLoading: isLoading,
       validate: validate,
-      isFirstLaunch: isFirstLaunch,
       signedInRecently: signedInRecently,
       feedbackType: feedbackType,
       supportMessage: supportMessage,
@@ -46,7 +44,6 @@ const $GlobalPreferenceState = _$GlobalPreferenceStateTearOff();
 mixin _$GlobalPreferenceState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
-  bool get isFirstLaunch => throw _privateConstructorUsedError;
   bool get signedInRecently => throw _privateConstructorUsedError;
   FeedbackType get feedbackType => throw _privateConstructorUsedError;
   BasicTextField<String> get supportMessage =>
@@ -67,7 +64,6 @@ abstract class $GlobalPreferenceStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       bool validate,
-      bool isFirstLaunch,
       bool signedInRecently,
       FeedbackType feedbackType,
       BasicTextField<String> supportMessage,
@@ -88,7 +84,6 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? isFirstLaunch = freezed,
     Object? signedInRecently = freezed,
     Object? feedbackType = freezed,
     Object? supportMessage = freezed,
@@ -103,10 +98,6 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
       validate: validate == freezed
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFirstLaunch: isFirstLaunch == freezed
-          ? _value.isFirstLaunch
-          : isFirstLaunch // ignore: cast_nullable_to_non_nullable
               as bool,
       signedInRecently: signedInRecently == freezed
           ? _value.signedInRecently
@@ -142,7 +133,6 @@ abstract class _$GlobalPreferenceStateCopyWith<$Res>
   $Res call(
       {bool isLoading,
       bool validate,
-      bool isFirstLaunch,
       bool signedInRecently,
       FeedbackType feedbackType,
       BasicTextField<String> supportMessage,
@@ -165,7 +155,6 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? isFirstLaunch = freezed,
     Object? signedInRecently = freezed,
     Object? feedbackType = freezed,
     Object? supportMessage = freezed,
@@ -180,10 +169,6 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
       validate: validate == freezed
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFirstLaunch: isFirstLaunch == freezed
-          ? _value.isFirstLaunch
-          : isFirstLaunch // ignore: cast_nullable_to_non_nullable
               as bool,
       signedInRecently: signedInRecently == freezed
           ? _value.signedInRecently
@@ -215,7 +200,6 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   const _$_GlobalPreferenceState(
       {this.isLoading = false,
       this.validate = false,
-      this.isFirstLaunch = true,
       this.signedInRecently = false,
       this.feedbackType = FeedbackType.inquiry,
       required this.supportMessage,
@@ -228,9 +212,6 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   @JsonKey(defaultValue: false)
   @override
   final bool validate;
-  @JsonKey(defaultValue: true)
-  @override
-  final bool isFirstLaunch;
   @JsonKey(defaultValue: false)
   @override
   final bool signedInRecently;
@@ -248,7 +229,7 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
 
   @override
   String toString() {
-    return 'GlobalPreferenceState(isLoading: $isLoading, validate: $validate, isFirstLaunch: $isFirstLaunch, signedInRecently: $signedInRecently, feedbackType: $feedbackType, supportMessage: $supportMessage, supportImages: $supportImages, status: $status)';
+    return 'GlobalPreferenceState(isLoading: $isLoading, validate: $validate, signedInRecently: $signedInRecently, feedbackType: $feedbackType, supportMessage: $supportMessage, supportImages: $supportImages, status: $status)';
   }
 
   @override
@@ -260,8 +241,6 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
                 other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
                 other.validate == validate) &&
-            (identical(other.isFirstLaunch, isFirstLaunch) ||
-                other.isFirstLaunch == isFirstLaunch) &&
             (identical(other.signedInRecently, signedInRecently) ||
                 other.signedInRecently == signedInRecently) &&
             (identical(other.feedbackType, feedbackType) ||
@@ -274,16 +253,8 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      isLoading,
-      validate,
-      isFirstLaunch,
-      signedInRecently,
-      feedbackType,
-      supportMessage,
-      supportImages,
-      status);
+  int get hashCode => Object.hash(runtimeType, isLoading, validate,
+      signedInRecently, feedbackType, supportMessage, supportImages, status);
 
   @JsonKey(ignore: true)
   @override
@@ -296,7 +267,6 @@ abstract class _GlobalPreferenceState implements GlobalPreferenceState {
   const factory _GlobalPreferenceState(
       {bool isLoading,
       bool validate,
-      bool isFirstLaunch,
       bool signedInRecently,
       FeedbackType feedbackType,
       required BasicTextField<String> supportMessage,
@@ -307,8 +277,6 @@ abstract class _GlobalPreferenceState implements GlobalPreferenceState {
   bool get isLoading;
   @override
   bool get validate;
-  @override
-  bool get isFirstLaunch;
   @override
   bool get signedInRecently;
   @override

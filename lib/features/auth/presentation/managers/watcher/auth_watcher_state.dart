@@ -7,8 +7,8 @@ class AuthWatcherState with _$AuthWatcherState {
     @Default(false) bool isAuthenticated,
     @Default(false) bool isListeningForAuthChanges,
     @Default(false) bool isListeningForUserChanges,
-    User? user,
-    @Default(None()) Option<User?> option,
+    Rider? rider,
+    @Default(None()) Option<Rider?> option,
   }) = _AuthWatcherState;
 
   const AuthWatcherState._();

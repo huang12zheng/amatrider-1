@@ -17,7 +17,7 @@ class AuthRemoteDatasource {
 
   AuthRemoteDatasource(this._dio);
 
-  Future<Response<dynamic>> createUserAccount(UserDTO dto) async {
+  Future<Response<dynamic>> createRiderAccount(RiderDTO dto) async {
     // Generate Form Data for request
     final data = FormData.fromMap(dto.toJson());
     // Perform POST request based on role / user_type
@@ -29,7 +29,7 @@ class AuthRemoteDatasource {
     required String? password,
   }) async {
     // Convert data to DTO
-    final dto = UserDTO(email: email, password: password);
+    final dto = RiderDTO(email: email, password: password);
     // Generate Form Data for request
     final data = FormData.fromMap(dto.toJson());
     // Perform POST request based on role / user_type
@@ -42,7 +42,7 @@ class AuthRemoteDatasource {
 
   Future<Response<dynamic>> resendPhoneVerification(String? phone) {
     // Generate Form Data for request
-    final data = FormData.fromMap(UserDTO(phone: phone).toJson());
+    final data = FormData.fromMap(RiderDTO(phone: phone).toJson());
     // Perform POST request based on role / user_type
     return _dio.post(EndPoints.RESEND_PHONE_VERIFICATION, data: data);
   }
@@ -52,7 +52,7 @@ class AuthRemoteDatasource {
     required String? token,
   }) async {
     // Convert data to DTO
-    final dto = UserDTO(phone: phone, token: token);
+    final dto = RiderDTO(phone: phone, token: token);
     // Generate Form Data for request
     final data = FormData.fromMap(dto.toJson());
     // Perform POST request based on role / user_type
@@ -61,12 +61,12 @@ class AuthRemoteDatasource {
 
   Future<Response<dynamic>> sendPasswordResetMessage(String? phone) async {
     // Generate Form Data for request
-    final data = FormData.fromMap(UserDTO(phone: phone).toJson());
+    final data = FormData.fromMap(RiderDTO(phone: phone).toJson());
     // Perform request to send password reset email
     return _dio.post(EndPoints.SEND_PASSWORD_RESET_MESSAGE, data: data);
   }
 
-  Future<Response<dynamic>> confirmPasswordReset(UserDTO dto) async {
+  Future<Response<dynamic>> confirmPasswordReset(RiderDTO dto) async {
     // Generate Form Data for request
     final data = FormData.fromMap(dto.toJson());
     // Perform request to reset user's password
@@ -74,7 +74,7 @@ class AuthRemoteDatasource {
   }
 
   Future<Response<dynamic>> updateProfile({
-    UserDTO? dto,
+    RiderDTO? dto,
     File? image,
   }) async {
     final part = image?.let(
@@ -96,7 +96,7 @@ class AuthRemoteDatasource {
 
   Future<Response<dynamic>> updatePhoneNumber(String? phone) {
     // Generate Form Data for request
-    final _data = FormData.fromMap(UserDTO(phone: phone).toJson());
+    final _data = FormData.fromMap(RiderDTO(phone: phone).toJson());
     // Perform PUT request to update user's profile
     return _dio.post(EndPoints.UPDATE_PHONE, data: _data);
   }
@@ -107,7 +107,7 @@ class AuthRemoteDatasource {
   }) {
     return _dio.patch(
       EndPoints.CONFIRM_UPDATE_PHONE,
-      data: UserDTO(phone: phone, token: token).toJson(),
+      data: RiderDTO(phone: phone, token: token).toJson(),
     );
   }
 
@@ -117,7 +117,7 @@ class AuthRemoteDatasource {
     required String? confirmation,
   }) {
     // Generate Form Data for request
-    final data = UserDTO(
+    final data = RiderDTO(
       oldPassword: current,
       password: newPassword,
       confirmation: confirmation,
@@ -144,13 +144,13 @@ class AuthRemoteDatasource {
     return _dio.post(EndPoints.APPLE_SIGNIN, data: data);
   }
 
-  Future<Either<AppHttpResponse, UserDTO?>> getUser([
+  Future<Either<AppHttpResponse, RiderDTO?>> getRider([
     VoidCallback? callback,
   ]) async {
     try {
       final _response = await _dio.get(EndPoints.GET_USER);
 
-      return right(UserDTO.fromJson(
+      return right(RiderDTO.fromJson(
         _response.data as Map<String, dynamic>,
       ));
     } on AppHttpResponse catch (e, trace) {
@@ -160,7 +160,7 @@ class AuthRemoteDatasource {
     }
   }
 
-  Future<Either<AppHttpResponse, UserDTO?>> _catchBlock(
+  Future<Either<AppHttpResponse, RiderDTO?>> _catchBlock(
     VoidCallback? callback,
     AppHttpResponse e,
     StackTrace trace,

@@ -15,6 +15,7 @@ const Pattern emailPattern =
 const Pattern upperCasePattern = '(.*[A-Z].*)';
 const Pattern alphaNumericPattern = '^[A-Za-z0-9]*\$';
 const Pattern numberPattern = '[0-9]+';
+const Pattern phonePattern = r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$';
 const Pattern symbolPattern = r"[-!$@%^&#*()_+|~=`{}\[\]:\;'<>?\\,.\/]";
 const Pattern onlyNumbersPattern = '^[0-9]*\$';
 const Pattern datePattern =
@@ -95,8 +96,7 @@ class Validator with _CreditCardValidator {
 
     var clean = phone.trim();
 
-    var containsOnlyDigits =
-        RegExp(r'^[0-9]+$', multiLine: true).hasMatch(clean);
+    var formattedPhoneNumber = RegExp('$phonePattern').hasMatch(clean);
 
     switch (mode) {
       case FIELD_VALIDATION.NONE:
@@ -107,7 +107,7 @@ class Validator with _CreditCardValidator {
       case FIELD_VALIDATION.DEEP:
       default:
         if (clean.isEmpty) return left(FieldObjectException.empty());
-        if (!containsOnlyDigits)
+        if (!formattedPhoneNumber)
           return left(FieldObjectException.invalid(message: INVALID_PHONE));
         break;
     }

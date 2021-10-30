@@ -3,7 +3,7 @@ library entities.dart;
 export 'fields/fields.dart';
 export 'user/auth_provider.dart';
 export 'user/auth_provider.dart';
-export 'user/user.dart';
+export 'user/rider.dart';
 export 'field_object.dart';
 export 'unique_id.dart';
 export 'immutable_ids.dart';

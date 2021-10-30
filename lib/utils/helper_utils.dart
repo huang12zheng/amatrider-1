@@ -400,7 +400,7 @@ class Utils {
 
     AppAssets.svgs.forEach(
       (path) async => await precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoder, path),
+        ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, path),
         context,
       ),
     );
@@ -689,7 +689,7 @@ class Utils {
         );
   }
 
-  Future<U> showAlertDialog<U>({
+  FutureOr<U?> showAlertDialog<U>({
     required BuildContext context,
     required WidgetBuilder builder,
     bool barrierDismissible = true,
@@ -699,14 +699,14 @@ class Utils {
     RouteSettings? routeSettings,
   }) async {
     if (Platform.isIOS || Platform.isMacOS)
-      return showCupertinoDialog<U>(
+      return (await showCupertinoDialog<U?>(
         context: context,
         builder: builder,
         useRootNavigator: useRootNavigator,
         barrierDismissible: barrierDismissible,
         routeSettings: routeSettings,
-      ) as U;
-    return showDialog<U>(
+      ));
+    return (await showDialog<U?>(
       context: context,
       builder: builder,
       barrierDismissible: barrierDismissible,
@@ -714,7 +714,7 @@ class Utils {
       useSafeArea: useSafeArea,
       useRootNavigator: useRootNavigator,
       routeSettings: routeSettings,
-    ) as U;
+    ));
   }
 
   int calculateAge(DateTime birthDate) {

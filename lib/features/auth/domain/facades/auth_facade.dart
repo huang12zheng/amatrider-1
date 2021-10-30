@@ -15,22 +15,22 @@ import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class AuthFacade {
-  Future<Either<AppHttpResponse, Option<User?>>> get currentUser;
+  Future<Either<AppHttpResponse, Option<Rider?>>> get currentRider;
 
-  Future<Option<User?>> get user;
+  Future<Option<Rider?>> get rider;
 
-  Stream<Either<AppHttpResponse, Option<User?>>> get onAuthStateChanges;
+  Stream<Either<AppHttpResponse, Option<Rider?>>> get onAuthStateChanges;
 
-  Stream<Option<User?>> get onUserChanges;
+  Stream<Option<Rider?>> get onRiderChanges;
 
-  Future<void> sink([Either<AppHttpResponse, Option<User?>> userOrFailure]);
+  Future<void> sink([Either<AppHttpResponse, Option<Rider?>> riderOrFailure]);
 
-  Future<void> update(Option<User?> user);
+  Future<void> update(Option<Rider?> rider);
 
   Future<AppHttpResponse> login({
     required EmailAddress email,
     required Password password,
-    UserDTO? registered,
+    RiderDTO? registered,
   });
 
   Future<AppHttpResponse> createAccount({
@@ -124,7 +124,7 @@ abstract class AuthFacade {
           ),
         );
 
-        // Log the user of if access token has expired
+        // Log the Rider of if access token has expired
         return await e.foldCode(
           is401: () async {
             await signOut(true);

@@ -1,16 +1,16 @@
 part of profile_page.dart;
 
 class _ProfileCardWidget extends StatelessWidget {
-  final User? user;
+  final Rider? rider;
   final bool showLoader;
 
   const _ProfileCardWidget({
     Key? key,
-    this.user,
+    this.rider,
     this.showLoader = false,
   }) : super(key: key);
 
-  bool get isGuest => user.isNullOrBlank;
+  bool get isGuest => rider.isNullOrBlank;
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +34,18 @@ class _ProfileCardWidget extends StatelessWidget {
           ),
         ),
         child:
-            isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(user: user),
+            isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
       ),
     );
   }
 }
 
 class _AuthenticatedCard extends StatelessWidget {
-  final User? user;
+  final Rider? rider;
 
   const _AuthenticatedCard({
     Key? key,
-    required this.user,
+    required this.rider,
   }) : super(key: key);
 
   @override
@@ -61,7 +61,7 @@ class _AuthenticatedCard extends StatelessWidget {
             child: Row(
               children: [
                 Flexible(
-                  child: user?.photo.getOrEmpty.let(
+                  child: rider?.photo.getOrEmpty.let(
                         (it) => CachedNetworkImage(
                           imageUrl: '$it',
                           fit: BoxFit.contain,
@@ -90,7 +90,7 @@ class _AuthenticatedCard extends StatelessWidget {
                     children: [
                       Flexible(
                         child: AdaptiveText(
-                          '${user?.name.getOrError}',
+                          '${rider?.fullName.getOrError}',
                           style: TextStyle(
                             fontSize: 18.0.sp,
                             fontWeight: FontWeight.w600,
@@ -100,7 +100,7 @@ class _AuthenticatedCard extends StatelessWidget {
                       //
                       Flexible(
                         child: AdaptiveText(
-                          '${user?.email.getOrError}',
+                          '${rider?.email.getOrError}',
                           style: TextStyle(
                             fontSize: 16.0.sp,
                             fontWeight: FontWeight.w400,
@@ -110,7 +110,7 @@ class _AuthenticatedCard extends StatelessWidget {
                       //
                       Flexible(
                         child: AdaptiveText(
-                          '${user?.phone.getOrError}',
+                          '${rider?.phone.getOrError}',
                           style: TextStyle(
                             fontSize: 17.0.sp,
                             fontWeight: FontWeight.w400,
@@ -140,7 +140,7 @@ class _AuthenticatedCard extends StatelessWidget {
                 elevation: 2.0,
                 isDismissible: false,
                 bounce: true,
-                builder: (_) => const SizedBox.shrink(),
+                builder: (_) => const _EditProfileBottomSheet(),
               ),
               borderRadius: BorderRadius.circular(100.0),
               child: Padding(
@@ -236,7 +236,10 @@ class _GuestCard extends StatelessWidget {
                         light: () => null,
                         dark: () => const BorderSide(color: Colors.white70),
                       ),
-                      onPressed: () {},
+                      onPressed: () => navigator.pushAndPopUntil(
+                        const LoginRoute(),
+                        predicate: (_) => false,
+                      ),
                     ),
                   ),
                 ],

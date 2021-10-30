@@ -11,11 +11,8 @@
 **/DerivedData/
 Icon?
 **/Pods/
-.symlinks/
 **/.symlinks/
-/build/
 profile
-Podfile.lock
 xcuserdata
 **/.generated/
 Flutter/App.framework

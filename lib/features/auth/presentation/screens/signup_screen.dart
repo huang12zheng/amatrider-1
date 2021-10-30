@@ -1,6 +1,5 @@
 library signup_screen.dart;
 
-import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/oauth_widgets.dart';
@@ -10,7 +9,7 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flag/flag_widget.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

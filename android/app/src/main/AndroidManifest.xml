@@ -49,6 +49,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+	<meta-data
+            android:name="io.flutter.embedded_views_preview"
+            android:value="true" />
+
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
     </application>

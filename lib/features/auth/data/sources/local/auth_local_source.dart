@@ -13,26 +13,26 @@ class AuthLocalDatasource {
 
   AuthLocalDatasource(this._manager, this._database);
 
-  Future<void> cacheAuthenticatedUser(UserDTO user) async {
-    await _database.userDAO.insertUser(user.floor);
+  Future<void> cacheAuthenticatedRider(RiderDTO user) async {
+    await _database.riderDAO.insertRider(user.floor);
   }
 
-  Future<Option<UserDTO?>> getUser() async {
-    final dao = _database.userDAO;
+  Future<Option<RiderDTO?>> getRider() async {
+    final dao = _database.riderDAO;
 
-    final _result = await dao.lastUser();
+    final _result = await dao.lastRider();
 
     return optionOf(_result);
   }
 
-  Future<void> cacheUserAccessToken(dynamic response) async => await _manager
+  Future<void> cacheRiderAccessToken(dynamic response) async => await _manager
       .save(response: TokenResponse.fromJson(response as Map<String, dynamic>));
 
   Future<void> signOut({
-    bool clearUser = true,
+    bool clearRider = true,
     bool clearAccessToken = true,
   }) async {
-    if (clearUser) await _database.userDAO.removeUsers();
+    if (clearRider) await _database.riderDAO.removeRiders();
 
     if (clearAccessToken) await _manager.delete();
   }

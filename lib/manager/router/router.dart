@@ -76,6 +76,7 @@ import 'package:amatrider/_404.dart';
       page: OTPVerificationScreen,
       path: 'otp-verification-screen',
       cupertinoPageTitle: 'OTP',
+      guards: [GuestGuard, AuthGuard],
     ),
     //
     dashboardRouter,
@@ -124,8 +125,15 @@ import 'package:amatrider/_404.dart';
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
-      page: RideAcceptedScreen,
-      path: 'ride-accepted-screen',
+      page: PackageDeliveryAcceptedScreen,
+      path: 'package-delivery-accepted-screen',
+      guards: [AuthGuard],
+    ),
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: OrderDeliveryAcceptedScreen,
+      path: 'order-delivery-accepted-screen',
       guards: [AuthGuard],
     ),
     //
@@ -144,6 +152,7 @@ import 'package:amatrider/_404.dart';
       usesPathAsKey: true,
       page: ContactSupportScreen,
       cupertinoPageTitle: 'Contact Support',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -152,6 +161,7 @@ import 'package:amatrider/_404.dart';
       usesPathAsKey: true,
       page: PrivacyPolicyScreen,
       cupertinoPageTitle: 'Privacy Policy',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -160,6 +170,7 @@ import 'package:amatrider/_404.dart';
       usesPathAsKey: true,
       page: PromotionsScreen,
       cupertinoPageTitle: 'Promotions',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -168,7 +179,7 @@ import 'package:amatrider/_404.dart';
       usesPathAsKey: true,
       page: NotificationScreen,
       cupertinoPageTitle: 'Notifications',
-      // guards: [AuthGuard],
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -176,6 +187,7 @@ import 'package:amatrider/_404.dart';
       page: NotConnectedScreen,
       maintainState: true,
       path: 'not-connected-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -183,6 +195,7 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: NoHistoryScreen,
       path: 'no-history-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -200,6 +213,7 @@ const dashboardRouter = AutoRoute(
   fullMatch: true,
   page: DashboardScreen,
   maintainState: true,
+  guards: [AuthGuard],
   children: [
     AutoRoute(
       path: 'home',

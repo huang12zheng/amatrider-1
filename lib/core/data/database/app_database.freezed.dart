@@ -13,15 +13,15 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-UserDTO _$UserDTOFromJson(Map<String, dynamic> json) {
-  return _UserDTO.fromJson(json);
+RiderDTO _$RiderDTOFromJson(Map<String, dynamic> json) {
+  return _RiderDTO.fromJson(json);
 }
 
 /// @nodoc
-class _$UserDTOTearOff {
-  const _$UserDTOTearOff();
+class _$RiderDTOTearOff {
+  const _$RiderDTOTearOff();
 
-  _UserDTO call(
+  _RiderDTO call(
       {@primaryKey
       @JsonKey(includeIfNull: false)
           String? id,
@@ -31,8 +31,6 @@ class _$UserDTOTearOff {
           String? firstName,
       @JsonKey(includeIfNull: false, name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false, name: 'full_name')
-          String? fullName,
       @JsonKey(includeIfNull: false)
           String? email,
       @JsonKey(includeIfNull: false)
@@ -43,8 +41,20 @@ class _$UserDTOTearOff {
           String? oldPassword,
       @JsonKey(includeIfNull: false, name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'profile_image')
+      @JsonKey(includeIfNull: false, name: 'image')
           String? image,
+      @JsonKey(includeIfNull: false, name: 'availability')
+      @RiderAvailabilitySerializer()
+          RiderAvailability? availability,
+      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @DoubleSerializer()
+          double? lat,
+      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @DoubleSerializer()
+          double? lng,
+      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @TimestampConverter()
+          DateTime? phoneVerifiedAt,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -54,34 +64,37 @@ class _$UserDTOTearOff {
       @JsonKey(includeIfNull: false, name: 'deleted_at')
       @TimestampConverter()
           DateTime? deletedAt}) {
-    return _UserDTO(
+    return _RiderDTO(
       id: id,
       token: token,
       firstName: firstName,
       lastName: lastName,
-      fullName: fullName,
       email: email,
       phone: phone,
       password: password,
       oldPassword: oldPassword,
       confirmation: confirmation,
       image: image,
+      availability: availability,
+      lat: lat,
+      lng: lng,
+      phoneVerifiedAt: phoneVerifiedAt,
       createdAt: createdAt,
       updatedAt: updatedAt,
       deletedAt: deletedAt,
     );
   }
 
-  UserDTO fromJson(Map<String, Object?> json) {
-    return UserDTO.fromJson(json);
+  RiderDTO fromJson(Map<String, Object?> json) {
+    return RiderDTO.fromJson(json);
   }
 }
 
 /// @nodoc
-const $UserDTO = _$UserDTOTearOff();
+const $RiderDTO = _$RiderDTOTearOff();
 
 /// @nodoc
-mixin _$UserDTO {
+mixin _$RiderDTO {
   @primaryKey
   @JsonKey(includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
@@ -91,8 +104,6 @@ mixin _$UserDTO {
   String? get firstName => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'last_name')
   String? get lastName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'full_name')
-  String? get fullName => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
   String? get email => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
@@ -103,8 +114,20 @@ mixin _$UserDTO {
   String? get oldPassword => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'password_confirmation')
   String? get confirmation => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'profile_image')
+  @JsonKey(includeIfNull: false, name: 'image')
   String? get image => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'availability')
+  @RiderAvailabilitySerializer()
+  RiderAvailability? get availability => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @DoubleSerializer()
+  double? get lat => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @DoubleSerializer()
+  double? get lng => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @TimestampConverter()
+  DateTime? get phoneVerifiedAt => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -117,13 +140,14 @@ mixin _$UserDTO {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserDTOCopyWith<UserDTO> get copyWith => throw _privateConstructorUsedError;
+  $RiderDTOCopyWith<RiderDTO> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserDTOCopyWith<$Res> {
-  factory $UserDTOCopyWith(UserDTO value, $Res Function(UserDTO) then) =
-      _$UserDTOCopyWithImpl<$Res>;
+abstract class $RiderDTOCopyWith<$Res> {
+  factory $RiderDTOCopyWith(RiderDTO value, $Res Function(RiderDTO) then) =
+      _$RiderDTOCopyWithImpl<$Res>;
   $Res call(
       {@primaryKey
       @JsonKey(includeIfNull: false)
@@ -134,8 +158,6 @@ abstract class $UserDTOCopyWith<$Res> {
           String? firstName,
       @JsonKey(includeIfNull: false, name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false, name: 'full_name')
-          String? fullName,
       @JsonKey(includeIfNull: false)
           String? email,
       @JsonKey(includeIfNull: false)
@@ -146,8 +168,20 @@ abstract class $UserDTOCopyWith<$Res> {
           String? oldPassword,
       @JsonKey(includeIfNull: false, name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'profile_image')
+      @JsonKey(includeIfNull: false, name: 'image')
           String? image,
+      @JsonKey(includeIfNull: false, name: 'availability')
+      @RiderAvailabilitySerializer()
+          RiderAvailability? availability,
+      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @DoubleSerializer()
+          double? lat,
+      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @DoubleSerializer()
+          double? lng,
+      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @TimestampConverter()
+          DateTime? phoneVerifiedAt,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -160,12 +194,12 @@ abstract class $UserDTOCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserDTOCopyWithImpl<$Res> implements $UserDTOCopyWith<$Res> {
-  _$UserDTOCopyWithImpl(this._value, this._then);
+class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
+  _$RiderDTOCopyWithImpl(this._value, this._then);
 
-  final UserDTO _value;
+  final RiderDTO _value;
   // ignore: unused_field
-  final $Res Function(UserDTO) _then;
+  final $Res Function(RiderDTO) _then;
 
   @override
   $Res call({
@@ -173,13 +207,16 @@ class _$UserDTOCopyWithImpl<$Res> implements $UserDTOCopyWith<$Res> {
     Object? token = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? fullName = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? password = freezed,
     Object? oldPassword = freezed,
     Object? confirmation = freezed,
     Object? image = freezed,
+    Object? availability = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+    Object? phoneVerifiedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -201,10 +238,6 @@ class _$UserDTOCopyWithImpl<$Res> implements $UserDTOCopyWith<$Res> {
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
-      fullName: fullName == freezed
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
-              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -229,6 +262,22 @@ class _$UserDTOCopyWithImpl<$Res> implements $UserDTOCopyWith<$Res> {
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      availability: availability == freezed
+          ? _value.availability
+          : availability // ignore: cast_nullable_to_non_nullable
+              as RiderAvailability?,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double?,
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double?,
+      phoneVerifiedAt: phoneVerifiedAt == freezed
+          ? _value.phoneVerifiedAt
+          : phoneVerifiedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -246,9 +295,9 @@ class _$UserDTOCopyWithImpl<$Res> implements $UserDTOCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
-  factory _$UserDTOCopyWith(_UserDTO value, $Res Function(_UserDTO) then) =
-      __$UserDTOCopyWithImpl<$Res>;
+abstract class _$RiderDTOCopyWith<$Res> implements $RiderDTOCopyWith<$Res> {
+  factory _$RiderDTOCopyWith(_RiderDTO value, $Res Function(_RiderDTO) then) =
+      __$RiderDTOCopyWithImpl<$Res>;
   @override
   $Res call(
       {@primaryKey
@@ -260,8 +309,6 @@ abstract class _$UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
           String? firstName,
       @JsonKey(includeIfNull: false, name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false, name: 'full_name')
-          String? fullName,
       @JsonKey(includeIfNull: false)
           String? email,
       @JsonKey(includeIfNull: false)
@@ -272,8 +319,20 @@ abstract class _$UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
           String? oldPassword,
       @JsonKey(includeIfNull: false, name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'profile_image')
+      @JsonKey(includeIfNull: false, name: 'image')
           String? image,
+      @JsonKey(includeIfNull: false, name: 'availability')
+      @RiderAvailabilitySerializer()
+          RiderAvailability? availability,
+      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @DoubleSerializer()
+          double? lat,
+      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @DoubleSerializer()
+          double? lng,
+      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @TimestampConverter()
+          DateTime? phoneVerifiedAt,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -286,13 +345,13 @@ abstract class _$UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$UserDTOCopyWithImpl<$Res> extends _$UserDTOCopyWithImpl<$Res>
-    implements _$UserDTOCopyWith<$Res> {
-  __$UserDTOCopyWithImpl(_UserDTO _value, $Res Function(_UserDTO) _then)
-      : super(_value, (v) => _then(v as _UserDTO));
+class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
+    implements _$RiderDTOCopyWith<$Res> {
+  __$RiderDTOCopyWithImpl(_RiderDTO _value, $Res Function(_RiderDTO) _then)
+      : super(_value, (v) => _then(v as _RiderDTO));
 
   @override
-  _UserDTO get _value => super._value as _UserDTO;
+  _RiderDTO get _value => super._value as _RiderDTO;
 
   @override
   $Res call({
@@ -300,18 +359,21 @@ class __$UserDTOCopyWithImpl<$Res> extends _$UserDTOCopyWithImpl<$Res>
     Object? token = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
-    Object? fullName = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? password = freezed,
     Object? oldPassword = freezed,
     Object? confirmation = freezed,
     Object? image = freezed,
+    Object? availability = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+    Object? phoneVerifiedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(_UserDTO(
+    return _then(_RiderDTO(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -327,10 +389,6 @@ class __$UserDTOCopyWithImpl<$Res> extends _$UserDTOCopyWithImpl<$Res>
       lastName: lastName == freezed
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      fullName: fullName == freezed
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
               as String?,
       email: email == freezed
           ? _value.email
@@ -356,6 +414,22 @@ class __$UserDTOCopyWithImpl<$Res> extends _$UserDTOCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      availability: availability == freezed
+          ? _value.availability
+          : availability // ignore: cast_nullable_to_non_nullable
+              as RiderAvailability?,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
+              as double?,
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
+              as double?,
+      phoneVerifiedAt: phoneVerifiedAt == freezed
+          ? _value.phoneVerifiedAt
+          : phoneVerifiedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -374,9 +448,9 @@ class __$UserDTOCopyWithImpl<$Res> extends _$UserDTOCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@Entity(tableName: UserDTO.tableName)
-class _$_UserDTO extends _UserDTO {
-  const _$_UserDTO(
+@Entity(tableName: RiderDTO.tableName)
+class _$_RiderDTO extends _RiderDTO {
+  const _$_RiderDTO(
       {@primaryKey
       @JsonKey(includeIfNull: false)
           this.id,
@@ -386,8 +460,6 @@ class _$_UserDTO extends _UserDTO {
           this.firstName,
       @JsonKey(includeIfNull: false, name: 'last_name')
           this.lastName,
-      @JsonKey(includeIfNull: false, name: 'full_name')
-          this.fullName,
       @JsonKey(includeIfNull: false)
           this.email,
       @JsonKey(includeIfNull: false)
@@ -398,8 +470,20 @@ class _$_UserDTO extends _UserDTO {
           this.oldPassword,
       @JsonKey(includeIfNull: false, name: 'password_confirmation')
           this.confirmation,
-      @JsonKey(includeIfNull: false, name: 'profile_image')
+      @JsonKey(includeIfNull: false, name: 'image')
           this.image,
+      @JsonKey(includeIfNull: false, name: 'availability')
+      @RiderAvailabilitySerializer()
+          this.availability,
+      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @DoubleSerializer()
+          this.lat,
+      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @DoubleSerializer()
+          this.lng,
+      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @TimestampConverter()
+          this.phoneVerifiedAt,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           this.createdAt,
@@ -411,8 +495,8 @@ class _$_UserDTO extends _UserDTO {
           this.deletedAt})
       : super._();
 
-  factory _$_UserDTO.fromJson(Map<String, dynamic> json) =>
-      _$$_UserDTOFromJson(json);
+  factory _$_RiderDTO.fromJson(Map<String, dynamic> json) =>
+      _$$_RiderDTOFromJson(json);
 
   @override
   @primaryKey
@@ -427,9 +511,6 @@ class _$_UserDTO extends _UserDTO {
   @override
   @JsonKey(includeIfNull: false, name: 'last_name')
   final String? lastName;
-  @override
-  @JsonKey(includeIfNull: false, name: 'full_name')
-  final String? fullName;
   @override
   @JsonKey(includeIfNull: false)
   final String? email;
@@ -446,8 +527,24 @@ class _$_UserDTO extends _UserDTO {
   @JsonKey(includeIfNull: false, name: 'password_confirmation')
   final String? confirmation;
   @override
-  @JsonKey(includeIfNull: false, name: 'profile_image')
+  @JsonKey(includeIfNull: false, name: 'image')
   final String? image;
+  @override
+  @JsonKey(includeIfNull: false, name: 'availability')
+  @RiderAvailabilitySerializer()
+  final RiderAvailability? availability;
+  @override
+  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @DoubleSerializer()
+  final double? lat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @DoubleSerializer()
+  final double? lng;
+  @override
+  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @TimestampConverter()
+  final DateTime? phoneVerifiedAt;
   @override
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
@@ -463,22 +560,20 @@ class _$_UserDTO extends _UserDTO {
 
   @override
   String toString() {
-    return 'UserDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, fullName: $fullName, email: $email, phone: $phone, password: $password, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'RiderDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, availability: $availability, lat: $lat, lng: $lng, phoneVerifiedAt: $phoneVerifiedAt, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UserDTO &&
+            other is _RiderDTO &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.token, token) || other.token == token) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.password, password) ||
@@ -488,6 +583,12 @@ class _$_UserDTO extends _UserDTO {
             (identical(other.confirmation, confirmation) ||
                 other.confirmation == confirmation) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.availability, availability) ||
+                other.availability == availability) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng) &&
+            (identical(other.phoneVerifiedAt, phoneVerifiedAt) ||
+                other.phoneVerifiedAt == phoneVerifiedAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -503,30 +604,33 @@ class _$_UserDTO extends _UserDTO {
       token,
       firstName,
       lastName,
-      fullName,
       email,
       phone,
       password,
       oldPassword,
       confirmation,
       image,
+      availability,
+      lat,
+      lng,
+      phoneVerifiedAt,
       createdAt,
       updatedAt,
       deletedAt);
 
   @JsonKey(ignore: true)
   @override
-  _$UserDTOCopyWith<_UserDTO> get copyWith =>
-      __$UserDTOCopyWithImpl<_UserDTO>(this, _$identity);
+  _$RiderDTOCopyWith<_RiderDTO> get copyWith =>
+      __$RiderDTOCopyWithImpl<_RiderDTO>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserDTOToJson(this);
+    return _$$_RiderDTOToJson(this);
   }
 }
 
-abstract class _UserDTO extends UserDTO {
-  const factory _UserDTO(
+abstract class _RiderDTO extends RiderDTO {
+  const factory _RiderDTO(
       {@primaryKey
       @JsonKey(includeIfNull: false)
           String? id,
@@ -536,8 +640,6 @@ abstract class _UserDTO extends UserDTO {
           String? firstName,
       @JsonKey(includeIfNull: false, name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false, name: 'full_name')
-          String? fullName,
       @JsonKey(includeIfNull: false)
           String? email,
       @JsonKey(includeIfNull: false)
@@ -548,8 +650,20 @@ abstract class _UserDTO extends UserDTO {
           String? oldPassword,
       @JsonKey(includeIfNull: false, name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'profile_image')
+      @JsonKey(includeIfNull: false, name: 'image')
           String? image,
+      @JsonKey(includeIfNull: false, name: 'availability')
+      @RiderAvailabilitySerializer()
+          RiderAvailability? availability,
+      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @DoubleSerializer()
+          double? lat,
+      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @DoubleSerializer()
+          double? lng,
+      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @TimestampConverter()
+          DateTime? phoneVerifiedAt,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -558,10 +672,10 @@ abstract class _UserDTO extends UserDTO {
           DateTime? updatedAt,
       @JsonKey(includeIfNull: false, name: 'deleted_at')
       @TimestampConverter()
-          DateTime? deletedAt}) = _$_UserDTO;
-  const _UserDTO._() : super._();
+          DateTime? deletedAt}) = _$_RiderDTO;
+  const _RiderDTO._() : super._();
 
-  factory _UserDTO.fromJson(Map<String, dynamic> json) = _$_UserDTO.fromJson;
+  factory _RiderDTO.fromJson(Map<String, dynamic> json) = _$_RiderDTO.fromJson;
 
   @override
   @primaryKey
@@ -576,9 +690,6 @@ abstract class _UserDTO extends UserDTO {
   @override
   @JsonKey(includeIfNull: false, name: 'last_name')
   String? get lastName;
-  @override
-  @JsonKey(includeIfNull: false, name: 'full_name')
-  String? get fullName;
   @override
   @JsonKey(includeIfNull: false)
   String? get email;
@@ -595,8 +706,24 @@ abstract class _UserDTO extends UserDTO {
   @JsonKey(includeIfNull: false, name: 'password_confirmation')
   String? get confirmation;
   @override
-  @JsonKey(includeIfNull: false, name: 'profile_image')
+  @JsonKey(includeIfNull: false, name: 'image')
   String? get image;
+  @override
+  @JsonKey(includeIfNull: false, name: 'availability')
+  @RiderAvailabilitySerializer()
+  RiderAvailability? get availability;
+  @override
+  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @DoubleSerializer()
+  double? get lat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @DoubleSerializer()
+  double? get lng;
+  @override
+  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @TimestampConverter()
+  DateTime? get phoneVerifiedAt;
   @override
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
@@ -611,6 +738,6 @@ abstract class _UserDTO extends UserDTO {
   DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
-  _$UserDTOCopyWith<_UserDTO> get copyWith =>
+  _$RiderDTOCopyWith<_RiderDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

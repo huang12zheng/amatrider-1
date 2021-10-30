@@ -28,6 +28,19 @@ mixin EndPoints {
       '/rider/user/profile/phone'; // (PATCH)
   static const String UPDATE_USER_PROFILE = '/rider/user/profile'; // (POST)
 
+  /// .......///////...// SEND PACKAGE ENDPOINTS .......///////./....//
+  static const String GET_ACTIVE_PACKAGES = '/rider/package'; // (GET)
+  static const String ACCEPT_PACKAGE_DELIVERY =
+      '/rider/package/{id}/accept'; // (POST)
+  static const String DeCLINE_PACKAGE_DELIVERY =
+      '/rider/package/{id}/decline'; // (POST)
+  static const String UPDATE_PACKAGE_LOCATION =
+      '/rider/package/{id}/location'; // (POST)
+  static const String CONFIRM_RECEIVED_PACKAGE =
+      '/rider/package/{id}/confirm-pickup'; // (POST)
+  static const String CONFIRM_RECEIVED_DELIVERED =
+      '/rider/package/{id}/delivered'; // (POST)
+
   //.....///.....// UTILITIES ENDPOINTS ....////././//...//
   static const String COUNTRIES = '/utilities/countries';
   static const String BANKS = '/banks';

@@ -1,7 +1,5 @@
 import 'dart:ui';
 
-import 'package:amatrider/core/domain/entities/entities.dart';
-import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/reset_pasword_dialog.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -10,7 +8,7 @@ import 'package:amatrider/widgets/text_form_input_label.dart';
 import 'package:amatrider/widgets/vertical_spacer.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flag/flag.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -146,7 +144,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                       alignment: Alignment.center,
                       child: BlocBuilder<AuthCubit, AuthState>(
                         builder: (c, s) => CountdownWidget(
-                          duration: !s.user.phone.isValid
+                          duration: !s.rider.phone.isValid
                               ? const Duration(seconds: 0)
                               : env.flavor.fold(
                                   dev: () => const Duration(minutes: 1),
@@ -202,7 +200,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
   Widget _phoneInput() => PhoneFormField<AuthCubit, AuthState>(
         disabled: (s) => s.isLoading,
         validate: (s) => s.validate,
-        field: (s) => s.user.phone,
+        field: (s) => s.rider.phone,
         response: (s) => s.status,
         onChanged: (fn, str) => fn.phoneNumberChanged(str),
         // heroTag: Const.emailFieldHeroTag,
@@ -213,29 +211,25 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
           material: () => null,
         ),
         prefixWidget: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 0.3.sw),
+          constraints: BoxConstraints(maxWidth: 0.22.w),
           child: BlocBuilder<AuthCubit, AuthState>(
-            builder: (c, s) => DropdownFieldWidget<Country>(
-              height: 46,
-              items: s.countries.asList(),
-              disabled: s.isLoading,
-              disabledHintWidget: Center(
-                child: CircularProgressBar.adaptive(
-                    strokeWidth: 2, width: 0.06.sw, height: 0.06.sw),
+            builder: (c, s) => CountryListPick(
+              appBar: AppBar(
+                backgroundColor: Utils.foldTheme(
+                  light: () => Palette.cardColorLight,
+                  dark: () => Palette.cardColorDark,
+                ),
+                elevation: 0.0,
+                title: const Text('Choose a country'),
               ),
-              validate: s.validate,
-              selected: s.selectedCountry,
-              onChanged: c.read<AuthCubit>().countryChanged,
-              errorBorder: dropdownErrorBorder,
-              focusedErrorBorder: dropdownErrorBorder,
-              child: (it) => Row(
+              pickerBuilder: (context, countryCode) => Row(
                 children: [
                   Flexible(
-                    child: Flag.fromString(
-                      '${it?.iso?.getOrEmpty}',
-                      height: 20,
+                    child: Image.asset(
+                      '${countryCode?.flagUri}',
                       width: 30,
-                      fit: BoxFit.fill,
+                      height: 30,
+                      package: 'country_list_pick',
                     ),
                   ),
                   //
@@ -243,12 +237,31 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                   //
                   Flexible(
                     child: AdaptiveText(
-                      '${it?.dialCode?.getOrEmpty}',
+                      '${countryCode?.dialCode}',
                       maxLines: 1,
                     ),
                   ),
                 ],
               ),
+              theme: CountryTheme(
+                isShowFlag: true,
+                isShowTitle: true,
+                isShowCode: true,
+                isDownIcon: true,
+                showEnglishName: true,
+                searchHintText: 'Start typing..',
+                initialSelection: 'NG',
+                alphabetSelectedBackgroundColor: Palette.accentColor,
+              ),
+              initialSelection: 'NG',
+              onChanged: (code) {
+                print(code?.name);
+                print(code?.code);
+                print(code?.dialCode);
+                print(code?.toCountryStringOnly());
+              },
+              useUiOverlay: true,
+              useSafeArea: false,
             ),
           ),
         ),

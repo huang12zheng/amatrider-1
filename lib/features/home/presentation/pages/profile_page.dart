@@ -1,18 +1,25 @@
 library profile_page.dart;
 
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 part '../widgets/profile_page_widgets.dart';
+part '../widgets/edit_profile_bottom_sheet.dart';
+part '../widgets/phone_update_bottom_sheet.dart';
 
 /// A stateless widget to render ProfilePage.
 class ProfilePage extends StatefulWidget with AutoRouteWrapper {
@@ -61,7 +68,9 @@ class _ProfilePageState extends State<ProfilePage>
                       IgnorePointer(
                         ignoring: s.isLoading,
                         child: _ProfileCardWidget(
-                            user: s.user, showLoader: s.isLoading),
+                          rider: s.rider,
+                          showLoader: s.isLoading,
+                        ),
                       ),
                       //
                       VerticalSpace(height: 0.1.sw),

@@ -33,7 +33,7 @@ class _MaterialSignUp extends StatelessWidget {
                     prefix: 'First Name',
                     disabled: (s) => s.isLoading,
                     validate: (s) => s.validate,
-                    field: (s) => s.user.firstName,
+                    field: (s) => s.rider.firstName,
                     focus: AuthState.firstNameFocus,
                     next: AuthState.lastNameFocus,
                     onChanged: (it, str) => it.firstNameChanged(str),
@@ -55,7 +55,7 @@ class _MaterialSignUp extends StatelessWidget {
                     prefix: 'Last Name',
                     disabled: (s) => s.isLoading,
                     validate: (s) => s.validate,
-                    field: (s) => s.user.lastName,
+                    field: (s) => s.rider.lastName,
                     focus: AuthState.lastNameFocus,
                     next: AuthState.newEmailFocus,
                     onChanged: (it, str) => it.lastNameChanged(str),
@@ -80,7 +80,7 @@ class _MaterialSignUp extends StatelessWidget {
           useHero: false,
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
-          field: (s) => s.user.email,
+          field: (s) => s.rider.email,
           focus: AuthState.newEmailFocus,
           next: AuthState.phoneFocus,
           response: (s) => s.status,
@@ -94,35 +94,31 @@ class _MaterialSignUp extends StatelessWidget {
         PhoneFormField<AuthCubit, AuthState>(
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
-          field: (s) => s.user.phone,
+          field: (s) => s.rider.phone,
           focus: AuthState.phoneFocus,
           next: AuthState.newPasswordFocus,
           borderRadius: BorderRadius.circular(100),
           controller: (s) => s.phoneTextController,
           prefixWidget: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 0.3.sw),
+            constraints: BoxConstraints(maxWidth: 0.22.w),
             child: BlocBuilder<AuthCubit, AuthState>(
-              builder: (c, s) => DropdownFieldWidget<Country>(
-                height: 46,
-                items: s.countries.asList(),
-                disabled: s.isLoading,
-                disabledHintWidget: Center(
-                  child: CircularProgressBar.adaptive(
-                      strokeWidth: 2, width: 0.06.sw, height: 0.06.sw),
+              builder: (c, s) => CountryListPick(
+                appBar: AppBar(
+                  backgroundColor: Utils.foldTheme(
+                    light: () => Palette.cardColorLight,
+                    dark: () => Palette.cardColorDark,
+                  ),
+                  elevation: 0.0,
+                  title: const Text('Choose a country'),
                 ),
-                validate: s.validate,
-                selected: s.selectedCountry,
-                onChanged: c.read<AuthCubit>().countryChanged,
-                errorBorder: dropdownErrorBorder,
-                focusedErrorBorder: dropdownErrorBorder,
-                child: (it) => Row(
+                pickerBuilder: (context, countryCode) => Row(
                   children: [
                     Flexible(
-                      child: Flag.fromString(
-                        '${it?.iso?.getOrEmpty}',
-                        height: 20,
+                      child: Image.asset(
+                        '${countryCode?.flagUri}',
                         width: 30,
-                        fit: BoxFit.fill,
+                        height: 30,
+                        package: 'country_list_pick',
                       ),
                     ),
                     //
@@ -130,12 +126,31 @@ class _MaterialSignUp extends StatelessWidget {
                     //
                     Flexible(
                       child: AdaptiveText(
-                        '${it?.dialCode?.getOrEmpty}',
+                        '${countryCode?.dialCode}',
                         maxLines: 1,
                       ),
                     ),
                   ],
                 ),
+                theme: CountryTheme(
+                  isShowFlag: true,
+                  isShowTitle: true,
+                  isShowCode: true,
+                  isDownIcon: true,
+                  showEnglishName: true,
+                  searchHintText: 'Start typing..',
+                  initialSelection: 'NG',
+                  alphabetSelectedBackgroundColor: Palette.accentColor,
+                ),
+                initialSelection: 'NG',
+                onChanged: (code) {
+                  print(code?.name);
+                  print(code?.code);
+                  print(code?.dialCode);
+                  print(code?.toCountryStringOnly());
+                },
+                useUiOverlay: true,
+                useSafeArea: false,
               ),
             ),
           ),
@@ -159,7 +174,7 @@ class _MaterialSignUp extends StatelessWidget {
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
           isObscured: (s) => s.isPasswordHidden,
-          field: (s) => s.user.password,
+          field: (s) => s.rider.password,
           focus: AuthState.newPasswordFocus,
           response: (s) => s.status,
           errorField: (f) => f.errors?.password,
@@ -219,7 +234,7 @@ class _CupertinoSignUp extends StatelessWidget {
               prefix: 'First Name',
               disabled: (s) => s.isLoading,
               validate: (s) => s.validate,
-              field: (s) => s.user.firstName,
+              field: (s) => s.rider.firstName,
               focus: AuthState.firstNameFocus,
               next: AuthState.lastNameFocus,
               onChanged: (it, str) => it.firstNameChanged(str),
@@ -229,7 +244,7 @@ class _CupertinoSignUp extends StatelessWidget {
               prefix: 'Last Name',
               disabled: (s) => s.isLoading,
               validate: (s) => s.validate,
-              field: (s) => s.user.lastName,
+              field: (s) => s.rider.lastName,
               focus: AuthState.lastNameFocus,
               next: AuthState.newEmailFocus,
               onChanged: (it, str) => it.lastNameChanged(str),
@@ -244,7 +259,7 @@ class _CupertinoSignUp extends StatelessWidget {
               prefix: 'Email',
               disabled: (s) => s.isLoading,
               validate: (s) => s.validate,
-              field: (s) => s.user.email,
+              field: (s) => s.rider.email,
               focus: AuthState.newEmailFocus,
               next: AuthState.phoneFocus,
               response: (s) => s.status,
@@ -255,11 +270,11 @@ class _CupertinoSignUp extends StatelessWidget {
             //   prefix: 'Phone',
             //   disabled: (s) => s.isLoading,
             //   validate: (s) => s.validate,
-            //   field: (s) => s.user.phone,
+            //   field: (s) => s.rider.phone,
             //   focus: AuthState.phoneFocus,
             //   next: AuthState.newPasswordFocus,
             //   response: (s) => s.status,
-            //   maxLength: (s) => s.user.phone.country.digitsCount,
+            //   maxLength: (s) => s.rider.phone.country.digitsCount,
             //   onChanged: (fn, str) => fn.phoneNumberChanged(str),
             // ),
             //
@@ -270,7 +285,7 @@ class _CupertinoSignUp extends StatelessWidget {
               disabled: (s) => s.isLoading,
               validate: (s) => s.validate,
               isObscured: (s) => s.isPasswordHidden,
-              field: (s) => s.user.password,
+              field: (s) => s.rider.password,
               focus: AuthState.newPasswordFocus,
               response: (s) => s.status,
               // responseField: (f) => f.errors?.password,

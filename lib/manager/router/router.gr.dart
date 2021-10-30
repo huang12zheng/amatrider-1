@@ -13,6 +13,7 @@ import 'dart:async' as _i12;
 import 'package:amatrider/_404.dart' as _i6;
 import 'package:amatrider/core/presentation/index.dart' as _i5;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i11;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i8;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -21,7 +22,6 @@ import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:amatrider/manager/router/guards/guards.dart' as _i10;
 import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/cupertino.dart' as _i11;
 import 'package:flutter/material.dart' as _i9;
 
 class AppRouter extends _i7.RootStackRouter {
@@ -105,11 +105,16 @@ class AppRouter extends _i7.RootStackRouter {
       return _i7.AdaptivePage<dynamic>(
           routeData: routeData, child: const _i4.EditBankDetailsScreen());
     },
-    RideAcceptedRoute.name: (routeData) {
-      final args = routeData.argsAs<RideAcceptedRouteArgs>(
-          orElse: () => const RideAcceptedRouteArgs());
+    PackageDeliveryAcceptedRoute.name: (routeData) {
+      final args = routeData.argsAs<PackageDeliveryAcceptedRouteArgs>();
       return _i7.AdaptivePage<dynamic>(
-          routeData: routeData, child: _i3.RideAcceptedScreen(key: args.key));
+          routeData: routeData,
+          child: _i3.PackageDeliveryAcceptedScreen(
+              key: args.key, sendPackage: args.sendPackage));
+    },
+    OrderDeliveryAcceptedRoute.name: (routeData) {
+      return _i7.AdaptivePage<dynamic>(
+          routeData: routeData, child: const _i3.OrderDeliveryAcceptedScreen());
     },
     ReferralRoute.name: (routeData) {
       return _i7.AdaptivePage<dynamic>(
@@ -193,7 +198,10 @@ class AppRouter extends _i7.RootStackRouter {
   List<_i7.RouteConfig> get routes => [
         _i7.RouteConfig(SplashRoute.name, path: '/', fullMatch: true),
         _i7.RouteConfig(OnboardingRoute.name,
-            path: '/onboarding-screen', fullMatch: true, usesPathAsKey: true),
+            path: '/onboarding-screen',
+            fullMatch: true,
+            usesPathAsKey: true,
+            guards: [guestGuard]),
         _i7.RouteConfig(GetStartedRoute.name,
             path: 'get-started-screen',
             fullMatch: true,
@@ -217,10 +225,14 @@ class AppRouter extends _i7.RootStackRouter {
         _i7.RouteConfig(OTPVerificationRoute.name,
             path: 'otp-verification-screen',
             fullMatch: true,
-            usesPathAsKey: true),
+            usesPathAsKey: true,
+            guards: [guestGuard, authGuard]),
         _i7.RouteConfig(DashboardRoute.name,
             path: 'bottom-navigation',
             fullMatch: true,
+            guards: [
+              authGuard
+            ],
             children: [
               _i7.RouteConfig(HomeRouter.name,
                   path: 'home',
@@ -293,8 +305,14 @@ class AppRouter extends _i7.RootStackRouter {
             path: 'edit-bank-details-screen',
             fullMatch: true,
             guards: [authGuard]),
-        _i7.RouteConfig(RideAcceptedRoute.name,
-            path: 'ride-accepted-screen', fullMatch: true, guards: [authGuard]),
+        _i7.RouteConfig(PackageDeliveryAcceptedRoute.name,
+            path: 'package-delivery-accepted-screen',
+            fullMatch: true,
+            guards: [authGuard]),
+        _i7.RouteConfig(OrderDeliveryAcceptedRoute.name,
+            path: 'order-delivery-accepted-screen',
+            fullMatch: true,
+            guards: [authGuard]),
         _i7.RouteConfig(ReferralRoute.name,
             path: '/referral-screen',
             fullMatch: true,
@@ -303,19 +321,27 @@ class AppRouter extends _i7.RootStackRouter {
         _i7.RouteConfig(ContactSupportRoute.name,
             path: '/contact-support-screen',
             fullMatch: true,
-            usesPathAsKey: true),
+            usesPathAsKey: true,
+            guards: [authGuard]),
         _i7.RouteConfig(PrivacyPolicyRoute.name,
             path: '/privacy-policy-screen',
             fullMatch: true,
-            usesPathAsKey: true),
+            usesPathAsKey: true,
+            guards: [authGuard]),
         _i7.RouteConfig(PromotionsRoute.name,
-            path: '/promotions-screen', fullMatch: true, usesPathAsKey: true),
+            path: '/promotions-screen',
+            fullMatch: true,
+            usesPathAsKey: true,
+            guards: [authGuard]),
         _i7.RouteConfig(NotificationRoute.name,
-            path: '/notification-screen', fullMatch: true, usesPathAsKey: true),
+            path: '/notification-screen',
+            fullMatch: true,
+            usesPathAsKey: true,
+            guards: [authGuard]),
         _i7.RouteConfig(NotConnectedRoute.name,
-            path: 'not-connected-screen', fullMatch: true),
+            path: 'not-connected-screen', fullMatch: true, guards: [authGuard]),
         _i7.RouteConfig(NoHistoryRoute.name,
-            path: 'no-history-screen', fullMatch: true),
+            path: 'no-history-screen', fullMatch: true, guards: [authGuard]),
         _i7.RouteConfig(UnknownRoute.name, path: '*')
       ];
 }
@@ -365,7 +391,7 @@ class ForgotPasswordRoute extends _i7.PageRouteInfo<void> {
 /// generated route for [_i2.OTPVerificationScreen]
 class OTPVerificationRoute extends _i7.PageRouteInfo<OTPVerificationRouteArgs> {
   OTPVerificationRoute(
-      {_i11.Key? key,
+      {_i9.Key? key,
       _i2.OTPVerificationType? type = _i2.OTPVerificationType.phoneNumber})
       : super(name,
             path: 'otp-verification-screen',
@@ -378,7 +404,7 @@ class OTPVerificationRouteArgs {
   const OTPVerificationRouteArgs(
       {this.key, this.type = _i2.OTPVerificationType.phoneNumber});
 
-  final _i11.Key? key;
+  final _i9.Key? key;
 
   final _i2.OTPVerificationType? type;
 }
@@ -427,20 +453,33 @@ class EditBankDetailsRoute extends _i7.PageRouteInfo<void> {
   static const String name = 'EditBankDetailsRoute';
 }
 
-/// generated route for [_i3.RideAcceptedScreen]
-class RideAcceptedRoute extends _i7.PageRouteInfo<RideAcceptedRouteArgs> {
-  RideAcceptedRoute({_i11.Key? key})
+/// generated route for [_i3.PackageDeliveryAcceptedScreen]
+class PackageDeliveryAcceptedRoute
+    extends _i7.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
+  PackageDeliveryAcceptedRoute(
+      {_i9.Key? key, required _i11.SendPackage sendPackage})
       : super(name,
-            path: 'ride-accepted-screen',
-            args: RideAcceptedRouteArgs(key: key));
+            path: 'package-delivery-accepted-screen',
+            args: PackageDeliveryAcceptedRouteArgs(
+                key: key, sendPackage: sendPackage));
 
-  static const String name = 'RideAcceptedRoute';
+  static const String name = 'PackageDeliveryAcceptedRoute';
 }
 
-class RideAcceptedRouteArgs {
-  const RideAcceptedRouteArgs({this.key});
+class PackageDeliveryAcceptedRouteArgs {
+  const PackageDeliveryAcceptedRouteArgs({this.key, required this.sendPackage});
 
-  final _i11.Key? key;
+  final _i9.Key? key;
+
+  final _i11.SendPackage sendPackage;
+}
+
+/// generated route for [_i3.OrderDeliveryAcceptedScreen]
+class OrderDeliveryAcceptedRoute extends _i7.PageRouteInfo<void> {
+  const OrderDeliveryAcceptedRoute()
+      : super(name, path: 'order-delivery-accepted-screen');
+
+  static const String name = 'OrderDeliveryAcceptedRoute';
 }
 
 /// generated route for [_i3.ReferralScreen]
@@ -480,7 +519,7 @@ class NotificationRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for [_i5.NotConnectedScreen]
 class NotConnectedRoute extends _i7.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i11.Key? key, required _i12.Future<dynamic> future})
+  NotConnectedRoute({_i9.Key? key, required _i12.Future<dynamic> future})
       : super(name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -491,7 +530,7 @@ class NotConnectedRoute extends _i7.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i11.Key? key;
+  final _i9.Key? key;
 
   final _i12.Future<dynamic> future;
 }

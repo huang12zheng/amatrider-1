@@ -55,7 +55,7 @@ class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
   }
 
   String maskPhoneNumber(AuthState s) {
-    return s.user.phone.getOrNull?.let((it) {
+    return s.rider.phone.getOrNull?.let((it) {
           final dialCodeLength =
               s.selectedCountry?.dialCode?.getOrEmpty?.length ?? 0;
           final count = it.length;
@@ -115,7 +115,7 @@ class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                   VerticalSpace(height: 0.03.sw),
                   //
                   BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.user.phone != c.user.phone,
+                    buildWhen: (p, c) => p.rider.phone != c.rider.phone,
                     builder: (c, s) => AdaptiveText(
                       'We sent a unique code to '
                       '${maskPhoneNumber(s)}, kindly enter the code below.',

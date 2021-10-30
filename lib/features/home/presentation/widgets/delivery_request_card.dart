@@ -43,12 +43,6 @@ class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
   @override
   void initState() {
     controller = ExpandableController(initialExpanded: widget.initialExpanded);
-    // log.i(controller?.expanded);
-    // controller?.addListener(() {
-    //   log.w(controller?.expanded);
-    //   // log.w(controller?.value);
-    //   // controller?.notifyListeners();
-    // });
     super.initState();
   }
 

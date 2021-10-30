@@ -41,7 +41,7 @@ class AuthCubit extends Cubit<AuthState>
     if (loader) toggleLoading();
 
     // Retrieve stored / cached user data
-    final _user = await _auth.user;
+    final _user = await _auth.rider;
 
     final _phone = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
@@ -63,15 +63,16 @@ class AuthCubit extends Cubit<AuthState>
       });
     }
 
-    (_user.getOrElse(() => null) ?? state.user).let((it) => emit(state.copyWith(
-          user: it.copyWith(
-            phone: _phone?.let(
-                  (number) => Phone(number, country: state.selectedCountry),
-                ) ??
-                it.phone.ensure((p0) => (p0 as Phone),
-                    orElse: (_) => state.user.phone),
-          ),
-        )));
+    (_user.getOrElse(() => null) ?? state.rider)
+        .let((it) => emit(state.copyWith(
+              rider: it.copyWith(
+                phone: _phone?.let(
+                      (number) => Phone(number, country: state.selectedCountry),
+                    ) ??
+                    it.phone.ensure((p0) => (p0 as Phone),
+                        orElse: (_) => state.rider.phone),
+              ),
+            )));
 
     if (loader) toggleLoading();
   }
@@ -83,13 +84,13 @@ class AuthCubit extends Cubit<AuthState>
       emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
 
   void firstNameChanged(String value) => emit(state.copyWith(
-      user: state.user.copyWith(firstName: DisplayName(value.trim()))));
+      rider: state.rider.copyWith(firstName: DisplayName(value.trim()))));
 
   void lastNameChanged(String value) => emit(state.copyWith(
-      user: state.user.copyWith(lastName: DisplayName(value.trim()))));
+      rider: state.rider.copyWith(lastName: DisplayName(value.trim()))));
 
   void emailChanged(String value) => emit(state.copyWith(
-      user: state.user.copyWith(email: EmailAddress(value.trim()))));
+      rider: state.rider.copyWith(email: EmailAddress(value.trim()))));
 
   void oldPasswordChanged(String value) =>
       emit(state.copyWith(oldPassword: Password(value)));
@@ -100,13 +101,13 @@ class AuthCubit extends Cubit<AuthState>
     emit(state.copyWith(
       passwordStrength: strength,
       passwordMatches: state.confirmPassword.compare(value),
-      user: state.user.copyWith(password: Password(value)),
+      rider: state.rider.copyWith(password: Password(value)),
     ));
   }
 
   void passwordConfirmationChanged(String value) {
     emit(state.copyWith(
-      passwordMatches: state.user.password.compare(value),
+      passwordMatches: state.rider.password.compare(value),
       confirmPassword: Password(value),
     ));
   }
@@ -148,7 +149,7 @@ class AuthCubit extends Cubit<AuthState>
     }
 
     emit(state.copyWith(
-      user: state.user.copyWith(
+      rider: state.rider.copyWith(
         phone: Phone(value.trim(), country: country),
       ),
     ));
@@ -156,9 +157,9 @@ class AuthCubit extends Cubit<AuthState>
 
   void countryChanged(Country? value) => emit(state.copyWith(
         selectedCountry: value,
-        user: state.user.copyWith(
-          phone: state.user.phone.copyWith(
-            state.user.phone.getOrNull,
+        rider: state.rider.copyWith(
+          phone: state.rider.phone.copyWith(
+            state.rider.phone.getOrNull,
             country: value,
           ),
         ),
@@ -175,14 +176,14 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.signup.isNone()) {
+    if (state.rider.signup.isNone()) {
       // Attempt Authentication
       result = await _auth.createAccount(
-        firstName: state.user.firstName,
-        lastName: state.user.lastName,
-        emailAddress: state.user.email,
-        password: state.user.password,
-        phone: state.user.phone.formatted!,
+        firstName: state.rider.firstName,
+        lastName: state.rider.lastName,
+        emailAddress: state.rider.email,
+        password: state.rider.password,
+        phone: state.rider.phone.formatted!,
       );
 
       // emit status
@@ -192,7 +193,7 @@ class AuthCubit extends Cubit<AuthState>
             response: result.response.maybeMap(
               orElse: () => result.response,
               success: (s) => s.copyWith(
-                messageTxt: 'Welcome ${state.user.name.getOrEmpty}!',
+                messageTxt: 'Welcome ${state.rider.fullName.getOrEmpty}!',
               ),
             ),
           ),
@@ -211,11 +212,11 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.login.isNone()) {
+    if (state.rider.login.isNone()) {
       // Attempt Authentication
       result = await _auth.login(
-        email: state.user.email,
-        password: state.user.password,
+        email: state.rider.email,
+        password: state.rider.password,
       );
 
       emit(state.copyWith(
@@ -241,8 +242,8 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.phone.isValid) {
-      result = await _auth.resendVerificationEmail(state.user.phone);
+    if (state.rider.phone.isValid) {
+      result = await _auth.resendVerificationEmail(state.rider.phone);
 
       emit(state.copyWith(status: optionOf(result)));
     }
@@ -260,7 +261,7 @@ class AuthCubit extends Cubit<AuthState>
 
     if (state.code.isValid) {
       result = await _auth.verifyPhoneNumber(
-        phone: state.user.phone,
+        phone: state.rider.phone,
         token: state.code,
       );
 
@@ -287,10 +288,10 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.phone.isValid) {
-      final phone = state.user.phone.formatted?.getOrNull != null
-          ? state.user.phone.formatted!
-          : state.user.phone;
+    if (state.rider.phone.isValid) {
+      final phone = state.rider.phone.formatted?.getOrNull != null
+          ? state.rider.phone.formatted!
+          : state.rider.phone;
 
       result = await _auth.sendPasswordResetInstructions(phone);
 
@@ -331,15 +332,15 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.phone.isValid &&
-        state.user.password.isValid &&
+    if (state.rider.phone.isValid &&
+        state.rider.password.isValid &&
         state.code.isValid &&
         state.confirmPassword.isValid &&
         state.passwordMatches) {
       result = await _auth.confirmPasswordReset(
         code: state.code,
-        phone: state.user.phone,
-        newPassword: state.user.password,
+        phone: state.rider.phone,
+        newPassword: state.rider.password,
         confirmation: state.confirmPassword,
       );
 
@@ -372,11 +373,11 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.profile.isNone()) {
+    if (state.rider.profile.isNone()) {
       result = await _auth.updateProfile(
-        firstName: state.user.firstName,
-        lastName: state.user.lastName,
-        email: state.user.email,
+        firstName: state.rider.firstName,
+        lastName: state.rider.lastName,
+        email: state.rider.email,
         image: state.selectedPhoto,
       );
 
@@ -403,8 +404,8 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.phone.isValid) {
-      result = await _auth.updatePhone(state.user.phone.formatted!);
+    if (state.rider.phone.isValid) {
+      result = await _auth.updatePhone(state.rider.phone.formatted!);
 
       emit(state.copyWith(
         status: optionOf(
@@ -429,9 +430,9 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.user.phone.isValid && state.code.isValid) {
+    if (state.rider.phone.isValid && state.code.isValid) {
       result = await _auth.confirmUpdatePhone(
-        phone: state.user.phone.formatted!,
+        phone: state.rider.phone.formatted!,
         code: state.code,
       );
 
@@ -475,12 +476,12 @@ class AuthCubit extends Cubit<AuthState>
     emit(state.copyWith(validate: true, status: none()));
 
     if (state.oldPassword.isValid &&
-        state.user.password.isValid &&
+        state.rider.password.isValid &&
         state.confirmPassword.isValid &&
         state.passwordMatches) {
       result = await _auth.updatePassword(
         current: state.oldPassword,
-        newPassword: state.user.password,
+        newPassword: state.rider.password,
         confirmation: state.confirmPassword,
       );
 

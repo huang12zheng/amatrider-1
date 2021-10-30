@@ -22,14 +22,14 @@ class _$AuthWatcherStateTearOff {
       bool isAuthenticated = false,
       bool isListeningForAuthChanges = false,
       bool isListeningForUserChanges = false,
-      User? user,
-      Option<User?> option = const None()}) {
+      Rider? rider,
+      Option<Rider?> option = const None()}) {
     return _AuthWatcherState(
       isLoading: isLoading,
       isAuthenticated: isAuthenticated,
       isListeningForAuthChanges: isListeningForAuthChanges,
       isListeningForUserChanges: isListeningForUserChanges,
-      user: user,
+      rider: rider,
       option: option,
     );
   }
@@ -44,8 +44,8 @@ mixin _$AuthWatcherState {
   bool get isAuthenticated => throw _privateConstructorUsedError;
   bool get isListeningForAuthChanges => throw _privateConstructorUsedError;
   bool get isListeningForUserChanges => throw _privateConstructorUsedError;
-  User? get user => throw _privateConstructorUsedError;
-  Option<User?> get option => throw _privateConstructorUsedError;
+  Rider? get rider => throw _privateConstructorUsedError;
+  Option<Rider?> get option => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthWatcherStateCopyWith<AuthWatcherState> get copyWith =>
@@ -62,10 +62,10 @@ abstract class $AuthWatcherStateCopyWith<$Res> {
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
-      User? user,
-      Option<User?> option});
+      Rider? rider,
+      Option<Rider?> option});
 
-  $UserCopyWith<$Res>? get user;
+  $RiderCopyWith<$Res>? get rider;
 }
 
 /// @nodoc
@@ -83,7 +83,7 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
     Object? isAuthenticated = freezed,
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
-    Object? user = freezed,
+    Object? rider = freezed,
     Object? option = freezed,
   }) {
     return _then(_value.copyWith(
@@ -103,25 +103,25 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
           ? _value.isListeningForUserChanges
           : isListeningForUserChanges // ignore: cast_nullable_to_non_nullable
               as bool,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
+              as Rider?,
       option: option == freezed
           ? _value.option
           : option // ignore: cast_nullable_to_non_nullable
-              as Option<User?>,
+              as Option<Rider?>,
     ));
   }
 
   @override
-  $UserCopyWith<$Res>? get user {
-    if (_value.user == null) {
+  $RiderCopyWith<$Res>? get rider {
+    if (_value.rider == null) {
       return null;
     }
 
-    return $UserCopyWith<$Res>(_value.user!, (value) {
-      return _then(_value.copyWith(user: value));
+    return $RiderCopyWith<$Res>(_value.rider!, (value) {
+      return _then(_value.copyWith(rider: value));
     });
   }
 }
@@ -138,11 +138,11 @@ abstract class _$AuthWatcherStateCopyWith<$Res>
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
-      User? user,
-      Option<User?> option});
+      Rider? rider,
+      Option<Rider?> option});
 
   @override
-  $UserCopyWith<$Res>? get user;
+  $RiderCopyWith<$Res>? get rider;
 }
 
 /// @nodoc
@@ -162,7 +162,7 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
     Object? isAuthenticated = freezed,
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
-    Object? user = freezed,
+    Object? rider = freezed,
     Object? option = freezed,
   }) {
     return _then(_AuthWatcherState(
@@ -182,14 +182,14 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
           ? _value.isListeningForUserChanges
           : isListeningForUserChanges // ignore: cast_nullable_to_non_nullable
               as bool,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
+              as Rider?,
       option: option == freezed
           ? _value.option
           : option // ignore: cast_nullable_to_non_nullable
-              as Option<User?>,
+              as Option<Rider?>,
     ));
   }
 }
@@ -202,7 +202,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
       this.isAuthenticated = false,
       this.isListeningForAuthChanges = false,
       this.isListeningForUserChanges = false,
-      this.user,
+      this.rider,
       this.option = const None()})
       : super._();
 
@@ -219,14 +219,14 @@ class _$_AuthWatcherState extends _AuthWatcherState {
   @override
   final bool isListeningForUserChanges;
   @override
-  final User? user;
+  final Rider? rider;
   @JsonKey(defaultValue: const None())
   @override
-  final Option<User?> option;
+  final Option<Rider?> option;
 
   @override
   String toString() {
-    return 'AuthWatcherState(isLoading: $isLoading, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, user: $user, option: $option)';
+    return 'AuthWatcherState(isLoading: $isLoading, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, rider: $rider, option: $option)';
   }
 
   @override
@@ -244,13 +244,13 @@ class _$_AuthWatcherState extends _AuthWatcherState {
             (identical(other.isListeningForUserChanges,
                     isListeningForUserChanges) ||
                 other.isListeningForUserChanges == isListeningForUserChanges) &&
-            (identical(other.user, user) || other.user == user) &&
+            (identical(other.rider, rider) || other.rider == rider) &&
             (identical(other.option, option) || other.option == option));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, isAuthenticated,
-      isListeningForAuthChanges, isListeningForUserChanges, user, option);
+      isListeningForAuthChanges, isListeningForUserChanges, rider, option);
 
   @JsonKey(ignore: true)
   @override
@@ -264,8 +264,8 @@ abstract class _AuthWatcherState extends AuthWatcherState {
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
-      User? user,
-      Option<User?> option}) = _$_AuthWatcherState;
+      Rider? rider,
+      Option<Rider?> option}) = _$_AuthWatcherState;
   const _AuthWatcherState._() : super._();
 
   @override
@@ -277,9 +277,9 @@ abstract class _AuthWatcherState extends AuthWatcherState {
   @override
   bool get isListeningForUserChanges;
   @override
-  User? get user;
+  Rider? get rider;
   @override
-  Option<User?> get option;
+  Option<Rider?> get option;
   @override
   @JsonKey(ignore: true)
   _$AuthWatcherStateCopyWith<_AuthWatcherState> get copyWith =>

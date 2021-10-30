@@ -159,7 +159,7 @@ class _ResetPasswordCupertinoContent extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               autoFillHints: [AutofillHints.password],
               onChanged: c.read<AuthCubit>().passwordChanged,
-              errorText: s.user.password.value.fold(
+              errorText: s.rider.password.value.fold(
                 (f) => f.message,
                 (_) => s.status.fold(
                   () => null,
@@ -252,7 +252,7 @@ class _ResetPasswordMaterialContent extends StatelessWidget {
                     disabled: (s) => s.isLoading,
                     validate: (s) => s.validate,
                     isObscured: (s) => s.isPasswordHidden,
-                    field: (s) => s.user.password,
+                    field: (s) => s.rider.password,
                     focus: AuthState.resetPasswordFocus,
                     next: AuthState.passwordConfirmationFocus,
                     hintText: (s) => 'Your New Password',

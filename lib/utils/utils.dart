@@ -2,7 +2,7 @@ export 'package:amatrider/config/env.dart';
 export 'package:amatrider/config/secrets.dart';
 export 'package:amatrider/manager/router/export.dart';
 export 'package:nil/nil.dart';
-export 'package:flutter_screenutil/flutter_screenutil.dart';
+export 'package:flutter_screenutil/flutter_screenutil.dart' hide SizeExtension;
 
 export 'app_icons_icons.dart';
 export 'assets.dart';

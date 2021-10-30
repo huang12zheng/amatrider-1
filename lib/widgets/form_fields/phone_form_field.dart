@@ -1,5 +1,6 @@
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/domain/validator/validator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:dartz/dartz.dart';
@@ -92,7 +93,7 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
           errorBorder: errorBorder,
           focusedErrorBorder: focusedErrorBorder,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[0-9]+'))
+            FilteringTextInputFormatter.allow(RegExp('$phonePattern')),
           ],
           autoFillHints: [
             AutofillHints.telephoneNumber,

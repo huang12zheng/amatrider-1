@@ -21,7 +21,7 @@ class _$AuthStateTearOff {
       {required Password oldPassword,
       required Password confirmPassword,
       required OTPCode code,
-      required User user,
+      required Rider rider,
       File? selectedPhoto,
       required TextEditingController phoneTextController,
       double passwordStrength = 0.0,
@@ -36,7 +36,7 @@ class _$AuthStateTearOff {
       oldPassword: oldPassword,
       confirmPassword: confirmPassword,
       code: code,
-      user: user,
+      rider: rider,
       selectedPhoto: selectedPhoto,
       phoneTextController: phoneTextController,
       passwordStrength: passwordStrength,
@@ -59,7 +59,7 @@ mixin _$AuthState {
   Password get oldPassword => throw _privateConstructorUsedError;
   Password get confirmPassword => throw _privateConstructorUsedError;
   OTPCode get code => throw _privateConstructorUsedError;
-  User get user => throw _privateConstructorUsedError;
+  Rider get rider => throw _privateConstructorUsedError;
   File? get selectedPhoto => throw _privateConstructorUsedError;
   TextEditingController get phoneTextController =>
       throw _privateConstructorUsedError;
@@ -85,7 +85,7 @@ abstract class $AuthStateCopyWith<$Res> {
       {Password oldPassword,
       Password confirmPassword,
       OTPCode code,
-      User user,
+      Rider rider,
       File? selectedPhoto,
       TextEditingController phoneTextController,
       double passwordStrength,
@@ -97,7 +97,7 @@ abstract class $AuthStateCopyWith<$Res> {
       KtList<Country> countries,
       Option<AppHttpResponse?> status});
 
-  $UserCopyWith<$Res> get user;
+  $RiderCopyWith<$Res> get rider;
   $CountryCopyWith<$Res>? get selectedCountry;
 }
 
@@ -114,7 +114,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? oldPassword = freezed,
     Object? confirmPassword = freezed,
     Object? code = freezed,
-    Object? user = freezed,
+    Object? rider = freezed,
     Object? selectedPhoto = freezed,
     Object? phoneTextController = freezed,
     Object? passwordStrength = freezed,
@@ -139,10 +139,10 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as OTPCode,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
+              as Rider,
       selectedPhoto: selectedPhoto == freezed
           ? _value.selectedPhoto
           : selectedPhoto // ignore: cast_nullable_to_non_nullable
@@ -187,9 +187,9 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
   }
 
   @override
-  $UserCopyWith<$Res> get user {
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value));
+  $RiderCopyWith<$Res> get rider {
+    return $RiderCopyWith<$Res>(_value.rider, (value) {
+      return _then(_value.copyWith(rider: value));
     });
   }
 
@@ -215,7 +215,7 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       {Password oldPassword,
       Password confirmPassword,
       OTPCode code,
-      User user,
+      Rider rider,
       File? selectedPhoto,
       TextEditingController phoneTextController,
       double passwordStrength,
@@ -228,7 +228,7 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       Option<AppHttpResponse?> status});
 
   @override
-  $UserCopyWith<$Res> get user;
+  $RiderCopyWith<$Res> get rider;
   @override
   $CountryCopyWith<$Res>? get selectedCountry;
 }
@@ -247,7 +247,7 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? oldPassword = freezed,
     Object? confirmPassword = freezed,
     Object? code = freezed,
-    Object? user = freezed,
+    Object? rider = freezed,
     Object? selectedPhoto = freezed,
     Object? phoneTextController = freezed,
     Object? passwordStrength = freezed,
@@ -272,10 +272,10 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as OTPCode,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
+              as Rider,
       selectedPhoto: selectedPhoto == freezed
           ? _value.selectedPhoto
           : selectedPhoto // ignore: cast_nullable_to_non_nullable
@@ -327,7 +327,7 @@ class _$_AuthState extends _AuthState {
       {required this.oldPassword,
       required this.confirmPassword,
       required this.code,
-      required this.user,
+      required this.rider,
       this.selectedPhoto,
       required this.phoneTextController,
       this.passwordStrength = 0.0,
@@ -347,7 +347,7 @@ class _$_AuthState extends _AuthState {
   @override
   final OTPCode code;
   @override
-  final User user;
+  final Rider rider;
   @override
   final File? selectedPhoto;
   @override
@@ -378,7 +378,7 @@ class _$_AuthState extends _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, user: $user, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, countries: $countries, status: $status)';
+    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, countries: $countries, status: $status)';
   }
 
   @override
@@ -391,7 +391,7 @@ class _$_AuthState extends _AuthState {
             (identical(other.confirmPassword, confirmPassword) ||
                 other.confirmPassword == confirmPassword) &&
             (identical(other.code, code) || other.code == code) &&
-            (identical(other.user, user) || other.user == user) &&
+            (identical(other.rider, rider) || other.rider == rider) &&
             (identical(other.selectedPhoto, selectedPhoto) ||
                 other.selectedPhoto == selectedPhoto) &&
             (identical(other.phoneTextController, phoneTextController) ||
@@ -419,7 +419,7 @@ class _$_AuthState extends _AuthState {
       oldPassword,
       confirmPassword,
       code,
-      user,
+      rider,
       selectedPhoto,
       phoneTextController,
       passwordStrength,
@@ -442,7 +442,7 @@ abstract class _AuthState extends AuthState {
       {required Password oldPassword,
       required Password confirmPassword,
       required OTPCode code,
-      required User user,
+      required Rider rider,
       File? selectedPhoto,
       required TextEditingController phoneTextController,
       double passwordStrength,
@@ -462,7 +462,7 @@ abstract class _AuthState extends AuthState {
   @override
   OTPCode get code;
   @override
-  User get user;
+  Rider get rider;
   @override
   File? get selectedPhoto;
   @override

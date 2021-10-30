@@ -39,6 +39,7 @@ class TimelineStatusWidget extends StatelessWidget {
       keyboardDismissBehavior: keyboardDismissBehavior,
       builder: TimelineTileBuilder.connected(
         indicatorBuilder: (context, i) => Indicator.widget(
+          position: 0.3,
           child: statuses[i].asset?.let((it) => SvgPicture.asset(it,
                   fit: BoxFit.contain, color: statuses[i].assetColor)) ??
               statuses[i].icon ??
@@ -68,42 +69,64 @@ class _ContentBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTextStyle(
       style: TextStyle(
-        fontSize: 14.5.sp,
+        fontSize: 15.sp,
         color: Palette.neutralLabel,
       ),
-      child: Container(
-        margin: EdgeInsets.only(left: 0.05.sw),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            status.title?.let((it) => Align(
-                      alignment: Alignment.centerLeft,
-                      child: AdaptiveText('$it',
-                          minFontSize: 14,
-                          maxFontSize: 16,
-                          // maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: DefaultTextStyle.of(context)
-                              .style
-                              .copyWith(color: Palette.neutralLabel)),
-                    )) ??
-                Utils.nothing,
-            //
-            status.subtitle?.let((it) => Align(
-                      alignment: Alignment.centerLeft,
-                      child: AdaptiveText(
-                        '$it',
-                        minFontSize: 14,
-                        maxFontSize: 16,
-                        // maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: DefaultTextStyle.of(context).style.copyWith(
-                            fontWeight: FontWeight.w400, fontSize: 16.5.sp),
-                      ),
-                    )) ??
-                Utils.nothing,
-          ],
+      child: LimitedBox(
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 0.05.sw),
+            alignment: Alignment.bottomCenter,
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  status.title?.let((it) => Center(
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: AdaptiveText(
+                                '$it',
+                                minFontSize: 13,
+                                maxFontSize: 16,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(color: Palette.neutralLabel),
+                              ),
+                            ),
+                          )) ??
+                      Utils.nothing,
+                  //
+                  status.subtitle?.let((it) => Flexible(
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: AdaptiveText(
+                                  '$it',
+                                  minFontSize: 13,
+                                  maxFontSize: 16,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16.5.sp,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          )) ??
+                      Utils.nothing,
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

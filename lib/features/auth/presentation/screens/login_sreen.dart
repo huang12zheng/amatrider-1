@@ -10,7 +10,6 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/text_form_input_label.dart';
 import 'package:amatrider/widgets/vertical_spacer.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -70,13 +69,12 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
 
 class _LoginScreenState extends State<LoginScreen>
     with AutomaticKeepAliveClientMixin<LoginScreen> {
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
   DateTime _timestampPressed = DateTime.now();
 
   @override
   bool get wantKeepAlive => true;
 
-  Future<bool> maybePop(BuildContext c) async {
+  Future<bool> maybePop() async {
     if (navigator.canPopSelfOrChildren) return true;
 
     final now = DateTime.now();
@@ -103,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen>
     super.build(context);
 
     return WillPopScope(
-      onWillPop: () => maybePop(context),
+      onWillPop: maybePop,
       child: Theme(
         data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
         child: AdaptiveScaffold(
@@ -123,8 +121,8 @@ class _LoginScreenState extends State<LoginScreen>
                         child: Padding(
                           padding: EdgeInsets.only(top: 0.08.sw),
                           child: SvgPicture.asset(
-                            AppAssets.loginRelaxed,
-                            width: 0.57.sw,
+                            AppAssets.takeAway,
+                            height: 0.27.h,
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -268,7 +266,7 @@ class _MaterialFormLayout extends StatelessWidget {
           EmailFormField<AuthCubit, AuthState>(
             disabled: (s) => s.isLoading,
             validate: (s) => s.validate,
-            field: (s) => s.user.email,
+            field: (s) => s.rider.email,
             focus: AuthState.emailFocus,
             next: AuthState.passwordFocus,
             response: (s) => s.status,
@@ -302,7 +300,7 @@ class _MaterialFormLayout extends StatelessWidget {
             disabled: (s) => s.isLoading,
             validate: (s) => s.validate,
             isObscured: (s) => s.isPasswordHidden,
-            field: (s) => s.user.password,
+            field: (s) => s.rider.password,
             focus: AuthState.passwordFocus,
             response: (s) => s.status,
             errorField: (f) => f.errors?.password,
@@ -334,7 +332,7 @@ class _CupertinoFormLayout extends StatelessWidget {
                 prefix: 'Email',
                 disabled: (s) => s.isLoading,
                 validate: (s) => s.validate,
-                field: (s) => s.user.email,
+                field: (s) => s.rider.email,
                 focus: AuthState.emailFocus,
                 next: AuthState.passwordFocus,
                 response: (s) => s.status,
@@ -347,7 +345,7 @@ class _CupertinoFormLayout extends StatelessWidget {
                 disabled: (s) => s.isLoading,
                 validate: (s) => s.validate,
                 isObscured: (s) => s.isPasswordHidden,
-                field: (s) => s.user.password,
+                field: (s) => s.rider.password,
                 focus: AuthState.passwordFocus,
                 response: (s) => s.status,
                 errorField: (f) => f.errors?.password,

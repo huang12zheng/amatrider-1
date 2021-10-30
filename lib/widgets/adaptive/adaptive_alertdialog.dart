@@ -6,7 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 /// A stateless widget to render AdaptiveAlertdialog.
 // ignore: must_be_immutable
-class AdaptiveAlertdialog extends StatelessWidget {
+class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
   final double _width;
   final String? title;
   final bool centerTitle;
@@ -14,16 +14,20 @@ class AdaptiveAlertdialog extends StatelessWidget {
   final Widget? body;
   final bool centerContent;
   final String? content;
+  final double? contentFonSize;
+  final double minContentFonSize;
   final TextStyle? contentTextStyle;
+  final B? defaultValue;
   final String? firstButtonText;
   final String secondButtonText;
+  final bool disableSecondButton;
   final String? cupertinoFirstButtonText;
   final String cupertinoSecondButtonText;
-  final VoidCallback? onFirstPressed;
+  final B Function()? onFirstPressed;
   final Color? firstBgColor;
   final Color? firstSplashColor;
   final TextStyle? firstTextStyle;
-  final VoidCallback? onSecondPressed;
+  final B Function()? onSecondPressed;
   final Color? secondBgColor;
   final Color? secondSplashColor;
   final bool isFirstDefaultAction;
@@ -45,8 +49,12 @@ class AdaptiveAlertdialog extends StatelessWidget {
     this.body,
     this.content,
     this.contentTextStyle,
+    this.contentFonSize,
+    this.minContentFonSize = 14,
     this.firstButtonText,
+    this.defaultValue,
     this.secondButtonText = 'Close',
+    this.disableSecondButton = false,
     String? cupertinoFirstButtonText,
     String? cupertinoSecondButtonText,
     this.onFirstPressed,
@@ -105,18 +113,21 @@ class AdaptiveAlertdialog extends StatelessWidget {
                   (it) => CupertinoDialogAction(
                     isDefaultAction: isFirstDefaultAction,
                     isDestructiveAction: isFirstDestructive,
-                    onPressed: onFirstPressed,
+                    onPressed: () =>
+                        navigator.pop(onFirstPressed?.call() ?? defaultValue),
                     child: Text('$it'),
                   ),
                 ) ??
                 Utils.nothing,
             //
-            CupertinoDialogAction(
-              isDefaultAction: isSecondDefaultAction,
-              isDestructiveAction: isSecondDestructive,
-              onPressed: onSecondPressed ?? navigator.pop,
-              child: Text('$cupertinoSecondButtonText'),
-            ),
+            if (!disableSecondButton)
+              CupertinoDialogAction(
+                isDefaultAction: isSecondDefaultAction,
+                isDestructiveAction: isSecondDestructive,
+                onPressed: () =>
+                    navigator.pop(onSecondPressed?.call() ?? defaultValue),
+                child: Text('$cupertinoSecondButtonText'),
+              ),
           ],
         ),
         title: title?.let(
@@ -158,11 +169,11 @@ class AdaptiveAlertdialog extends StatelessWidget {
                             '$content',
                             softWrap: true,
                             wrapWords: true,
-                            minFontSize: 14,
+                            minFontSize: minContentFonSize,
                             textAlign: centerContent
                                 ? TextAlign.center
                                 : TextAlign.start,
-                            fontSize: 16.sp,
+                            fontSize: contentFonSize ?? 16.sp,
                             fontWeight: FontWeight.w400,
                             style: contentTextStyle,
                           ),
@@ -173,7 +184,7 @@ class AdaptiveAlertdialog extends StatelessWidget {
                                 ? TextAlign.center
                                 : TextAlign.start,
                             style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: contentFonSize ?? 16.sp,
                               fontWeight: FontWeight.w400,
                             ).merge(contentTextStyle),
                           ),
@@ -198,7 +209,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
                                   (it) => VerticalSpace(height: 0.05.sw)) ??
                               Utils.nothing,
                           //
-                          _secondButton(buttonDirection),
+                          if (!disableSecondButton)
+                            _secondButton(buttonDirection),
                         ])
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -211,7 +223,8 @@ class AdaptiveAlertdialog extends StatelessWidget {
                                       ? const Spacer(flex: 2)
                                       : HorizontalSpace(width: 0.03.sw)),
                               //
-                              Flexible(child: _secondButton(buttonDirection)),
+                              if (!disableSecondButton)
+                                Flexible(child: _secondButton(buttonDirection)),
                             ]),
                 ),
               ],
@@ -226,8 +239,10 @@ class AdaptiveAlertdialog extends StatelessWidget {
       materialFirstButton ??
       firstButtonText?.let(
         (it) => AdaptiveButton(
+          onPressed: () =>
+              navigator.pop(onFirstPressed?.call() ?? defaultValue),
           text: firstButtonText,
-          height: 0.09.sw,
+          height: 0.11.sw,
           cupertinoHeight: 0.028.sh,
           fontSize: 15.sp,
           textColor: Colors.white,
@@ -244,7 +259,6 @@ class AdaptiveAlertdialog extends StatelessWidget {
               color: Palette.accentColor,
             ),
           ),
-          onPressed: onFirstPressed,
         ),
       ) ??
       Utils.nothing;
@@ -252,12 +266,9 @@ class AdaptiveAlertdialog extends StatelessWidget {
   Widget _secondButton(Axis direction) =>
       materialSecondButton ??
       AdaptiveButton(
-        onPressed: () {
-          onSecondPressed?.call();
-          navigator.pop();
-        },
+        onPressed: () => navigator.pop(onSecondPressed?.call() ?? defaultValue),
         text: secondButtonText,
-        height: 0.09.sw,
+        height: 0.11.sw,
         cupertinoHeight: 0.028.sh,
         fontSize: 15.sp,
         textColor: App.resolveColor(Palette.accentColor),

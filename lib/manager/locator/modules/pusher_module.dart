@@ -1,3 +1,5 @@
+import 'package:amatrider/features/auth/data/repositories/access_token/access_token_manager.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pusher_client/pusher_client.dart';
@@ -11,8 +13,9 @@ abstract class PusherModule {
       env.pusherAuthUrl,
       headers: {
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
-        // 'Authorization': '${AccessTokenManager().get().accessToken.getOrEmpty}',
+        'Accept': 'application/json',
+        'Authorization':
+            '${getIt<AccessTokenManager>().get().accessToken.getOrEmpty}',
       },
     ),
   );

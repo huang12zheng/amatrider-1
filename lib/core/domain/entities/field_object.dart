@@ -21,7 +21,7 @@ abstract class FieldObject<T> {
       value.fold((f) => f, (_) => null);
 
   U isNotNull<U>(
-    U? Function(FieldObject<T>)? field, {
+    U Function(FieldObject<T>)? field, {
     required U Function(FieldObject<T>) orElse,
   }) {
     if (getOrNull != null) return field?.call(this) ?? orElse.call(this);

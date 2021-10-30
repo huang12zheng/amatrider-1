@@ -8,6 +8,7 @@ mixin AppAssets {
   static const SVG_DIR = '$ASSETS_DIR/svgs';
   static const IMAGES_DIR = '$ASSETS_DIR/images';
   static const VIDEOS_DIR = '$ASSETS_DIR/videos';
+  static const RAW_DIR = '$ASSETS_DIR/raw';
   // Sub-folders
   //////////////  IMAGES  ////////////
   static const String ONBOARDING_IMAGES_DIR = '$IMAGES_DIR/onboarding';

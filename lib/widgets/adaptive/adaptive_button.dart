@@ -100,7 +100,7 @@ class AdaptiveButton extends StatelessWidget {
     this.isLoading = false,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
-        height = height ?? 0.12.sw,
+        height = height ?? 0.06.h,
         cupertinoHeight = cupertinoHeight ?? 0.065.sh,
         type = disabled && (Platform.isIOS || Platform.isMacOS)
             ? ButtonType.elevated
@@ -165,7 +165,7 @@ class AdaptiveButton extends StatelessWidget {
     this.isLoading = false,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
-        height = height ?? 0.12.sw,
+        height = height ?? 0.06.h,
         cupertinoHeight = cupertinoHeight ?? 0.065.sh,
         type = ButtonType.elevated,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
