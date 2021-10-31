@@ -24,8 +24,8 @@ abstract class PusherModule {
   PusherClient get pusher => PusherClient(env.pusherKey, _options,
       autoConnect: false, enableLogging: true)
     ..onConnectionError((error) {
-      print(error?.code);
-      print(error?.exception);
-      print(error?.message);
+      // print(error?.code);
+      // print(error?.exception);
+      // print(error?.message);
     });
 }

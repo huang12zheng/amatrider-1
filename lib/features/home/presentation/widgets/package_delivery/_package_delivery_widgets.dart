@@ -15,7 +15,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   @override
   void initState() {
     super.initState();
-    context.read<SendPackageCubit>().startTracker(context);
+    // context.read<SendPackageCubit>().startTracker(context);
     context.read<SendPackageCubit>().startWebsocket();
   }
 
@@ -101,7 +101,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   ),
                   //
                   Flexible(
-                    flex: 1,
+                    flex: 2,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
