@@ -99,18 +99,27 @@ class _PackageDeliveryAcceptedScreenState
               controller: panelController,
               maxHeight: PackageDeliveryAcceptedScreen._panelHeightOpened,
               minHeight: PackageDeliveryAcceptedScreen._panelHeightClosed,
-              backdropEnabled: true,
-              backdropTapClosesPanel: true,
-              backdropColor: App.resolveColor(Colors.transparent)!,
-              backdropOpacity: 0.0,
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(24)),
               parallaxEnabled: true,
               parallaxOffset: 0.5,
               defaultPanelState: PanelState.OPEN,
-              body: MapWidget(
-                start: widget.sendPackage.pickup,
-                end: widget.sendPackage.destination,
+              body: Builder(
+                builder: (c) => MapWidget(
+                  start: widget.sendPackage.pickup,
+                  end: widget.sendPackage.destination,
+                  endCard: BlocProvider.value(
+                    value: BlocProvider.of<SendPackageCubit>(c),
+                    child: BlocBuilder<SendPackageCubit, SendPackageState>(
+                      buildWhen: (p, c) => p.package != c.package,
+                      builder: (c, s) => MapUserCard(
+                        title: 'Receiver',
+                        localImageUrl: AppAssets.dudeAvatar,
+                        subtitle: '${s.package.receiverFullName.getOrEmpty}',
+                      ),
+                    ),
+                  ),
+                ),
               ),
               panelBuilder: (controller) => _PanelBuilder(
                 controller,

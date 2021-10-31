@@ -11,8 +11,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapWidget extends StatefulWidget {
   final RiderLocation? end;
   final RiderLocation? start;
+  final Widget? startCard;
+  final Widget? endCard;
 
-  const MapWidget({Key? key, this.start, this.end}) : super(key: key);
+  const MapWidget({
+    Key? key,
+    this.start,
+    this.end,
+    this.startCard,
+    this.endCard,
+  }) : super(key: key);
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -33,9 +41,13 @@ class _MapWidgetState extends State<MapWidget>
           listenWhen: (p, c) => p.mapController != c.mapController,
           listener: (c, s) {
             if (s.mapController != null) {
-              c
-                  .read<MapCubit>()
-                  .init(ctx: c, start: widget.start, end: widget.end);
+              c.read<MapCubit>().init(
+                    ctx: c,
+                    start: widget.start,
+                    end: widget.end,
+                    startCard: widget.startCard,
+                    endCard: widget.endCard,
+                  );
               if (widget.start == null && widget.end == null)
                 c.read<MapCubit>().getCurrentLocation();
             }

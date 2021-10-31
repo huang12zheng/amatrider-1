@@ -8,6 +8,7 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/domain/repositories/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -17,7 +18,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' hide InfoWindow;
 import 'package:injectable/injectable.dart';
 
 part 'map_cubit.freezed.dart';
@@ -34,37 +35,62 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   void toggleLoading([bool? isLoading]) =>
       emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
+  Completer<ui.Image> imageDecoder(ImageProvider provider) {
+    var completer = Completer<ui.Image>();
+
+    provider.resolve(const ImageConfiguration()).addListener(
+        ImageStreamListener((info, _) => completer.complete(info.image)));
+
+    return completer;
+  }
+
   void init({
     BuildContext? ctx,
     RiderLocation? start,
     RiderLocation? end,
     RiderLocation? prevLocation,
+    Widget? startCard,
+    Widget? endCard,
   }) async {
     toggleLoading(true);
 
     if (ctx != null && start != null && end != null) {
-      final _markers = <Marker>{
-        Marker(
-          markerId: MarkerId('${start.lat},${start.lng}'),
-          position: LatLng(
-            start.lat.getOrNull!,
-            start.lng.getOrNull!,
-          ),
-          infoWindow:
-              InfoWindow(title: 'Start', snippet: start.address.getOrNull),
-          icon: await customSVGMarker(ctx),
-        ),
-        Marker(
-          markerId: MarkerId('${end.lat},${end.lng}'),
-          position: LatLng(
-            end.lat.getOrNull!,
-            end.lng.getOrNull!,
-          ),
-          infoWindow:
-              InfoWindow(title: 'Destination', snippet: end.address.getOrNull),
-          icon: await customSVGMarker(ctx, asset: AppAssets.timelinePinAsset),
-        ),
-      };
+      final _markers = <Marker>{};
+      MarkerGenerator(
+        widget: startCard ?? AppAssets.ellipse(null, Palette.accentBlue),
+        width: startCard == null ? 30 : null,
+        height: startCard == null ? 30 : null,
+        callback: (bitmap) {
+          _markers.add(Marker(
+            markerId: MarkerId('${start.lat},${start.lng}'),
+            flat: true,
+            position: LatLng(
+              start.lat.getOrNull!,
+              start.lng.getOrNull!,
+            ),
+            icon: BitmapDescriptor.fromBytes(bitmap!),
+          ));
+        },
+      ).generate(ctx);
+
+      MarkerGenerator(
+        widget: endCard ?? AppAssets.ellipse(null, Palette.accentGreen),
+        width: endCard == null ? 30 : null,
+        height: endCard == null ? 30 : null,
+        callback: (bitmap) {
+          _markers.add(Marker(
+            markerId: MarkerId('${end.lat},${end.lng}'),
+            flat: true,
+            position: LatLng(
+              end.lat.getOrNull!,
+              end.lng.getOrNull!,
+            ),
+            icon: BitmapDescriptor.fromBytes(bitmap!),
+          ));
+        },
+      ).generate(ctx);
+
+      _markers.add(Marker(markerId: MarkerId('${UniqueId.v4().value}')));
 
       emit(state.copyWith(markers: _markers));
 
