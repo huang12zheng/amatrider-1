@@ -2,24 +2,23 @@ library map_widget.dart;
 
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' hide InfoWindow;
 
 /// A stateless widget to render MapWidget.
 class MapWidget extends StatefulWidget {
   final RiderLocation? end;
   final RiderLocation? start;
-  final Widget? startCard;
-  final Widget? endCard;
+  final InfoWindow? endInfo;
 
   const MapWidget({
     Key? key,
     this.start,
     this.end,
-    this.startCard,
-    this.endCard,
+    this.endInfo,
   }) : super(key: key);
 
   @override
@@ -45,8 +44,7 @@ class _MapWidgetState extends State<MapWidget>
                     ctx: c,
                     start: widget.start,
                     end: widget.end,
-                    startCard: widget.startCard,
-                    endCard: widget.endCard,
+                    endInfo: widget.endInfo,
                   );
               if (widget.start == null && widget.end == null)
                 c.read<MapCubit>().getCurrentLocation();

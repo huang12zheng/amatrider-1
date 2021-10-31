@@ -49,48 +49,29 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
     RiderLocation? start,
     RiderLocation? end,
     RiderLocation? prevLocation,
-    Widget? startCard,
-    Widget? endCard,
+    InfoWindow? endInfo,
   }) async {
     toggleLoading(true);
 
     if (ctx != null && start != null && end != null) {
       final _markers = <Marker>{};
-      MarkerGenerator(
-        widget: startCard ?? AppAssets.ellipse(null, Palette.accentBlue),
-        width: startCard == null ? 30 : null,
-        height: startCard == null ? 30 : null,
-        callback: (bitmap) {
-          _markers.add(Marker(
-            markerId: MarkerId('${start.lat},${start.lng}'),
-            flat: true,
-            position: LatLng(
-              start.lat.getOrNull!,
-              start.lng.getOrNull!,
-            ),
-            icon: BitmapDescriptor.fromBytes(bitmap!),
-          ));
-        },
-      ).generate(ctx);
 
-      MarkerGenerator(
-        widget: endCard ?? AppAssets.ellipse(null, Palette.accentGreen),
-        width: endCard == null ? 30 : null,
-        height: endCard == null ? 30 : null,
-        callback: (bitmap) {
-          _markers.add(Marker(
-            markerId: MarkerId('${end.lat},${end.lng}'),
-            flat: true,
-            position: LatLng(
-              end.lat.getOrNull!,
-              end.lng.getOrNull!,
-            ),
-            icon: BitmapDescriptor.fromBytes(bitmap!),
-          ));
-        },
-      ).generate(ctx);
+      _markers.add(Marker(
+        markerId: MarkerId('${start.lat},${start.lng}'),
+        flat: true,
+        position: LatLng(start.lat.getOrNull!, start.lng.getOrNull!),
+        icon: await customSVGMarker(ctx, asset: AppAssets.ellipseSVG),
+      ));
 
-      _markers.add(Marker(markerId: MarkerId('${UniqueId.v4().value}')));
+      if (endInfo != null) {
+        final endBytes = await WindowPainter.render(endInfo);
+        _markers.add(Marker(
+          markerId: MarkerId('${end.lat},${end.lng}'),
+          flat: true,
+          position: LatLng(end.lat.getOrNull!, end.lng.getOrNull!),
+          icon: BitmapDescriptor.fromBytes(endBytes!),
+        ));
+      }
 
       emit(state.copyWith(markers: _markers));
 

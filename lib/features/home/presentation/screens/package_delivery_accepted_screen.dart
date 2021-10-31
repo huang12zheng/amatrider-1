@@ -105,21 +105,18 @@ class _PackageDeliveryAcceptedScreenState
               parallaxOffset: 0.5,
               defaultPanelState: PanelState.OPEN,
               body: Builder(
-                builder: (c) => MapWidget(
-                  start: widget.sendPackage.pickup,
-                  end: widget.sendPackage.destination,
-                  endCard: BlocProvider.value(
-                    value: BlocProvider.of<SendPackageCubit>(c),
-                    child: BlocBuilder<SendPackageCubit, SendPackageState>(
-                      buildWhen: (p, c) => p.package != c.package,
-                      builder: (c, s) => MapUserCard(
-                        title: 'Receiver',
-                        localImageUrl: AppAssets.dudeAvatar,
-                        subtitle: '${s.package.receiverFullName.getOrEmpty}',
-                      ),
+                builder: (c) {
+                  final state = BlocProvider.of<SendPackageCubit>(c).state;
+                  return MapWidget(
+                    start: widget.sendPackage.pickup,
+                    end: widget.sendPackage.destination,
+                    endInfo: InfoWindow(
+                      title: 'Receiver',
+                      subtitle: '${state.package.receiverFullName.getOrEmpty}',
+                      leading: '9\nMINS',
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               panelBuilder: (controller) => _PanelBuilder(
                 controller,
