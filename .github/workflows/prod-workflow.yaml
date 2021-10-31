@@ -6,6 +6,10 @@ on:
         description: "Specify Bump version"
         required: true
         default: "1.0.0"
+      release:
+        description: "Release the outputs of this run"
+        required: false
+        default: "true"
 
   push:
     branches:
@@ -179,6 +183,7 @@ jobs:
     name: Bump build version
     needs: build
     runs-on: ${{ matrix.os }}
+    if: ${{ github.event.inputs.release == 'true' }}
     continue-on-error: true
     env:
       APP_NAME: "AmatRider"
