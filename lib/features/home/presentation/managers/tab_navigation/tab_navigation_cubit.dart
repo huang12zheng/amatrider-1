@@ -40,4 +40,6 @@ class TabNavigationCubit extends HydratedCubit<TabNavigationState> {
     emit(state.copyWith(currentIndex: index));
     context.tabsRouter.setActiveIndex(index);
   }
+
+  void reset() => emit(state.copyWith(currentIndex: 0));
 }

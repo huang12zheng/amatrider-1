@@ -32,12 +32,13 @@ class AdaptiveText extends StatelessWidget {
   final double? textScaleFactor;
   final bool wrapWords;
   //
-  final Color? textColor;
-  final Color? textColorDark;
+  final Color textColor;
+  final Color textColorDark;
   final double? fontSize;
   final FontWeight? fontWeight;
   final double? height;
   final double? letterSpacing;
+  final double? wordSpacing;
   final TextDecoration? decoration;
   final _AutoSizeTextType _type;
 
@@ -62,15 +63,18 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.fontSize,
     this.fontWeight,
     this.height,
     this.letterSpacing,
+    this.wordSpacing,
     this.decoration,
   })  : _type = _AutoSizeTextType.standard,
         textSpan = const TextSpan(),
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? Palette.text100Dark,
         super(key: key);
 
   const AdaptiveText.rich(
@@ -94,15 +98,18 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.fontSize,
     this.fontWeight,
     this.height,
     this.letterSpacing,
+    this.wordSpacing,
     this.decoration,
   })  : _type = _AutoSizeTextType.rich,
         data = '',
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? Palette.text100Dark,
         super(key: key);
 
   @override
@@ -131,6 +138,7 @@ class AdaptiveText extends StatelessWidget {
                     height: height,
                     letterSpacing: letterSpacing,
                     decoration: decoration,
+                    wordSpacing: wordSpacing,
                   ).merge(style),
                   cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
                     TextStyle(
@@ -140,6 +148,7 @@ class AdaptiveText extends StatelessWidget {
                       height: height,
                       letterSpacing: letterSpacing,
                       decoration: decoration,
+                      wordSpacing: wordSpacing,
                     ).merge(style),
                   ),
                 ),
@@ -172,6 +181,7 @@ class AdaptiveText extends StatelessWidget {
                     height: height,
                     letterSpacing: letterSpacing,
                     decoration: decoration,
+                    wordSpacing: wordSpacing,
                   ).merge(style),
                   cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
                     TextStyle(
@@ -181,6 +191,7 @@ class AdaptiveText extends StatelessWidget {
                       height: height,
                       letterSpacing: letterSpacing,
                       decoration: decoration,
+                      wordSpacing: wordSpacing,
                     ).merge(style),
                   ),
                 ),

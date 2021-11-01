@@ -1,0 +1,359 @@
+library privacy_policy_screen.dart;
+
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+/// A stateless widget to render PrivacyPolicyScreen.
+class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
+  const PrivacyPolicyScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    return this;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveScaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: SliverAppBar(
+              pinned: false,
+              stretch: true,
+              forceElevated: innerBoxIsScrolled,
+              elevation: 0,
+              expandedHeight: App.height * 0.2,
+              backgroundColor: Colors.transparent,
+              leading: LayoutBuilder(
+                builder: (context, constraints) => Center(
+                  child: Material(
+                    color: Colors.white,
+                    elevation: 0,
+                    borderRadius:
+                        BorderRadius.circular(Utils.inputBorderRadius),
+                    child: InkWell(
+                      onTap: navigator.pop,
+                      borderRadius:
+                          BorderRadius.circular(Utils.inputBorderRadius),
+                      child: const Padding(
+                        padding: EdgeInsets.all(7.0),
+                        child: Icon(Icons.keyboard_backspace_rounded,
+                            color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 0.025.sw),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6.0),
+                      child: Material(
+                        color: Colors.white,
+                        child: InkWell(
+                          onTap: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(7.0),
+                            child: Icon(
+                              Theme.of(context).platform.fold(
+                                  material: () => Icons.print,
+                                  cupertino: () => CupertinoIcons.printer_fill),
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              flexibleSpace: Stack(
+                children: [
+                  FlexibleSpaceBar(
+                    titlePadding:
+                        const EdgeInsetsDirectional.only(start: 72, bottom: 10),
+                    stretchModes: [
+                      StretchMode.zoomBackground,
+                      StretchMode.blurBackground,
+                      StretchMode.fadeTitle,
+                    ],
+                    background: Image.asset(
+                      AppAssets.privacyPolicy,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+          child: Builder(
+            builder: (ctx) => CustomScrollView(
+              shrinkWrap: true,
+              physics: Utils.physics,
+              scrollDirection: Axis.vertical,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: [
+                SliverOverlapInjector(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(ctx),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: App.sidePadding),
+                    child: Headline(
+                      'Privacy Policy',
+                      fontSize: 25.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.02.sw),
+                    child: AdaptiveText(
+                      'In this Privacy Policy, AmatNow Gida Louistik Limited Sirketi ("AmatNow"), the website www.AmatNow.com ("Site") / The Site / Mobile application users / members / visitors ("Data Owner") shared with AmatNow. The terms and conditions regarding the use of personal data generated by the Data Owner during the use of the Site are included.',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.03.sw),
+                    child: TextFormInputLabel(
+                      text: 'Which Data Do We Process?',
+                      fontSize: 17.5.sp,
+                      textColor: Palette.neutralLabel,
+                      textColorDark: Palette.neutralLabelDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.02.sw),
+                    child: AdaptiveText.rich(
+                      const TextSpan(children: [
+                        TextSpan(
+                          text:
+                              'Your personal data processed by AmatNow has been categorized in accordance with the Personal Data Protection Law (Law) as stated below. Unless otherwise explicitly stated, the term \"personal data\" will cover the following information within the scope of the terms and conditions provided within the scope of this Privacy Policy.',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nIdentity and Contact Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text:
+                              'name, surname, phone, address, workplace information, e-mail address',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nLocation Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text:
+                              'Specific or approximate location information about your location, such as GPS data, that we have obtained during your use of AmatNow services.',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nUser Information, User Transaction '
+                              'Information and Financial Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text:
+                              'membership information, membership ID number, data regarding the date and time of using AmatNow services, your reasons for contacting AmatNow or Live Help, terms you use while searching on the Site and your filtering preferences, points and comments, your meal preferences, the restaurant categories you visit, errors occurring during use, invoice and payment information, balance information (data such as invoices sent to the user and receipt samples for payments received from users, invoice number, invoice amount, invoice date.)',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nTransaction Security Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text:
+                              'log in credential information, password information',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nMarketing Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                            text:
+                                'reports and evaluations showing your habits and tastes, targeting information, cookie records, etc'),
+                        //
+                        TextSpan(
+                          text:
+                              '\n\nRequest / Complaint Management Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text: 'Your requests and complaints '
+                              'on the Site and your comments on the Site.',
+                        ),
+                        //
+                        TextSpan(
+                          text: '\n\nRisk Management Information: ',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text:
+                              'IP address The data anonymized within the framework of Articles 3 and 7 of the Law will not be considered as personal data in accordance with the provisions of the aforementioned law and the processing activities related to this data will be carried out without being bound by the provisions of this Privacy Policy. For the application regarding whether your data is processed or not, see. AmatNow Personal Data Processing and Protection Policy (KVK Policy).',
+                        ),
+                      ]),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.03.sw),
+                    child: TextFormInputLabel(
+                      text: 'What is the Purpose of Use of Your Data?',
+                      fontSize: 17.5.sp,
+                      textColor: Palette.neutralLabel,
+                      textColorDark: Palette.neutralLabelDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.02.sw),
+                    child: AdaptiveText(
+                      'Your personal data shared with AmatNow so that you can benefit from the Site and the services provided on the Site or via the Mobile application, make your membership registration to the Site, update your membership registration, improve the services offered by AmatNow and through the Site, introduce new services and In this direction, carrying out the commercial activities, including providing the necessary information to you, determining and implementing commercial and business strategies, ensuring the legal and commercial security of the people who are in business relations with AmatNow and providing you with the necessary information in this context and fulfilling the obligations arising from the nature of these activities. can be processed to be brought.'
+                      '\n\nThe personal information in question can be used to communicate with you or to improve your experience on the Site or the Mobile application (management of the communication management process, satisfaction research, etc.), as well as making various statistical evaluations without revealing your identity, which can be used within the scope of internal reporting and business development activities. can also be used for database creation and market research purposes. The information in question can be processed, stored, transmitted to third parties by  AmatNow for direct marketing, digital marketing, remarketing, targeting, profiling and analysis purposes, and the promotion of various applications, products and services through such information, AmatNow will also be able to process and share personal data with third parties without obtaining your separate consent as the Data Owner in accordance with Articles 5 and 8 of the Law and / or in the presence of exceptions in the relevant legislation. The main cases are as follows:'
+                      '\n\n- It is clearly stipulated in the laws,'
+                      '\n\n- It is compulsory for the protection of the life or physical integrity of the person who is unable to disclose his consent due to the actual impossibility or whose consent is not legally valid,'
+                      '\n\n- It is necessary to process personal data, provided that it is directly related to the establishment or performance of any contract between the Data Owner and AmatNow'
+                      '\n\n- It is mandatory for AmatNow to fulfill its legal obligations,'
+                      '\n\n- It has been made public by the Data Owner himself,'
+                      '\n\n- Data processing is mandatory for the establishment, use or protection of a right,'
+                      '\n\n- Data processing is mandatory for the legitimate interests of AmatNow, provided that it does not harm the fundamental rights and freedoms of the Data Owner.'
+                      '\n\nAs stated above, AmatNow will be able to use cookies and transmit data to third parties for the purpose of processing data within the scope of analysis services offered by third parties only to the extent required by these analysis services. The mentioned technical communication files are small text files that the Site sends to the Data Owner browser to be stored in the main memory. The technical communication file facilitates the use of the Site in this sense by storing the status and preference settings about a website. Technical communication file, how many people use the websites in temporal proportion, for what purpose a person uses any website. It is designed and used for these purposes to obtain statistical information about how many times it visits and how long it is left, and to help dynamically generate advertisements and content from user pages specially designed for users. The technical communication file is not designed to receive any other personal data from the main memory. Most of the browsers are initially designed to accept the technical communication file, but users can always change the browser settings so that the technical communication file does not arrive or a warning is given when the technical communication file is sent. It is not designed to retrieve any other personal data from the main memory. Most of the browsers are initially designed to accept the technical communication file, but users can always change the browser settings so that the technical communication file does not arrive or a warning is given when the technical communication file is sent. It is not designed to retrieve any other personal data from the main memory. Most of the browsers are initially designed to accept the technical communication file, but users can always change the browser settings so that the technical communication file does not arrive or a warning is given when the technical communication file is sent.',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.03.sw),
+                    child: TextFormInputLabel(
+                      text: 'Who Can Access Your Data?',
+                      fontSize: 17.5.sp,
+                      textColor: Palette.neutralLabel,
+                      textColorDark: Palette.neutralLabelDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.02.sw),
+                    child: AdaptiveText(
+                      'AmatNow will be able to transfer your personal data and new data obtained using this personal data to restaurants in order to achieve the purposes specified under this Privacy Policy, limited to the provision of such services. In this context, AmatNow will also be able to transfer your personal data to Delivery Hero GmbH and Luxembourg Investment Company 43 SARL, its shareholders, affiliates, legally authorized public institutions and private law entities. Anonymous or limited data transfer can be made to our business partners and suppliers and third parties from whose services they benefit, and in these cases, separate approval can be obtained.'
+                      '\n\nAmatNow, e-mail in order to improve your user experience (including improvement and personalization), to ensure your security, to detect fraudulent or unauthorized use, to investigate operational evaluation, to correct errors related to Site services, and to fulfill any of the purposes stated in this Privacy Policy. and with third parties such as outsourcing service providers, hosting service providers (hosting services), law firms, including those who send SMS.'
+                      '\nAs a Data Owner, you agree that the aforementioned third parties may store your personal data on their servers anywhere in the world, provided that you are limited to the above-mentioned purposes, and that you consent to this in advance.'
+                      '\n\nAs a Data Owner, you undertake that your information subject to this Privacy Policy is complete, accurate and up-to-date, and that you will update them immediately if there is any change in this information. If you do not provide up-to-date information, AmatNow will not have any responsibility.'
+                      '\nAs a Data Owner, you accept that you may not be able to fully benefit from the operation of the Site or the Mobile application if you make a request that will result in the inability of any of your personal data to be used by AmatNow, and you declare that you will be responsible for all kinds of responsibilities arising in this context.',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.03.sw),
+                    child: TextFormInputLabel(
+                      text: 'How Long Do We Keep Your Data?',
+                      fontSize: 17.5.sp,
+                      textColor: Palette.neutralLabel,
+                      textColorDark: Palette.neutralLabelDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.02.sw),
+                    child: AdaptiveText(
+                      'The personal data you have shared with AmatNow are kept for the period required by the purposes specified in this Privacy Policy and for the period of limitation specified in the relevant legislation of AmatNow. In addition, your personal data may be stored in a limited way in order to make the necessary defenses within the scope of the dispute in case of any conflict that may arise between you and AmatNow.',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 0.03.sw),
+                    child: TextFormInputLabel(
+                      text: 'How Do We Ensure the Security of Your Data?',
+                      fontSize: 17.5.sp,
+                      textColor: Palette.neutralLabel,
+                      textColorDark: Palette.neutralLabelDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                //
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 0.02.sw,
+                      bottom: App.sidePadding,
+                    ),
+                    child: AdaptiveText(
+                      'AmatNow, under the conditions specified in the relevant legislation or stated in this Privacy Policy,'
+                      '\nPersonal data are not processed illegally, personal data are not accessed illegally and protection of personal data.'
+                      '\nIn order to ensure the appropriate conditions, taking the necessary technical and administrative measures to ensure the minimum level of security, and having the necessary inspections carried out.'
+                      '\n\nAmatNow also does not disclose the personal data it obtains from you in violation of the provisions of this Privacy Policy and the Law on Protection of Personal Data, and does not use it for purposes other than processing.'
+                      '\nIn case of linking to other applications on the site, AmatNow does not bear any responsibility for the privacy policies and contents of the applications and recommends that you review these texts.',
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

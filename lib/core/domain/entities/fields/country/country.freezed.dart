@@ -257,39 +257,24 @@ class _$_Country extends _Country {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Country &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.iso, iso) ||
-                const DeepCollectionEquality().equals(other.iso, iso)) &&
-            (identical(other.iso3, iso3) ||
-                const DeepCollectionEquality().equals(other.iso3, iso3)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Country &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.iso, iso) || other.iso == iso) &&
+            (identical(other.iso3, iso3) || other.iso3 == iso3) &&
             (identical(other.dialCode, dialCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.dialCode, dialCode)) &&
-            (identical(other.locale, locale) ||
-                const DeepCollectionEquality().equals(other.locale, locale)) &&
+                other.dialCode == dialCode) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)) &&
+                other.currency == currency) &&
             (identical(other.digitsCount, digitsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.digitsCount, digitsCount)));
+                other.digitsCount == digitsCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(iso) ^
-      const DeepCollectionEquality().hash(iso3) ^
-      const DeepCollectionEquality().hash(dialCode) ^
-      const DeepCollectionEquality().hash(locale) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(digitsCount);
+  int get hashCode => Object.hash(runtimeType, id, name, iso, iso3, dialCode,
+      locale, currency, digitsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -310,21 +295,21 @@ abstract class _Country extends Country {
   const _Country._() : super._();
 
   @override
-  UniqueId<String?>? get id => throw _privateConstructorUsedError;
+  UniqueId<String?>? get id;
   @override
-  BasicTextField<String?>? get name => throw _privateConstructorUsedError;
+  BasicTextField<String?>? get name;
   @override
-  BasicTextField<String?>? get iso => throw _privateConstructorUsedError;
+  BasicTextField<String?>? get iso;
   @override
-  BasicTextField<String?>? get iso3 => throw _privateConstructorUsedError;
+  BasicTextField<String?>? get iso3;
   @override
-  BasicTextField<String?>? get dialCode => throw _privateConstructorUsedError;
+  BasicTextField<String?>? get dialCode;
   @override
-  String get locale => throw _privateConstructorUsedError;
+  String get locale;
   @override
-  Currency? get currency => throw _privateConstructorUsedError;
+  Currency? get currency;
   @override
-  int? get digitsCount => throw _privateConstructorUsedError;
+  int? get digitsCount;
   @override
   @JsonKey(ignore: true)
   _$CountryCopyWith<_Country> get copyWith =>

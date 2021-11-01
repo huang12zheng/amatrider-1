@@ -1,16 +1,40 @@
 // ignore_for_file: prefer_single_quotes
 
+import 'package:amatrider/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:inflection3/inflection3.dart' as _l1;
 import 'package:intl/intl.dart';
 import 'package:kt_dart/kt.dart';
 
+enum StringCase { upper, lower, title }
+
 extension StringX on String {
   /// Capitalize only first letter in string
   ///
   /// Example: your name => Your name
-  String capitalizeFirst() =>
-      '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
+  String capitalizeFirst([String? str]) =>
+      '${(str ?? this[0]).toUpperCase()}${substring(1).toLowerCase()}';
+
+  String titleCase() {
+    var splitStr = toLowerCase().split(' ');
+    for (var i = 0; i < splitStr.length; i++)
+      splitStr[i] =
+          splitStr[i][0].toUpperCase() + splitStr[i].substring(1).toLowerCase();
+    return splitStr.join(' ');
+  }
+
+  String cased(StringCase? type) {
+    switch (type) {
+      case StringCase.upper:
+        return toUpperCase();
+      case StringCase.lower:
+        return toLowerCase();
+      case StringCase.title:
+        return titleCase();
+      default:
+        return this;
+    }
+  }
 
   /// Checks if String contains b (Treating or interpreting upper- and lowercase letters as being the same).
   bool caseInsensitiveContains(String? b) =>
@@ -70,7 +94,7 @@ extension StringX on String {
         name: currency,
         symbol: includeSymbol ? null : '',
         customPattern: mask,
-        decimalDigits: decimal ? 2 : 0,
+        decimalDigits: decimal ? 1 : 0,
       );
 
   String pad([String? pad = '', Direction start = Direction.right]) {
@@ -103,20 +127,21 @@ extension StringX on String {
   /// Example: 50000 => 50,000
   String asCurrency({
     String? mask,
-    bool symbol = false,
-    bool decimal = false,
-    String? currency,
-    String locale = "en_NG",
+    bool symbol = true,
+    String? currency = '${Utils.currency}',
+    String locale = "tr_TUR",
   }) {
     if (this == 'null' || isEmpty) return '';
+
+    final _this = num.tryParse(this);
 
     return asCurrencyFormat(
             mask: mask,
             includeSymbol: symbol,
             currency: currency,
-            decimal: decimal,
+            decimal: _this != null && !_this.isInteger,
             locale: locale)
-        .format(num.tryParse(this));
+        .format(_this);
   }
 
   /// Returns only the First character of every word matching _**[pattern]**_ separated by _**[separator]**_

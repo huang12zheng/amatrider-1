@@ -61,7 +61,7 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  UserDAO? _userDAOInstance;
+  RiderDAO? _riderDAOInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `users` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `fullName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `riders` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `availability` TEXT, `lat` REAL, `lng` REAL, `phoneVerifiedAt` INTEGER, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -91,50 +91,60 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  UserDAO get userDAO {
-    return _userDAOInstance ??= _$UserDAO(database, changeListener);
+  RiderDAO get riderDAO {
+    return _riderDAOInstance ??= _$RiderDAO(database, changeListener);
   }
 }
 
-class _$UserDAO extends UserDAO {
-  _$UserDAO(this.database, this.changeListener)
+class _$RiderDAO extends RiderDAO {
+  _$RiderDAO(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database, changeListener),
-        __$_UserDTOInsertionAdapter = InsertionAdapter(
+        __$_RiderDTOInsertionAdapter = InsertionAdapter(
             database,
-            'users',
-            (_$_UserDTO item) => <String, Object?>{
+            'riders',
+            (_$_RiderDTO item) => <String, Object?>{
                   'id': item.id,
                   'token': item.token,
                   'firstName': item.firstName,
                   'lastName': item.lastName,
-                  'fullName': item.fullName,
                   'email': item.email,
                   'phone': item.phone,
                   'password': item.password,
                   'oldPassword': item.oldPassword,
                   'confirmation': item.confirmation,
                   'image': item.image,
+                  'availability':
+                      _riderAvailabilityConverter.encode(item.availability),
+                  'lat': item.lat,
+                  'lng': item.lng,
+                  'phoneVerifiedAt':
+                      _timestampFloorConverter.encode(item.phoneVerifiedAt),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
                 },
             changeListener),
-        __$_UserDTODeletionAdapter = DeletionAdapter(
+        __$_RiderDTODeletionAdapter = DeletionAdapter(
             database,
-            'users',
+            'riders',
             ['id'],
-            (_$_UserDTO item) => <String, Object?>{
+            (_$_RiderDTO item) => <String, Object?>{
                   'id': item.id,
                   'token': item.token,
                   'firstName': item.firstName,
                   'lastName': item.lastName,
-                  'fullName': item.fullName,
                   'email': item.email,
                   'phone': item.phone,
                   'password': item.password,
                   'oldPassword': item.oldPassword,
                   'confirmation': item.confirmation,
                   'image': item.image,
+                  'availability':
+                      _riderAvailabilityConverter.encode(item.availability),
+                  'lat': item.lat,
+                  'lng': item.lng,
+                  'phoneVerifiedAt':
+                      _timestampFloorConverter.encode(item.phoneVerifiedAt),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -147,50 +157,60 @@ class _$UserDAO extends UserDAO {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<_$_UserDTO> __$_UserDTOInsertionAdapter;
+  final InsertionAdapter<_$_RiderDTO> __$_RiderDTOInsertionAdapter;
 
-  final DeletionAdapter<_$_UserDTO> __$_UserDTODeletionAdapter;
+  final DeletionAdapter<_$_RiderDTO> __$_RiderDTODeletionAdapter;
 
   @override
-  Stream<List<_$_UserDTO?>> watchUsers() {
-    return _queryAdapter.queryListStream('SELECT * FROM users',
-        mapper: (Map<String, Object?> row) => _$_UserDTO(
+  Stream<List<_$_RiderDTO?>> watchRiders() {
+    return _queryAdapter.queryListStream('SELECT * FROM riders',
+        mapper: (Map<String, Object?> row) => _$_RiderDTO(
             id: row['id'] as String?,
             token: row['token'] as String?,
             firstName: row['firstName'] as String?,
             lastName: row['lastName'] as String?,
-            fullName: row['fullName'] as String?,
             email: row['email'] as String?,
             phone: row['phone'] as String?,
             password: row['password'] as String?,
             oldPassword: row['oldPassword'] as String?,
             confirmation: row['confirmation'] as String?,
             image: row['image'] as String?,
+            availability: _riderAvailabilityConverter
+                .decode(row['availability'] as String),
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            phoneVerifiedAt:
+                _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
                 _timestampFloorConverter.decode(row['updatedAt'] as int?),
             deletedAt:
                 _timestampFloorConverter.decode(row['deletedAt'] as int?)),
-        queryableName: 'users',
+        queryableName: 'riders',
         isView: false);
   }
 
   @override
-  Future<List<_$_UserDTO?>> allUsers() async {
-    return _queryAdapter.queryList('SELECT * FROM users',
-        mapper: (Map<String, Object?> row) => _$_UserDTO(
+  Future<List<_$_RiderDTO?>> allRiders() async {
+    return _queryAdapter.queryList('SELECT * FROM riders',
+        mapper: (Map<String, Object?> row) => _$_RiderDTO(
             id: row['id'] as String?,
             token: row['token'] as String?,
             firstName: row['firstName'] as String?,
             lastName: row['lastName'] as String?,
-            fullName: row['fullName'] as String?,
             email: row['email'] as String?,
             phone: row['phone'] as String?,
             password: row['password'] as String?,
             oldPassword: row['oldPassword'] as String?,
             confirmation: row['confirmation'] as String?,
             image: row['image'] as String?,
+            availability: _riderAvailabilityConverter
+                .decode(row['availability'] as String),
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            phoneVerifiedAt:
+                _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -200,20 +220,25 @@ class _$UserDAO extends UserDAO {
   }
 
   @override
-  Future<_$_UserDTO?> findUser(int id) async {
-    return _queryAdapter.query('SELECT * FROM users WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => _$_UserDTO(
+  Future<_$_RiderDTO?> findRider(int id) async {
+    return _queryAdapter.query('SELECT * FROM riders WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => _$_RiderDTO(
             id: row['id'] as String?,
             token: row['token'] as String?,
             firstName: row['firstName'] as String?,
             lastName: row['lastName'] as String?,
-            fullName: row['fullName'] as String?,
             email: row['email'] as String?,
             phone: row['phone'] as String?,
             password: row['password'] as String?,
             oldPassword: row['oldPassword'] as String?,
             confirmation: row['confirmation'] as String?,
             image: row['image'] as String?,
+            availability: _riderAvailabilityConverter
+                .decode(row['availability'] as String),
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            phoneVerifiedAt:
+                _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -224,25 +249,30 @@ class _$UserDAO extends UserDAO {
   }
 
   @override
-  Future<void> removeUsers() async {
-    await _queryAdapter.queryNoReturn('DELETE FROM users');
+  Future<void> removeRiders() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM riders');
   }
 
   @override
-  Future<_$_UserDTO?> lastUser() async {
-    return _queryAdapter.query('SELECT * FROM users ORDER BY ID DESC LIMIT 1',
-        mapper: (Map<String, Object?> row) => _$_UserDTO(
+  Future<_$_RiderDTO?> lastRider() async {
+    return _queryAdapter.query('SELECT * FROM riders ORDER BY ID DESC LIMIT 1',
+        mapper: (Map<String, Object?> row) => _$_RiderDTO(
             id: row['id'] as String?,
             token: row['token'] as String?,
             firstName: row['firstName'] as String?,
             lastName: row['lastName'] as String?,
-            fullName: row['fullName'] as String?,
             email: row['email'] as String?,
             phone: row['phone'] as String?,
             password: row['password'] as String?,
             oldPassword: row['oldPassword'] as String?,
             confirmation: row['confirmation'] as String?,
             image: row['image'] as String?,
+            availability: _riderAvailabilityConverter
+                .decode(row['availability'] as String),
+            lat: row['lat'] as double?,
+            lng: row['lng'] as double?,
+            phoneVerifiedAt:
+                _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -252,36 +282,43 @@ class _$UserDAO extends UserDAO {
   }
 
   @override
-  Future<void> insertUser(_$_UserDTO user) async {
-    await __$_UserDTOInsertionAdapter.insert(user, OnConflictStrategy.replace);
+  Future<void> insertRider(_$_RiderDTO Rider) async {
+    await __$_RiderDTOInsertionAdapter.insert(
+        Rider, OnConflictStrategy.replace);
   }
 
   @override
-  Future<void> removeUser(_$_UserDTO user) async {
-    await __$_UserDTODeletionAdapter.delete(user);
+  Future<void> removeRider(_$_RiderDTO Rider) async {
+    await __$_RiderDTODeletionAdapter.delete(Rider);
   }
 }
 
 // ignore_for_file: unused_element
 final _timestampFloorConverter = TimestampFloorConverter();
 final _countryDTOFloorConverter = CountryDTOFloorConverter();
+final _riderAvailabilityConverter = RiderAvailabilityConverter();
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserDTO _$$_UserDTOFromJson(Map<String, dynamic> json) => _$_UserDTO(
+_$_RiderDTO _$$_RiderDTOFromJson(Map<String, dynamic> json) => _$_RiderDTO(
       id: json['id'] as String?,
       token: json['token'] as String?,
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
-      fullName: json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       password: json['password'] as String?,
       oldPassword: json['current_password'] as String?,
       confirmation: json['password_confirmation'] as String?,
-      image: json['profile_image'] as String?,
+      image: json['image'] as String?,
+      availability: const RiderAvailabilitySerializer()
+          .fromJson(json['availability'] as int?),
+      lat: const DoubleSerializer().fromJson(json['current_latitude']),
+      lng: const DoubleSerializer().fromJson(json['current_longitude']),
+      phoneVerifiedAt: const TimestampConverter()
+          .fromJson(json['phone_verified_at'] as String?),
       createdAt:
           const TimestampConverter().fromJson(json['created_at'] as String?),
       updatedAt:
@@ -290,7 +327,7 @@ _$_UserDTO _$$_UserDTOFromJson(Map<String, dynamic> json) => _$_UserDTO(
           const TimestampConverter().fromJson(json['deleted_at'] as String?),
     );
 
-Map<String, dynamic> _$$_UserDTOToJson(_$_UserDTO instance) {
+Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -303,13 +340,20 @@ Map<String, dynamic> _$$_UserDTOToJson(_$_UserDTO instance) {
   writeNotNull('token', instance.token);
   writeNotNull('first_name', instance.firstName);
   writeNotNull('last_name', instance.lastName);
-  writeNotNull('full_name', instance.fullName);
   writeNotNull('email', instance.email);
   writeNotNull('phone', instance.phone);
   writeNotNull('password', instance.password);
   writeNotNull('current_password', instance.oldPassword);
   writeNotNull('password_confirmation', instance.confirmation);
-  writeNotNull('profile_image', instance.image);
+  writeNotNull('image', instance.image);
+  writeNotNull('availability',
+      const RiderAvailabilitySerializer().toJson(instance.availability));
+  writeNotNull(
+      'current_latitude', const DoubleSerializer().toJson(instance.lat));
+  writeNotNull(
+      'current_longitude', const DoubleSerializer().toJson(instance.lng));
+  writeNotNull('phone_verified_at',
+      const TimestampConverter().toJson(instance.phoneVerifiedAt));
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

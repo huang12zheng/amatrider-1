@@ -143,21 +143,15 @@ class _$_Currency extends _Currency {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Currency &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+        (other.runtimeType == runtimeType &&
+            other is _Currency &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(type);
+  int get hashCode => Object.hash(runtimeType, id, name, type);
 
   @JsonKey(ignore: true)
   @override
@@ -171,11 +165,11 @@ abstract class _Currency extends Currency {
   const _Currency._() : super._();
 
   @override
-  UniqueId<String?>? get id => throw _privateConstructorUsedError;
+  UniqueId<String?>? get id;
   @override
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
-  CurrencyType? get type => throw _privateConstructorUsedError;
+  CurrencyType? get type;
   @override
   @JsonKey(ignore: true)
   _$CurrencyCopyWith<_Currency> get copyWith =>

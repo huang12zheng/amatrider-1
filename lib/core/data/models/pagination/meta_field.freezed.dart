@@ -42,7 +42,7 @@ class _$MetaFieldTearOff {
     );
   }
 
-  MetaField fromJson(Map<String, Object> json) {
+  MetaField fromJson(Map<String, Object?> json) {
     return MetaField.fromJson(json);
   }
 }
@@ -270,39 +270,23 @@ class _$_MetaField extends _MetaField {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MetaField &&
+        (other.runtimeType == runtimeType &&
+            other is _MetaField &&
             (identical(other.currentPage, currentPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentPage, currentPage)) &&
-            (identical(other.from, from) ||
-                const DeepCollectionEquality().equals(other.from, from)) &&
+                other.currentPage == currentPage) &&
+            (identical(other.from, from) || other.from == from) &&
             (identical(other.lastPage, lastPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastPage, lastPage)) &&
-            (identical(other.links, links) ||
-                const DeepCollectionEquality().equals(other.links, links)) &&
-            (identical(other.path, path) ||
-                const DeepCollectionEquality().equals(other.path, path)) &&
-            (identical(other.perPage, perPage) ||
-                const DeepCollectionEquality()
-                    .equals(other.perPage, perPage)) &&
-            (identical(other.to, to) ||
-                const DeepCollectionEquality().equals(other.to, to)) &&
-            (identical(other.total, total) ||
-                const DeepCollectionEquality().equals(other.total, total)));
+                other.lastPage == lastPage) &&
+            const DeepCollectionEquality().equals(other.links, links) &&
+            (identical(other.path, path) || other.path == path) &&
+            (identical(other.perPage, perPage) || other.perPage == perPage) &&
+            (identical(other.to, to) || other.to == to) &&
+            (identical(other.total, total) || other.total == total));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(currentPage) ^
-      const DeepCollectionEquality().hash(from) ^
-      const DeepCollectionEquality().hash(lastPage) ^
-      const DeepCollectionEquality().hash(links) ^
-      const DeepCollectionEquality().hash(path) ^
-      const DeepCollectionEquality().hash(perPage) ^
-      const DeepCollectionEquality().hash(to) ^
-      const DeepCollectionEquality().hash(total);
+  int get hashCode => Object.hash(runtimeType, currentPage, from, lastPage,
+      const DeepCollectionEquality().hash(links), path, perPage, to, total);
 
   @JsonKey(ignore: true)
   @override
@@ -332,28 +316,28 @@ abstract class _MetaField extends MetaField {
 
   @override
   @JsonKey(includeIfNull: false, name: 'current_page')
-  int? get currentPage => throw _privateConstructorUsedError;
+  int? get currentPage;
   @override
   @JsonKey(includeIfNull: false)
-  int? get from => throw _privateConstructorUsedError;
+  int? get from;
   @override
   @JsonKey(includeIfNull: false, name: 'last_page')
-  int? get lastPage => throw _privateConstructorUsedError;
+  int? get lastPage;
   @override
   @JsonKey(includeIfNull: false)
-  List<PaginationLinks> get links => throw _privateConstructorUsedError;
+  List<PaginationLinks> get links;
   @override
   @JsonKey(includeIfNull: false)
-  String? get path => throw _privateConstructorUsedError;
+  String? get path;
   @override
   @JsonKey(includeIfNull: false, name: 'per_page')
-  int? get perPage => throw _privateConstructorUsedError;
+  int? get perPage;
   @override
   @JsonKey(includeIfNull: false)
-  int? get to => throw _privateConstructorUsedError;
+  int? get to;
   @override
   @JsonKey(includeIfNull: false)
-  int? get total => throw _privateConstructorUsedError;
+  int? get total;
   @override
   @JsonKey(ignore: true)
   _$MetaFieldCopyWith<_MetaField> get copyWith =>

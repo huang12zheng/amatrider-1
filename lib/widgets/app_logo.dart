@@ -6,7 +6,7 @@ enum _LogoPosition { stacked, horizontal, markOnly }
 
 Widget _builder(BuildContext context) => nil;
 
-class AmatRiderLogo extends StatelessWidget {
+class AmatNowLogo extends StatelessWidget {
   static const double kMaxHeight = 200.0;
   static const double kHeight = 80.0;
   static const double kMaxWidth = double.infinity;
@@ -24,7 +24,7 @@ class AmatRiderLogo extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final _LogoPosition _position;
 
-  const AmatRiderLogo({
+  const AmatNowLogo({
     Key? key,
     this.logo = '${AppAssets.logo}',
     this.logoHeight = kHeight,
@@ -39,7 +39,7 @@ class AmatRiderLogo extends StatelessWidget {
         maxWidth = kMaxWidth,
         super(key: key);
 
-  const AmatRiderLogo.horizontal({
+  const AmatNowLogo.horizontal({
     Key? key,
     this.logo = '${AppAssets.logo}',
     this.logoHeight = kHeight,

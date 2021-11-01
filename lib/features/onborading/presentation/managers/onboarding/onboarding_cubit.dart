@@ -46,12 +46,14 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   void attachControllerListener() {
-    state.controller.addListener(() {
-      if (state.controller.page != null &&
-          state.controller.page?.round() != state.currentIndex) {
-        emit(state.copyWith(currentIndex: state.controller.page!.round()));
-      }
-    });
+    state.controller.addListener(_pageControllerListener);
+  }
+
+  void _pageControllerListener() {
+    if (state.controller.page != null &&
+        state.controller.page?.round() != state.currentIndex) {
+      emit(state.copyWith(currentIndex: state.controller.page!.round()));
+    }
   }
 
   void prev() async {
@@ -81,7 +83,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   @override
   Future<void> close() {
+    state.controller.removeListener(_pageControllerListener);
     playerController?.removeListener(_playbackListener);
+    state.controller.dispose();
     playerController?.dispose();
     return super.close();
   }

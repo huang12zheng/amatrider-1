@@ -192,29 +192,18 @@ class _$_InfoResponse extends _InfoResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InfoResponse &&
-            (identical(other.uuid, uuid) ||
-                const DeepCollectionEquality().equals(other.uuid, uuid)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality()
-                    .equals(other.details, details)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _InfoResponse &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.details, details) || other.details == details) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uuid) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(details) ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(show);
+      Object.hash(runtimeType, uuid, status, details, message, show);
 
   @JsonKey(ignore: true)
   @override
@@ -232,15 +221,15 @@ abstract class _InfoResponse extends InfoResponse {
   const _InfoResponse._() : super._();
 
   @override
-  String? get uuid => throw _privateConstructorUsedError;
+  String? get uuid;
   @override
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
-  String? get details => throw _privateConstructorUsedError;
+  String? get details;
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$InfoResponseCopyWith<_InfoResponse> get copyWith =>

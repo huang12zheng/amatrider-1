@@ -38,7 +38,7 @@ class _$SuccessResponseTearOff {
     );
   }
 
-  SuccessResponse fromJson(Map<String, Object> json) {
+  SuccessResponse fromJson(Map<String, Object?> json) {
     return SuccessResponse.fromJson(json);
   }
 }
@@ -235,32 +235,19 @@ class _$_SuccessResponse extends _SuccessResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SuccessResponse &&
-            (identical(other.uuid, uuid) ||
-                const DeepCollectionEquality().equals(other.uuid, uuid)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality()
-                    .equals(other.details, details)) &&
-            (identical(other.pop, pop) ||
-                const DeepCollectionEquality().equals(other.pop, pop)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+        (other.runtimeType == runtimeType &&
+            other is _SuccessResponse &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.details, details) || other.details == details) &&
+            (identical(other.pop, pop) || other.pop == pop) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uuid) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(details) ^
-      const DeepCollectionEquality().hash(pop) ^
-      const DeepCollectionEquality().hash(show);
+      Object.hash(runtimeType, uuid, status, message, details, pop, show);
 
   @JsonKey(ignore: true)
   @override
@@ -288,22 +275,22 @@ abstract class _SuccessResponse extends SuccessResponse {
 
   @override
   @JsonKey(ignore: true)
-  String? get uuid => throw _privateConstructorUsedError;
+  String? get uuid;
   @override
   @JsonKey(includeIfNull: false, defaultValue: 'success')
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
   @JsonKey(includeIfNull: false, defaultValue: '')
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
   @JsonKey(ignore: true)
-  String? get details => throw _privateConstructorUsedError;
+  String? get details;
   @override
   @JsonKey(ignore: true)
-  bool get pop => throw _privateConstructorUsedError;
+  bool get pop;
   @override
   @JsonKey(ignore: true)
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   _$SuccessResponseCopyWith<_SuccessResponse> get copyWith =>

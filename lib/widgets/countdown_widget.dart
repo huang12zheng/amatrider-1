@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// A stateless widget to render CountdownWidget.
 class CountdownWidget extends StatefulWidget {
@@ -73,10 +73,7 @@ class _CountdownWidgetState extends State<CountdownWidget>
 
     return Visibility(
       visible: duration.inSeconds == 0 || duration == widget.duration,
-      replacement: AutoSizeText(
-        tick,
-        style: const TextStyle(fontSize: 15.0),
-      ),
+      replacement: AdaptiveText(tick, fontSize: 15.0),
       child: GestureDetector(
         onTap: () async {
           await widget.onTap?.call();

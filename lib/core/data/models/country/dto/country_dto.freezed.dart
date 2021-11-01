@@ -36,7 +36,7 @@ class _$CountryDTOTearOff {
     );
   }
 
-  CountryDTO fromJson(Map<String, Object> json) {
+  CountryDTO fromJson(Map<String, Object?> json) {
     return CountryDTO.fromJson(json);
   }
 }
@@ -212,28 +212,18 @@ class _$_CountryDTO extends _CountryDTO {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CountryDTO &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.iso2, iso2) ||
-                const DeepCollectionEquality().equals(other.iso2, iso2)) &&
-            (identical(other.iso3, iso3) ||
-                const DeepCollectionEquality().equals(other.iso3, iso3)) &&
+        (other.runtimeType == runtimeType &&
+            other is _CountryDTO &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.iso2, iso2) || other.iso2 == iso2) &&
+            (identical(other.iso3, iso3) || other.iso3 == iso3) &&
             (identical(other.dialCode, dialCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.dialCode, dialCode)));
+                other.dialCode == dialCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(iso2) ^
-      const DeepCollectionEquality().hash(iso3) ^
-      const DeepCollectionEquality().hash(dialCode);
+  int get hashCode => Object.hash(runtimeType, id, name, iso2, iso3, dialCode);
 
   @JsonKey(ignore: true)
   @override
@@ -265,19 +255,19 @@ abstract class _CountryDTO extends CountryDTO {
 
   @override
   @JsonKey(includeIfNull: false)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @JsonKey(includeIfNull: false)
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
   @JsonKey(includeIfNull: false)
-  String? get iso2 => throw _privateConstructorUsedError;
+  String? get iso2;
   @override
   @JsonKey(includeIfNull: false)
-  String? get iso3 => throw _privateConstructorUsedError;
+  String? get iso3;
   @override
   @JsonKey(includeIfNull: false, name: 'phone_code')
-  String? get dialCode => throw _privateConstructorUsedError;
+  String? get dialCode;
   @override
   @JsonKey(ignore: true)
   _$CountryDTOCopyWith<_CountryDTO> get copyWith =>

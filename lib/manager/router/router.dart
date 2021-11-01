@@ -1,8 +1,10 @@
 import 'package:amatrider/core/presentation/index.dart';
+import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/pages/index.dart';
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart';
 import 'package:amatrider/features/home/presentation/screens/index.dart';
 import 'package:amatrider/features/onborading/presentation/screens/index.dart';
+import 'package:amatrider/manager/router/guards/guards.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:amatrider/_404.dart';
@@ -21,7 +23,60 @@ import 'package:amatrider/_404.dart';
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
+      usesPathAsKey: true,
       page: OnboardingScreen,
+      guards: [GuestGuard],
+    ),
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: GetStartedScreen,
+      path: 'get-started-screen',
+      cupertinoPageTitle: 'Get Started',
+      guards: [GuestGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: LoginScreen,
+      path: 'login-screen',
+      cupertinoPageTitle: 'Login',
+      guards: [GuestGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      path: 'signup-screen',
+      page: SignupScreen,
+      cupertinoPageTitle: 'Sign Up',
+      guards: [GuestGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      fullscreenDialog: true,
+      page: ForgotPasswordScreen,
+      path: 'forgot-password-screen',
+      cupertinoPageTitle: 'Password Reset',
+      guards: [GuestGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      fullscreenDialog: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: OTPVerificationScreen,
+      path: 'otp-verification-screen',
+      cupertinoPageTitle: 'OTP',
+      guards: [GuestGuard, AuthGuard],
     ),
     //
     dashboardRouter,
@@ -31,6 +86,7 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: AccountVerificationScreen,
       path: 'account-verification-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -38,6 +94,24 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: DocumentUploadScreen,
       path: 'document-upload-screen',
+      guards: [AuthGuard],
+    ),
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: SettingScreen,
+      cupertinoPageTitle: 'Settings',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: LanguageScreen,
+      cupertinoPageTitle: 'Language',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -45,21 +119,67 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: EditBankDetailsScreen,
       path: 'edit-bank-details-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
-      page: RideAcceptedScreen,
-      path: 'ride-accepted-screen',
+      page: PackageDeliveryAcceptedScreen,
+      path: 'package-delivery-accepted-screen',
+      guards: [AuthGuard],
+    ),
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      page: OrderDeliveryAcceptedScreen,
+      path: 'order-delivery-accepted-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
-      fullscreenDialog: true,
+      usesPathAsKey: true,
       page: ReferralScreen,
-      path: 'account-referral-screen',
+      cupertinoPageTitle: 'Invite Friends',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: ContactSupportScreen,
+      cupertinoPageTitle: 'Contact Support',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: PrivacyPolicyScreen,
+      cupertinoPageTitle: 'Privacy Policy',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: PromotionsScreen,
+      cupertinoPageTitle: 'Promotions',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
+      page: NotificationScreen,
+      cupertinoPageTitle: 'Notifications',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -67,6 +187,7 @@ import 'package:amatrider/_404.dart';
       page: NotConnectedScreen,
       maintainState: true,
       path: 'not-connected-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -74,6 +195,7 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: NoHistoryScreen,
       path: 'no-history-screen',
+      guards: [AuthGuard],
     ),
     //
     AdaptiveRoute(
@@ -91,6 +213,7 @@ const dashboardRouter = AutoRoute(
   fullMatch: true,
   page: DashboardScreen,
   maintainState: true,
+  guards: [AuthGuard],
   children: [
     AutoRoute(
       path: 'home',

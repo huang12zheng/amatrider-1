@@ -20,10 +20,12 @@ class _$OnboardingItemTearOff {
   _OnboardingItem<Pixel> call<Pixel>(
       {required String title,
       required String description,
+      required Color bgColor,
       required Pixel image}) {
     return _OnboardingItem<Pixel>(
       title: title,
       description: description,
+      bgColor: bgColor,
       image: image,
     );
   }
@@ -36,6 +38,7 @@ const $OnboardingItem = _$OnboardingItemTearOff();
 mixin _$OnboardingItem<Pixel> {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  Color get bgColor => throw _privateConstructorUsedError;
   Pixel get image => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -48,7 +51,7 @@ abstract class $OnboardingItemCopyWith<Pixel, $Res> {
   factory $OnboardingItemCopyWith(OnboardingItem<Pixel> value,
           $Res Function(OnboardingItem<Pixel>) then) =
       _$OnboardingItemCopyWithImpl<Pixel, $Res>;
-  $Res call({String title, String description, Pixel image});
+  $Res call({String title, String description, Color bgColor, Pixel image});
 }
 
 /// @nodoc
@@ -64,6 +67,7 @@ class _$OnboardingItemCopyWithImpl<Pixel, $Res>
   $Res call({
     Object? title = freezed,
     Object? description = freezed,
+    Object? bgColor = freezed,
     Object? image = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,6 +79,10 @@ class _$OnboardingItemCopyWithImpl<Pixel, $Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      bgColor: bgColor == freezed
+          ? _value.bgColor
+          : bgColor // ignore: cast_nullable_to_non_nullable
+              as Color,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -90,7 +98,7 @@ abstract class _$OnboardingItemCopyWith<Pixel, $Res>
           $Res Function(_OnboardingItem<Pixel>) then) =
       __$OnboardingItemCopyWithImpl<Pixel, $Res>;
   @override
-  $Res call({String title, String description, Pixel image});
+  $Res call({String title, String description, Color bgColor, Pixel image});
 }
 
 /// @nodoc
@@ -108,6 +116,7 @@ class __$OnboardingItemCopyWithImpl<Pixel, $Res>
   $Res call({
     Object? title = freezed,
     Object? description = freezed,
+    Object? bgColor = freezed,
     Object? image = freezed,
   }) {
     return _then(_OnboardingItem<Pixel>(
@@ -119,6 +128,10 @@ class __$OnboardingItemCopyWithImpl<Pixel, $Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      bgColor: bgColor == freezed
+          ? _value.bgColor
+          : bgColor // ignore: cast_nullable_to_non_nullable
+              as Color,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -131,7 +144,10 @@ class __$OnboardingItemCopyWithImpl<Pixel, $Res>
 
 class _$_OnboardingItem<Pixel> extends _OnboardingItem<Pixel> {
   const _$_OnboardingItem(
-      {required this.title, required this.description, required this.image})
+      {required this.title,
+      required this.description,
+      required this.bgColor,
+      required this.image})
       : super._();
 
   @override
@@ -139,32 +155,30 @@ class _$_OnboardingItem<Pixel> extends _OnboardingItem<Pixel> {
   @override
   final String description;
   @override
+  final Color bgColor;
+  @override
   final Pixel image;
 
   @override
   String toString() {
-    return 'OnboardingItem<$Pixel>(title: $title, description: $description, image: $image)';
+    return 'OnboardingItem<$Pixel>(title: $title, description: $description, bgColor: $bgColor, image: $image)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OnboardingItem<Pixel> &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _OnboardingItem<Pixel> &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)));
+                other.description == description) &&
+            (identical(other.bgColor, bgColor) || other.bgColor == bgColor) &&
+            const DeepCollectionEquality().equals(other.image, image));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(image);
+  int get hashCode => Object.hash(runtimeType, title, description, bgColor,
+      const DeepCollectionEquality().hash(image));
 
   @JsonKey(ignore: true)
   @override
@@ -177,15 +191,18 @@ abstract class _OnboardingItem<Pixel> extends OnboardingItem<Pixel> {
   const factory _OnboardingItem(
       {required String title,
       required String description,
+      required Color bgColor,
       required Pixel image}) = _$_OnboardingItem<Pixel>;
   const _OnboardingItem._() : super._();
 
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
-  Pixel get image => throw _privateConstructorUsedError;
+  Color get bgColor;
+  @override
+  Pixel get image;
   @override
   @JsonKey(ignore: true)
   _$OnboardingItemCopyWith<Pixel, _OnboardingItem<Pixel>> get copyWith =>

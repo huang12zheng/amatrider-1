@@ -14,10 +14,13 @@ class AdaptiveButton extends StatelessWidget {
   final String? fontFamily;
   final double? wordSpacing;
   final Alignment textAlignment;
-  final Color? textColor;
-  final Color? textColorDark;
+  final Color textColor;
+  final Color textColorDark;
   final double width;
   final double height;
+  final double minFontSize;
+  final double maxFontSize;
+  final int? maxLines;
 
   final double? cupertinoWidth;
   final double cupertinoHeight;
@@ -29,7 +32,7 @@ class AdaptiveButton extends StatelessWidget {
   final Function()? onLongPress;
   final VoidCallback? onPressed;
   //
-  final Color? backgroundColor;
+  final Color backgroundColor;
   final Color? splashColor;
   final double? elevation;
   final EdgeInsetsGeometry? padding;
@@ -40,7 +43,9 @@ class AdaptiveButton extends StatelessWidget {
   final MaterialTapTargetSize? tapTargetSize;
   final TextStyle? textStyle;
   final Widget? leading;
+  final EdgeInsetsGeometry leadingPadding;
   final Widget? trailing;
+  final EdgeInsetsGeometry trailingPadding;
 
   // Cupertino
   final Color disabledColor;
@@ -57,10 +62,13 @@ class AdaptiveButton extends StatelessWidget {
     this.fontWeight,
     this.fontFamily,
     this.wordSpacing,
+    this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
+    this.maxLines = 1,
     this.textAlignment = Alignment.center,
     this.alignment = Alignment.center,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.width = double.infinity,
     double? height,
     this.cupertinoWidth,
@@ -70,7 +78,7 @@ class AdaptiveButton extends StatelessWidget {
     double? opacity,
     this.clipBehavior = Clip.antiAlias,
     this.onLongPress,
-    this.backgroundColor,
+    Color? backgroundColor,
     this.splashColor,
     this.elevation,
     this.padding,
@@ -81,7 +89,9 @@ class AdaptiveButton extends StatelessWidget {
     this.tapTargetSize,
     this.textStyle,
     this.leading,
+    this.leadingPadding = EdgeInsets.zero,
     this.trailing,
+    this.trailingPadding = EdgeInsets.zero,
     this.child,
     Color? disabledColor,
     this.minSize = kMinInteractiveDimensionCupertino,
@@ -89,8 +99,8 @@ class AdaptiveButton extends StatelessWidget {
     this.onPressed,
     this.isLoading = false,
   })  : assert(text != null || child != null),
-        fontSize = fontSize ?? 18.0.sp,
-        height = height ?? 0.035.sh,
+        fontSize = fontSize ?? 16.0.sp,
+        height = height ?? 0.06.h,
         cupertinoHeight = cupertinoHeight ?? 0.065.sh,
         type = disabled && (Platform.isIOS || Platform.isMacOS)
             ? ButtonType.elevated
@@ -101,6 +111,13 @@ class AdaptiveButton extends StatelessWidget {
         disabledColor = disabled
             ? CupertinoColors.inactiveGray
             : CupertinoColors.quaternarySystemFill,
+        backgroundColor = backgroundColor ??
+            Utils.platform_(
+              material: Palette.accentColor,
+              cupertino: CupertinoColors.systemFill,
+            )!,
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? textColor ?? Palette.text100Dark,
         super(key: key);
 
   AdaptiveButton.filled({
@@ -110,10 +127,13 @@ class AdaptiveButton extends StatelessWidget {
     this.fontWeight,
     this.fontFamily,
     this.wordSpacing,
+    this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
+    this.maxLines = 1,
     this.textAlignment = Alignment.center,
     this.alignment = Alignment.center,
-    this.textColor,
-    this.textColorDark,
+    Color? textColor,
+    Color? textColorDark,
     this.width = double.infinity,
     double? height,
     this.cupertinoWidth,
@@ -123,7 +143,7 @@ class AdaptiveButton extends StatelessWidget {
     double? opacity,
     this.clipBehavior = Clip.antiAlias,
     this.onLongPress,
-    this.backgroundColor,
+    Color? backgroundColor,
     this.splashColor,
     this.elevation,
     this.padding,
@@ -134,7 +154,9 @@ class AdaptiveButton extends StatelessWidget {
     this.tapTargetSize,
     this.textStyle,
     this.leading,
+    this.leadingPadding = EdgeInsets.zero,
     this.trailing,
+    this.trailingPadding = EdgeInsets.zero,
     this.child,
     Color? disabledColor,
     this.minSize = kMinInteractiveDimensionCupertino,
@@ -142,8 +164,8 @@ class AdaptiveButton extends StatelessWidget {
     this.onPressed,
     this.isLoading = false,
   })  : assert(text != null || child != null),
-        fontSize = fontSize ?? 18.0.sp,
-        height = height ?? 0.035.sh,
+        fontSize = fontSize ?? 16.0.sp,
+        height = height ?? 0.06.h,
         cupertinoHeight = cupertinoHeight ?? 0.065.sh,
         type = ButtonType.elevated,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
@@ -152,6 +174,13 @@ class AdaptiveButton extends StatelessWidget {
         disabledColor = disabled
             ? CupertinoColors.inactiveGray
             : CupertinoColors.quaternarySystemFill,
+        backgroundColor = backgroundColor ??
+            Utils.platform_(
+              material: Palette.accentColor,
+              cupertino: CupertinoColors.systemFill,
+            )!,
+        textColor = textColor ?? Palette.text100,
+        textColorDark = textColorDark ?? textColor ?? Palette.text100Dark,
         super(key: key);
 
   @override
@@ -174,7 +203,7 @@ class AdaptiveButton extends StatelessWidget {
               pressedOpacity: pressedOpacity,
               minSize: minSize,
               disabledColor: disabledColor,
-              padding: padding,
+              padding: padding ?? EdgeInsets.zero,
               onPressed: disabled ? null : onPressed,
               child: _child(context),
             ),
@@ -195,7 +224,7 @@ class AdaptiveButton extends StatelessWidget {
                 minSize: minSize,
                 color: App.resolveColor(backgroundColor),
                 disabledColor: disabledColor,
-                padding: padding,
+                padding: padding ?? EdgeInsets.zero,
                 onPressed: disabled ? null : onPressed,
                 child: _child(context),
               ),
@@ -203,25 +232,29 @@ class AdaptiveButton extends StatelessWidget {
           ),
         ),
         material: (context) => type.fold(
-          flat: () => TextButton(
-            key: key,
-            onPressed: disabled ? null : onPressed,
-            autofocus: autofocus,
-            clipBehavior: clipBehavior,
-            onLongPress: onLongPress,
-            style: TextButton.styleFrom(
-              backgroundColor: backgroundColor ?? Palette.accentColor,
-              alignment: alignment,
-              elevation: elevation,
-              side: side,
-              splashFactory: CustomSplashFactory(splashColor: splashColor),
-              padding: padding,
-              shape:
-                  shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
-              tapTargetSize: tapTargetSize,
-              textStyle: textStyle,
+          flat: () => SizedBox(
+            width: width,
+            height: height,
+            child: TextButton(
+              key: key,
+              onPressed: disabled ? null : onPressed,
+              autofocus: autofocus,
+              clipBehavior: clipBehavior,
+              onLongPress: onLongPress,
+              style: TextButton.styleFrom(
+                backgroundColor: backgroundColor,
+                alignment: alignment,
+                elevation: elevation,
+                side: side,
+                splashFactory: CustomSplashFactory(splashColor: splashColor),
+                padding: padding,
+                shape:
+                    shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
+                tapTargetSize: tapTargetSize,
+                textStyle: textStyle,
+              ),
+              child: _child(context),
             ),
-            child: _child(context),
           ),
           elevated: () => ElevatedButton(
             key: key,
@@ -230,7 +263,7 @@ class AdaptiveButton extends StatelessWidget {
             clipBehavior: clipBehavior,
             onLongPress: onLongPress,
             style: ElevatedButton.styleFrom(
-              primary: backgroundColor ?? Palette.accentColor,
+              primary: backgroundColor,
               alignment: alignment,
               elevation: elevation,
               padding: padding,
@@ -249,7 +282,9 @@ class AdaptiveButton extends StatelessWidget {
 
   Widget get _text => AdaptiveText(
         text ?? '',
-        maxLines: 1,
+        maxLines: maxLines,
+        minFontSize: minFontSize,
+        maxFontSize: maxFontSize,
         softWrap: true,
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -257,10 +292,7 @@ class AdaptiveButton extends StatelessWidget {
           fontWeight: fontWeight,
           fontFamily: fontFamily,
           wordSpacing: wordSpacing,
-          color: App.resolveColor(
-            textColor ?? Palette.text100,
-            dark: textColorDark ?? textColor ?? Palette.text100Dark,
-          ),
+          color: App.resolveColor(textColor, dark: textColorDark),
         ).merge(textStyle),
       );
 
@@ -270,33 +302,39 @@ class AdaptiveButton extends StatelessWidget {
           padding: childPadding ?? EdgeInsets.zero,
           child: child ?? const SizedBox.shrink(),
         ),
-        child: FractionallySizedBox(
-          child: SizedBox(
-            width: width,
-            height: height,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (leading != null) Flexible(flex: 2, child: leading!),
-                //
+        child: SizedBox(
+          // width: width,
+          // height: height,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (leading != null)
                 Flexible(
-                  flex: 4,
-                  child: Padding(
-                    padding: childPadding ?? EdgeInsets.zero,
-                    child: Visibility(
-                      visible: leading != null || trailing != null,
-                      replacement:
-                          Align(alignment: Alignment.center, child: _text),
-                      child: _text,
-                    ),
+                  flex: 2,
+                  child: Padding(padding: leadingPadding, child: leading!),
+                ),
+              //
+              Flexible(
+                flex: 4,
+                child: Padding(
+                  padding: childPadding ?? EdgeInsets.zero,
+                  child: Visibility(
+                    visible: leading != null || trailing != null,
+                    replacement:
+                        Align(alignment: Alignment.center, child: _text),
+                    child: _text,
                   ),
                 ),
-                //
-                if (trailing != null) Flexible(flex: 2, child: trailing!),
-              ],
-            ),
+              ),
+              //
+              if (trailing != null)
+                Flexible(
+                  flex: 2,
+                  child: Padding(padding: trailingPadding, child: trailing!),
+                ),
+            ],
           ),
         ),
       );

@@ -1,8 +1,7 @@
-import 'package:amatrider/widgets/adaptive/adaptive.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/adaptive/adaptive.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 class DropdownFieldWidget<Model> extends StatelessWidget {
@@ -161,16 +160,14 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                         child?.call(iv) ??
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: AutoSizeText(
+                          child: AdaptiveText(
                             '${text?.call(iv)}',
                             maxLines: maxLines,
                             minFontSize: minFontSize,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
-                            style: TextStyle(
-                              fontSize: itemFontSize,
-                              fontWeight: itemFontWeight,
-                            ),
+                            fontSize: itemFontSize,
+                            fontWeight: itemFontWeight,
                           ),
                         ))
                     .toList(),
@@ -185,15 +182,14 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 2,
-                                  child: AutoSizeText(
+                                  child: AdaptiveText(
                                     '${text?.call(item) ?? "- Please set 'text' property -"}',
                                     maxLines: maxLines,
                                     minFontSize: minFontSize,
                                     overflow: TextOverflow.ellipsis,
                                     softWrap: true,
-                                    style: TextStyle(
-                                        fontSize: itemFontSize,
-                                        fontWeight: itemFontWeight),
+                                    fontSize: itemFontSize,
+                                    fontWeight: itemFontWeight,
                                   ),
                                 ),
                                 if (item == selected)
@@ -210,7 +206,7 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                 disabledHint: disabledHintWidget ??
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
+                      child: AdaptiveText(
                         disabledHint,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -220,7 +216,7 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                 hint: hintWidget ??
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
+                      child: AdaptiveText(
                         hint,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

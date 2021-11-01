@@ -196,32 +196,23 @@ class _$_OnboardingState implements _OnboardingState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OnboardingState &&
+        (other.runtimeType == runtimeType &&
+            other is _OnboardingState &&
             (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
+                other.isLoading == isLoading) &&
             (identical(other.isVideoPlaying, isVideoPlaying) ||
-                const DeepCollectionEquality()
-                    .equals(other.isVideoPlaying, isVideoPlaying)) &&
+                other.isVideoPlaying == isVideoPlaying) &&
             (identical(other.playbackEnded, playbackEnded) ||
-                const DeepCollectionEquality()
-                    .equals(other.playbackEnded, playbackEnded)) &&
+                other.playbackEnded == playbackEnded) &&
             (identical(other.controller, controller) ||
-                const DeepCollectionEquality()
-                    .equals(other.controller, controller)) &&
+                other.controller == controller) &&
             (identical(other.currentIndex, currentIndex) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentIndex, currentIndex)));
+                other.currentIndex == currentIndex));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(isVideoPlaying) ^
-      const DeepCollectionEquality().hash(playbackEnded) ^
-      const DeepCollectionEquality().hash(controller) ^
-      const DeepCollectionEquality().hash(currentIndex);
+  int get hashCode => Object.hash(runtimeType, isLoading, isVideoPlaying,
+      playbackEnded, controller, currentIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -238,15 +229,15 @@ abstract class _OnboardingState implements OnboardingState {
       int currentIndex}) = _$_OnboardingState;
 
   @override
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading;
   @override
-  bool get isVideoPlaying => throw _privateConstructorUsedError;
+  bool get isVideoPlaying;
   @override
-  bool get playbackEnded => throw _privateConstructorUsedError;
+  bool get playbackEnded;
   @override
-  PageController get controller => throw _privateConstructorUsedError;
+  PageController get controller;
   @override
-  int get currentIndex => throw _privateConstructorUsedError;
+  int get currentIndex;
   @override
   @JsonKey(ignore: true)
   _$OnboardingStateCopyWith<_OnboardingState> get copyWith =>

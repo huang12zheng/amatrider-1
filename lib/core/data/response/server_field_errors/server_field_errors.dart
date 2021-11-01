@@ -55,6 +55,17 @@ class ServerFieldErrors with _$ServerFieldErrors {
     @JsonKey(includeIfNull: false, name: 'card_number')
         List<String?>? cardNumber,
     @JsonKey(includeIfNull: false, name: 'card_name') List<String?>? cardName,
+    @JsonKey(includeIfNull: false, name: 'pickup_lat') List<String?>? pickupLat,
+    @JsonKey(includeIfNull: false, name: 'destination_lat')
+        List<String?>? destLat,
+    @JsonKey(includeIfNull: false, name: 'item_name') List<String?>? itemName,
+    @JsonKey(includeIfNull: false) List<String?>? quantity,
+    @JsonKey(includeIfNull: false) List<String?>? images,
+    @JsonKey(includeIfNull: false, name: 'unit_price') List<String?>? unitPrice,
+    @JsonKey(includeIfNull: false, name: 'required_date')
+        List<String?>? requiredDate,
+    @JsonKey(includeIfNull: false, name: 'message')
+        List<String?>? supportMessage,
   }) = _ServerFieldErrors;
 
   factory ServerFieldErrors.fromJson(Map<String, dynamic> json) =>

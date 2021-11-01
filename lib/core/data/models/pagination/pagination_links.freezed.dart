@@ -40,7 +40,7 @@ class _$PaginationLinksTearOff {
     );
   }
 
-  PaginationLinks fromJson(Map<String, Object> json) {
+  PaginationLinks fromJson(Map<String, Object?> json) {
     return PaginationLinks.fromJson(json);
   }
 }
@@ -255,33 +255,20 @@ class _$_PaginationLinks extends _PaginationLinks {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PaginationLinks &&
-            (identical(other.first, first) ||
-                const DeepCollectionEquality().equals(other.first, first)) &&
-            (identical(other.last, last) ||
-                const DeepCollectionEquality().equals(other.last, last)) &&
-            (identical(other.prev, prev) ||
-                const DeepCollectionEquality().equals(other.prev, prev)) &&
-            (identical(other.next, next) ||
-                const DeepCollectionEquality().equals(other.next, next)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.active, active) ||
-                const DeepCollectionEquality().equals(other.active, active)));
+        (other.runtimeType == runtimeType &&
+            other is _PaginationLinks &&
+            (identical(other.first, first) || other.first == first) &&
+            (identical(other.last, last) || other.last == last) &&
+            (identical(other.prev, prev) || other.prev == prev) &&
+            (identical(other.next, next) || other.next == next) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.active, active) || other.active == active));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(first) ^
-      const DeepCollectionEquality().hash(last) ^
-      const DeepCollectionEquality().hash(prev) ^
-      const DeepCollectionEquality().hash(next) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(active);
+      Object.hash(runtimeType, first, last, prev, next, url, label, active);
 
   @JsonKey(ignore: true)
   @override
@@ -310,25 +297,25 @@ abstract class _PaginationLinks extends PaginationLinks {
 
   @override
   @JsonKey(includeIfNull: false)
-  String? get first => throw _privateConstructorUsedError;
+  String? get first;
   @override
   @JsonKey(includeIfNull: false)
-  String? get last => throw _privateConstructorUsedError;
+  String? get last;
   @override
   @JsonKey(includeIfNull: false)
-  String? get prev => throw _privateConstructorUsedError;
+  String? get prev;
   @override
   @JsonKey(includeIfNull: false)
-  String? get next => throw _privateConstructorUsedError;
+  String? get next;
   @override
   @JsonKey(includeIfNull: false)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @JsonKey(includeIfNull: false)
-  String? get label => throw _privateConstructorUsedError;
+  String? get label;
   @override
   @JsonKey(includeIfNull: false)
-  bool get active => throw _privateConstructorUsedError;
+  bool get active;
   @override
   @JsonKey(ignore: true)
   _$PaginationLinksCopyWith<_PaginationLinks> get copyWith =>

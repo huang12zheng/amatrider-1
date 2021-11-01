@@ -126,15 +126,14 @@ class _$_PreferenceRepository extends _PreferenceRepository
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PreferenceRepository &&
+        (other.runtimeType == runtimeType &&
+            other is _PreferenceRepository &&
             (identical(other.preferences, preferences) ||
-                const DeepCollectionEquality()
-                    .equals(other.preferences, preferences)));
+                other.preferences == preferences));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(preferences);
+  int get hashCode => Object.hash(runtimeType, preferences);
 
   @JsonKey(ignore: true)
   @override
@@ -149,7 +148,7 @@ abstract class _PreferenceRepository extends PreferenceRepository {
   const _PreferenceRepository._() : super._();
 
   @override
-  SharedPreferences get preferences => throw _privateConstructorUsedError;
+  SharedPreferences get preferences;
   @override
   @JsonKey(ignore: true)
   _$PreferenceRepositoryCopyWith<_PreferenceRepository> get copyWith =>

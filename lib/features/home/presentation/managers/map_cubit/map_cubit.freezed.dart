@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'map_cubit.dart';
+part of map_cubit.dart;
 
 // **************************************************************************
 // FreezedGenerator
@@ -29,6 +29,9 @@ class _$MapStateTearOff {
       bool buildingsEnabled = true,
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
+      required Set<Marker> markers,
+      required Set<Circle> circles,
+      required Set<Polyline> polylines,
       bool isLoading = false,
       bool validate = false,
       Option<AppHttpResponse?> status = const None()}) {
@@ -44,6 +47,9 @@ class _$MapStateTearOff {
       buildingsEnabled: buildingsEnabled,
       initialPosition: initialPosition,
       mapController: mapController,
+      markers: markers,
+      circles: circles,
+      polylines: polylines,
       isLoading: isLoading,
       validate: validate,
       status: status,
@@ -66,8 +72,10 @@ mixin _$MapState {
   bool get trafficEnabled => throw _privateConstructorUsedError;
   bool get buildingsEnabled => throw _privateConstructorUsedError;
   CameraPosition get initialPosition => throw _privateConstructorUsedError;
-  GoogleMapController? get mapController =>
-      throw _privateConstructorUsedError; //
+  GoogleMapController? get mapController => throw _privateConstructorUsedError;
+  Set<Marker> get markers => throw _privateConstructorUsedError;
+  Set<Circle> get circles => throw _privateConstructorUsedError;
+  Set<Polyline> get polylines => throw _privateConstructorUsedError; //
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
@@ -93,6 +101,9 @@ abstract class $MapStateCopyWith<$Res> {
       bool buildingsEnabled,
       CameraPosition initialPosition,
       GoogleMapController? mapController,
+      Set<Marker> markers,
+      Set<Circle> circles,
+      Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status});
@@ -119,6 +130,9 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
     Object? buildingsEnabled = freezed,
     Object? initialPosition = freezed,
     Object? mapController = freezed,
+    Object? markers = freezed,
+    Object? circles = freezed,
+    Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? status = freezed,
@@ -168,6 +182,18 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
           ? _value.mapController
           : mapController // ignore: cast_nullable_to_non_nullable
               as GoogleMapController?,
+      markers: markers == freezed
+          ? _value.markers
+          : markers // ignore: cast_nullable_to_non_nullable
+              as Set<Marker>,
+      circles: circles == freezed
+          ? _value.circles
+          : circles // ignore: cast_nullable_to_non_nullable
+              as Set<Circle>,
+      polylines: polylines == freezed
+          ? _value.polylines
+          : polylines // ignore: cast_nullable_to_non_nullable
+              as Set<Polyline>,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -201,6 +227,9 @@ abstract class _$MapStateCopyWith<$Res> implements $MapStateCopyWith<$Res> {
       bool buildingsEnabled,
       CameraPosition initialPosition,
       GoogleMapController? mapController,
+      Set<Marker> markers,
+      Set<Circle> circles,
+      Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status});
@@ -228,6 +257,9 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
     Object? buildingsEnabled = freezed,
     Object? initialPosition = freezed,
     Object? mapController = freezed,
+    Object? markers = freezed,
+    Object? circles = freezed,
+    Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? status = freezed,
@@ -277,6 +309,18 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
           ? _value.mapController
           : mapController // ignore: cast_nullable_to_non_nullable
               as GoogleMapController?,
+      markers: markers == freezed
+          ? _value.markers
+          : markers // ignore: cast_nullable_to_non_nullable
+              as Set<Marker>,
+      circles: circles == freezed
+          ? _value.circles
+          : circles // ignore: cast_nullable_to_non_nullable
+              as Set<Circle>,
+      polylines: polylines == freezed
+          ? _value.polylines
+          : polylines // ignore: cast_nullable_to_non_nullable
+              as Set<Polyline>,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -308,6 +352,9 @@ class _$_MapState implements _MapState {
       this.buildingsEnabled = true,
       required this.initialPosition,
       this.mapController,
+      required this.markers,
+      required this.circles,
+      required this.polylines,
       this.isLoading = false,
       this.validate = false,
       this.status = const None()});
@@ -343,6 +390,12 @@ class _$_MapState implements _MapState {
   final CameraPosition initialPosition;
   @override
   final GoogleMapController? mapController;
+  @override
+  final Set<Marker> markers;
+  @override
+  final Set<Circle> circles;
+  @override
+  final Set<Polyline> polylines;
   @JsonKey(defaultValue: false)
   @override //
   final bool isLoading;
@@ -355,72 +408,61 @@ class _$_MapState implements _MapState {
 
   @override
   String toString() {
-    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, isLoading: $isLoading, validate: $validate, status: $status)';
+    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, markers: $markers, circles: $circles, polylines: $polylines, isLoading: $isLoading, validate: $validate, status: $status)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MapState &&
-            (identical(other.maxZoom, maxZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxZoom, maxZoom)) &&
-            (identical(other.minZoom, minZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.minZoom, minZoom)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MapState &&
+            (identical(other.maxZoom, maxZoom) || other.maxZoom == maxZoom) &&
+            (identical(other.minZoom, minZoom) || other.minZoom == minZoom) &&
             (identical(other.currentZoom, currentZoom) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentZoom, currentZoom)) &&
-            (identical(other.mapType, mapType) ||
-                const DeepCollectionEquality()
-                    .equals(other.mapType, mapType)) &&
-            (identical(other.tilt, tilt) ||
-                const DeepCollectionEquality().equals(other.tilt, tilt)) &&
-            (identical(other.bearing, bearing) ||
-                const DeepCollectionEquality()
-                    .equals(other.bearing, bearing)) &&
+                other.currentZoom == currentZoom) &&
+            (identical(other.mapType, mapType) || other.mapType == mapType) &&
+            (identical(other.tilt, tilt) || other.tilt == tilt) &&
+            (identical(other.bearing, bearing) || other.bearing == bearing) &&
             (identical(other.cameraTarget, cameraTarget) ||
-                const DeepCollectionEquality()
-                    .equals(other.cameraTarget, cameraTarget)) &&
+                other.cameraTarget == cameraTarget) &&
             (identical(other.trafficEnabled, trafficEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.trafficEnabled, trafficEnabled)) &&
+                other.trafficEnabled == trafficEnabled) &&
             (identical(other.buildingsEnabled, buildingsEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.buildingsEnabled, buildingsEnabled)) &&
+                other.buildingsEnabled == buildingsEnabled) &&
             (identical(other.initialPosition, initialPosition) ||
-                const DeepCollectionEquality()
-                    .equals(other.initialPosition, initialPosition)) &&
+                other.initialPosition == initialPosition) &&
             (identical(other.mapController, mapController) ||
-                const DeepCollectionEquality()
-                    .equals(other.mapController, mapController)) &&
+                other.mapController == mapController) &&
+            const DeepCollectionEquality().equals(other.markers, markers) &&
+            const DeepCollectionEquality().equals(other.circles, circles) &&
+            const DeepCollectionEquality().equals(other.polylines, polylines) &&
             (identical(other.isLoading, isLoading) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)) &&
+                other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
-                const DeepCollectionEquality()
-                    .equals(other.validate, validate)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+                other.validate == validate) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(maxZoom) ^
-      const DeepCollectionEquality().hash(minZoom) ^
-      const DeepCollectionEquality().hash(currentZoom) ^
-      const DeepCollectionEquality().hash(mapType) ^
-      const DeepCollectionEquality().hash(tilt) ^
-      const DeepCollectionEquality().hash(bearing) ^
-      const DeepCollectionEquality().hash(cameraTarget) ^
-      const DeepCollectionEquality().hash(trafficEnabled) ^
-      const DeepCollectionEquality().hash(buildingsEnabled) ^
-      const DeepCollectionEquality().hash(initialPosition) ^
-      const DeepCollectionEquality().hash(mapController) ^
-      const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(validate) ^
-      const DeepCollectionEquality().hash(status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      maxZoom,
+      minZoom,
+      currentZoom,
+      mapType,
+      tilt,
+      bearing,
+      cameraTarget,
+      trafficEnabled,
+      buildingsEnabled,
+      initialPosition,
+      mapController,
+      const DeepCollectionEquality().hash(markers),
+      const DeepCollectionEquality().hash(circles),
+      const DeepCollectionEquality().hash(polylines),
+      isLoading,
+      validate,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -441,38 +483,47 @@ abstract class _MapState implements MapState {
       bool buildingsEnabled,
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
+      required Set<Marker> markers,
+      required Set<Circle> circles,
+      required Set<Polyline> polylines,
       bool isLoading,
       bool validate,
       Option<AppHttpResponse?> status}) = _$_MapState;
 
   @override
-  double get maxZoom => throw _privateConstructorUsedError;
+  double get maxZoom;
   @override
-  double get minZoom => throw _privateConstructorUsedError;
+  double get minZoom;
   @override
-  double get currentZoom => throw _privateConstructorUsedError;
+  double get currentZoom;
   @override
-  MapType get mapType => throw _privateConstructorUsedError;
+  MapType get mapType;
   @override
-  double get tilt => throw _privateConstructorUsedError;
+  double get tilt;
   @override
-  double get bearing => throw _privateConstructorUsedError;
+  double get bearing;
   @override
-  LatLng get cameraTarget => throw _privateConstructorUsedError;
+  LatLng get cameraTarget;
   @override
-  bool get trafficEnabled => throw _privateConstructorUsedError;
+  bool get trafficEnabled;
   @override
-  bool get buildingsEnabled => throw _privateConstructorUsedError;
+  bool get buildingsEnabled;
   @override
-  CameraPosition get initialPosition => throw _privateConstructorUsedError;
+  CameraPosition get initialPosition;
   @override
-  GoogleMapController? get mapController => throw _privateConstructorUsedError;
+  GoogleMapController? get mapController;
+  @override
+  Set<Marker> get markers;
+  @override
+  Set<Circle> get circles;
+  @override
+  Set<Polyline> get polylines;
   @override //
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoading;
   @override
-  bool get validate => throw _privateConstructorUsedError;
+  bool get validate;
   @override
-  Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
+  Option<AppHttpResponse?> get status;
   @override
   @JsonKey(ignore: true)
   _$MapStateCopyWith<_MapState> get copyWith =>

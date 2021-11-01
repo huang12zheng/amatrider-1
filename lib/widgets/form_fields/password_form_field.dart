@@ -14,7 +14,6 @@ class PasswordFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     extends StatelessWidget {
   late ReactiveState _state;
 
-  final String? prefix;
   final bool Function(ReactiveState)? validate;
   final bool Function(ReactiveState)? disabled;
   final FieldObject<String?>? Function(ReactiveState)? field;
@@ -23,16 +22,18 @@ class PasswordFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
   final Widget? Function(ReactiveState)? suffixIcon;
   final OverlayVisibilityMode Function(ReactiveState)? suffixMode;
   final void Function(Reactive)? onToggle;
-  final FocusNode? focus;
-  final bool isNew;
-  final FocusNode? next;
   final Option<AppHttpResponse?> Function(ReactiveState)? response;
-  final bool useHero;
   final List<String?>? Function(ErrorResponse)? errorField;
-  final String? heroTag;
-  final EdgeInsets? padding;
   final String? Function(ReactiveState)? hintText;
   final CupertinoFormType? cupertinoFormType;
+  final FocusNode? focus;
+  final String? heroTag;
+  final bool isNew;
+  final FocusNode? next;
+  final EdgeInsets? materialPadding;
+  final EdgeInsets? cupertinoPadding;
+  final String? prefix;
+  final bool useHero;
 
   PasswordFormField({
     Key? key,
@@ -53,13 +54,30 @@ class PasswordFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.heroTag,
     this.cupertinoFormType,
     this.hintText,
-    this.padding,
+    this.materialPadding,
+    this.cupertinoPadding,
     this.suffixMode,
   }) : super(key: key);
 
   ReactiveState get state => _state;
 
   set __state(ReactiveState value) => _state = value;
+
+  Widget _passwordToggle(BuildContext c, ReactiveState s) => Material(
+        type: MaterialType.transparency,
+        shape: const CircleBorder(),
+        clipBehavior: Clip.hardEdge,
+        child: IconButton(
+          onPressed: () => onToggle?.call(c.read<Reactive>()),
+          icon: Icon(
+            isObscured.call(s) ? AmatNow.eye_closed : AmatNow.eye_open,
+            color: App.resolveColor(
+              Palette.text60,
+              dark: Palette.text100Dark,
+            ),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +87,9 @@ class PasswordFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
 
         var _input = AdaptiveTextFormInput(
           cupertinoFormType: cupertinoFormType,
-          padding: padding ??
+          cupertinoPadding: cupertinoPadding ??
               const EdgeInsets.symmetric(vertical: 0.01, horizontal: 12.0),
+          materialPadding: materialPadding,
           enableSuggestions: false,
           autoCorrect: false,
           obscureText: isObscured.call(s),
@@ -114,20 +133,4 @@ class PasswordFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
       },
     );
   }
-
-  Widget _passwordToggle(BuildContext c, ReactiveState s) => Material(
-        color: Colors.transparent,
-        shape: const CircleBorder(),
-        clipBehavior: Clip.hardEdge,
-        child: IconButton(
-          onPressed: () => onToggle?.call(c.read<Reactive>()),
-          icon: Icon(
-            isObscured.call(s) ? AmatNow.eye_closed : AmatNow.eye_open,
-            color: App.resolveColor(
-              Palette.text100,
-              dark: Palette.text100Dark,
-            ),
-          ),
-        ),
-      );
 }

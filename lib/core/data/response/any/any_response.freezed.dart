@@ -65,7 +65,7 @@ class _$AnyResponseTearOff {
     );
   }
 
-  AnyResponse fromJson(Map<String, Object> json) {
+  AnyResponse fromJson(Map<String, Object?> json) {
     return AnyResponse.fromJson(json);
   }
 }
@@ -314,8 +314,8 @@ class _$ErrorResponseCopyWithImpl<$Res> extends _$AnyResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@Implements.fromString('Failure')
-class _$ErrorResponse extends ErrorResponse {
+@With<Failure>()
+class _$ErrorResponse extends ErrorResponse with Failure {
   const _$ErrorResponse(
       {this.code,
       this.status,
@@ -359,39 +359,23 @@ class _$ErrorResponse extends ErrorResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ErrorResponse &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
+        (other.runtimeType == runtimeType &&
+            other is ErrorResponse &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.messageTxt, messageTxt) ||
-                const DeepCollectionEquality()
-                    .equals(other.messageTxt, messageTxt)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality()
-                    .equals(other.details, details)) &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
-            (identical(other.errors, errors) ||
-                const DeepCollectionEquality().equals(other.errors, errors)) &&
-            (identical(other.pop, pop) ||
-                const DeepCollectionEquality().equals(other.pop, pop)) &&
+                other.messageTxt == messageTxt) &&
+            (identical(other.details, details) || other.details == details) &&
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.errors, errors) || other.errors == errors) &&
+            (identical(other.pop, pop) || other.pop == pop) &&
             (identical(other.exception, exception) ||
-                const DeepCollectionEquality()
-                    .equals(other.exception, exception)));
+                other.exception == exception));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(code) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(messageTxt) ^
-      const DeepCollectionEquality().hash(details) ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(errors) ^
-      const DeepCollectionEquality().hash(pop) ^
-      const DeepCollectionEquality().hash(exception);
+  int get hashCode => Object.hash(runtimeType, code, status, messageTxt,
+      details, error, errors, pop, exception);
 
   @JsonKey(ignore: true)
   @override
@@ -532,22 +516,22 @@ abstract class ErrorResponse extends AnyResponse implements Failure {
   factory ErrorResponse.fromJson(Map<String, dynamic> json) =
       _$ErrorResponse.fromJson;
 
-  int? get code => throw _privateConstructorUsedError;
+  int? get code;
   @override
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
   @JsonKey(includeIfNull: false, name: 'message')
-  String? get messageTxt => throw _privateConstructorUsedError;
+  String? get messageTxt;
   @override
   @JsonKey(ignore: true)
-  String? get details => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
-  ServerFieldErrors? get errors => throw _privateConstructorUsedError;
+  String? get details;
+  String? get error;
+  ServerFieldErrors? get errors;
   @override
   @JsonKey(ignore: true)
-  bool get pop => throw _privateConstructorUsedError;
+  bool get pop;
   @JsonKey(ignore: true)
-  Exception? get exception => throw _privateConstructorUsedError;
+  Exception? get exception;
   @override
   @JsonKey(ignore: true)
   $ErrorResponseCopyWith<ErrorResponse> get copyWith =>
@@ -621,7 +605,8 @@ class _$SuccessfulResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@With.fromString('Response, Success')
+@With<Response>()
+@With<Success>()
 class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
   const _$SuccessfulResponse(
       {@JsonKey(ignore: true) this.uuid,
@@ -661,32 +646,20 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is SuccessfulResponse &&
-            (identical(other.uuid, uuid) ||
-                const DeepCollectionEquality().equals(other.uuid, uuid)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
+        (other.runtimeType == runtimeType &&
+            other is SuccessfulResponse &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.messageTxt, messageTxt) ||
-                const DeepCollectionEquality()
-                    .equals(other.messageTxt, messageTxt)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality()
-                    .equals(other.details, details)) &&
-            (identical(other.pop, pop) ||
-                const DeepCollectionEquality().equals(other.pop, pop)) &&
-            (identical(other.show, show) ||
-                const DeepCollectionEquality().equals(other.show, show)));
+                other.messageTxt == messageTxt) &&
+            (identical(other.details, details) || other.details == details) &&
+            (identical(other.pop, pop) || other.pop == pop) &&
+            (identical(other.show, show) || other.show == show));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uuid) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(messageTxt) ^
-      const DeepCollectionEquality().hash(details) ^
-      const DeepCollectionEquality().hash(pop) ^
-      const DeepCollectionEquality().hash(show);
+      Object.hash(runtimeType, uuid, status, messageTxt, details, pop, show);
 
   @JsonKey(ignore: true)
   @override
@@ -824,20 +797,20 @@ abstract class SuccessfulResponse extends AnyResponse
       _$SuccessfulResponse.fromJson;
 
   @JsonKey(ignore: true)
-  String? get uuid => throw _privateConstructorUsedError;
+  String? get uuid;
   @override
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
   @JsonKey(includeIfNull: false, name: 'message')
-  String? get messageTxt => throw _privateConstructorUsedError;
+  String? get messageTxt;
   @override
   @JsonKey(ignore: true)
-  String? get details => throw _privateConstructorUsedError;
+  String? get details;
   @override
   @JsonKey(ignore: true)
-  bool get pop => throw _privateConstructorUsedError;
+  bool get pop;
   @JsonKey(ignore: true)
-  bool get show => throw _privateConstructorUsedError;
+  bool get show;
   @override
   @JsonKey(ignore: true)
   $SuccessfulResponseCopyWith<SuccessfulResponse> get copyWith =>

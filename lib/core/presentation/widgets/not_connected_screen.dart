@@ -46,7 +46,7 @@ class _NotConnectedScreenState extends State<NotConnectedScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        AppAssets.noConnectivity,
+                        AppAssets.noConnectivity(),
                         //
                         VerticalSpace(height: 0.05.sw),
                         //

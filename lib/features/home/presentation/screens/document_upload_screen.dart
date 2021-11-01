@@ -1,3 +1,5 @@
+library document_upload_screen.dart;
+
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveScaffold(
+    return const AdaptiveScaffold(
       body: Center(
         child: AdaptiveText('This will be for Document upload!!'),
       ),

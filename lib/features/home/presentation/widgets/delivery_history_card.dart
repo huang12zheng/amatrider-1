@@ -44,14 +44,7 @@ class DeliveryHistoryCard extends StatelessWidget {
             initialExpanded: initialExpanded,
             child: ScrollOnExpand(
               child: ExpandablePanel(
-                header: PlatformBuilder(
-                  cupertino: (_) => header,
-                  material: (_) => Material(
-                    elevation: 0.0,
-                    color: Colors.transparent,
-                    child: header,
-                  ),
-                ),
+                header: header,
                 collapsed: const SizedBox.shrink(),
                 expanded: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -85,6 +78,7 @@ class DeliveryHistoryCard extends StatelessWidget {
                         children: [
                           Headline(
                             'Total time',
+                            fontSize: 17.sp,
                             textColor: Palette.neutralLabel,
                             textColorDark: Palette.neutralLabelDark,
                             fontWeight: FontWeight.w400,
@@ -92,7 +86,7 @@ class DeliveryHistoryCard extends StatelessWidget {
                           //
                           Headline(
                             '12mins 30 sec',
-                            fontSize: 18.sp,
+                            fontSize: 17.sp,
                             textColor: Colors.black,
                             textColorDark: Colors.white,
                             fontWeight: FontWeight.w500,
@@ -110,81 +104,103 @@ class DeliveryHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget get header => ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(5.0),
-          child: asset?.let((it) => Image.asset(it)) ??
-              Image.asset(AppAssets.blackAvatar),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
-              child: AdaptiveText(
-                'Emily Restaurant',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17.sp,
-                ),
-              ),
+  Widget get header => Material(
+        borderRadius: BorderRadius.circular(5.0),
+        type: MaterialType.transparency,
+        elevation: 0.0,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(5.0),
+              child: asset?.let((it) => Image.asset(it,
+                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill)) ??
+                  Image.asset(AppAssets.slider0,
+                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
             ),
-            Flexible(
-              child: AdaptiveText(
-                '\$12',
-                style: TextStyle(
-                  fontSize: 21.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        subtitle: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 3,
+            title: Center(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  DecoratedBox(
-                    decoration: const BoxDecoration(
-                      color: Palette.accentLightBlue,
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                  Expanded(
+                    flex: 4,
+                    child: AdaptiveText(
+                      'Emily Restaurant',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.02.sw, vertical: 0.005.sh),
-                      child: AdaptiveText(
-                        'Order',
-                        style: TextStyle(
-                          color: Palette.accentBlue,
-                          fontSize: 15.sp,
-                        ),
-                      ),
+                  ),
+                  //
+                  Flexible(
+                    child: AdaptiveText(
+                      '12'.asCurrency(),
+                      minFontSize: 14,
+                      maxFontSize: 17,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
             ),
-            //
-            Flexible(
-              flex: 2,
-              child: AdaptiveText(
-                'Card(POS)',
-                style: TextStyle(fontSize: 15.sp),
+            subtitle: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 0.015.sw),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: HorizontalChipWidget(
+                        widgetPadding: EdgeInsets.symmetric(vertical: 0.004.sh),
+                        scrollMargin: EdgeInsets.only(right: 0.02.sw),
+                        wrapped: false,
+                        tags: [
+                          HorizontalChip(
+                            label: 'Package',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentDarkBlue,
+                            backgroundColor: Palette.pastelBlue,
+                            type: HorizontalChipType.none,
+                          ),
+                          //
+                          HorizontalChip(
+                            label: '5hrs 10mins',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentGreen,
+                            backgroundColor: Palette.pastelGreen,
+                            type: HorizontalChipType.none,
+                          ),
+                        ],
+                      ),
+                    ),
+                    //
+                    Flexible(
+                      flex: 2,
+                      child: AdaptiveText(
+                        'Card(POS)',
+                        minFontSize: 12,
+                        maxLines: 1,
+                        softWrap: true,
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-        dense: true,
-        horizontalTitleGap: 8.0,
-        minVerticalPadding: 10.0,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 15.0,
+            dense: false,
+            horizontalTitleGap: 8.0,
+            minVerticalPadding: 8.0,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 0.01.sw,
+              horizontal: 0.03.sw,
+            ),
+          ),
         ),
       );
 }

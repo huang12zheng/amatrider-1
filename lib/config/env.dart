@@ -32,10 +32,22 @@ class BuildEnvironment implements Secrets {
   String get googleMapsAPI => Utils.platform_(
       material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
 
-  Duration get splashDuration => flavor.fold(
-        dev: () => const Duration(milliseconds: 1200),
-        prod: () => const Duration(milliseconds: 1700),
-      );
+  String get paystackKey => flavor.fold(
+      dev: () => Secrets.paystackKeyDev, prod: () => Secrets.paystackKeyProd);
+
+  String get flwPublicKey => flavor.fold(
+      dev: () => Secrets.flutterwaveKeyDev,
+      prod: () => Secrets.flutterwaveKeyProd);
+
+  String get flwEncryptionKey => Secrets.flutterwaveEncrptionKey;
+
+  String get pusherKey => Secrets.pusherKey;
+
+  String get pusherCluster => Secrets.pusherCluster;
+
+  String get pusherAppId => Secrets.pusherAppId;
+
+  String get pusherAuthUrl => EndPoints.PUSHER_AUTH_URL;
 
   /// Sets up the top-level [env] getter on the first call only.
   static Future<void> init({@required BuildFlavor? flavor}) async {
