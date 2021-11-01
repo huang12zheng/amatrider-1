@@ -1,5 +1,12 @@
 export 'dashboard_screen.dart';
-export 'ride_accepted_screen.dart';
 export 'account_verification_screen.dart';
 export 'document_upload_screen.dart';
 export 'referral_screen.dart';
+export 'contact_support_screen.dart';
+export 'privacy_policy_screen.dart';
+export 'promotions_screen.dart';
+export 'notification_screen.dart';
+export 'setting_screen.dart';
+export 'language_screen.dart';
+export 'package_delivery_accepted_screen.dart';
+export 'order_delivery_accepted_screen.dart';

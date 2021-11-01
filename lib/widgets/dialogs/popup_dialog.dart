@@ -3,11 +3,11 @@ library popup_dialog.dart;
 import 'dart:async';
 
 import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:another_flushbar/flushbar.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:sweetsheet/sweetsheet.dart';
 
 part 'popup_factory.dart';
@@ -124,7 +124,7 @@ class _$PopupDialog {
     PopupDialogDismissDirection? dismissDirection,
     this.colorScheme = ConfirmationDialogColor.kdefault,
   })  : _type = type,
-        duration = duration ?? const Duration(seconds: 12),
+        duration = duration ?? const Duration(seconds: 2, milliseconds: 500),
         margin = margin ?? const EdgeInsets.all(8.0),
         padding = padding ?? const EdgeInsets.all(16.0),
         borderRadius =
@@ -145,7 +145,7 @@ class _$PopupDialog {
       flushbar: () async {
         final _bar = Flushbar(
           titleText: title != null && title!.isNotEmpty
-              ? AutoSizeText(
+              ? AdaptiveText(
                   title!,
                   style: TextStyle(
                     color: App.resolveColor(
@@ -159,7 +159,7 @@ class _$PopupDialog {
                 )
               : titleWidget,
           messageText: message != null && message!.isNotEmpty
-              ? AutoSizeText(
+              ? AdaptiveText(
                   message!,
                   style: TextStyle(
                     color: App.resolveColor(

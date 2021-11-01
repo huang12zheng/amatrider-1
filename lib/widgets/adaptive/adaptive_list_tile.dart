@@ -1,3 +1,4 @@
+import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,6 +55,10 @@ class AdaptiveListTile extends StatelessWidget {
   final DragStartBehavior? dragStartBehavior;
   final Color? trackColor;
 
+  // List tile type
+  final bool material;
+  final bool cupertino;
+
   const AdaptiveListTile({
     this.key,
     this.autofocus = false,
@@ -82,6 +87,8 @@ class AdaptiveListTile extends StatelessWidget {
     this.visualDensity,
     this.cupertinoPressedColor = CupertinoColors.systemFill,
     this.cupertinoBorder,
+    this.material = false,
+    this.cupertino = false,
   })  : _type = _AdaptiveListTileType.normal,
         value = false,
         onChanged = null,
@@ -95,6 +102,9 @@ class AdaptiveListTile extends StatelessWidget {
         secondary = null,
         dragStartBehavior = null,
         trackColor = null,
+        assert((material && !cupertino) ||
+            (!material || cupertino) ||
+            (!material || !cupertino)),
         super(key: key);
 
   const AdaptiveListTile.adaptiveSwitch({
@@ -121,6 +131,8 @@ class AdaptiveListTile extends StatelessWidget {
     this.tileColor,
     this.trackColor,
     this.dragStartBehavior = DragStartBehavior.start,
+    this.material = false,
+    this.cupertino = false,
   })  : _type = _AdaptiveListTileType.switchType,
         enableFeedback = null,
         enabled = true,
@@ -138,12 +150,29 @@ class AdaptiveListTile extends StatelessWidget {
         visualDensity = null,
         cupertinoPressedColor = CupertinoColors.systemFill,
         cupertinoBorder = null,
+        assert((material && !cupertino) ||
+            (!material || cupertino) ||
+            (!material || !cupertino)),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (material)
+      return Theme.of(context).platform.material(Material(
+            // color: Colors.transparent,
+            elevation: 0.0,
+            type: MaterialType.transparency,
+            child: materialTiles,
+          ))!;
+    if (cupertino) return Theme.of(context).platform.cupertino(cupertinoTiles)!;
+
     return PlatformBuilder(
-      material: (_) => _type.fold(
+      material: (_) => materialTiles,
+      cupertino: (_) => cupertinoTiles,
+    );
+  }
+
+  Widget get materialTiles => _type.fold(
         normal: () => ListTile(
           key: key,
           autofocus: autofocus,
@@ -194,8 +223,9 @@ class AdaptiveListTile extends StatelessWidget {
           title: title,
           tileColor: tileColor,
         ),
-      ),
-      cupertino: (_) => _type.fold(
+      );
+
+  Widget get cupertinoTiles => _type.fold(
         normal: () => CupertinoListTile(
           key: key,
           autofocus: autofocus,
@@ -250,9 +280,7 @@ class AdaptiveListTile extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 extension on _AdaptiveListTileType {

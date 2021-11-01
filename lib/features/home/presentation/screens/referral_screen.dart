@@ -1,3 +1,5 @@
+library referral_screen.dart;
+
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
@@ -25,7 +27,7 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AppAssets.inviteFriends,
+          AppAssets.friendship,
           //
           Padding(
             padding: EdgeInsets.symmetric(
@@ -35,7 +37,7 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AdaptiveText(
-                  'Enjoying AmatNinja?'
+                  'Enjoying AmatNow?'
                   '\nInvite friends and get exclusive discounts. ',
                   fontSize: 17.sp,
                   softWrap: true,

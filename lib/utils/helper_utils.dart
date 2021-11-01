@@ -1,13 +1,19 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
 
+import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/manager/theme/theme.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,11 +21,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/manager/theme/theme.dart';
-import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/widgets/widgets.dart';
 
 typedef _PlatformDynamicColor = Tuple2<Color?, Color?>? Function();
 
@@ -55,14 +58,15 @@ class Utils {
 
   double get sidePadding => shortest * 0.05;
   double get topPadding => shortest * 0.03;
+  static const double distanceKMConverter = 0.001;
   static const Widget nothing = SizedBox.shrink();
   static const Duration autoRetrievalTimeout = Duration(seconds: 40);
   static const double buttonRadius = 8.0;
   static const double cardRadius = 12.0;
   static const BorderRadius cardBorderRadius =
       BorderRadius.all(Radius.circular(cardRadius));
-  static const String currency = '₦';
-  static const String NGN = 'NGN';
+  static const String currency = '₺';
+  // static const String NGN = 'NGN';
   static const double inputBorderRadius = 8.0;
   static late Utils instance;
   static const double labelLetterSpacing = 0.60;
@@ -136,6 +140,9 @@ class Utils {
   /// Returns the current route path
   String get currentRoute => router.current.name;
 
+  /// Returns the current route path
+  String get rootRoute => router.root.stackData.first.name;
+
   /// The current [WidgetsBinding], if one has been created.
   WidgetsBinding? get engine => WidgetsBinding.instance;
 
@@ -153,6 +160,8 @@ class Utils {
       (mediaQuery!.platformBrightness == Brightness.dark);
 
   GlobalKey<NavigatorState> get key => router.navigatorKey;
+
+  static const Duration crossFadeDuration = Duration(milliseconds: 400);
 
   static Widget crossFadeLayoutBuilder(
     Widget firstChild,
@@ -260,7 +269,7 @@ class Utils {
         material: () => FontWeight.w800,
         cupertino: () => FontWeight.w700,
       ),
-      fontSize: 28.0.sp,
+      fontSize: 25.0.sp,
       letterSpacing: Utils.letterSpacing);
 
   static Widget circularLoader({
@@ -333,16 +342,55 @@ class Utils {
             ((MediaQuery.of(context ?? App.context).platformBrightness ==
                 Brightness.dark));
 
-    // if (isDarkMode) {
-    //   if (dark == null) return light.call();
-    //   return dark.call();
-    // } else
-    //   return light.call();
-    return light.call();
+    return env.flavor.fold(
+      dev: () {
+        if (isDarkMode) {
+          if (dark == null) return light.call();
+          return dark.call();
+        } else
+          return light.call();
+      },
+      prod: () => light.call(),
+    );
   }
 
   static Color computeLuminance(Color color) =>
       color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+
+  static Future<Color> computeFromImage(
+    ImageProvider provider, {
+    required Size constraints,
+    Size? region,
+    Color defaultIfNull = Palette.accentColor,
+    int maximumColorCount = 16,
+  }) async {
+    try {
+      var paletteGenerator = await PaletteGenerator.fromImageProvider(
+        provider,
+        filters: [],
+        size: constraints,
+        region: region?.let((it) => Offset.zero & it),
+        maximumColorCount: maximumColorCount,
+      );
+
+      var dominantColor = paletteGenerator.dominantColor?.color;
+
+      return dominantColor?.let((it) => computeLuminance(it)) ?? defaultIfNull;
+    } catch (e) {
+      log.e(e);
+
+      return defaultIfNull;
+    }
+  }
+
+  Completer<ui.Image> getImageDimensions(ImageProvider provider) {
+    var completer = Completer<ui.Image>();
+
+    provider.resolve(const ImageConfiguration()).addListener(
+          ImageStreamListener((info, _) => completer.complete(info.image)),
+        );
+    return completer;
+  }
 
   /// Precache Application Images..ensures faster image rendering.
   static Future<void> precache(BuildContext context) async {
@@ -352,7 +400,7 @@ class Utils {
 
     AppAssets.svgs.forEach(
       (path) async => await precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoder, path),
+        ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, path),
         context,
       ),
     );
@@ -365,6 +413,54 @@ class Utils {
     return "${duration.inHours > 0 ? twoDigits(duration.inHours).pad(":") : ''}"
         "${twoDigitMinutes.pad(":")}"
         '$twoDigitSeconds';
+  }
+
+  static String? hoursAndMins(
+    Duration duration, {
+    bool short = true,
+    bool days_ = true,
+    bool hours_ = true,
+    bool mins_ = true,
+    bool secs_ = true,
+    StringCase? casing,
+  }) {
+    final days = duration.inDays;
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+
+    String? time;
+
+    if (days > 0 && days_) {
+      if (time == null)
+        time = '$days ${'day'.pluralize(days).cased(casing)} ';
+      else
+        time += '$days ${'day'.pluralize(days).cased(casing)} ';
+    } else if (hours > 0 && hours_) {
+      if (time == null)
+        time = '$hours ${'hour'.pluralize(hours).cased(casing)} ';
+      else
+        time += '$hours ${'hour'.pluralize(hours).cased(casing)} ';
+    }
+    if (minutes > 0 && mins_) {
+      if (time == null)
+        time =
+            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
+      else
+        time +=
+            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
+    }
+
+    if ((minutes <= 0 && hours <= 0) && secs_) {
+      if (time == null)
+        time =
+            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
+      else
+        time +=
+            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
+    }
+
+    return time;
   }
 
   static Future<void> platformPop({bool animated = true}) async {
@@ -461,7 +557,7 @@ class Utils {
     String? errorInvalidText,
     Widget Function(BuildContext, Widget?)? builder,
     bool Function(DateTime)? selectableDayPredicate,
-    required void Function(DateTime) onChanged,
+    required void Function(DateTime?) onChanged,
   }) async {
     // Set defaults
     firstDate ??= DateTime(1910);
@@ -512,7 +608,7 @@ class Utils {
           selectableDayPredicate: selectableDayPredicate,
         );
         // Fire callback after selection
-        return onChanged(date!) as U;
+        return onChanged(date) as U;
     }
   }
 
@@ -605,7 +701,7 @@ class Utils {
         );
   }
 
-  Future<U> showAlertDialog<U>({
+  FutureOr<U?> showAlertDialog<U>({
     required BuildContext context,
     required WidgetBuilder builder,
     bool barrierDismissible = true,
@@ -615,14 +711,14 @@ class Utils {
     RouteSettings? routeSettings,
   }) async {
     if (Platform.isIOS || Platform.isMacOS)
-      return showCupertinoDialog<U>(
+      return (await showCupertinoDialog<U?>(
         context: context,
         builder: builder,
         useRootNavigator: useRootNavigator,
         barrierDismissible: barrierDismissible,
         routeSettings: routeSettings,
-      ) as U;
-    return showDialog<U>(
+      ));
+    return (await showDialog<U?>(
       context: context,
       builder: builder,
       barrierDismissible: barrierDismissible,
@@ -630,7 +726,7 @@ class Utils {
       useSafeArea: useSafeArea,
       useRootNavigator: useRootNavigator,
       routeSettings: routeSettings,
-    ) as U;
+    ));
   }
 
   int calculateAge(DateTime birthDate) {

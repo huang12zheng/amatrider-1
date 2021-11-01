@@ -71,7 +71,9 @@ class SideDrawerWidget extends ConsumerWidget {
                 DrawerListTile(
                   title: 'Profile',
                   icon: AmatNow.drawer_profile,
-                  onPressed: () {},
+                  onPressed: () => context
+                      .read<TabNavigationCubit>()
+                      .setCurrentIndex(context, 3),
                 ),
                 //
                 DrawerListTile(
@@ -185,11 +187,9 @@ class DrawerListTile extends StatelessWidget {
         leading: Icon(icon, size: size ?? 23, color: Palette.text40),
         title: AdaptiveText(
           title,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w400,
-            letterSpacing: Utils.letterSpacing,
-          ),
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w400,
+          letterSpacing: Utils.letterSpacing,
         ),
       ),
     );

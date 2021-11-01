@@ -8,11 +8,14 @@ class Headline extends StatelessWidget {
   final int? maxLines;
   final double? fontSize;
   final double minFontSize;
+  final double maxFontSize;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
+  final TextStyle? style;
   final Color? textColor;
   final Color? textColorLight;
   final Color? textColorDark;
+  final TextOverflow? overflow;
 
   // ignore: prefer_const_constructors_in_immutables
   Headline(
@@ -21,11 +24,14 @@ class Headline extends StatelessWidget {
     this.maxLines,
     this.fontSize,
     this.minFontSize = 12,
+    this.maxFontSize = double.infinity,
     this.textAlign,
     this.fontWeight,
+    this.style,
     this.textColor,
     this.textColorLight,
     this.textColorDark,
+    this.overflow,
   }) : super(key: key);
 
   @override
@@ -35,7 +41,9 @@ class Headline extends StatelessWidget {
       softWrap: true,
       maxLines: maxLines,
       minFontSize: minFontSize,
+      maxFontSize: maxFontSize,
       textAlign: textAlign,
+      overflow: overflow,
       style: TextStyle(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w600,
@@ -54,7 +62,7 @@ class Headline extends StatelessWidget {
                 context,
               ),
             ),
-      ),
+      ).merge(style),
     );
   }
 }

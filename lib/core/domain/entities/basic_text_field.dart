@@ -15,14 +15,19 @@ class BasicTextField<U> extends FieldObject<U?> {
   @override
   final Either<FieldObjectException<String>, U?> value;
 
-  factory BasicTextField(U? input, {LengthValidator<U?>? other}) =>
-      BasicTextField._(Validator.isEmpty(input).flatMap(
-        other ?? (a) => right(a),
-      ));
+  factory BasicTextField(
+    U? input, {
+    LengthValidator<U?>? other,
+    bool validate = true,
+  }) =>
+      BasicTextField._(!validate
+          ? right(input)
+          : Validator.isEmpty(input).flatMap(other ?? (a) => right(a)));
 
   const BasicTextField._(this.value);
 
   @override
-  BasicTextField<U?> copyWith(U? newValue, {LengthValidator<U?>? other}) =>
-      BasicTextField(newValue, other: other);
+  BasicTextField<U?> copyWith(U? newValue,
+          {bool validate = true, LengthValidator<U?>? other}) =>
+      BasicTextField(newValue, validate: validate, other: other);
 }

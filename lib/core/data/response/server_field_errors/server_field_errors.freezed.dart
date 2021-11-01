@@ -99,7 +99,23 @@ class _$ServerFieldErrorsTearOff {
       @JsonKey(includeIfNull: false, name: 'card_number')
           List<String?>? cardNumber,
       @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName}) {
+          List<String?>? cardName,
+      @JsonKey(includeIfNull: false, name: 'pickup_lat')
+          List<String?>? pickupLat,
+      @JsonKey(includeIfNull: false, name: 'destination_lat')
+          List<String?>? destLat,
+      @JsonKey(includeIfNull: false, name: 'item_name')
+          List<String?>? itemName,
+      @JsonKey(includeIfNull: false)
+          List<String?>? quantity,
+      @JsonKey(includeIfNull: false)
+          List<String?>? images,
+      @JsonKey(includeIfNull: false, name: 'unit_price')
+          List<String?>? unitPrice,
+      @JsonKey(includeIfNull: false, name: 'required_date')
+          List<String?>? requiredDate,
+      @JsonKey(includeIfNull: false, name: 'message')
+          List<String?>? supportMessage}) {
     return _ServerFieldErrors(
       name: name,
       firstName: firstName,
@@ -140,6 +156,14 @@ class _$ServerFieldErrorsTearOff {
       landmark: landmark,
       cardNumber: cardNumber,
       cardName: cardName,
+      pickupLat: pickupLat,
+      destLat: destLat,
+      itemName: itemName,
+      quantity: quantity,
+      images: images,
+      unitPrice: unitPrice,
+      requiredDate: requiredDate,
+      supportMessage: supportMessage,
     );
   }
 
@@ -231,6 +255,22 @@ mixin _$ServerFieldErrors {
   List<String?>? get cardNumber => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'card_name')
   List<String?>? get cardName => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  List<String?>? get pickupLat => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  List<String?>? get destLat => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'item_name')
+  List<String?>? get itemName => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  List<String?>? get quantity => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  List<String?>? get images => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'unit_price')
+  List<String?>? get unitPrice => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'required_date')
+  List<String?>? get requiredDate => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'message')
+  List<String?>? get supportMessage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -321,7 +361,23 @@ abstract class $ServerFieldErrorsCopyWith<$Res> {
       @JsonKey(includeIfNull: false, name: 'card_number')
           List<String?>? cardNumber,
       @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName});
+          List<String?>? cardName,
+      @JsonKey(includeIfNull: false, name: 'pickup_lat')
+          List<String?>? pickupLat,
+      @JsonKey(includeIfNull: false, name: 'destination_lat')
+          List<String?>? destLat,
+      @JsonKey(includeIfNull: false, name: 'item_name')
+          List<String?>? itemName,
+      @JsonKey(includeIfNull: false)
+          List<String?>? quantity,
+      @JsonKey(includeIfNull: false)
+          List<String?>? images,
+      @JsonKey(includeIfNull: false, name: 'unit_price')
+          List<String?>? unitPrice,
+      @JsonKey(includeIfNull: false, name: 'required_date')
+          List<String?>? requiredDate,
+      @JsonKey(includeIfNull: false, name: 'message')
+          List<String?>? supportMessage});
 }
 
 /// @nodoc
@@ -374,6 +430,14 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
     Object? landmark = freezed,
     Object? cardNumber = freezed,
     Object? cardName = freezed,
+    Object? pickupLat = freezed,
+    Object? destLat = freezed,
+    Object? itemName = freezed,
+    Object? quantity = freezed,
+    Object? images = freezed,
+    Object? unitPrice = freezed,
+    Object? requiredDate = freezed,
+    Object? supportMessage = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -532,6 +596,38 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.cardName
           : cardName // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      pickupLat: pickupLat == freezed
+          ? _value.pickupLat
+          : pickupLat // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      destLat: destLat == freezed
+          ? _value.destLat
+          : destLat // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      itemName: itemName == freezed
+          ? _value.itemName
+          : itemName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      images: images == freezed
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      unitPrice: unitPrice == freezed
+          ? _value.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      requiredDate: requiredDate == freezed
+          ? _value.requiredDate
+          : requiredDate // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      supportMessage: supportMessage == freezed
+          ? _value.supportMessage
+          : supportMessage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
     ));
   }
 }
@@ -621,7 +717,23 @@ abstract class _$ServerFieldErrorsCopyWith<$Res>
       @JsonKey(includeIfNull: false, name: 'card_number')
           List<String?>? cardNumber,
       @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName});
+          List<String?>? cardName,
+      @JsonKey(includeIfNull: false, name: 'pickup_lat')
+          List<String?>? pickupLat,
+      @JsonKey(includeIfNull: false, name: 'destination_lat')
+          List<String?>? destLat,
+      @JsonKey(includeIfNull: false, name: 'item_name')
+          List<String?>? itemName,
+      @JsonKey(includeIfNull: false)
+          List<String?>? quantity,
+      @JsonKey(includeIfNull: false)
+          List<String?>? images,
+      @JsonKey(includeIfNull: false, name: 'unit_price')
+          List<String?>? unitPrice,
+      @JsonKey(includeIfNull: false, name: 'required_date')
+          List<String?>? requiredDate,
+      @JsonKey(includeIfNull: false, name: 'message')
+          List<String?>? supportMessage});
 }
 
 /// @nodoc
@@ -676,6 +788,14 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
     Object? landmark = freezed,
     Object? cardNumber = freezed,
     Object? cardName = freezed,
+    Object? pickupLat = freezed,
+    Object? destLat = freezed,
+    Object? itemName = freezed,
+    Object? quantity = freezed,
+    Object? images = freezed,
+    Object? unitPrice = freezed,
+    Object? requiredDate = freezed,
+    Object? supportMessage = freezed,
   }) {
     return _then(_ServerFieldErrors(
       name: name == freezed
@@ -834,6 +954,38 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.cardName
           : cardName // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      pickupLat: pickupLat == freezed
+          ? _value.pickupLat
+          : pickupLat // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      destLat: destLat == freezed
+          ? _value.destLat
+          : destLat // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      itemName: itemName == freezed
+          ? _value.itemName
+          : itemName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      images: images == freezed
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      unitPrice: unitPrice == freezed
+          ? _value.unitPrice
+          : unitPrice // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      requiredDate: requiredDate == freezed
+          ? _value.requiredDate
+          : requiredDate // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      supportMessage: supportMessage == freezed
+          ? _value.supportMessage
+          : supportMessage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
     ));
   }
 }
@@ -880,7 +1032,15 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
       @JsonKey(includeIfNull: false) this.state,
       @JsonKey(includeIfNull: false) this.landmark,
       @JsonKey(includeIfNull: false, name: 'card_number') this.cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name') this.cardName})
+      @JsonKey(includeIfNull: false, name: 'card_name') this.cardName,
+      @JsonKey(includeIfNull: false, name: 'pickup_lat') this.pickupLat,
+      @JsonKey(includeIfNull: false, name: 'destination_lat') this.destLat,
+      @JsonKey(includeIfNull: false, name: 'item_name') this.itemName,
+      @JsonKey(includeIfNull: false) this.quantity,
+      @JsonKey(includeIfNull: false) this.images,
+      @JsonKey(includeIfNull: false, name: 'unit_price') this.unitPrice,
+      @JsonKey(includeIfNull: false, name: 'required_date') this.requiredDate,
+      @JsonKey(includeIfNull: false, name: 'message') this.supportMessage})
       : super._();
 
   factory _$_ServerFieldErrors.fromJson(Map<String, dynamic> json) =>
@@ -1003,10 +1163,34 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
   @override
   @JsonKey(includeIfNull: false, name: 'card_name')
   final List<String?>? cardName;
+  @override
+  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  final List<String?>? pickupLat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  final List<String?>? destLat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'item_name')
+  final List<String?>? itemName;
+  @override
+  @JsonKey(includeIfNull: false)
+  final List<String?>? quantity;
+  @override
+  @JsonKey(includeIfNull: false)
+  final List<String?>? images;
+  @override
+  @JsonKey(includeIfNull: false, name: 'unit_price')
+  final List<String?>? unitPrice;
+  @override
+  @JsonKey(includeIfNull: false, name: 'required_date')
+  final List<String?>? requiredDate;
+  @override
+  @JsonKey(includeIfNull: false, name: 'message')
+  final List<String?>? supportMessage;
 
   @override
   String toString() {
-    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, accountNumber: $accountNumber, bankId: $bankId, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName)';
+    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, accountNumber: $accountNumber, bankId: $bankId, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName, pickupLat: $pickupLat, destLat: $destLat, itemName: $itemName, quantity: $quantity, images: $images, unitPrice: $unitPrice, requiredDate: $requiredDate, supportMessage: $supportMessage)';
   }
 
   @override
@@ -1059,7 +1243,17 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
             const DeepCollectionEquality().equals(other.landmark, landmark) &&
             const DeepCollectionEquality()
                 .equals(other.cardNumber, cardNumber) &&
-            const DeepCollectionEquality().equals(other.cardName, cardName));
+            const DeepCollectionEquality().equals(other.cardName, cardName) &&
+            const DeepCollectionEquality().equals(other.pickupLat, pickupLat) &&
+            const DeepCollectionEquality().equals(other.destLat, destLat) &&
+            const DeepCollectionEquality().equals(other.itemName, itemName) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality().equals(other.images, images) &&
+            const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
+            const DeepCollectionEquality()
+                .equals(other.requiredDate, requiredDate) &&
+            const DeepCollectionEquality()
+                .equals(other.supportMessage, supportMessage));
   }
 
   @override
@@ -1103,7 +1297,15 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
         const DeepCollectionEquality().hash(state),
         const DeepCollectionEquality().hash(landmark),
         const DeepCollectionEquality().hash(cardNumber),
-        const DeepCollectionEquality().hash(cardName)
+        const DeepCollectionEquality().hash(cardName),
+        const DeepCollectionEquality().hash(pickupLat),
+        const DeepCollectionEquality().hash(destLat),
+        const DeepCollectionEquality().hash(itemName),
+        const DeepCollectionEquality().hash(quantity),
+        const DeepCollectionEquality().hash(images),
+        const DeepCollectionEquality().hash(unitPrice),
+        const DeepCollectionEquality().hash(requiredDate),
+        const DeepCollectionEquality().hash(supportMessage)
       ]);
 
   @JsonKey(ignore: true)
@@ -1196,7 +1398,23 @@ abstract class _ServerFieldErrors extends ServerFieldErrors {
       @JsonKey(includeIfNull: false, name: 'card_number')
           List<String?>? cardNumber,
       @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName}) = _$_ServerFieldErrors;
+          List<String?>? cardName,
+      @JsonKey(includeIfNull: false, name: 'pickup_lat')
+          List<String?>? pickupLat,
+      @JsonKey(includeIfNull: false, name: 'destination_lat')
+          List<String?>? destLat,
+      @JsonKey(includeIfNull: false, name: 'item_name')
+          List<String?>? itemName,
+      @JsonKey(includeIfNull: false)
+          List<String?>? quantity,
+      @JsonKey(includeIfNull: false)
+          List<String?>? images,
+      @JsonKey(includeIfNull: false, name: 'unit_price')
+          List<String?>? unitPrice,
+      @JsonKey(includeIfNull: false, name: 'required_date')
+          List<String?>? requiredDate,
+      @JsonKey(includeIfNull: false, name: 'message')
+          List<String?>? supportMessage}) = _$_ServerFieldErrors;
   const _ServerFieldErrors._() : super._();
 
   factory _ServerFieldErrors.fromJson(Map<String, dynamic> json) =
@@ -1319,6 +1537,30 @@ abstract class _ServerFieldErrors extends ServerFieldErrors {
   @override
   @JsonKey(includeIfNull: false, name: 'card_name')
   List<String?>? get cardName;
+  @override
+  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  List<String?>? get pickupLat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  List<String?>? get destLat;
+  @override
+  @JsonKey(includeIfNull: false, name: 'item_name')
+  List<String?>? get itemName;
+  @override
+  @JsonKey(includeIfNull: false)
+  List<String?>? get quantity;
+  @override
+  @JsonKey(includeIfNull: false)
+  List<String?>? get images;
+  @override
+  @JsonKey(includeIfNull: false, name: 'unit_price')
+  List<String?>? get unitPrice;
+  @override
+  @JsonKey(includeIfNull: false, name: 'required_date')
+  List<String?>? get requiredDate;
+  @override
+  @JsonKey(includeIfNull: false, name: 'message')
+  List<String?>? get supportMessage;
   @override
   @JsonKey(ignore: true)
   _$ServerFieldErrorsCopyWith<_ServerFieldErrors> get copyWith =>

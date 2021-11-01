@@ -19,11 +19,13 @@ class EmailFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
   final String? Function(ReactiveState)? initial;
   final FieldObject<String?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
+  final bool? Function(ReactiveState)? readOnly;
   final Option<AppHttpResponse?> Function(ReactiveState)? response;
   final FocusNode? focus;
   final FocusNode? next;
   final bool useHero;
-  final EdgeInsets? padding;
+  final EdgeInsets? materialPadding;
+  final EdgeInsets? cupertinoPadding;
   final CupertinoFormType? cupertinoFormType;
 
   EmailFormField({
@@ -39,7 +41,9 @@ class EmailFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.response,
     this.useHero = true,
     this.cupertinoFormType,
-    this.padding,
+    this.materialPadding,
+    this.cupertinoPadding,
+    this.readOnly,
   }) : super(key: key);
 
   ReactiveState get state => _state;
@@ -56,7 +60,8 @@ class EmailFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
           tag: useHero ? Const.emailFieldHeroTag : UniqueId<String>.v4().value!,
           child: AdaptiveTextFormInput(
             cupertinoFormType: cupertinoFormType,
-            padding: padding,
+            cupertinoPadding: cupertinoPadding,
+            materialPadding: materialPadding,
             prefix: App.platform.fold(
               material: () => null,
               cupertino: () =>
@@ -65,6 +70,7 @@ class EmailFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
             initial: initial?.call(s),
             disabled: disabled?.call(s) ?? false,
             validate: validate?.call(s) ?? false,
+            readOnly: readOnly?.call(s),
             capitalization: TextCapitalization.none,
             keyboardType: TextInputType.emailAddress,
             autoFillHints: [AutofillHints.email],

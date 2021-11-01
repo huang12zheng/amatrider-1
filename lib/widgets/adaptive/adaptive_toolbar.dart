@@ -1,5 +1,5 @@
 import 'package:amatrider/utils/utils.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -72,7 +72,7 @@ class AdaptiveToolbar {
   Widget get _title => Visibility(
         visible: !title.isNullOrBlank,
         replacement: headline,
-        child: AutoSizeText(
+        child: AdaptiveText(
           title,
           style: fontSize != null && fontSize! >= 0.0
               ? TextStyle(
@@ -117,18 +117,26 @@ class AdaptiveToolbar {
         )
       : null;
 
-  Widget get _cupertinoLeading => Tooltip(
-        message: tooltip ?? 'Close',
-        child: GestureDetector(
-          onTap: leadingAction ?? navigator.pop,
-          child: AutoSizeText(
-            cupertinoLeading,
-            style: cupertinoLeadingStyle ??
-                TextStyle(
-                  color: Utils.computeLuminance(
-                      Theme.of(App.context).scaffoldBackgroundColor),
+  Widget get _cupertinoLeading => Semantics.fromProperties(
+        properties: SemanticsProperties(
+          label: tooltip,
+          hint: tooltip,
+          button: true,
+        ),
+        child: Tooltip(
+          message: tooltip ?? 'Close',
+          child: leadingIcon ??
+              GestureDetector(
+                onTap: leadingAction ?? navigator.pop,
+                child: AdaptiveText(
+                  cupertinoLeading,
+                  style: cupertinoLeadingStyle ??
+                      TextStyle(
+                        color: Utils.computeLuminance(
+                            Theme.of(App.context).scaffoldBackgroundColor),
+                      ),
                 ),
-          ),
+              ),
         ),
       );
 

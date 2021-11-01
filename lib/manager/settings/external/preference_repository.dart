@@ -116,18 +116,22 @@ class PreferenceRepository with _$PreferenceRepository {
   }) async =>
       await preferences.setBool(key, value);
 
-  Future<bool?> getBool(String key) async {
+  bool getBool(String key, {bool ifNull = false}) {
     try {
-      return preferences.getBool(key);
+      final _result = preferences.getBool(key);
+      if (_result != null)
+        return _result;
+      else
+        return ifNull;
     } catch (_, __) {
       env.flavor.fold(
         dev: () {
-          var msg = 'Message: Boolean not found in shared-preference cache';
+          var msg = 'Value is not a boolean';
           log.e(msg, _, __);
-          return null;
         },
         prod: () => null,
       );
+      return ifNull;
     }
   }
 

@@ -92,7 +92,7 @@ class PopupDialog extends _$PopupDialog {
     Widget? titleWidget,
     String? message,
     Widget? messageWidget,
-    Duration? duration,
+    Duration duration = const Duration(seconds: 8),
     bool? isDismissible,
     bool? autoDismiss,
     TextStyle? titleStyle,

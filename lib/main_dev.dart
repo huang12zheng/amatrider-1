@@ -1,4 +1,5 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:device_preview/plugins.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,15 +33,27 @@ void main() async {
     log.e('Error initializing HydratedStorage', e, trace);
   }
 
-  runApp(DevicePreview(
-    enabled: env.flavor.fold(
-      prod: () => !kReleaseMode,
-      dev: () => true,
+  runApp(ProviderScope(
+    child: DevicePreview(
+      isToolbarVisible: true,
+      plugins: [
+        const ScreenshotPlugin(),
+        const FileExplorerPlugin(),
+      ],
+      enabled: env.flavor.fold(
+        prod: () => !kReleaseMode,
+        dev: () => true,
+      ),
+      style: DevicePreviewStyle.light(
+        position: DevicePreviewToolBarPosition.bottom,
+        buttonsVisibility: const DevicePreviewButtonsVisibilityStyleData(
+          rotate: false,
+          darkMode: false,
+          settings: true,
+          accessibility: true,
+        ),
+      ),
+      builder: (_) => const AmatRider(),
     ),
-    style: DevicePreviewStyle(
-      background: const BoxDecoration(color: Colors.transparent),
-      toolBar: DevicePreviewToolBarStyle.light(),
-    ),
-    builder: (_) => const ProviderScope(child: AmatRider()),
   ));
 }

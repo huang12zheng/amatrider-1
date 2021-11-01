@@ -5,6 +5,7 @@ import 'package:amatrider/widgets/widgets.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A stateless widget to render Form Fields for Name.
@@ -13,33 +14,39 @@ class ReactiveTextFormField<Reactive extends Cubit<ReactiveState>,
     ReactiveState> extends StatelessWidget {
   late ReactiveState _state;
 
-  final int? minLines;
-  final String? prefix;
-  final String? heroTag;
-  final EdgeInsets? padding;
-  final CupertinoFormType? cupertinoFormType;
-  final Iterable<String>? autoFillHints;
-  final TextInputType keyboardType;
-  final TextInputAction? action;
-  final TextCapitalization capitalization;
-  final FocusNode? focus;
-  final FocusNode? next;
   final bool? Function(ReactiveState)? readOnly;
   final String? Function(ReactiveState)? hintText;
   final bool Function(ReactiveState)? validate;
   final bool Function(ReactiveState)? disabled;
   final String? Function(ReactiveState)? initial;
   final TextEditingController? Function(ReactiveState)? controller;
-  final FieldObject<String?>? Function(ReactiveState)? field;
+  final FieldObject<Object?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
   final Option<AppHttpResponse?> Function(ReactiveState)? response;
   final List<String?>? Function(ErrorResponse)? errorField;
   final void Function(Reactive, ReactiveState)? onTap;
+  final TextInputAction? action;
+  final Iterable<String>? autoFillHints;
+  final List<TextInputFormatter> inputFormatters;
+  final TextCapitalization capitalization;
+  final CupertinoFormType? cupertinoFormType;
+  final EdgeInsets? cupertinoPadding;
+  final FocusNode? focus;
+  final String? heroTag;
+  final TextInputType keyboardType;
+  final EdgeInsets? materialPadding;
+  final int? minLines;
+  final FocusNode? next;
+  final String? prefix;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   ReactiveTextFormField({
     Key? key,
     this.minLines,
     this.prefix,
+    this.prefixIcon,
+    this.suffixIcon,
     this.validate,
     this.disabled,
     this.initial,
@@ -52,8 +59,10 @@ class ReactiveTextFormField<Reactive extends Cubit<ReactiveState>,
     this.readOnly,
     this.cupertinoFormType,
     this.controller,
-    this.padding,
+    this.materialPadding,
+    this.cupertinoPadding,
     this.autoFillHints,
+    this.inputFormatters = const [],
     this.action,
     this.keyboardType = TextInputType.none,
     this.capitalization = TextCapitalization.none,
@@ -75,12 +84,15 @@ class ReactiveTextFormField<Reactive extends Cubit<ReactiveState>,
         var _input = AdaptiveTextFormInput(
           minLines: minLines,
           cupertinoFormType: cupertinoFormType,
-          padding: padding,
+          cupertinoPadding: cupertinoPadding,
+          materialPadding: materialPadding,
           prefix: App.platform.fold(
             material: () => null,
             cupertino: () =>
                 prefix == null ? null : TextFormInputLabel(text: prefix!),
           ),
+          prefixIcon: prefixIcon,
+          suffix: suffixIcon,
           initial: initial?.call(s),
           controller: controller?.call(s),
           keyboardType: keyboardType,
@@ -90,6 +102,7 @@ class ReactiveTextFormField<Reactive extends Cubit<ReactiveState>,
           autoFillHints: autoFillHints,
           focus: focus,
           next: next,
+          inputFormatters: inputFormatters,
           readOnly: readOnly?.call(s),
           hintText: hintText?.call(s),
           validate: validate?.call(s) ?? false,

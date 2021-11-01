@@ -20,7 +20,8 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
   final FocusNode? focus;
   final FocusNode? next;
   final String? heroTag;
-  final EdgeInsets? padding;
+  final EdgeInsets? materialPadding;
+  final EdgeInsets? cupertinoPadding;
   final CupertinoFormType? cupertinoFormType;
 
   NameFormField({
@@ -35,7 +36,8 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.next,
     this.heroTag,
     this.cupertinoFormType,
-    this.padding,
+    this.materialPadding,
+    this.cupertinoPadding,
   }) : super(key: key);
 
   ReactiveState get state => _state;
@@ -50,7 +52,8 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
 
         var _input = AdaptiveTextFormInput(
           cupertinoFormType: cupertinoFormType,
-          padding: padding,
+          cupertinoPadding: cupertinoPadding,
+          materialPadding: materialPadding,
           prefix: App.platform.fold(
             material: () => null,
             cupertino: () =>

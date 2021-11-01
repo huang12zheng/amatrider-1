@@ -3,11 +3,11 @@ part of 'map_cubit.dart';
 @freezed
 @immutable
 class MapState extends BaseState with _$MapState {
-  static const double minZoomLevel = 8.0;
   static const double defaultZoomLevel = 13.151926040649414;
-  static const double mapTilt = 0.0;
-  static const double mapBearing = 0.0;
   static const LatLng istanbul = LatLng(41.015137, 28.979530);
+  static const double mapBearing = 0.0;
+  static const double mapTilt = 0.0;
+  static const double minZoomLevel = 0.0;
 
   const factory MapState({
     @Default(double.maxFinite) double maxZoom,
@@ -21,6 +21,9 @@ class MapState extends BaseState with _$MapState {
     @Default(true) bool buildingsEnabled,
     required CameraPosition initialPosition,
     GoogleMapController? mapController,
+    required Set<Marker> markers,
+    required Set<Circle> circles,
+    required Set<Polyline> polylines,
     //
     @Default(false) bool isLoading,
     @Default(false) bool validate,
@@ -28,6 +31,9 @@ class MapState extends BaseState with _$MapState {
   }) = _MapState;
 
   factory MapState.initial() => const MapState(
+        circles: <Circle>{},
+        markers: <Marker>{},
+        polylines: <Polyline>{},
         initialPosition: CameraPosition(
           target: MapState.istanbul,
           zoom: MapState.defaultZoomLevel,

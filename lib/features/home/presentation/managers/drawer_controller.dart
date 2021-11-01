@@ -1,33 +1,33 @@
 // Define Controller for rhe app
-import 'package:amatrider/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class _Const {
-  static final _global = GlobalKey<ScaffoldState>(
-    debugLabel: '_DashboardState',
-  );
+  static final _global =
+      GlobalKey<InnerDrawerState>(debugLabel: '_DashboardDrawerState');
 }
 
+// var scaffoldController = StateNotifierProvider.autoDispose<ScaffoldController,
+//     GlobalKey<ScaffoldState>>((ref) => ScaffoldController(_Const._global));
+
 var scaffoldController = StateNotifierProvider.autoDispose<ScaffoldController,
-    GlobalKey<ScaffoldState>>((ref) => ScaffoldController(_Const._global));
+    GlobalKey<InnerDrawerState>>((ref) => ScaffoldController(_Const._global));
 
 // Define StateNotifier for the app
-class ScaffoldController extends StateNotifier<GlobalKey<ScaffoldState>> {
-  ScaffoldController(GlobalKey<ScaffoldState> state) : super(state);
+class ScaffoldController extends StateNotifier<GlobalKey<InnerDrawerState>> {
+  ScaffoldController(GlobalKey<InnerDrawerState> state) : super(state);
 
-  ScaffoldState? get _state => state.currentState;
+  InnerDrawerState? get _state => state.currentState;
 
-  bool get isOpen =>
-      _state != null && _state!.hasDrawer && _state!.isDrawerOpen;
+  bool get isOpen => _state?.mounted ?? false;
 
-  void open() {
-    if (_state != null) if (_state!.hasDrawer && !_state!.isDrawerOpen)
-      return _state!.openDrawer();
+  void toggle() {
+    // direction: InnerDrawerDirection.start
+    _state?.toggle();
   }
 
-  void close() async {
-    if (_state != null) if (_state!.hasDrawer && _state!.isDrawerOpen)
-      await navigator.pop();
-  }
+  void open() => _state?.open();
+
+  void close() => _state?.close();
 }

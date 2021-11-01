@@ -1,5 +1,5 @@
 mixin Const {
-  static const String appName = 'Amat Rider';
+  static const String appName = 'AmatRider';
   static const String database = 'amatrider_db';
   static const String sembastDB = 'amatrider_sembast_db';
   static const String packageName = 'com.amatnow.amatrider';

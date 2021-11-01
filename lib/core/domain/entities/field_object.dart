@@ -20,6 +20,23 @@ abstract class FieldObject<T> {
   FieldObjectException<dynamic>? get failure =>
       value.fold((f) => f, (_) => null);
 
+  U isNotNull<U>(
+    U Function(FieldObject<T>)? field, {
+    required U Function(FieldObject<T>) orElse,
+  }) {
+    if (getOrNull != null) return field?.call(this) ?? orElse.call(this);
+    return orElse.call(this);
+  }
+
+  U ensure<U>(
+    U? Function(FieldObject<T>)? fiels, {
+    required U Function(FieldObject<T>) orElse,
+  }) {
+    if (getOrNull != null && isValid)
+      return fiels?.call(this) ?? orElse.call(this);
+    return orElse.call(this);
+  }
+
   bool get isValid => value.isRight();
 
   T? get getOrCrash => value.fold((f) {
