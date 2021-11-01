@@ -3,7 +3,6 @@ library send_package.dart;
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:dartz/dartz.dart' hide id;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'send_package.freezed.dart';
@@ -36,6 +35,7 @@ class SendPackage with _$SendPackage {
     DateTime? riderAcceptedAt,
     DateTime? riderReceivedAt,
     DateTime? riderDeliveredAt,
+    required Sender sender,
     //
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -68,6 +68,7 @@ class SendPackage with _$SendPackage {
         distanceToPickup: BasicTextField(null, validate: false),
         durationToPickup: Duration.zero,
         riderId: UniqueId.fromExternal(null),
+        sender: Sender.blank(),
         riderLocation: RiderLocation(
           lat: BasicTextField(null),
           lng: BasicTextField(null),
@@ -119,6 +120,7 @@ class SendPackage with _$SendPackage {
         riderAcceptedAt: package?.riderAcceptedAt ?? riderAcceptedAt,
         riderReceivedAt: package?.riderReceivedAt ?? riderReceivedAt,
         riderDeliveredAt: package?.riderDeliveredAt ?? riderDeliveredAt,
+        sender: package?.sender ?? sender,
         createdAt: createdAt != null ? package!.createdAt : createdAt,
         updatedAt: updatedAt != null ? package!.updatedAt : updatedAt,
       );

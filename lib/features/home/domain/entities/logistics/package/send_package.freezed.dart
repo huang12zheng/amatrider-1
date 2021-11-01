@@ -39,6 +39,7 @@ class _$SendPackageTearOff {
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) {
     return _SendPackage(
@@ -63,6 +64,7 @@ class _$SendPackageTearOff {
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
+      sender: sender,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -96,7 +98,8 @@ mixin _$SendPackage {
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
   DateTime? get riderReceivedAt => throw _privateConstructorUsedError;
-  DateTime? get riderDeliveredAt => throw _privateConstructorUsedError; //
+  DateTime? get riderDeliveredAt => throw _privateConstructorUsedError;
+  Sender get sender => throw _privateConstructorUsedError; //
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -132,12 +135,14 @@ abstract class $SendPackageCopyWith<$Res> {
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
 
   $RiderLocationCopyWith<$Res> get pickup;
   $RiderLocationCopyWith<$Res> get destination;
   $RiderLocationCopyWith<$Res> get riderLocation;
+  $SenderCopyWith<$Res> get sender;
 }
 
 /// @nodoc
@@ -171,6 +176,7 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -259,6 +265,10 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as Sender,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -288,6 +298,13 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
   $RiderLocationCopyWith<$Res> get riderLocation {
     return $RiderLocationCopyWith<$Res>(_value.riderLocation, (value) {
       return _then(_value.copyWith(riderLocation: value));
+    });
+  }
+
+  @override
+  $SenderCopyWith<$Res> get sender {
+    return $SenderCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value));
     });
   }
 }
@@ -321,6 +338,7 @@ abstract class _$SendPackageCopyWith<$Res>
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
 
@@ -330,6 +348,8 @@ abstract class _$SendPackageCopyWith<$Res>
   $RiderLocationCopyWith<$Res> get destination;
   @override
   $RiderLocationCopyWith<$Res> get riderLocation;
+  @override
+  $SenderCopyWith<$Res> get sender;
 }
 
 /// @nodoc
@@ -365,6 +385,7 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -453,6 +474,10 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as Sender,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -490,6 +515,7 @@ class _$_SendPackage extends _SendPackage {
       this.riderAcceptedAt,
       this.riderReceivedAt,
       this.riderDeliveredAt,
+      required this.sender,
       this.createdAt,
       this.updatedAt})
       : super._();
@@ -540,6 +566,8 @@ class _$_SendPackage extends _SendPackage {
   final DateTime? riderReceivedAt;
   @override
   final DateTime? riderDeliveredAt;
+  @override
+  final Sender sender;
   @override //
   final DateTime? createdAt;
   @override
@@ -547,7 +575,7 @@ class _$_SendPackage extends _SendPackage {
 
   @override
   String toString() {
-    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -591,6 +619,7 @@ class _$_SendPackage extends _SendPackage {
                 other.riderReceivedAt == riderReceivedAt) &&
             (identical(other.riderDeliveredAt, riderDeliveredAt) ||
                 other.riderDeliveredAt == riderDeliveredAt) &&
+            (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -621,6 +650,7 @@ class _$_SendPackage extends _SendPackage {
         riderAcceptedAt,
         riderReceivedAt,
         riderDeliveredAt,
+        sender,
         createdAt,
         updatedAt
       ]);
@@ -654,6 +684,7 @@ abstract class _SendPackage extends SendPackage {
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_SendPackage;
   const _SendPackage._() : super._();
@@ -700,6 +731,8 @@ abstract class _SendPackage extends SendPackage {
   DateTime? get riderReceivedAt;
   @override
   DateTime? get riderDeliveredAt;
+  @override
+  Sender get sender;
   @override //
   DateTime? get createdAt;
   @override

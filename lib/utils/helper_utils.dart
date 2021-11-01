@@ -415,7 +415,15 @@ class Utils {
         '$twoDigitSeconds';
   }
 
-  static String? hoursAndMins(Duration duration, {bool short = true}) {
+  static String? hoursAndMins(
+    Duration duration, {
+    bool short = true,
+    bool days_ = true,
+    bool hours_ = true,
+    bool mins_ = true,
+    bool secs_ = true,
+    StringCase? casing,
+  }) {
     final days = duration.inDays;
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
@@ -423,29 +431,33 @@ class Utils {
 
     String? time;
 
-    if (days > 0) {
+    if (days > 0 && days_) {
       if (time == null)
-        time = '$days ${'day'.pluralize(days)} ';
+        time = '$days ${'day'.pluralize(days).cased(casing)} ';
       else
-        time += '$days ${'day'.pluralize(days)} ';
-    } else if (hours > 0) {
+        time += '$days ${'day'.pluralize(days).cased(casing)} ';
+    } else if (hours > 0 && hours_) {
       if (time == null)
-        time = '$hours ${'hour'.pluralize(hours)} ';
+        time = '$hours ${'hour'.pluralize(hours).cased(casing)} ';
       else
-        time += '$hours ${'hour'.pluralize(hours)} ';
+        time += '$hours ${'hour'.pluralize(hours).cased(casing)} ';
     }
-    if (minutes > 0) {
+    if (minutes > 0 && mins_) {
       if (time == null)
-        time = '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes)}';
+        time =
+            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
       else
-        time += '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes)}';
+        time +=
+            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
     }
 
-    if ((minutes <= 0 && hours <= 0)) {
+    if ((minutes <= 0 && hours <= 0) && secs_) {
       if (time == null)
-        time = '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds)}';
+        time =
+            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
       else
-        time += '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds)}';
+        time +=
+            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
     }
 
     return time;

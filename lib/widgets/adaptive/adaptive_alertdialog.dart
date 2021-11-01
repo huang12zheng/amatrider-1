@@ -23,10 +23,12 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
   final bool disableSecondButton;
   final String? cupertinoFirstButtonText;
   final String cupertinoSecondButtonText;
+  final Future<B> Function()? onFirstPressedFuture;
   final B Function()? onFirstPressed;
   final Color? firstBgColor;
   final Color? firstSplashColor;
   final TextStyle? firstTextStyle;
+  final Future<B> Function()? onSecondPressedFuture;
   final B Function()? onSecondPressed;
   final Color? secondBgColor;
   final Color? secondSplashColor;
@@ -58,7 +60,9 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
     String? cupertinoFirstButtonText,
     String? cupertinoSecondButtonText,
     this.onFirstPressed,
+    this.onFirstPressedFuture,
     this.onSecondPressed,
+    this.onSecondPressedFuture,
     this.firstBgColor,
     this.secondBgColor,
     this.firstSplashColor,
@@ -72,7 +76,13 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
     this.buttonDirection = Axis.vertical,
     this.materialFirstButton,
     this.materialSecondButton,
-  })  : _width = width ?? 0.85.sw,
+  })  : assert((onFirstPressed == null && onFirstPressedFuture != null) ||
+            (onFirstPressed != null && onFirstPressedFuture == null) ||
+            (onFirstPressed == null && onFirstPressedFuture == null)),
+        assert((onSecondPressed == null && onSecondPressedFuture != null) ||
+            (onSecondPressed != null && onSecondPressedFuture == null) ||
+            (onSecondPressed == null && onSecondPressedFuture == null)),
+        _width = width ?? 0.85.sw,
         cupertinoFirstButtonText = cupertinoFirstButtonText ?? firstButtonText,
         cupertinoSecondButtonText = secondButtonText,
         assert(isFirstDestructive || isSecondDestructive),
@@ -113,8 +123,10 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                   (it) => CupertinoDialogAction(
                     isDefaultAction: isFirstDefaultAction,
                     isDestructiveAction: isFirstDestructive,
-                    onPressed: () =>
-                        navigator.pop(onFirstPressed?.call() ?? defaultValue),
+                    onPressed: () async => navigator.pop(
+                        (await onFirstPressedFuture?.call()) ??
+                            onFirstPressed?.call() ??
+                            defaultValue),
                     child: Text('$it'),
                   ),
                 ) ??
@@ -124,8 +136,10 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
               CupertinoDialogAction(
                 isDefaultAction: isSecondDefaultAction,
                 isDestructiveAction: isSecondDestructive,
-                onPressed: () =>
-                    navigator.pop(onSecondPressed?.call() ?? defaultValue),
+                onPressed: () async => navigator.pop(
+                    (await onSecondPressedFuture?.call()) ??
+                        onSecondPressed?.call() ??
+                        defaultValue),
                 child: Text('$cupertinoSecondButtonText'),
               ),
           ],
@@ -134,18 +148,24 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
           (it) => SizedBox(
             width: _width,
             height: 0.03.sh,
-            child: Align(
-              alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
-              child: AdaptiveText(
-                '$it',
-                softWrap: true,
-                maxLines: 1,
-                textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-                style: Theme.of(context).platform.fold(
-                    material: () => null,
-                    cupertino: () => DefaultTextStyle.of(context).style.merge(
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)
-                            .merge(titleTextStyle))),
+            child: Material(
+              type: MaterialType.transparency,
+              textStyle: titleTextStyle,
+              child: Align(
+                alignment:
+                    centerTitle ? Alignment.center : Alignment.centerLeft,
+                child: AdaptiveText(
+                  '$it',
+                  softWrap: true,
+                  maxLines: 1,
+                  textAlign: centerTitle ? TextAlign.center : TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                    color: App.resolveColor(Palette.text100,
+                        dark: Palette.text100Dark),
+                  ).merge(titleTextStyle),
+                ),
               ),
             ),
           ),
@@ -239,10 +259,12 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
       materialFirstButton ??
       firstButtonText?.let(
         (it) => AdaptiveButton(
-          onPressed: () =>
-              navigator.pop(onFirstPressed?.call() ?? defaultValue),
+          onPressed: () async => navigator.pop(
+              (await onFirstPressedFuture?.call()) ??
+                  onFirstPressed?.call() ??
+                  defaultValue),
           text: firstButtonText,
-          height: 0.11.sw,
+          height: 0.045.h,
           cupertinoHeight: 0.028.sh,
           fontSize: 15.sp,
           textColor: Colors.white,
@@ -266,9 +288,12 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
   Widget _secondButton(Axis direction) =>
       materialSecondButton ??
       AdaptiveButton(
-        onPressed: () => navigator.pop(onSecondPressed?.call() ?? defaultValue),
+        onPressed: () async => navigator.pop(
+            (await onSecondPressedFuture?.call()) ??
+                onSecondPressed?.call() ??
+                defaultValue),
         text: secondButtonText,
-        height: 0.11.sw,
+        height: 0.045.h,
         cupertinoHeight: 0.028.sh,
         fontSize: 15.sp,
         textColor: App.resolveColor(Palette.accentColor),

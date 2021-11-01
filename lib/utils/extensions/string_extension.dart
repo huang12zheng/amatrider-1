@@ -6,6 +6,8 @@ import 'package:inflection3/inflection3.dart' as _l1;
 import 'package:intl/intl.dart';
 import 'package:kt_dart/kt.dart';
 
+enum StringCase { upper, lower, title }
+
 extension StringX on String {
   /// Capitalize only first letter in string
   ///
@@ -19,6 +21,19 @@ extension StringX on String {
       splitStr[i] =
           splitStr[i][0].toUpperCase() + splitStr[i].substring(1).toLowerCase();
     return splitStr.join(' ');
+  }
+
+  String cased(StringCase? type) {
+    switch (type) {
+      case StringCase.upper:
+        return toUpperCase();
+      case StringCase.lower:
+        return toLowerCase();
+      case StringCase.title:
+        return titleCase();
+      default:
+        return this;
+    }
   }
 
   /// Checks if String contains b (Treating or interpreting upper- and lowercase letters as being the same).

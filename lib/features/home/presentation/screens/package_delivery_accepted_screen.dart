@@ -1,5 +1,6 @@
 library package_delivery_accepted_screen.dart;
 
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
@@ -31,10 +32,8 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
 
   final SendPackage sendPackage;
 
-  const PackageDeliveryAcceptedScreen({
-    Key? key,
-    required this.sendPackage,
-  }) : super(key: key);
+  const PackageDeliveryAcceptedScreen({Key? key, required this.sendPackage})
+      : super(key: key);
 
   @override
   State<PackageDeliveryAcceptedScreen> createState() =>
@@ -49,24 +48,41 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
           create: (_) => getIt<SendPackageCubit>()..init(sendPackage),
         ),
       ],
-      child: BlocListener<SendPackageCubit, SendPackageState>(
-        listenWhen: (p, c) =>
-            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
-            (c.status.getOrElse(() => null) != null &&
-                (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
-                      orElse: () => false,
-                    ))),
-        listener: (c, s) => s.status.fold(
-          () => null,
-          (it) => it?.response.map(
-            error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (res) => PopupDialog.success(
-              duration: const Duration(seconds: 2),
-              message: res.message,
-            ).render(c),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<SendPackageCubit, SendPackageState>(
+            listenWhen: (p, c) => c.package.status
+                .maybeWhen(delivered: () => true, orElse: () => false),
+            listener: (c, s) {
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (navigator.current.name == PackageDeliveryAcceptedRoute.name)
+                  navigator.popUntil(
+                      (route) => route.settings.name == DashboardRoute.name);
+              });
+            },
           ),
-        ),
+          //
+          BlocListener<SendPackageCubit, SendPackageState>(
+            listenWhen: (p, c) =>
+                p.status.getOrElse(() => null) !=
+                    c.status.getOrElse(() => null) ||
+                (c.status.getOrElse(() => null) != null &&
+                    (c.status.getOrElse(() => null)!.response.maybeMap(
+                          error: (f) => f.foldCode(orElse: () => false),
+                          orElse: () => false,
+                        ))),
+            listener: (c, s) => s.status.fold(
+              () => null,
+              (it) => it?.response.map(
+                error: (f) => PopupDialog.error(message: f.message).render(c),
+                success: (res) => PopupDialog.success(
+                  duration: const Duration(seconds: 2),
+                  message: res.message,
+                ).render(c),
+              ),
+            ),
+          ),
+        ],
         child: this,
       ),
     );
@@ -104,20 +120,7 @@ class _PackageDeliveryAcceptedScreenState
               parallaxEnabled: true,
               parallaxOffset: 0.5,
               defaultPanelState: PanelState.OPEN,
-              body: Builder(
-                builder: (c) {
-                  final state = BlocProvider.of<SendPackageCubit>(c).state;
-                  return MapWidget(
-                    start: widget.sendPackage.pickup,
-                    end: widget.sendPackage.destination,
-                    endInfo: InfoWindow(
-                      title: 'Receiver',
-                      subtitle: '${state.package.receiverFullName.getOrEmpty}',
-                      leading: '9\nMINS',
-                    ),
-                  );
-                },
-              ),
+              body: const _Body(),
               panelBuilder: (controller) => _PanelBuilder(
                 controller,
                 panelController: panelController,
@@ -152,40 +155,82 @@ class _PackageDeliveryAcceptedScreenState
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: App.sidePadding,
-                  ).copyWith(
-                    bottom: PackageDeliveryAcceptedScreen._buttonBottom,
-                  ),
-                  child: AppButton(
-                    text: 'Confirm Pickup',
-                    onPressed: () async => App.showAlertDialog(
-                      context: context,
-                      barrierColor: App.resolveColor(
-                        Colors.grey.shade800.withOpacity(0.55),
-                        dark: Colors.white54,
+                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
+                      .copyWith(
+                          bottom: PackageDeliveryAcceptedScreen._buttonBottom),
+                  child: BlocBuilder<SendPackageCubit, SendPackageState>(
+                    builder: (c, s) => s.package.status.between(
+                      start: () => AppButton(
+                        text: 'Confirm Pickup',
+                        isLoading: s.isLoading,
+                        onPressed: () async => App.showAlertDialog(
+                          context: context,
+                          barrierColor: App.resolveColor(
+                            Colors.grey.shade800.withOpacity(0.55),
+                            dark: Colors.white54,
+                          ),
+                          builder: (_) => AdaptiveAlertdialog(
+                            title: 'Confirm Pickup',
+                            content: 'Confirm that you have received '
+                                'the package from ${s.package.sender.fullName.getOrEmpty}?',
+                            buttonDirection: Axis.horizontal,
+                            secondButtonText: 'Yes, Confirm',
+                            secondSplashColor: Colors.black12,
+                            secondTextStyle:
+                                const TextStyle(color: Colors.white),
+                            secondBgColor: Palette.accentColor,
+                            onSecondPressed:
+                                c.read<SendPackageCubit>().confirmPackagePickup,
+                            materialFirstButton: AppOutlinedButton(
+                              text: 'No, Go Back',
+                              textColor: Palette.text100,
+                              textColorDark: Palette.text100Dark,
+                              borderColor: Palette.text100,
+                              borderColorDark: Palette.text100Dark,
+                              height: 0.045.h,
+                              cupertinoHeight: 0.028.sh,
+                              width: 0.3.sw,
+                              cupertinoWidth: 0.3.sw,
+                              onPressed: navigator.pop,
+                            ),
+                          ),
+                        ),
                       ),
-                      builder: (_) => AdaptiveAlertdialog(
-                        title: 'Confirm Pickup',
-                        content: 'Confirm that you have '
-                            'received the package from the Sender?',
-                        buttonDirection: Axis.horizontal,
-                        secondButtonText: 'Yes, Confirm',
-                        secondSplashColor: Colors.black12,
-                        secondTextStyle: const TextStyle(color: Colors.white),
-                        secondBgColor: Palette.accentColor,
-                        onSecondPressed: () {},
-                        materialFirstButton: AppOutlinedButton(
-                          text: 'No, Go Back',
-                          textColor: Palette.text100,
-                          textColorDark: Palette.text100Dark,
-                          borderColor: Palette.text100,
-                          borderColorDark: Palette.text100Dark,
-                          height: 0.028.sh,
-                          cupertinoHeight: 0.028.sh,
-                          width: 0.3.sw,
-                          cupertinoWidth: 0.3.sw,
-                          onPressed: navigator.pop,
+                      end: () => AppButton(
+                        text: 'Package Delivered',
+                        isLoading: s.isLoading,
+                        onPressed: () async => App.showAlertDialog(
+                          context: context,
+                          barrierColor: App.resolveColor(
+                            Colors.grey.shade800.withOpacity(0.55),
+                            dark: Colors.white54,
+                          ),
+                          builder: (_) => AdaptiveAlertdialog(
+                            title: 'Confirm Pickup',
+                            content: 'Confirm that you have delivered '
+                                'the package to ${s.package.receiverFullName.getOrEmpty}?',
+                            buttonDirection: Axis.horizontal,
+                            secondButtonText: 'Yes, Confirm',
+                            secondSplashColor: Colors.black12,
+                            secondTextStyle:
+                                const TextStyle(color: Colors.white),
+                            secondBgColor: Palette.accentColor,
+                            onSecondPressed: c
+                                .read<SendPackageCubit>()
+                                .confirmPackageDelivery,
+                            materialFirstButton: AppOutlinedButton(
+                              text: 'No, Go Back',
+                              textColor: Palette.text100,
+                              textColorDark: Palette.text100Dark,
+                              borderColor: Palette.text100,
+                              borderColorDark: Palette.text100Dark,
+                              height: 0.045.h,
+                              cupertinoHeight: 0.028.sh,
+                              width: 0.3.sw,
+                              cupertinoWidth: 0.3.sw,
+                              onPressed: navigator.pop,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -207,7 +252,7 @@ class _PackageDeliveryAcceptedScreenState
                   Palette.neutralF9,
                   dark: Palette.secondaryColor,
                 )!,
-                onPressed: context.read<MapCubit>().getCurrentLocation,
+                onPressed: context.read<MapCubit>().updateCurrentLocation,
                 child: Icon(
                   Theme.of(context).platform.fold(
                       material: () => Icons.gps_fixed_rounded,
@@ -244,6 +289,58 @@ class _PackageDeliveryAcceptedScreenState
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<SendPackageCubit, SendPackageState, SendPackageStatus>(
+      selector: (s) => s.package.status,
+      builder: (c, status) => status.between(
+        start: () {
+          final package = c.read<SendPackageCubit>().state.package;
+          return MapWidget(
+            start: package.pickup,
+            end: package.destination,
+            endWidget: AppAssets.ellipse(const Size(23, 23)),
+            startPainter: MarkerPainter(
+              title: 'Sender',
+              subtitle: '${package.sender.fullName.getOrEmpty}',
+              leading: '${Utils.hoursAndMins(
+                package.durationToPickup,
+                casing: StringCase.upper,
+                days_: false,
+                hours_: false,
+                secs_: false,
+              )}',
+            ),
+          );
+        },
+        end: () {
+          final package = c.read<SendPackageCubit>().state.package;
+          return MapWidget(
+            start: package.pickup,
+            end: package.destination,
+            refresh: status == SendPackageStatus.ENROUTE_TO_RECEIVER,
+            startWidget: AppAssets.ellipse(const Size(23, 23)),
+            endPainter: MarkerPainter(
+              title: 'Receiver',
+              subtitle: '${package.receiverFullName.getOrEmpty}',
+              leading: '${Utils.hoursAndMins(
+                package.durationToPickup,
+                casing: StringCase.upper,
+                days_: false,
+                hours_: false,
+                secs_: false,
+              )}',
+            ),
+          );
+        },
       ),
     );
   }

@@ -30,6 +30,7 @@ class _$MapStateTearOff {
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
       required Set<Marker> markers,
+      required Set<Circle> circles,
       required Set<Polyline> polylines,
       bool isLoading = false,
       bool validate = false,
@@ -47,6 +48,7 @@ class _$MapStateTearOff {
       initialPosition: initialPosition,
       mapController: mapController,
       markers: markers,
+      circles: circles,
       polylines: polylines,
       isLoading: isLoading,
       validate: validate,
@@ -72,6 +74,7 @@ mixin _$MapState {
   CameraPosition get initialPosition => throw _privateConstructorUsedError;
   GoogleMapController? get mapController => throw _privateConstructorUsedError;
   Set<Marker> get markers => throw _privateConstructorUsedError;
+  Set<Circle> get circles => throw _privateConstructorUsedError;
   Set<Polyline> get polylines => throw _privateConstructorUsedError; //
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
@@ -99,6 +102,7 @@ abstract class $MapStateCopyWith<$Res> {
       CameraPosition initialPosition,
       GoogleMapController? mapController,
       Set<Marker> markers,
+      Set<Circle> circles,
       Set<Polyline> polylines,
       bool isLoading,
       bool validate,
@@ -127,6 +131,7 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
     Object? initialPosition = freezed,
     Object? mapController = freezed,
     Object? markers = freezed,
+    Object? circles = freezed,
     Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
@@ -181,6 +186,10 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
           ? _value.markers
           : markers // ignore: cast_nullable_to_non_nullable
               as Set<Marker>,
+      circles: circles == freezed
+          ? _value.circles
+          : circles // ignore: cast_nullable_to_non_nullable
+              as Set<Circle>,
       polylines: polylines == freezed
           ? _value.polylines
           : polylines // ignore: cast_nullable_to_non_nullable
@@ -219,6 +228,7 @@ abstract class _$MapStateCopyWith<$Res> implements $MapStateCopyWith<$Res> {
       CameraPosition initialPosition,
       GoogleMapController? mapController,
       Set<Marker> markers,
+      Set<Circle> circles,
       Set<Polyline> polylines,
       bool isLoading,
       bool validate,
@@ -248,6 +258,7 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
     Object? initialPosition = freezed,
     Object? mapController = freezed,
     Object? markers = freezed,
+    Object? circles = freezed,
     Object? polylines = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
@@ -302,6 +313,10 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
           ? _value.markers
           : markers // ignore: cast_nullable_to_non_nullable
               as Set<Marker>,
+      circles: circles == freezed
+          ? _value.circles
+          : circles // ignore: cast_nullable_to_non_nullable
+              as Set<Circle>,
       polylines: polylines == freezed
           ? _value.polylines
           : polylines // ignore: cast_nullable_to_non_nullable
@@ -338,6 +353,7 @@ class _$_MapState implements _MapState {
       required this.initialPosition,
       this.mapController,
       required this.markers,
+      required this.circles,
       required this.polylines,
       this.isLoading = false,
       this.validate = false,
@@ -377,6 +393,8 @@ class _$_MapState implements _MapState {
   @override
   final Set<Marker> markers;
   @override
+  final Set<Circle> circles;
+  @override
   final Set<Polyline> polylines;
   @JsonKey(defaultValue: false)
   @override //
@@ -390,7 +408,7 @@ class _$_MapState implements _MapState {
 
   @override
   String toString() {
-    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, markers: $markers, polylines: $polylines, isLoading: $isLoading, validate: $validate, status: $status)';
+    return 'MapState(maxZoom: $maxZoom, minZoom: $minZoom, currentZoom: $currentZoom, mapType: $mapType, tilt: $tilt, bearing: $bearing, cameraTarget: $cameraTarget, trafficEnabled: $trafficEnabled, buildingsEnabled: $buildingsEnabled, initialPosition: $initialPosition, mapController: $mapController, markers: $markers, circles: $circles, polylines: $polylines, isLoading: $isLoading, validate: $validate, status: $status)';
   }
 
   @override
@@ -416,6 +434,7 @@ class _$_MapState implements _MapState {
             (identical(other.mapController, mapController) ||
                 other.mapController == mapController) &&
             const DeepCollectionEquality().equals(other.markers, markers) &&
+            const DeepCollectionEquality().equals(other.circles, circles) &&
             const DeepCollectionEquality().equals(other.polylines, polylines) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -439,6 +458,7 @@ class _$_MapState implements _MapState {
       initialPosition,
       mapController,
       const DeepCollectionEquality().hash(markers),
+      const DeepCollectionEquality().hash(circles),
       const DeepCollectionEquality().hash(polylines),
       isLoading,
       validate,
@@ -464,6 +484,7 @@ abstract class _MapState implements MapState {
       required CameraPosition initialPosition,
       GoogleMapController? mapController,
       required Set<Marker> markers,
+      required Set<Circle> circles,
       required Set<Polyline> polylines,
       bool isLoading,
       bool validate,
@@ -493,6 +514,8 @@ abstract class _MapState implements MapState {
   GoogleMapController? get mapController;
   @override
   Set<Marker> get markers;
+  @override
+  Set<Circle> get circles;
   @override
   Set<Polyline> get polylines;
   @override //

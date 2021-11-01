@@ -15,6 +15,7 @@ class Headline extends StatelessWidget {
   final Color? textColor;
   final Color? textColorLight;
   final Color? textColorDark;
+  final TextOverflow? overflow;
 
   // ignore: prefer_const_constructors_in_immutables
   Headline(
@@ -30,6 +31,7 @@ class Headline extends StatelessWidget {
     this.textColor,
     this.textColorLight,
     this.textColorDark,
+    this.overflow,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class Headline extends StatelessWidget {
       minFontSize: minFontSize,
       maxFontSize: maxFontSize,
       textAlign: textAlign,
+      overflow: overflow,
       style: TextStyle(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w600,

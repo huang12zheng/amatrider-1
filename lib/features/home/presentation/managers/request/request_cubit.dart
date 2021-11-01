@@ -39,6 +39,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       isLoading: true,
       isLoadingTransitPackages: true,
       isLoadingActivePackages: true,
+      status: none(),
     ));
 
     if (location == null) {
@@ -83,7 +84,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     BuildContext c,
     SendPackage package,
   ) async {
-    emit(state.copyWith(isLoading: true, isAccepting: true));
+    emit(state.copyWith(isLoading: true, isAccepting: true, status: none()));
 
     try {
       final _conn = await connection();
@@ -123,7 +124,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     BuildContext c,
     SendPackage package,
   ) async {
-    emit(state.copyWith(isLoading: true, isDeclining: true));
+    emit(state.copyWith(isLoading: true, isDeclining: true, status: none()));
 
     try {
       final _conn = await connection();

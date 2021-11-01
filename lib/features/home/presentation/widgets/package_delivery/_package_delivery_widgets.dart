@@ -15,7 +15,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   @override
   void initState() {
     super.initState();
-    // context.read<SendPackageCubit>().startTracker(context);
+    context.read<SendPackageCubit>().startTracker(context);
     context.read<SendPackageCubit>().startWebsocket();
   }
 
@@ -61,12 +61,15 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           Flexible(
                             flex: 4,
                             child: Center(
-                              child: Headline(
-                                'Arriving at Pickup in 9 minutes',
-                                minFontSize: 15,
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                // overflow: TextOverflow.ellipsis,
+                              child: BlocBuilder<SendPackageCubit,
+                                  SendPackageState>(
+                                builder: (c, s) => Headline(
+                                  formatJourneyInfo(s) ?? '',
+                                  minFontSize: 16,
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
                           ),
@@ -93,7 +96,8 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
-                            subtitle: '${s.package.pickup.address.getOrEmpty}',
+                            subtitle:
+                                '${s.package.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -108,7 +112,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                         Headline(
                           'Payment (Cash)',
                           fontSize: 17.sp,
-                          maxFontSize: 16,
+                          maxFontSize: 18,
                           fontWeight: FontWeight.w400,
                         ),
                         //
@@ -117,7 +121,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           textColor: Palette.accentColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 20.sp,
-                          maxFontSize: 18,
+                          maxFontSize: 20,
                         ),
                       ],
                     ),
@@ -125,9 +129,42 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   VerticalSpace(height: 0.017.h),
                   //
-                  const Flexible(
+                  Flexible(
                     flex: 3,
-                    child: SenderCardWidget(),
+                    child: BlocSelector<SendPackageCubit, SendPackageState,
+                        SendPackage>(
+                      selector: (s) => s.package,
+                      builder: (c, s) => UserContactDeliveryCard(
+                        title: s.status.maybeWhen(
+                          riderAccepted: () => 'Sender',
+                          enrouteToSender: () => 'Sender',
+                          enrouteToReceiver: () => 'Receiver',
+                          riderReceived: () => 'Receiver',
+                          delivered: () => 'Receiver',
+                          orElse: () => '',
+                        ),
+                        subtitle: s.status.maybeWhen(
+                          riderAccepted: () =>
+                              '${s.sender.fullName.getOrNull ?? '....'}',
+                          enrouteToSender: () =>
+                              '${s.sender.fullName.getOrNull ?? '....'}',
+                          enrouteToReceiver: () =>
+                              '${s.receiverFullName.getOrNull ?? '....'}',
+                          riderReceived: () =>
+                              '${s.receiverFullName.getOrNull ?? '....'}',
+                          delivered: () =>
+                              '${s.receiverFullName.getOrNull ?? '....'}',
+                          orElse: () => '...',
+                        ),
+                        phone: s.status.maybeWhen(
+                          enrouteToReceiver: () =>
+                              '${s.receiverPhone.getOrEmpty}',
+                          riderReceived: () => '${s.receiverPhone.getOrEmpty}',
+                          delivered: () => '${s.receiverPhone.getOrEmpty}',
+                          orElse: () => null,
+                        ),
+                      ),
+                    ),
                   ),
                   //
                   VerticalSpace(height: 0.02.h),
@@ -136,50 +173,55 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                     flex: 4,
                     child: SizedBox(
                       width: double.infinity,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: _BottomSheetItem.destination(context)
-                            .map(
-                              (e) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    flex: 2,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        color: e.bgColor,
-                                        borderRadius: BorderRadius.circular(
-                                            Utils.inputBorderRadius),
-                                      ),
-                                      child: AppIconButton(
-                                        tooltip: '${e.title}',
-                                        elevation: 0,
-                                        backgroundColor: e.bgColor,
-                                        type: MaterialType.button,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 0.03.sw,
+                      child: BlocSelector<SendPackageCubit, SendPackageState,
+                          SendPackage>(
+                        selector: (s) => s.package,
+                        builder: (c, package) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: _BottomSheetItem.pickup(context)
+                              .map(
+                                (e) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(
+                                      flex: 2,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: e.bgColor,
+                                          borderRadius: BorderRadius.circular(
+                                            Utils.inputBorderRadius,
+                                          ),
                                         ),
-                                        borderRadius: BorderRadius.circular(
-                                            Utils.buttonRadius),
-                                        onPressed: () {},
-                                        child: Icon(e.icon, color: e.iconColor),
+                                        child: AppIconButton(
+                                          tooltip: '${e.title}',
+                                          elevation: 0,
+                                          backgroundColor: e.bgColor,
+                                          type: MaterialType.button,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 0.03.sw,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                              Utils.buttonRadius),
+                                          onPressed: () {},
+                                          child:
+                                              Icon(e.icon, color: e.iconColor),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  //
-                                  Flexible(
-                                    child: AdaptiveText(
-                                      '${e.title}',
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: Utils.letterSpacing,
+                                    //
+                                    Flexible(
+                                      child: AdaptiveText(
+                                        '${e.title}',
+                                        fontSize: 15.sp,
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: Utils.letterSpacing,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                            .toList(),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -198,6 +240,30 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   }
 }
 
+String? formatJourneyInfo(SendPackageState s) {
+  return s.package.status.maybeWhen(
+    enrouteToSender: () => s.journey.status.maybeWhen(
+      ok: () => s.journey.duration_.fold(
+        (_) => 'You have arrived at the Pickup location',
+        (time) => 'Arriving at Pickup in $time',
+      ),
+      orElse: () => 'Head to Pickup address',
+    ),
+    delivered: () => 'Package delivered to '
+        '${s.package.receiverFullName.getOrEmpty}',
+    riderReceived: () => 'You received package from '
+        '${s.package.sender.fullName.getOrEmpty}',
+    enrouteToReceiver: () => s.journey.status.maybeWhen(
+      ok: () => s.journey.duration_.fold(
+        (_) => 'You have arrived at your Destination',
+        (time) => 'Arriving at Destination in $time',
+      ),
+      orElse: () => 'Head to the Destination address',
+    ),
+    orElse: () => null,
+  );
+}
+
 class _BottomSheetItem {
   final Color bgColor;
   final IconData icon;
@@ -212,7 +278,7 @@ class _BottomSheetItem {
       this.iconColor,
       this.onPressed});
 
-  static List<_BottomSheetItem> destination(BuildContext c) => [
+  static List<_BottomSheetItem> pickup(BuildContext c) => [
         _BottomSheetItem(
           title: 'Call Sender',
           icon: Icons.phone_sharp,
@@ -223,19 +289,6 @@ class _BottomSheetItem {
         _BottomSheetItem(
           title: 'Support',
           icon: Icons.contact_support,
-          onPressed: () {},
-        ),
-        _BottomSheetItem(
-          title: 'Report a Problem',
-          icon: Icons.report,
-          onPressed: () {},
-        ),
-      ];
-
-  static List<_BottomSheetItem> pickup(BuildContext c) => [
-        _BottomSheetItem(
-          title: 'Call Sender',
-          icon: Icons.phone_sharp,
           onPressed: () {},
         ),
         _BottomSheetItem(

@@ -74,6 +74,8 @@ mixin AppAssets {
   static const String _balloons = '$DASHBOARD_SVG_DIR/birthday_balloons.svg';
   static const String _promoDiscount = '$DASHBOARD_SVG_DIR/promo_discount.svg';
   static const String ellipseSVG = '$DASHBOARD_SVG_DIR/ellipse.svg';
+  static const String dispatchRiderSVG =
+      '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
 
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
@@ -123,6 +125,7 @@ mixin AppAssets {
     _balloons,
     _promoDiscount,
     ellipseSVG,
+    dispatchRiderSVG,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -313,6 +316,13 @@ mixin AppAssets {
         width: size?.width,
         height: size?.height,
         color: color,
+        fit: BoxFit.contain,
+      );
+
+  static SvgPicture dispatchRider([Size? size]) => SvgPicture.asset(
+        dispatchRiderSVG,
+        width: size?.width,
+        height: size?.height,
         fit: BoxFit.contain,
       );
 }

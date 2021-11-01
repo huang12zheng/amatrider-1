@@ -21,12 +21,11 @@ mixin EndPoints {
   static const String APPLE_SIGNIN = '/rider/auth/apple/authenticate';
 
   /// .......///////...// USER ENDPOINTS .......///////./....//
-  static const String GET_USER = '/rider/user';
-  static const String UPDATE_PASSWORD = '/rider/user/password'; // (PATCH)
-  static const String UPDATE_PHONE = '/rider/user/profile/phone'; // (POST)
-  static const String CONFIRM_UPDATE_PHONE =
-      '/rider/user/profile/phone'; // (PATCH)
-  static const String UPDATE_USER_PROFILE = '/rider/user/profile'; // (POST)
+  static const String GET_RIDER = '/rider/rider';
+  static const String UPDATE_PASSWORD = '/rider/password'; // (PATCH)
+  static const String UPDATE_PHONE = '/rider/profile/phone'; // (POST)
+  static const String CONFIRM_UPDATE_PHONE = '/rider/profile/phone'; // (PATCH)
+  static const String UPDATE_RIDER_PROFILE = '/rider/profile'; // (POST)
 
   /// .......///////...// SEND PACKAGE ENDPOINTS .......///////./....//
   static const String GET_ACTIVE_PACKAGES = '/rider/package'; // (GET)

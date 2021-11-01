@@ -1,5 +1,6 @@
 library send_package_dto.dart;
 
+import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
@@ -15,11 +16,17 @@ part 'send_package_dto.g.dart';
 class SendPackageDTO with _$SendPackageDTO {
   const factory SendPackageDTO({
     @JsonKey(includeIfNull: false) String? id,
-    @JsonKey(includeIfNull: false, name: 'pickup_lat') double? pickupLat,
-    @JsonKey(includeIfNull: false, name: 'pickup_long') double? pickupLng,
+    @JsonKey(includeIfNull: false, name: 'pickup_lat')
+    @DoubleSerializer()
+        double? pickupLat,
+    @JsonKey(includeIfNull: false, name: 'pickup_long')
+    @DoubleSerializer()
+        double? pickupLng,
     @JsonKey(includeIfNull: false, name: 'destination_lat')
+    @DoubleSerializer()
         double? destinationLat,
     @JsonKey(includeIfNull: false, name: 'destination_long')
+    @DoubleSerializer()
         double? destinationLng,
     @JsonKey(name: 'pickup_address') String? pickupAddress,
     @JsonKey(name: 'destination_address') String? destinationAddress,
@@ -70,6 +77,7 @@ class SendPackageDTO with _$SendPackageDTO {
     @JsonKey(includeIfNull: false, name: 'journeyDetails')
         JourneyDetailDTO? journey,
     @JsonKey(includeIfNull: false, name: 'package') SendPackageDTO? packageData,
+    @JsonKey(includeIfNull: false, name: 'user') SenderDTO? sender,
     //
     @JsonKey(includeIfNull: false, name: 'created_at')
     @TimestampConverter()
@@ -136,6 +144,7 @@ class SendPackageDTO with _$SendPackageDTO {
         riderAcceptedAt: riderAcceptedAt,
         riderDeliveredAt: riderDeliveredAt,
         riderReceivedAt: riderReceivedAt,
+        sender: Sender.blank().merge(sender?.domain),
         durationToPickup: time ?? Duration.zero,
         distanceToPickup: BasicTextField(distance),
       );

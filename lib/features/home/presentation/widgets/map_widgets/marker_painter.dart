@@ -5,13 +5,13 @@ import 'dart:ui' as ui;
 import 'package:amatrider/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class InfoWindow {
+class MarkerPainter {
   final String? leading, title, subtitle;
   final ui.Image? image;
   final IconData? icon;
   final Color? iconColor;
 
-  InfoWindow({
+  MarkerPainter({
     required this.title,
     this.leading,
     this.subtitle,
@@ -27,16 +27,39 @@ class InfoWindow {
 }
 
 class WindowPainter extends CustomPainter {
-  final InfoWindow info;
+  final MarkerPainter info;
 
   WindowPainter(this.info);
 
-  static Future<Uint8List?> render(InfoWindow info, {int? duration}) async {
+  static Completer<ui.Image> _imageDecoder(ImageProvider provider) {
+    var completer = Completer<ui.Image>();
+
+    provider.resolve(const ImageConfiguration()).addListener(
+        ImageStreamListener((info, _) => completer.complete(info.image)));
+
+    return completer;
+  }
+
+  static Future<Uint8List?> render(
+    MarkerPainter info, {
+    Completer<ui.Image>? completer,
+    ImageProvider? imageProvider,
+  }) async {
     var recorder = ui.PictureRecorder();
     var canvas = ui.Canvas(recorder);
 
     final size = const ui.Size(400, 110);
-    var customMarker = WindowPainter(info);
+    final _image = imageProvider != null
+        ? await (_imageDecoder(imageProvider)).future
+        : await completer?.future;
+    var customMarker = WindowPainter(MarkerPainter(
+      title: info.title,
+      subtitle: info.subtitle,
+      icon: info.icon,
+      iconColor: info.iconColor,
+      leading: info.leading,
+      image: _image ?? info.image,
+    ));
     customMarker.paint(canvas, size);
 
     var picture = recorder.endRecording();
@@ -50,7 +73,7 @@ class WindowPainter extends CustomPainter {
   }
 
   void _buildMiniRect(Canvas canvas, Paint paint, double size) {
-    paint.color = Colors.black;
+    paint.color = Palette.accent20;
     final rect = Rect.fromLTWH(0, 0, size, size);
     canvas.drawRect(rect, paint);
   }
@@ -101,7 +124,7 @@ class WindowPainter extends CustomPainter {
         fontSize: 26,
         textAlign: TextAlign.center,
         offset: Offset(0, height / 2),
-        color: Colors.white,
+        color: Palette.accentColor,
       );
     }
 
@@ -140,6 +163,7 @@ class WindowPainter extends CustomPainter {
     required String text,
     required double width,
     required Offset offset,
+    int? maxLines = 2,
     Color color = Colors.black,
     double fontSize = 18,
     String? fontFamily,
@@ -147,7 +171,7 @@ class WindowPainter extends CustomPainter {
   }) {
     final builder = ui.ParagraphBuilder(
       ui.ParagraphStyle(
-        maxLines: 1,
+        maxLines: maxLines,
         textAlign: textAlign,
       ),
     )

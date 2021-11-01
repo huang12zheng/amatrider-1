@@ -22,6 +22,7 @@ class MapState extends BaseState with _$MapState {
     required CameraPosition initialPosition,
     GoogleMapController? mapController,
     required Set<Marker> markers,
+    required Set<Circle> circles,
     required Set<Polyline> polylines,
     //
     @Default(false) bool isLoading,
@@ -30,6 +31,7 @@ class MapState extends BaseState with _$MapState {
   }) = _MapState;
 
   factory MapState.initial() => const MapState(
+        circles: <Circle>{},
         markers: <Marker>{},
         polylines: <Polyline>{},
         initialPosition: CameraPosition(

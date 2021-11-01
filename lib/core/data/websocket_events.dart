@@ -4,9 +4,9 @@ mixin SendPackageSocket {
   // Rider location update
   static String get location => '.package.rider_location_updated';
 
-  // // Rider picked-up package from sender
-  // static String get received => '.package.rider.received';
+  // Rider picked-up package from sender
+  static String get received => '.package.rider.received';
 
-  // // Rider has delivered package to receiver
-  // static String get delivered => '.package.rider.delivered';
+  // Rider has delivered package to receiver
+  static String get delivered => '.package.rider.delivered';
 }

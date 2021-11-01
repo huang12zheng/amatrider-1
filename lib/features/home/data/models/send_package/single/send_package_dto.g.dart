@@ -9,10 +9,12 @@ part of send_package_dto.dart;
 _$_SendPackageDTO _$$_SendPackageDTOFromJson(Map<String, dynamic> json) =>
     _$_SendPackageDTO(
       id: json['id'] as String?,
-      pickupLat: (json['pickup_lat'] as num?)?.toDouble(),
-      pickupLng: (json['pickup_long'] as num?)?.toDouble(),
-      destinationLat: (json['destination_lat'] as num?)?.toDouble(),
-      destinationLng: (json['destination_long'] as num?)?.toDouble(),
+      pickupLat: const DoubleSerializer().fromJson(json['pickup_lat']),
+      pickupLng: const DoubleSerializer().fromJson(json['pickup_long']),
+      destinationLat:
+          const DoubleSerializer().fromJson(json['destination_lat']),
+      destinationLng:
+          const DoubleSerializer().fromJson(json['destination_long']),
       pickupAddress: json['pickup_address'] as String?,
       destinationAddress: json['destination_address'] as String?,
       packageSize: const PackageSizeSerializer()
@@ -50,6 +52,9 @@ _$_SendPackageDTO _$$_SendPackageDTOFromJson(Map<String, dynamic> json) =>
       packageData: json['package'] == null
           ? null
           : SendPackageDTO.fromJson(json['package'] as Map<String, dynamic>),
+      sender: json['user'] == null
+          ? null
+          : SenderDTO.fromJson(json['user'] as Map<String, dynamic>),
       createdAt:
           const TimestampConverter().fromJson(json['created_at'] as String?),
       updatedAt:
@@ -66,10 +71,14 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
   }
 
   writeNotNull('id', instance.id);
-  writeNotNull('pickup_lat', instance.pickupLat);
-  writeNotNull('pickup_long', instance.pickupLng);
-  writeNotNull('destination_lat', instance.destinationLat);
-  writeNotNull('destination_long', instance.destinationLng);
+  writeNotNull(
+      'pickup_lat', const DoubleSerializer().toJson(instance.pickupLat));
+  writeNotNull(
+      'pickup_long', const DoubleSerializer().toJson(instance.pickupLng));
+  writeNotNull('destination_lat',
+      const DoubleSerializer().toJson(instance.destinationLat));
+  writeNotNull('destination_long',
+      const DoubleSerializer().toJson(instance.destinationLng));
   val['pickup_address'] = instance.pickupAddress;
   val['destination_address'] = instance.destinationAddress;
   writeNotNull('package_size',
@@ -103,6 +112,7 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
   writeNotNull('distance', const DoubleSerializer().toJson(instance.distance));
   writeNotNull('journeyDetails', instance.journey);
   writeNotNull('package', instance.packageData);
+  writeNotNull('user', instance.sender);
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

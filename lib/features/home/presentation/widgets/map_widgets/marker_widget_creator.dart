@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
-class MarkerGenerator {
+class MarkerWidget {
   final void Function(Uint8List?) callback;
   final Widget widget;
   final double? width;
   final double? height;
   final double? pixelRatio;
 
-  MarkerGenerator({
+  MarkerWidget({
     required this.widget,
     required this.callback,
     this.width,
@@ -91,8 +91,8 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
 
   @override
   Future<void> afterFirstLayout(BuildContext context) async {
-    final list = await _getBitmaps(context);
-    widget.callback?.call(list);
+    final bytes = await _getBitmaps(context);
+    widget.callback?.call(bytes);
   }
 
   @override

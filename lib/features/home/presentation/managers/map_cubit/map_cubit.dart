@@ -18,68 +18,107 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart' hide InfoWindow;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:kt_dart/collection.dart';
 
 part 'map_cubit.freezed.dart';
+part '_map_cubit.part.dart';
 part 'map_state.dart';
 
 @injectable
 class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
-  final LocationService _service;
+  static const double _kdefaultCircleRadius = 1500;
+
   StreamSubscription<FutureOr<Either<AnyResponse, RiderLocation?>>>?
       _locationSubscription;
 
+  final LocationService _service;
+
   MapCubit(this._service) : super(MapState.initial());
+
+  @override
+  Future<void> close() {
+    _locationSubscription?.cancel();
+    return super.close();
+  }
+
+  String get riderCircleId => 'rider-current-location-circle';
+  String get riderMarkerId => 'rider-current-location-marker';
 
   void toggleLoading([bool? isLoading]) =>
       emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
-  Completer<ui.Image> imageDecoder(ImageProvider provider) {
-    var completer = Completer<ui.Image>();
-
-    provider.resolve(const ImageConfiguration()).addListener(
-        ImageStreamListener((info, _) => completer.complete(info.image)));
-
-    return completer;
-  }
+  void updateZoom(double newZoom) => emit(state.copyWith(currentZoom: newZoom));
 
   void init({
     BuildContext? ctx,
     RiderLocation? start,
     RiderLocation? end,
     RiderLocation? prevLocation,
-    InfoWindow? endInfo,
+    Widget? startWidget,
+    Widget? endWidget,
+    MarkerPainter? startPainter,
+    MarkerPainter? endPainter,
   }) async {
     toggleLoading(true);
 
     if (ctx != null && start != null && end != null) {
-      final _markers = <Marker>{};
+      // Add a blank marker (for preloading sake)
+      final _emptyMarker = Marker(markerId: MarkerId('${UniqueId.v4()}'));
+      emit(state.copyWith(markers: {...state.markers, _emptyMarker}));
 
-      _markers.add(Marker(
-        markerId: MarkerId('${start.lat},${start.lng}'),
-        flat: true,
-        position: LatLng(start.lat.getOrNull!, start.lng.getOrNull!),
-        icon: await customSVGMarker(ctx, asset: AppAssets.ellipseSVG),
-      ));
-
-      if (endInfo != null) {
-        final endBytes = await WindowPainter.render(endInfo);
-        _markers.add(Marker(
-          markerId: MarkerId('${end.lat},${end.lng}'),
-          flat: true,
-          position: LatLng(end.lat.getOrNull!, end.lng.getOrNull!),
-          icon: BitmapDescriptor.fromBytes(endBytes!),
-        ));
+      if (startWidget != null) {
+        MarkerGenerator.widget(
+          id: '${start.lat},${start.lng}',
+          latlng: start,
+          markers: state.markers,
+          widget: startWidget,
+          context: ctx,
+          onCreated: (markers) => emit(state.copyWith(markers: markers)),
+        ).build();
       }
 
-      emit(state.copyWith(markers: _markers));
+      if (endWidget != null) {
+        MarkerGenerator.widget(
+          id: '${end.lat},${end.lng}',
+          latlng: end,
+          markers: state.markers,
+          widget: endWidget,
+          context: ctx,
+          onCreated: (markers) => emit(state.copyWith(markers: markers)),
+        ).build();
+      }
+
+      if (startPainter != null) {
+        final startBytes = await WindowPainter.render(startPainter);
+
+        MarkerGenerator.unsigned(
+          id: '${start.lat},${start.lng}',
+          latlng: start,
+          markers: state.markers,
+          unsigned: startBytes!,
+          onCreated: (markers) => emit(state.copyWith(markers: markers)),
+        ).build();
+      }
+
+      if (endPainter != null) {
+        final endBytes = await WindowPainter.render(endPainter);
+
+        MarkerGenerator.unsigned(
+          id: '${end.lat},${end.lng}',
+          latlng: end,
+          markers: state.markers,
+          unsigned: endBytes!,
+          onCreated: (markers) => emit(state.copyWith(markers: markers)),
+        ).build();
+      }
 
       await drawPolyline(start, end);
 
       await adjustMapBounds(start, end);
     } else {
-      await getCurrentLocation(prevLocation);
+      await updateCurrentLocation(prevLocation);
     }
 
     toggleLoading(false);
@@ -88,7 +127,8 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   void toogleTraffic() =>
       emit(state.copyWith(trafficEnabled: !state.trafficEnabled));
 
-  Future<void> getCurrentLocation([RiderLocation? position]) async {
+  Future<void> updateCurrentLocation(
+      [RiderLocation? position, BuildContext? ctx, bool pan = true]) async {
     final Either<AnyResponse, RiderLocation?> _result;
 
     if (position != null)
@@ -96,163 +136,70 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
     else
       _result = await _service.getLocation();
 
-    // await _locationSubscription?.cancel();
-    // _locationSubscription = _service.liveLocation().listen((result) async {
-    //   (await result).fold(
-    //     (response) => log.e(response.message),
-    //     (location) =>
-    //         log.w('Location updated: ${location?.lat}, ${location?.lng}'),
-    //   );
-    // });
-
     await _result.fold(
       (response) async => log.e(response),
       (location) async => await location?.let((it) async {
-        final _position = CameraPosition(
-          target: LatLng(it.lat.getOrEmpty!, it.lng.getOrEmpty!),
-          zoom: 13.8746,
-        );
+        if (ctx != null) {
+          MarkerGenerator.widget(
+            id: '$riderMarkerId',
+            latlng: location,
+            markers: state.markers,
+            widget: AppAssets.dispatchRider(const Size.square(45)),
+            context: ctx,
+            onCreated: (markers) {
+              // log.w('Param markers length ===> ${markers.length}');
+              emit(state.copyWith(markers: markers));
+              // log.wtf('STATE markers length ===> ${state.markers.length}');
+            },
+          ).build();
+        }
 
-        await state.mapController?.animateCamera(
-          CameraUpdate.newCameraPosition(_position),
-        );
+        // updateCircle(riderCircleId, location, strokeColor: Colors.transparent);
+
+        if (pan) {
+          const zoom = 15.8746;
+          final _position = CameraPosition(
+            target: LatLng(it.lat.getOrEmpty!, it.lng.getOrEmpty!),
+            zoom: zoom,
+          );
+
+          updateZoom(zoom);
+
+          await state.mapController?.animateCamera(
+            CameraUpdate.newCameraPosition(_position),
+          );
+        }
       }),
     );
   }
 
-  void onTap(LatLng latLng) {
-    log.i('Tap location ==>> '
-        '\nLatitude: ${latLng.latitude}, \Longitude: ${latLng.longitude}');
+  void updateCircle(
+    String id,
+    RiderLocation loc, {
+    Color? fillColor,
+    Color? strokeColor,
+    double radius = _kdefaultCircleRadius,
+    int strokeWidth = 2,
+  }) {
+    final _existingCircles = state.circles;
+    // final _markerExists = _existingCircles.any((it) => it.circleId.value == id);
+
+    final _stripped = _existingCircles
+        .toList()
+        .toImmutableList()
+        .filterNot((it) => it.circleId.value == id)
+        .asList()
+        .toSet();
+
+    _stripped.add(Circle(
+      circleId: CircleId(id),
+      radius: radius,
+      strokeColor: strokeColor ?? Palette.accentColor.shade100,
+      strokeWidth: strokeWidth,
+      fillColor: fillColor ?? Palette.accentColor.withOpacity(0.1),
+      center: LatLng(loc.lat.getOrNull!, loc.lng.getOrNull!),
+    ));
+
+    emit(state.copyWith(circles: _stripped));
   }
-
-  void onMapCreated(GoogleMapController controller) =>
-      emit(state.copyWith(mapController: controller));
-
-  Future<void> drawPolyline(RiderLocation start, RiderLocation end) async {
-    // Object for PolylinePoints
-    final polylinePoints = PolylinePoints();
-
-    // List of coordinates to join
-    var polylineCoordinates = <LatLng>[];
-
-    // Map storing polylines created by connecting two points
-    var polylines = <PolylineId, Polyline>{};
-
-    // Generating the list of coordinates to be used for
-    // drawing the polylines
-    var _result = await polylinePoints.getRouteBetweenCoordinates(
-      env.googleMapsAPI, // Google Maps API Key
-      PointLatLng(start.lat.getOrNull!, start.lng.getOrNull!),
-      PointLatLng(end.lat.getOrNull!, end.lng.getOrNull!),
-      travelMode: TravelMode.driving,
-      optimizeWaypoints: true,
-    );
-
-    // Adding the coordinates to the list
-    if (_result.points.isNotEmpty) {
-      _result.points.forEach((point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-
-    // Defining an ID
-    var _id = PolylineId('start-${start.lat.getOrNull},${start.lng.getOrNull}; '
-        'end-${end.lat.getOrNull},${end.lng.getOrNull}');
-
-    // Initializing Polyline
-    var _line = Polyline(
-      polylineId: _id,
-      color: Palette.accentColor,
-      points: polylineCoordinates,
-      width: 5,
-    );
-
-    // Adding the polyline to the map
-    polylines[_id] = _line;
-
-    emit(state.copyWith(polylines: Set<Polyline>.of(polylines.values)));
-    // emit(state.copyWith(polylines: {...state.polylines, _line}));
-  }
-
-  Future<void> adjustMapBounds(
-    RiderLocation start,
-    RiderLocation end, {
-    double padding = 100.0,
-  }) async {
-    // Calculating to check that the position relative
-    // to the frame, and pan & zoom the camera accordingly.
-    var miny = (start.lat.getOrNull! <= end.lat.getOrNull!)
-        ? start.lat.getOrNull!
-        : end.lat.getOrNull!;
-    var minx = (start.lng.getOrNull! <= end.lng.getOrNull!)
-        ? start.lng.getOrNull!
-        : end.lng.getOrNull!;
-    var maxy = (start.lat.getOrNull! <= end.lat.getOrNull!)
-        ? end.lat.getOrNull!
-        : start.lat.getOrNull!;
-    var maxx = (start.lng.getOrNull! <= end.lng.getOrNull!)
-        ? end.lng.getOrNull!
-        : start.lng.getOrNull!;
-
-    var southWestLatitude = miny;
-    var southWestLongitude = minx;
-
-    var northEastLatitude = maxy;
-    var northEastLongitude = maxx;
-
-    // Accommodate the two locations within the
-    // camera view of the map
-    await state.mapController?.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-          northeast: LatLng(northEastLatitude, northEastLongitude),
-          southwest: LatLng(southWestLatitude, southWestLongitude),
-        ),
-        padding,
-      ),
-    );
-  }
-
-  @override
-  Future<void> close() {
-    _locationSubscription?.cancel();
-    return super.close();
-  }
-}
-
-Future<BitmapDescriptor> customSVGMarker(
-  BuildContext context, {
-  String asset = AppAssets.timelinePinAsset,
-  int width = 25,
-  int height = 25,
-}) async {
-  // Read Svg file as String
-  String svgString;
-  try {
-    svgString = await DefaultAssetBundle.of(context).loadString(asset);
-  } catch (_) {
-    svgString = await DefaultAssetBundle.of(context)
-        .loadString('${AppAssets.timelinePinAsset}');
-    log.e("Asset not found for 'Bitmap Descriptor' ...using default");
-  }
-  // Create Drawable Root frm svg String
-  var root = await svg.fromSvgString(svgString, UniqueId<String>.v4().value!);
-  // toPicture() and toImage() don't seem to be pixel ratio aware, so we calculate the actual sizes her
-  var mediaQuery = MediaQuery.of(context);
-  // Get the number of device pixels for each logical pixel
-  var devicePixelRatio = mediaQuery.devicePixelRatio;
-  var calcWidth = width * devicePixelRatio;
-  // where 32 is your SVG's original width
-  var calcHeight = height * devicePixelRatio; // same
-
-  // Convert to ui.Picture
-  var picture = root.toPicture(size: Size(calcWidth, calcHeight));
-
-  // Convert to ui.Image. toImage() takes width and height as parameters
-  // you need to find the best size to suit your needs and take into account the
-  // screen DPI
-  var image = await picture.toImage(calcWidth.toInt(), calcHeight.toInt());
-  var bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-
-  return BitmapDescriptor.fromBytes(bytes!.buffer.asUint8List());
 }

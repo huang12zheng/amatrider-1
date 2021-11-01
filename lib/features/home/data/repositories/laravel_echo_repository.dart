@@ -5,9 +5,11 @@ import 'package:injectable/injectable.dart';
 import 'package:laravel_echo/laravel_echo.dart';
 import 'package:pusher_client/pusher_client.dart';
 
+enum EchoChannel { private, public }
+
 @injectable
 class LaravelEchoRepository {
-  dynamic channel;
+  dynamic _channel;
   Echo? echo;
 
   final PusherClient _pusher;
@@ -29,6 +31,50 @@ class LaravelEchoRepository {
     return echo!;
   }
 
+  LaravelEchoRepository channel(
+    String? channelName, {
+    void Function()? onInit,
+    EchoChannel type = EchoChannel.private,
+  }) {
+    // Creates an instance of Echo or resuse previous instance with a new connection
+    if (echo == null) _init();
+
+    // Leave the current channel if already listening (should be called just oonce)
+    leave(channelName);
+
+    // Echo initialized
+    onInit?.call();
+
+    switch (type) {
+      case EchoChannel.private:
+        _channel = channelName?.let((it) => echo?.private(it));
+        break;
+      case EchoChannel.public:
+        _channel = channelName?.let((it) => echo?.channel(it));
+        break;
+      default:
+    }
+
+    return this;
+  }
+
+  LaravelEchoRepository listen(
+    String event, {
+    void Function(PusherEvent?)? onListen,
+    required void Function(String, LaravelEchoRepository) onData,
+  }) {
+    if (_channel != null) {
+      _channel.listen(event, (e) {
+        // Started listening
+        onListen?.call(e is PusherEvent ? e : null);
+        // On data received
+        if (e is PusherEvent && e.data != null) onData.call(e.data!, this);
+      });
+    }
+
+    return this;
+  }
+
   LaravelEchoRepository private(
     String? channelName,
     String? event, {
@@ -48,7 +94,7 @@ class LaravelEchoRepository {
     onInit?.call();
 
     // Listen for webhook event from channel
-    channel = channelName?.let(
+    _channel = channelName?.let(
       (it) => echo?.private(it).listen(event, (e) {
         // Started listening
         onListen?.call(e is PusherEvent ? e : null);
@@ -77,7 +123,7 @@ class LaravelEchoRepository {
     echo?.disconnect();
     if (nullify) {
       echo = null;
-      channel = null;
+      _channel = null;
     }
   }
 }

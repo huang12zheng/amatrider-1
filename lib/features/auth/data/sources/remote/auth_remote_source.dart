@@ -90,7 +90,7 @@ class AuthRemoteDatasource {
     part?.let((it) => _data.files.add(MapEntry('profile_img', it)));
 
     // Perform PUT request to update user's profile
-    return _dio.post(EndPoints.UPDATE_USER_PROFILE, data: _data);
+    return _dio.post(EndPoints.UPDATE_RIDER_PROFILE, data: _data);
     // return _dio.get(EndPoints.SLEEP);
   }
 
@@ -126,6 +126,8 @@ class AuthRemoteDatasource {
     return _dio.patch(EndPoints.UPDATE_PASSWORD, data: data);
   }
 
+  // Future<Response<dynamic>> addBankInformation() {}
+
   Future<Response<dynamic>> signInWithGoogle(String? token) async {
     // Generate Form Data for request
     final data = FormData.fromMap({'token': token});
@@ -148,7 +150,7 @@ class AuthRemoteDatasource {
     VoidCallback? callback,
   ]) async {
     try {
-      final _response = await _dio.get(EndPoints.GET_USER);
+      final _response = await _dio.get(EndPoints.GET_RIDER);
 
       return right(RiderDTO.fromJson(
         _response.data as Map<String, dynamic>,

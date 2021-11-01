@@ -88,6 +88,27 @@ extension SendPackageStatusX on SendPackageStatus {
     return orElse.call();
   }
 
+  T between<T>({
+    required T Function() start,
+    required T Function() end,
+  }) {
+    switch (this) {
+      case SendPackageStatus.PENDING:
+      case SendPackageStatus.PROCESSING:
+      case SendPackageStatus.PAID:
+      case SendPackageStatus.FAILED:
+      case SendPackageStatus.ACTIVE:
+      case SendPackageStatus.RIDER_ACCEPTED:
+      case SendPackageStatus.ENROUTE_TO_SENDER:
+        return start.call();
+      case SendPackageStatus.RIDER_RECEIVED_PACKAGE:
+      case SendPackageStatus.ENROUTE_TO_RECEIVER:
+      case SendPackageStatus.DELIVERED:
+        return end.call();
+    }
+    return end.call();
+  }
+
   T when<T>({
     required T Function() pending,
     required T Function() processing,

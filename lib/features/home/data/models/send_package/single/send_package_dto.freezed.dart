@@ -25,12 +25,16 @@ class _$SendPackageDTOTearOff {
       {@JsonKey(includeIfNull: false)
           String? id,
       @JsonKey(includeIfNull: false, name: 'pickup_lat')
+      @DoubleSerializer()
           double? pickupLat,
       @JsonKey(includeIfNull: false, name: 'pickup_long')
+      @DoubleSerializer()
           double? pickupLng,
       @JsonKey(includeIfNull: false, name: 'destination_lat')
+      @DoubleSerializer()
           double? destinationLat,
       @JsonKey(includeIfNull: false, name: 'destination_long')
+      @DoubleSerializer()
           double? destinationLng,
       @JsonKey(name: 'pickup_address')
           String? pickupAddress,
@@ -90,6 +94,8 @@ class _$SendPackageDTOTearOff {
           JourneyDetailDTO? journey,
       @JsonKey(includeIfNull: false, name: 'package')
           SendPackageDTO? packageData,
+      @JsonKey(includeIfNull: false, name: 'user')
+          SenderDTO? sender,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -125,6 +131,7 @@ class _$SendPackageDTOTearOff {
       distance: distance,
       journey: journey,
       packageData: packageData,
+      sender: sender,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -143,12 +150,16 @@ mixin _$SendPackageDTO {
   @JsonKey(includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @DoubleSerializer()
   double? get pickupLat => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'pickup_long')
+  @DoubleSerializer()
   double? get pickupLng => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @DoubleSerializer()
   double? get destinationLat => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'destination_long')
+  @DoubleSerializer()
   double? get destinationLng => throw _privateConstructorUsedError;
   @JsonKey(name: 'pickup_address')
   String? get pickupAddress => throw _privateConstructorUsedError;
@@ -207,7 +218,9 @@ mixin _$SendPackageDTO {
   @JsonKey(includeIfNull: false, name: 'journeyDetails')
   JourneyDetailDTO? get journey => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false, name: 'package')
-  SendPackageDTO? get packageData => throw _privateConstructorUsedError; //
+  SendPackageDTO? get packageData => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false, name: 'user')
+  SenderDTO? get sender => throw _privateConstructorUsedError; //
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -230,12 +243,16 @@ abstract class $SendPackageDTOCopyWith<$Res> {
       {@JsonKey(includeIfNull: false)
           String? id,
       @JsonKey(includeIfNull: false, name: 'pickup_lat')
+      @DoubleSerializer()
           double? pickupLat,
       @JsonKey(includeIfNull: false, name: 'pickup_long')
+      @DoubleSerializer()
           double? pickupLng,
       @JsonKey(includeIfNull: false, name: 'destination_lat')
+      @DoubleSerializer()
           double? destinationLat,
       @JsonKey(includeIfNull: false, name: 'destination_long')
+      @DoubleSerializer()
           double? destinationLng,
       @JsonKey(name: 'pickup_address')
           String? pickupAddress,
@@ -295,6 +312,8 @@ abstract class $SendPackageDTOCopyWith<$Res> {
           JourneyDetailDTO? journey,
       @JsonKey(includeIfNull: false, name: 'package')
           SendPackageDTO? packageData,
+      @JsonKey(includeIfNull: false, name: 'user')
+          SenderDTO? sender,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -304,6 +323,7 @@ abstract class $SendPackageDTOCopyWith<$Res> {
 
   $JourneyDetailDTOCopyWith<$Res>? get journey;
   $SendPackageDTOCopyWith<$Res>? get packageData;
+  $SenderDTOCopyWith<$Res>? get sender;
 }
 
 /// @nodoc
@@ -345,6 +365,7 @@ class _$SendPackageDTOCopyWithImpl<$Res>
     Object? distance = freezed,
     Object? journey = freezed,
     Object? packageData = freezed,
+    Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -461,6 +482,10 @@ class _$SendPackageDTOCopyWithImpl<$Res>
           ? _value.packageData
           : packageData // ignore: cast_nullable_to_non_nullable
               as SendPackageDTO?,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as SenderDTO?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -493,6 +518,17 @@ class _$SendPackageDTOCopyWithImpl<$Res>
       return _then(_value.copyWith(packageData: value));
     });
   }
+
+  @override
+  $SenderDTOCopyWith<$Res>? get sender {
+    if (_value.sender == null) {
+      return null;
+    }
+
+    return $SenderDTOCopyWith<$Res>(_value.sender!, (value) {
+      return _then(_value.copyWith(sender: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -506,12 +542,16 @@ abstract class _$SendPackageDTOCopyWith<$Res>
       {@JsonKey(includeIfNull: false)
           String? id,
       @JsonKey(includeIfNull: false, name: 'pickup_lat')
+      @DoubleSerializer()
           double? pickupLat,
       @JsonKey(includeIfNull: false, name: 'pickup_long')
+      @DoubleSerializer()
           double? pickupLng,
       @JsonKey(includeIfNull: false, name: 'destination_lat')
+      @DoubleSerializer()
           double? destinationLat,
       @JsonKey(includeIfNull: false, name: 'destination_long')
+      @DoubleSerializer()
           double? destinationLng,
       @JsonKey(name: 'pickup_address')
           String? pickupAddress,
@@ -571,6 +611,8 @@ abstract class _$SendPackageDTOCopyWith<$Res>
           JourneyDetailDTO? journey,
       @JsonKey(includeIfNull: false, name: 'package')
           SendPackageDTO? packageData,
+      @JsonKey(includeIfNull: false, name: 'user')
+          SenderDTO? sender,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -582,6 +624,8 @@ abstract class _$SendPackageDTOCopyWith<$Res>
   $JourneyDetailDTOCopyWith<$Res>? get journey;
   @override
   $SendPackageDTOCopyWith<$Res>? get packageData;
+  @override
+  $SenderDTOCopyWith<$Res>? get sender;
 }
 
 /// @nodoc
@@ -625,6 +669,7 @@ class __$SendPackageDTOCopyWithImpl<$Res>
     Object? distance = freezed,
     Object? journey = freezed,
     Object? packageData = freezed,
+    Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -741,6 +786,10 @@ class __$SendPackageDTOCopyWithImpl<$Res>
           ? _value.packageData
           : packageData // ignore: cast_nullable_to_non_nullable
               as SendPackageDTO?,
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as SenderDTO?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -760,12 +809,16 @@ class _$_SendPackageDTO extends _SendPackageDTO {
       {@JsonKey(includeIfNull: false)
           this.id,
       @JsonKey(includeIfNull: false, name: 'pickup_lat')
+      @DoubleSerializer()
           this.pickupLat,
       @JsonKey(includeIfNull: false, name: 'pickup_long')
+      @DoubleSerializer()
           this.pickupLng,
       @JsonKey(includeIfNull: false, name: 'destination_lat')
+      @DoubleSerializer()
           this.destinationLat,
       @JsonKey(includeIfNull: false, name: 'destination_long')
+      @DoubleSerializer()
           this.destinationLng,
       @JsonKey(name: 'pickup_address')
           this.pickupAddress,
@@ -825,6 +878,8 @@ class _$_SendPackageDTO extends _SendPackageDTO {
           this.journey,
       @JsonKey(includeIfNull: false, name: 'package')
           this.packageData,
+      @JsonKey(includeIfNull: false, name: 'user')
+          this.sender,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           this.createdAt,
@@ -841,15 +896,19 @@ class _$_SendPackageDTO extends _SendPackageDTO {
   final String? id;
   @override
   @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @DoubleSerializer()
   final double? pickupLat;
   @override
   @JsonKey(includeIfNull: false, name: 'pickup_long')
+  @DoubleSerializer()
   final double? pickupLng;
   @override
   @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @DoubleSerializer()
   final double? destinationLat;
   @override
   @JsonKey(includeIfNull: false, name: 'destination_long')
+  @DoubleSerializer()
   final double? destinationLng;
   @override
   @JsonKey(name: 'pickup_address')
@@ -933,6 +992,9 @@ class _$_SendPackageDTO extends _SendPackageDTO {
   @override
   @JsonKey(includeIfNull: false, name: 'package')
   final SendPackageDTO? packageData;
+  @override
+  @JsonKey(includeIfNull: false, name: 'user')
+  final SenderDTO? sender;
   @override //
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()
@@ -944,7 +1006,7 @@ class _$_SendPackageDTO extends _SendPackageDTO {
 
   @override
   String toString() {
-    return 'SendPackageDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, paymentMethod: $paymentMethod, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, time: $time, distance: $distance, journey: $journey, packageData: $packageData, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SendPackageDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, paymentMethod: $paymentMethod, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, time: $time, distance: $distance, journey: $journey, packageData: $packageData, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1001,6 +1063,7 @@ class _$_SendPackageDTO extends _SendPackageDTO {
             (identical(other.journey, journey) || other.journey == journey) &&
             (identical(other.packageData, packageData) ||
                 other.packageData == packageData) &&
+            (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1038,6 +1101,7 @@ class _$_SendPackageDTO extends _SendPackageDTO {
         distance,
         journey,
         packageData,
+        sender,
         createdAt,
         updatedAt
       ]);
@@ -1058,12 +1122,16 @@ abstract class _SendPackageDTO extends SendPackageDTO {
       {@JsonKey(includeIfNull: false)
           String? id,
       @JsonKey(includeIfNull: false, name: 'pickup_lat')
+      @DoubleSerializer()
           double? pickupLat,
       @JsonKey(includeIfNull: false, name: 'pickup_long')
+      @DoubleSerializer()
           double? pickupLng,
       @JsonKey(includeIfNull: false, name: 'destination_lat')
+      @DoubleSerializer()
           double? destinationLat,
       @JsonKey(includeIfNull: false, name: 'destination_long')
+      @DoubleSerializer()
           double? destinationLng,
       @JsonKey(name: 'pickup_address')
           String? pickupAddress,
@@ -1123,6 +1191,8 @@ abstract class _SendPackageDTO extends SendPackageDTO {
           JourneyDetailDTO? journey,
       @JsonKey(includeIfNull: false, name: 'package')
           SendPackageDTO? packageData,
+      @JsonKey(includeIfNull: false, name: 'user')
+          SenderDTO? sender,
       @JsonKey(includeIfNull: false, name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -1139,15 +1209,19 @@ abstract class _SendPackageDTO extends SendPackageDTO {
   String? get id;
   @override
   @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @DoubleSerializer()
   double? get pickupLat;
   @override
   @JsonKey(includeIfNull: false, name: 'pickup_long')
+  @DoubleSerializer()
   double? get pickupLng;
   @override
   @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @DoubleSerializer()
   double? get destinationLat;
   @override
   @JsonKey(includeIfNull: false, name: 'destination_long')
+  @DoubleSerializer()
   double? get destinationLng;
   @override
   @JsonKey(name: 'pickup_address')
@@ -1230,6 +1304,9 @@ abstract class _SendPackageDTO extends SendPackageDTO {
   @override
   @JsonKey(includeIfNull: false, name: 'package')
   SendPackageDTO? get packageData;
+  @override
+  @JsonKey(includeIfNull: false, name: 'user')
+  SenderDTO? get sender;
   @override //
   @JsonKey(includeIfNull: false, name: 'created_at')
   @TimestampConverter()

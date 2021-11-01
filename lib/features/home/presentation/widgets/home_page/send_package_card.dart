@@ -273,8 +273,8 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           HorizontalChip(
                             label: 'Package',
                             maxFontSize: 13,
-                            labelColor: Palette.accentDarkBlue,
-                            backgroundColor: Palette.pastelBlue,
+                            labelColor: Palette.accentDarkYellow,
+                            backgroundColor: Palette.pastelYellow,
                             type: HorizontalChipType.none,
                           ),
                           //

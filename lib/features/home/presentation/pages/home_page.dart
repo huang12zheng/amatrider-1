@@ -350,27 +350,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 //
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: App.sidePadding,
-                  ).copyWith(top: App.longest * 0.01),
+                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate.fixed([
-                      ...env.flavor.fold(
-                        dev: () => [],
-                        prod: () => [
-                          VerticalSpace(height: 0.01.sw),
-                          //
-                          DeliveryRequestCard(
-                            asset: AppAssets.request3,
-                            initialExpanded: true,
-                            isOrder: true,
-                            onAccept: () {},
-                            onDecline: () {},
-                          ),
-                        ],
-                      ),
-                      //
-                      VerticalSpace(height: 0.08.sw),
                       //
                       Row(
                         children: [
