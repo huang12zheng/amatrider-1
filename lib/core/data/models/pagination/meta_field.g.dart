@@ -32,7 +32,7 @@ Map<String, dynamic> _$$_MetaFieldToJson(_$_MetaField instance) {
   writeNotNull('current_page', instance.currentPage);
   writeNotNull('from', instance.from);
   writeNotNull('last_page', instance.lastPage);
-  val['links'] = instance.links;
+  val['links'] = instance.links.map((e) => e.toJson()).toList();
   writeNotNull('path', instance.path);
   writeNotNull('per_page', instance.perPage);
   writeNotNull('to', instance.to);

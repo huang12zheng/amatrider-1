@@ -16,5 +16,5 @@ _$_CountryDTOList _$$_CountryDTOListFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_CountryDTOListToJson(_$_CountryDTOList instance) =>
     <String, dynamic>{
-      'data': instance.data,
+      'data': instance.data.map((e) => e.toJson()).toList(),
     };

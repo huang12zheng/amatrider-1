@@ -28,9 +28,9 @@ Map<String, dynamic> _$$_JourneyDetailDTOToJson(_$_JourneyDetailDTO instance) {
     }
   }
 
-  writeNotNull('distance', instance.distance);
-  writeNotNull('duration', instance.duration);
-  val['status'] = const PlaceStatusSerializer().toJson(instance.status);
+  writeNotNull('distance', instance.distance?.toJson());
+  writeNotNull('duration', instance.duration?.toJson());
+  writeNotNull('status', const PlaceStatusSerializer().toJson(instance.status));
   return val;
 }
 

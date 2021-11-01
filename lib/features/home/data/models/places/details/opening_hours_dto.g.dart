@@ -19,12 +19,20 @@ _$_OpeningHoursDTO _$$_OpeningHoursDTOFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$_OpeningHoursDTOToJson(_$_OpeningHoursDTO instance) =>
-    <String, dynamic>{
-      'open_now': instance.openNow,
-      'periods': instance.periods,
-      'weekday_text': instance.weekdayText,
-    };
+Map<String, dynamic> _$$_OpeningHoursDTOToJson(_$_OpeningHoursDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('open_now', instance.openNow);
+  val['periods'] = instance.periods.map((e) => e.toJson()).toList();
+  val['weekday_text'] = instance.weekdayText;
+  return val;
+}
 
 _$_PeriodDTO _$$_PeriodDTOFromJson(Map<String, dynamic> json) => _$_PeriodDTO(
       close: json['close'] == null
@@ -35,19 +43,35 @@ _$_PeriodDTO _$$_PeriodDTOFromJson(Map<String, dynamic> json) => _$_PeriodDTO(
           : HoursDTO.fromJson(json['open'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_PeriodDTOToJson(_$_PeriodDTO instance) =>
-    <String, dynamic>{
-      'close': instance.close,
-      'open': instance.open,
-    };
+Map<String, dynamic> _$$_PeriodDTOToJson(_$_PeriodDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('close', instance.close?.toJson());
+  writeNotNull('open', instance.open?.toJson());
+  return val;
+}
 
 _$_HoursDTO _$$_HoursDTOFromJson(Map<String, dynamic> json) => _$_HoursDTO(
       day: json['day'] as int?,
       time: json['time'] as String?,
     );
 
-Map<String, dynamic> _$$_HoursDTOToJson(_$_HoursDTO instance) =>
-    <String, dynamic>{
-      'day': instance.day,
-      'time': instance.time,
-    };
+Map<String, dynamic> _$$_HoursDTOToJson(_$_HoursDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('day', instance.day);
+  writeNotNull('time', instance.time);
+  return val;
+}

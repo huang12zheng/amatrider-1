@@ -19,11 +19,19 @@ _$_AddressComponentDTO _$$_AddressComponentDTOFromJson(
     );
 
 Map<String, dynamic> _$$_AddressComponentDTOToJson(
-        _$_AddressComponentDTO instance) =>
-    <String, dynamic>{
-      'long_name': instance.longName,
-      'short_name': instance.shortName,
-      'types': instance.types
-          .map(const AddressComponentTypeSerializer().toJson)
-          .toList(),
-    };
+    _$_AddressComponentDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('long_name', instance.longName);
+  writeNotNull('short_name', instance.shortName);
+  val['types'] = instance.types
+      .map(const AddressComponentTypeSerializer().toJson)
+      .toList();
+  return val;
+}

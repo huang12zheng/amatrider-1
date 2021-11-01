@@ -29,7 +29,7 @@ Map<String, dynamic> _$$_RegisteredRiderDTOToJson(
   }
 
   writeNotNull('status', instance.status);
-  writeNotNull('data', instance.data);
-  writeNotNull('user', instance.user);
+  writeNotNull('data', instance.data?.toJson());
+  writeNotNull('user', instance.user?.toJson());
   return val;
 }

@@ -24,7 +24,7 @@ _$_SendPackageListDTO _$$_SendPackageListDTOFromJson(
 Map<String, dynamic> _$$_SendPackageListDTOToJson(
     _$_SendPackageListDTO instance) {
   final val = <String, dynamic>{
-    'data': instance.data,
+    'data': instance.data.map((e) => e.toJson()).toList(),
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -33,7 +33,7 @@ Map<String, dynamic> _$$_SendPackageListDTOToJson(
     }
   }
 
-  writeNotNull('links', instance.links);
-  writeNotNull('meta', instance.meta);
+  writeNotNull('links', instance.links?.toJson());
+  writeNotNull('meta', instance.meta?.toJson());
   return val;
 }
