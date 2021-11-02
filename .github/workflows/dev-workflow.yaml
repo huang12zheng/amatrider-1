@@ -248,3 +248,31 @@ jobs:
           allowUpdates: false
           omitName: false
           omitBody: false
+
+  coverage:
+    name: Send coverage reports
+    needs: build
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    env:
+      APP_NAME: "AmatRider"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout to ${{ env.APP_NAME }} Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Run tests with coverage
+        run: pub run test --coverage="coverage"
+      - name: Convert coverage to ICOV
+        run: pub run coverage:format_coverage --lcov --in=coverage --out=coverage.lcov --packages=.packages --report-on=lib
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{env.CODECOV_TOKEN}}
+          file: coverage/lcov.info

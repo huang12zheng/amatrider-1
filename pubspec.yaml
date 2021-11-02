@@ -224,6 +224,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  coverage: ^1.0.3
   # bloc_test: ^8.1.0
   logger: ^1.0.0
   flutter_launcher_icons: ^0.9.1
