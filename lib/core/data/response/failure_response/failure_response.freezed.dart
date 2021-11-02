@@ -22,11 +22,11 @@ class _$FailureResponseTearOff {
   const _$FailureResponseTearOff();
 
   _FailureResponse call(
-      {@JsonKey(includeIfNull: false) int? code,
-      @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-      @JsonKey(includeIfNull: false) String? error,
-      @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-      @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+      {int? code,
+      @JsonKey(defaultValue: 'error') String? status,
+      String? error,
+      ServerFieldErrors? errors,
+      @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop = true,
       @JsonKey(ignore: true) bool show = true}) {
@@ -52,15 +52,12 @@ const $FailureResponse = _$FailureResponseTearOff();
 
 /// @nodoc
 mixin _$FailureResponse {
-  @JsonKey(includeIfNull: false)
   int? get code => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, defaultValue: 'error')
+  @JsonKey(defaultValue: 'error')
   String? get status => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get error => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   ServerFieldErrors? get errors => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get details => throw _privateConstructorUsedError;
@@ -81,11 +78,11 @@ abstract class $FailureResponseCopyWith<$Res> {
           FailureResponse value, $Res Function(FailureResponse) then) =
       _$FailureResponseCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false) int? code,
-      @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-      @JsonKey(includeIfNull: false) String? error,
-      @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-      @JsonKey(includeIfNull: false, defaultValue: '') String message,
+      {int? code,
+      @JsonKey(defaultValue: 'error') String? status,
+      String? error,
+      ServerFieldErrors? errors,
+      @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show});
@@ -169,11 +166,11 @@ abstract class _$FailureResponseCopyWith<$Res>
       __$FailureResponseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false) int? code,
-      @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-      @JsonKey(includeIfNull: false) String? error,
-      @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-      @JsonKey(includeIfNull: false, defaultValue: '') String message,
+      {int? code,
+      @JsonKey(defaultValue: 'error') String? status,
+      String? error,
+      ServerFieldErrors? errors,
+      @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show});
@@ -245,11 +242,11 @@ class __$FailureResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_FailureResponse extends _FailureResponse {
   const _$_FailureResponse(
-      {@JsonKey(includeIfNull: false) this.code,
-      @JsonKey(includeIfNull: false, defaultValue: 'error') this.status,
-      @JsonKey(includeIfNull: false) this.error,
-      @JsonKey(includeIfNull: false) this.errors,
-      @JsonKey(includeIfNull: false, defaultValue: '') required this.message,
+      {this.code,
+      @JsonKey(defaultValue: 'error') this.status,
+      this.error,
+      this.errors,
+      @JsonKey(defaultValue: '') required this.message,
       @JsonKey(ignore: true) this.details,
       @JsonKey(ignore: true) this.pop = true,
       @JsonKey(ignore: true) this.show = true})
@@ -259,19 +256,16 @@ class _$_FailureResponse extends _FailureResponse {
       _$$_FailureResponseFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final int? code;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: 'error')
+  @JsonKey(defaultValue: 'error')
   final String? status;
   @override
-  @JsonKey(includeIfNull: false)
   final String? error;
   @override
-  @JsonKey(includeIfNull: false)
   final ServerFieldErrors? errors;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   final String message;
   @override
   @JsonKey(ignore: true)
@@ -320,11 +314,11 @@ class _$_FailureResponse extends _FailureResponse {
 
 abstract class _FailureResponse extends FailureResponse {
   const factory _FailureResponse(
-      {@JsonKey(includeIfNull: false) int? code,
-      @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-      @JsonKey(includeIfNull: false) String? error,
-      @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-      @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+      {int? code,
+      @JsonKey(defaultValue: 'error') String? status,
+      String? error,
+      ServerFieldErrors? errors,
+      @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show}) = _$_FailureResponse;
@@ -334,19 +328,16 @@ abstract class _FailureResponse extends FailureResponse {
       _$_FailureResponse.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   int? get code;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: 'error')
+  @JsonKey(defaultValue: 'error')
   String? get status;
   @override
-  @JsonKey(includeIfNull: false)
   String? get error;
   @override
-  @JsonKey(includeIfNull: false)
   ServerFieldErrors? get errors;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   String get message;
   @override
   @JsonKey(ignore: true)

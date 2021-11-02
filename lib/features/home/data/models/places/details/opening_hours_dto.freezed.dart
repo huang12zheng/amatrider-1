@@ -22,9 +22,12 @@ class _$OpeningHoursDTOTearOff {
   const _$OpeningHoursDTOTearOff();
 
   _OpeningHoursDTO call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods = const [],
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText = const []}) {
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          required List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+          required List<String?> weekdayText}) {
     return _OpeningHoursDTO(
       openNow: openNow,
       periods: periods,
@@ -44,8 +47,9 @@ const $OpeningHoursDTO = _$OpeningHoursDTOTearOff();
 mixin _$OpeningHoursDTO {
   @JsonKey(name: 'open_now')
   bool? get openNow => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
   List<PeriodDTO> get periods => throw _privateConstructorUsedError;
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
   List<String?> get weekdayText => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,9 +64,12 @@ abstract class $OpeningHoursDTOCopyWith<$Res> {
           OpeningHoursDTO value, $Res Function(OpeningHoursDTO) then) =
       _$OpeningHoursDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods,
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText});
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+          List<String?> weekdayText});
 }
 
 /// @nodoc
@@ -105,9 +112,12 @@ abstract class _$OpeningHoursDTOCopyWith<$Res>
       __$OpeningHoursDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods,
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText});
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+          List<String?> weekdayText});
 }
 
 /// @nodoc
@@ -148,9 +158,12 @@ class __$OpeningHoursDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
   const _$_OpeningHoursDTO(
-      {@JsonKey(name: 'open_now') this.openNow,
-      this.periods = const [],
-      @JsonKey(name: 'weekday_text') this.weekdayText = const []})
+      {@JsonKey(name: 'open_now')
+          this.openNow,
+      @JsonKey(defaultValue: [])
+          required this.periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+          required this.weekdayText})
       : super._();
 
   factory _$_OpeningHoursDTO.fromJson(Map<String, dynamic> json) =>
@@ -159,11 +172,11 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
   @override
   @JsonKey(name: 'open_now')
   final bool? openNow;
-  @JsonKey(defaultValue: const [])
   @override
+  @JsonKey(defaultValue: [])
   final List<PeriodDTO> periods;
   @override
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
   final List<String?> weekdayText;
 
   @override
@@ -212,10 +225,12 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
 
 abstract class _OpeningHoursDTO extends OpeningHoursDTO {
   const factory _OpeningHoursDTO(
-          {@JsonKey(name: 'open_now') bool? openNow,
-          List<PeriodDTO> periods,
-          @JsonKey(name: 'weekday_text') List<String?> weekdayText}) =
-      _$_OpeningHoursDTO;
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          required List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+          required List<String?> weekdayText}) = _$_OpeningHoursDTO;
   const _OpeningHoursDTO._() : super._();
 
   factory _OpeningHoursDTO.fromJson(Map<String, dynamic> json) =
@@ -225,9 +240,10 @@ abstract class _OpeningHoursDTO extends OpeningHoursDTO {
   @JsonKey(name: 'open_now')
   bool? get openNow;
   @override
+  @JsonKey(defaultValue: [])
   List<PeriodDTO> get periods;
   @override
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
   List<String?> get weekdayText;
   @override
   @JsonKey(ignore: true)

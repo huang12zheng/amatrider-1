@@ -15,9 +15,9 @@ class SendPackageListDTO with _$SendPackageListDTO {
   const SendPackageListDTO._();
 
   const factory SendPackageListDTO({
-    @JsonKey(includeIfNull: false) @Default([]) List<SendPackageDTO> data,
-    @JsonKey(includeIfNull: false) PaginationLinks? links,
-    @JsonKey(includeIfNull: false) MetaField? meta,
+    @JsonKey(defaultValue: []) required List<SendPackageDTO> data,
+    PaginationLinks? links,
+    MetaField? meta,
   }) = _SendPackageListDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

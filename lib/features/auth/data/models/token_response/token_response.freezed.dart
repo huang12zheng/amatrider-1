@@ -22,9 +22,9 @@ class _$TokenResponseTearOff {
   const _$TokenResponseTearOff();
 
   _TokenResponse call(
-      {@JsonKey(includeIfNull: false, name: 'access_token') String? accessToken,
-      @JsonKey(includeIfNull: false, name: 'token_type') String? tokenType,
-      @JsonKey(includeIfNull: false, name: 'expires_in') int? expiryDate}) {
+      {@JsonKey(name: 'access_token') String? accessToken,
+      @JsonKey(name: 'token_type') String? tokenType,
+      @JsonKey(name: 'expires_in') int? expiryDate}) {
     return _TokenResponse(
       accessToken: accessToken,
       tokenType: tokenType,
@@ -42,11 +42,11 @@ const $TokenResponse = _$TokenResponseTearOff();
 
 /// @nodoc
 mixin _$TokenResponse {
-  @JsonKey(includeIfNull: false, name: 'access_token')
+  @JsonKey(name: 'access_token')
   String? get accessToken => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'token_type')
+  @JsonKey(name: 'token_type')
   String? get tokenType => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'expires_in')
+  @JsonKey(name: 'expires_in')
   int? get expiryDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,9 +61,9 @@ abstract class $TokenResponseCopyWith<$Res> {
           TokenResponse value, $Res Function(TokenResponse) then) =
       _$TokenResponseCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false, name: 'access_token') String? accessToken,
-      @JsonKey(includeIfNull: false, name: 'token_type') String? tokenType,
-      @JsonKey(includeIfNull: false, name: 'expires_in') int? expiryDate});
+      {@JsonKey(name: 'access_token') String? accessToken,
+      @JsonKey(name: 'token_type') String? tokenType,
+      @JsonKey(name: 'expires_in') int? expiryDate});
 }
 
 /// @nodoc
@@ -106,9 +106,9 @@ abstract class _$TokenResponseCopyWith<$Res>
       __$TokenResponseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false, name: 'access_token') String? accessToken,
-      @JsonKey(includeIfNull: false, name: 'token_type') String? tokenType,
-      @JsonKey(includeIfNull: false, name: 'expires_in') int? expiryDate});
+      {@JsonKey(name: 'access_token') String? accessToken,
+      @JsonKey(name: 'token_type') String? tokenType,
+      @JsonKey(name: 'expires_in') int? expiryDate});
 }
 
 /// @nodoc
@@ -149,22 +149,22 @@ class __$TokenResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TokenResponse extends _TokenResponse {
   const _$_TokenResponse(
-      {@JsonKey(includeIfNull: false, name: 'access_token') this.accessToken,
-      @JsonKey(includeIfNull: false, name: 'token_type') this.tokenType,
-      @JsonKey(includeIfNull: false, name: 'expires_in') this.expiryDate})
+      {@JsonKey(name: 'access_token') this.accessToken,
+      @JsonKey(name: 'token_type') this.tokenType,
+      @JsonKey(name: 'expires_in') this.expiryDate})
       : super._();
 
   factory _$_TokenResponse.fromJson(Map<String, dynamic> json) =>
       _$$_TokenResponseFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false, name: 'access_token')
+  @JsonKey(name: 'access_token')
   final String? accessToken;
   @override
-  @JsonKey(includeIfNull: false, name: 'token_type')
+  @JsonKey(name: 'token_type')
   final String? tokenType;
   @override
-  @JsonKey(includeIfNull: false, name: 'expires_in')
+  @JsonKey(name: 'expires_in')
   final int? expiryDate;
 
   @override
@@ -202,25 +202,22 @@ class _$_TokenResponse extends _TokenResponse {
 
 abstract class _TokenResponse extends TokenResponse {
   const factory _TokenResponse(
-      {@JsonKey(includeIfNull: false, name: 'access_token')
-          String? accessToken,
-      @JsonKey(includeIfNull: false, name: 'token_type')
-          String? tokenType,
-      @JsonKey(includeIfNull: false, name: 'expires_in')
-          int? expiryDate}) = _$_TokenResponse;
+      {@JsonKey(name: 'access_token') String? accessToken,
+      @JsonKey(name: 'token_type') String? tokenType,
+      @JsonKey(name: 'expires_in') int? expiryDate}) = _$_TokenResponse;
   const _TokenResponse._() : super._();
 
   factory _TokenResponse.fromJson(Map<String, dynamic> json) =
       _$_TokenResponse.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false, name: 'access_token')
+  @JsonKey(name: 'access_token')
   String? get accessToken;
   @override
-  @JsonKey(includeIfNull: false, name: 'token_type')
+  @JsonKey(name: 'token_type')
   String? get tokenType;
   @override
-  @JsonKey(includeIfNull: false, name: 'expires_in')
+  @JsonKey(name: 'expires_in')
   int? get expiryDate;
   @override
   @JsonKey(ignore: true)

@@ -18,10 +18,7 @@ _$ErrorResponse _$$ErrorResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$ErrorResponseToJson(_$ErrorResponse instance) {
-  final val = <String, dynamic>{
-    'code': instance.code,
-    'status': instance.status,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -29,9 +26,11 @@ Map<String, dynamic> _$$ErrorResponseToJson(_$ErrorResponse instance) {
     }
   }
 
+  writeNotNull('code', instance.code);
+  writeNotNull('status', instance.status);
   writeNotNull('message', instance.messageTxt);
-  val['error'] = instance.error;
-  val['errors'] = instance.errors;
+  writeNotNull('error', instance.error);
+  writeNotNull('errors', instance.errors?.toJson());
   return val;
 }
 
@@ -43,9 +42,7 @@ _$SuccessfulResponse _$$SuccessfulResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$SuccessfulResponseToJson(
     _$SuccessfulResponse instance) {
-  final val = <String, dynamic>{
-    'status': instance.status,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -53,6 +50,7 @@ Map<String, dynamic> _$$SuccessfulResponseToJson(
     }
   }
 
+  writeNotNull('status', instance.status);
   writeNotNull('message', instance.messageTxt);
   return val;
 }

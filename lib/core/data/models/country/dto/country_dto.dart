@@ -16,11 +16,11 @@ class CountryDTO with _$CountryDTO {
   const CountryDTO._();
 
   const factory CountryDTO({
-    @JsonKey(includeIfNull: false) String? id,
-    @JsonKey(includeIfNull: false) String? name,
-    @JsonKey(includeIfNull: false) String? iso2,
-    @JsonKey(includeIfNull: false) String? iso3,
-    @JsonKey(includeIfNull: false, name: 'phone_code') String? dialCode,
+    String? id,
+    String? name,
+    String? iso2,
+    String? iso3,
+    @JsonKey(name: 'phone_code') String? dialCode,
   }) = _CountryDTO;
 
   factory CountryDTO.fromJson(Map<String, dynamic> json) =>

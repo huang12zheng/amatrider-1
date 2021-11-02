@@ -42,5 +42,9 @@ mixin EndPoints {
 
   //.....///.....// UTILITIES ENDPOINTS ....////././//...//
   static const String COUNTRIES = '/utilities/countries';
+  static const String GET_BANK_ACCOUNT = '/rider/rider/account-information';
+  static const String STORE_BANK_ACCOUNT = '/rider/rider/account-information';
+  static const String DOCUMENT_VERIFICATION =
+      '/rider/rider/verification-document';
   static const String BANKS = '/banks';
 }

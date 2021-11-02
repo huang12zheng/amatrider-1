@@ -22,21 +22,13 @@ class _$SenderDTOTearOff {
   const _$SenderDTOTearOff();
 
   _SenderDTO call(
-      {@JsonKey(includeIfNull: false)
-          String? id,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false, name: 'image')
-          String? image,
-      @JsonKey(includeIfNull: false, name: 'created_at')
-      @TimestampConverter()
-          DateTime? createdAt}) {
+      {String? id,
+      @JsonKey(name: 'first_name') String? firstName,
+      @JsonKey(name: 'last_name') String? lastName,
+      String? email,
+      String? phone,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt}) {
     return _SenderDTO(
       id: id,
       firstName: firstName,
@@ -58,19 +50,16 @@ const $SenderDTO = _$SenderDTOTearOff();
 
 /// @nodoc
 mixin _$SenderDTO {
-  @JsonKey(includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   String? get firstName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   String? get lastName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get email => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
 
@@ -85,21 +74,13 @@ abstract class $SenderDTOCopyWith<$Res> {
   factory $SenderDTOCopyWith(SenderDTO value, $Res Function(SenderDTO) then) =
       _$SenderDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false)
-          String? id,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false, name: 'image')
-          String? image,
-      @JsonKey(includeIfNull: false, name: 'created_at')
-      @TimestampConverter()
-          DateTime? createdAt});
+      {String? id,
+      @JsonKey(name: 'first_name') String? firstName,
+      @JsonKey(name: 'last_name') String? lastName,
+      String? email,
+      String? phone,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt});
 }
 
 /// @nodoc
@@ -160,21 +141,13 @@ abstract class _$SenderDTOCopyWith<$Res> implements $SenderDTOCopyWith<$Res> {
       __$SenderDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false)
-          String? id,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false, name: 'image')
-          String? image,
-      @JsonKey(includeIfNull: false, name: 'created_at')
-      @TimestampConverter()
-          DateTime? createdAt});
+      {String? id,
+      @JsonKey(name: 'first_name') String? firstName,
+      @JsonKey(name: 'last_name') String? lastName,
+      String? email,
+      String? phone,
+      @JsonKey(name: 'image') String? image,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt});
 }
 
 /// @nodoc
@@ -233,46 +206,35 @@ class __$SenderDTOCopyWithImpl<$Res> extends _$SenderDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_SenderDTO extends _SenderDTO {
   const _$_SenderDTO(
-      {@JsonKey(includeIfNull: false)
-          this.id,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          this.firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          this.lastName,
-      @JsonKey(includeIfNull: false)
-          this.email,
-      @JsonKey(includeIfNull: false)
-          this.phone,
-      @JsonKey(includeIfNull: false, name: 'image')
-          this.image,
-      @JsonKey(includeIfNull: false, name: 'created_at')
-      @TimestampConverter()
-          this.createdAt})
+      {this.id,
+      @JsonKey(name: 'first_name') this.firstName,
+      @JsonKey(name: 'last_name') this.lastName,
+      this.email,
+      this.phone,
+      @JsonKey(name: 'image') this.image,
+      @JsonKey(name: 'created_at') @TimestampConverter() this.createdAt})
       : super._();
 
   factory _$_SenderDTO.fromJson(Map<String, dynamic> json) =>
       _$$_SenderDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final String? id;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   final String? firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   final String? lastName;
   @override
-  @JsonKey(includeIfNull: false)
   final String? email;
   @override
-  @JsonKey(includeIfNull: false)
   final String? phone;
   @override
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   final String? image;
   @override
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   final DateTime? createdAt;
 
@@ -315,19 +277,16 @@ class _$_SenderDTO extends _SenderDTO {
 
 abstract class _SenderDTO extends SenderDTO {
   const factory _SenderDTO(
-      {@JsonKey(includeIfNull: false)
-          String? id,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      {String? id,
+      @JsonKey(name: 'first_name')
           String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false, name: 'image')
+      String? email,
+      String? phone,
+      @JsonKey(name: 'image')
           String? image,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt}) = _$_SenderDTO;
   const _SenderDTO._() : super._();
@@ -336,25 +295,22 @@ abstract class _SenderDTO extends SenderDTO {
       _$_SenderDTO.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   String? get id;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   String? get firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   String? get lastName;
   @override
-  @JsonKey(includeIfNull: false)
   String? get email;
   @override
-  @JsonKey(includeIfNull: false)
   String? get phone;
   @override
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   String? get image;
   @override
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt;
   @override

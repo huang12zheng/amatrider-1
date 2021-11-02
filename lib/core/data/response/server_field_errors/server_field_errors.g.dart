@@ -120,6 +120,12 @@ _$_ServerFieldErrors _$$_ServerFieldErrorsFromJson(Map<String, dynamic> json) =>
       supportMessage: (json['message'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
+      frontImage: (json['front_image'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      backImage: (json['back_image'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ServerFieldErrorsToJson(
@@ -179,5 +185,7 @@ Map<String, dynamic> _$$_ServerFieldErrorsToJson(
   writeNotNull('unit_price', instance.unitPrice);
   writeNotNull('required_date', instance.requiredDate);
   writeNotNull('message', instance.supportMessage);
+  writeNotNull('front_image', instance.frontImage);
+  writeNotNull('back_image', instance.backImage);
   return val;
 }

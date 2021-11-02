@@ -12,11 +12,11 @@ class FailureResponse with _$FailureResponse implements Failure {
   static const String _kNotFound = 'Resource was not found on this server!';
 
   const factory FailureResponse({
-    @JsonKey(includeIfNull: false) int? code,
-    @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-    @JsonKey(includeIfNull: false) String? error,
-    @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-    @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+    int? code,
+    @JsonKey(defaultValue: 'error') String? status,
+    String? error,
+    ServerFieldErrors? errors,
+    @JsonKey(defaultValue: '') required String message,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(true) bool pop,
     @JsonKey(ignore: true) @Default(true) bool show,

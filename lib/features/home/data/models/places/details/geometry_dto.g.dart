@@ -16,11 +16,19 @@ _$_GeometryDTO _$$_GeometryDTOFromJson(Map<String, dynamic> json) =>
           : ViewportDTO.fromJson(json['viewport'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_GeometryDTOToJson(_$_GeometryDTO instance) =>
-    <String, dynamic>{
-      'location': instance.location,
-      'viewport': instance.viewport,
-    };
+Map<String, dynamic> _$$_GeometryDTOToJson(_$_GeometryDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('location', instance.location?.toJson());
+  writeNotNull('viewport', instance.viewport?.toJson());
+  return val;
+}
 
 _$_ViewportDTO _$$_ViewportDTOFromJson(Map<String, dynamic> json) =>
     _$_ViewportDTO(
@@ -32,11 +40,19 @@ _$_ViewportDTO _$$_ViewportDTOFromJson(Map<String, dynamic> json) =>
           : CoordintateDTO.fromJson(json['southwest'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ViewportDTOToJson(_$_ViewportDTO instance) =>
-    <String, dynamic>{
-      'northeast': instance.northeast,
-      'southwest': instance.southwest,
-    };
+Map<String, dynamic> _$$_ViewportDTOToJson(_$_ViewportDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('northeast', instance.northeast?.toJson());
+  writeNotNull('southwest', instance.southwest?.toJson());
+  return val;
+}
 
 _$_CoordintateDTO _$$_CoordintateDTOFromJson(Map<String, dynamic> json) =>
     _$_CoordintateDTO(
@@ -44,8 +60,16 @@ _$_CoordintateDTO _$$_CoordintateDTOFromJson(Map<String, dynamic> json) =>
       lng: (json['lng'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$_CoordintateDTOToJson(_$_CoordintateDTO instance) =>
-    <String, dynamic>{
-      'lat': instance.lat,
-      'lng': instance.lng,
-    };
+Map<String, dynamic> _$$_CoordintateDTOToJson(_$_CoordintateDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('lat', instance.lat);
+  writeNotNull('lng', instance.lng);
+  return val;
+}

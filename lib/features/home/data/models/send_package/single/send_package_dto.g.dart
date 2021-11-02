@@ -79,8 +79,8 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
       const DoubleSerializer().toJson(instance.destinationLat));
   writeNotNull('destination_long',
       const DoubleSerializer().toJson(instance.destinationLng));
-  val['pickup_address'] = instance.pickupAddress;
-  val['destination_address'] = instance.destinationAddress;
+  writeNotNull('pickup_address', instance.pickupAddress);
+  writeNotNull('destination_address', instance.destinationAddress);
   writeNotNull('package_size',
       const PackageSizeSerializer().toJson(instance.packageSize));
   writeNotNull('package_is_fragile',
@@ -93,7 +93,8 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
   writeNotNull('receiver_email_address', instance.receiverEmailAddress);
   writeNotNull('receiver_alternative_phone_number', instance.receiverPhoneAlt);
   writeNotNull('note', instance.notes);
-  val['status'] = const SendPackageStatusSerializer().toJson(instance.status);
+  writeNotNull(
+      'status', const SendPackageStatusSerializer().toJson(instance.status));
   writeNotNull('rider_id', instance.riderId);
   writeNotNull(
       'rider_current_lat', const DoubleSerializer().toJson(instance.riderLat));
@@ -110,9 +111,9 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
   writeNotNull(
       'time', const SecondsToDurationConverter().toJson(instance.time));
   writeNotNull('distance', const DoubleSerializer().toJson(instance.distance));
-  writeNotNull('journeyDetails', instance.journey);
-  writeNotNull('package', instance.packageData);
-  writeNotNull('user', instance.sender);
+  writeNotNull('journeyDetails', instance.journey?.toJson());
+  writeNotNull('package', instance.packageData?.toJson());
+  writeNotNull('user', instance.sender?.toJson());
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

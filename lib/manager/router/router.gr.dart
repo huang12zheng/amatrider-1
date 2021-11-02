@@ -8,12 +8,12 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'dart:async' as _i12;
+import 'dart:async' as _i13;
 
 import 'package:amatrider/_404.dart' as _i6;
 import 'package:amatrider/core/presentation/index.dart' as _i5;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
-import 'package:amatrider/features/home/domain/entities/index.dart' as _i11;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i12;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i8;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -22,6 +22,7 @@ import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:amatrider/manager/router/guards/guards.dart' as _i10;
 import 'package:auto_route/auto_route.dart' as _i7;
+import 'package:flutter/cupertino.dart' as _i11;
 import 'package:flutter/material.dart' as _i9;
 
 class AppRouter extends _i7.RootStackRouter {
@@ -391,7 +392,7 @@ class ForgotPasswordRoute extends _i7.PageRouteInfo<void> {
 /// generated route for [_i2.OTPVerificationScreen]
 class OTPVerificationRoute extends _i7.PageRouteInfo<OTPVerificationRouteArgs> {
   OTPVerificationRoute(
-      {_i9.Key? key,
+      {_i11.Key? key,
       _i2.OTPVerificationType? type = _i2.OTPVerificationType.phoneNumber})
       : super(name,
             path: 'otp-verification-screen',
@@ -404,7 +405,7 @@ class OTPVerificationRouteArgs {
   const OTPVerificationRouteArgs(
       {this.key, this.type = _i2.OTPVerificationType.phoneNumber});
 
-  final _i9.Key? key;
+  final _i11.Key? key;
 
   final _i2.OTPVerificationType? type;
 }
@@ -457,7 +458,7 @@ class EditBankDetailsRoute extends _i7.PageRouteInfo<void> {
 class PackageDeliveryAcceptedRoute
     extends _i7.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
   PackageDeliveryAcceptedRoute(
-      {_i9.Key? key, required _i11.SendPackage sendPackage})
+      {_i11.Key? key, required _i12.SendPackage sendPackage})
       : super(name,
             path: 'package-delivery-accepted-screen',
             args: PackageDeliveryAcceptedRouteArgs(
@@ -469,9 +470,9 @@ class PackageDeliveryAcceptedRoute
 class PackageDeliveryAcceptedRouteArgs {
   const PackageDeliveryAcceptedRouteArgs({this.key, required this.sendPackage});
 
-  final _i9.Key? key;
+  final _i11.Key? key;
 
-  final _i11.SendPackage sendPackage;
+  final _i12.SendPackage sendPackage;
 }
 
 /// generated route for [_i3.OrderDeliveryAcceptedScreen]
@@ -519,7 +520,7 @@ class NotificationRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for [_i5.NotConnectedScreen]
 class NotConnectedRoute extends _i7.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i9.Key? key, required _i12.Future<dynamic> future})
+  NotConnectedRoute({_i11.Key? key, required _i13.Future<dynamic> future})
       : super(name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -530,9 +531,9 @@ class NotConnectedRoute extends _i7.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i9.Key? key;
+  final _i11.Key? key;
 
-  final _i12.Future<dynamic> future;
+  final _i13.Future<dynamic> future;
 }
 
 /// generated route for [_i5.NoHistoryScreen]

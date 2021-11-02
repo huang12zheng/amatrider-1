@@ -31,17 +31,26 @@ _$_PlacePredictionDTO _$$_PlacePredictionDTOFromJson(
     );
 
 Map<String, dynamic> _$$_PlacePredictionDTOToJson(
-        _$_PlacePredictionDTO instance) =>
-    <String, dynamic>{
-      'place_id': instance.placeId,
-      'reference': instance.reference,
-      'description': instance.description,
-      'types': instance.types,
-      'matched_substrings': instance.matchedSubstrings,
-      'predictions': instance.predictions,
-      'status': const PlaceStatusSerializer().toJson(instance.status),
-      'error': instance.error,
-    };
+    _$_PlacePredictionDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('place_id', instance.placeId);
+  writeNotNull('reference', instance.reference);
+  writeNotNull('description', instance.description);
+  writeNotNull('types', instance.types);
+  val['matched_substrings'] =
+      instance.matchedSubstrings.map((e) => e?.toJson()).toList();
+  val['predictions'] = instance.predictions.map((e) => e?.toJson()).toList();
+  writeNotNull('status', const PlaceStatusSerializer().toJson(instance.status));
+  writeNotNull('error', instance.error);
+  return val;
+}
 
 _$_MatchedStringsDTO _$$_MatchedStringsDTOFromJson(Map<String, dynamic> json) =>
     _$_MatchedStringsDTO(
@@ -50,8 +59,16 @@ _$_MatchedStringsDTO _$$_MatchedStringsDTOFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$_MatchedStringsDTOToJson(
-        _$_MatchedStringsDTO instance) =>
-    <String, dynamic>{
-      'length': instance.length,
-      'offset': instance.offset,
-    };
+    _$_MatchedStringsDTO instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('length', instance.length);
+  writeNotNull('offset', instance.offset);
+  return val;
+}

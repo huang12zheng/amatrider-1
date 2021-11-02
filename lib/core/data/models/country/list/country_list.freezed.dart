@@ -22,7 +22,7 @@ class _$CountryDTOListTearOff {
   const _$CountryDTOListTearOff();
 
   _CountryDTOList call(
-      {@JsonKey(includeIfNull: false) List<CountryDTO> data = const []}) {
+      {@JsonKey(defaultValue: []) required List<CountryDTO> data}) {
     return _CountryDTOList(
       data: data,
     );
@@ -38,7 +38,7 @@ const $CountryDTOList = _$CountryDTOListTearOff();
 
 /// @nodoc
 mixin _$CountryDTOList {
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<CountryDTO> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $CountryDTOListCopyWith<$Res> {
   factory $CountryDTOListCopyWith(
           CountryDTOList value, $Res Function(CountryDTOList) then) =
       _$CountryDTOListCopyWithImpl<$Res>;
-  $Res call({@JsonKey(includeIfNull: false) List<CountryDTO> data});
+  $Res call({@JsonKey(defaultValue: []) List<CountryDTO> data});
 }
 
 /// @nodoc
@@ -84,7 +84,7 @@ abstract class _$CountryDTOListCopyWith<$Res>
           _CountryDTOList value, $Res Function(_CountryDTOList) then) =
       __$CountryDTOListCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(includeIfNull: false) List<CountryDTO> data});
+  $Res call({@JsonKey(defaultValue: []) List<CountryDTO> data});
 }
 
 /// @nodoc
@@ -114,14 +114,14 @@ class __$CountryDTOListCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CountryDTOList extends _CountryDTOList {
-  const _$_CountryDTOList({@JsonKey(includeIfNull: false) this.data = const []})
+  const _$_CountryDTOList({@JsonKey(defaultValue: []) required this.data})
       : super._();
 
   factory _$_CountryDTOList.fromJson(Map<String, dynamic> json) =>
       _$$_CountryDTOListFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   final List<CountryDTO> data;
 
   @override
@@ -154,7 +154,7 @@ class _$_CountryDTOList extends _CountryDTOList {
 
 abstract class _CountryDTOList extends CountryDTOList {
   const factory _CountryDTOList(
-          {@JsonKey(includeIfNull: false) List<CountryDTO> data}) =
+          {@JsonKey(defaultValue: []) required List<CountryDTO> data}) =
       _$_CountryDTOList;
   const _CountryDTOList._() : super._();
 
@@ -162,7 +162,7 @@ abstract class _CountryDTOList extends CountryDTOList {
       _$_CountryDTOList.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<CountryDTO> get data;
   @override
   @JsonKey(ignore: true)

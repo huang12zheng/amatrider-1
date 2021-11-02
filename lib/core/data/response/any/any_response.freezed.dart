@@ -30,7 +30,7 @@ class _$AnyResponseTearOff {
   ErrorResponse error(
       {int? code,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       String? error,
       ServerFieldErrors? errors,
@@ -51,7 +51,7 @@ class _$AnyResponseTearOff {
   SuccessfulResponse success(
       {@JsonKey(ignore: true) String? uuid,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop = false,
       @JsonKey(ignore: true) bool show = true}) {
@@ -76,7 +76,7 @@ const $AnyResponse = _$AnyResponseTearOff();
 /// @nodoc
 mixin _$AnyResponse {
   String? get status => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   String? get messageTxt => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get details => throw _privateConstructorUsedError;
@@ -88,7 +88,7 @@ mixin _$AnyResponse {
     required TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -98,7 +98,7 @@ mixin _$AnyResponse {
     required TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)
@@ -110,7 +110,7 @@ mixin _$AnyResponse {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -120,7 +120,7 @@ mixin _$AnyResponse {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -132,7 +132,7 @@ mixin _$AnyResponse {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -142,7 +142,7 @@ mixin _$AnyResponse {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -182,7 +182,7 @@ abstract class $AnyResponseCopyWith<$Res> {
       _$AnyResponseCopyWithImpl<$Res>;
   $Res call(
       {String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop});
 }
@@ -233,7 +233,7 @@ abstract class $ErrorResponseCopyWith<$Res>
   $Res call(
       {int? code,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       String? error,
       ServerFieldErrors? errors,
@@ -319,7 +319,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
   const _$ErrorResponse(
       {this.code,
       this.status,
-      @JsonKey(includeIfNull: false, name: 'message') this.messageTxt,
+      @JsonKey(name: 'message') this.messageTxt,
       @JsonKey(ignore: true) this.details,
       this.error,
       this.errors,
@@ -335,7 +335,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
   @override
   final String? status;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   final String? messageTxt;
   @override
   @JsonKey(ignore: true)
@@ -388,7 +388,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     required TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -398,7 +398,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     required TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)
@@ -414,7 +414,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -424,7 +424,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -440,7 +440,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -450,7 +450,7 @@ class _$ErrorResponse extends ErrorResponse with Failure {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -505,7 +505,7 @@ abstract class ErrorResponse extends AnyResponse implements Failure {
   const factory ErrorResponse(
       {int? code,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       String? error,
       ServerFieldErrors? errors,
@@ -520,7 +520,7 @@ abstract class ErrorResponse extends AnyResponse implements Failure {
   @override
   String? get status;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   String? get messageTxt;
   @override
   @JsonKey(ignore: true)
@@ -548,7 +548,7 @@ abstract class $SuccessfulResponseCopyWith<$Res>
   $Res call(
       {@JsonKey(ignore: true) String? uuid,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show});
@@ -611,7 +611,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
   const _$SuccessfulResponse(
       {@JsonKey(ignore: true) this.uuid,
       this.status,
-      @JsonKey(includeIfNull: false, name: 'message') this.messageTxt,
+      @JsonKey(name: 'message') this.messageTxt,
       @JsonKey(ignore: true) this.details,
       @JsonKey(ignore: true) this.pop = false,
       @JsonKey(ignore: true) this.show = true})
@@ -626,7 +626,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
   @override
   final String? status;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   final String? messageTxt;
   @override
   @JsonKey(ignore: true)
@@ -672,7 +672,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     required TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -682,7 +682,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     required TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)
@@ -697,7 +697,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -707,7 +707,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -722,7 +722,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     TResult Function(
             int? code,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             String? error,
             ServerFieldErrors? errors,
@@ -732,7 +732,7 @@ class _$SuccessfulResponse extends SuccessfulResponse with Response, Success {
     TResult Function(
             @JsonKey(ignore: true) String? uuid,
             String? status,
-            @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+            @JsonKey(name: 'message') String? messageTxt,
             @JsonKey(ignore: true) String? details,
             @JsonKey(ignore: true) bool pop,
             @JsonKey(ignore: true) bool show)?
@@ -787,7 +787,7 @@ abstract class SuccessfulResponse extends AnyResponse
   const factory SuccessfulResponse(
       {@JsonKey(ignore: true) String? uuid,
       String? status,
-      @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+      @JsonKey(name: 'message') String? messageTxt,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show}) = _$SuccessfulResponse;
@@ -801,7 +801,7 @@ abstract class SuccessfulResponse extends AnyResponse
   @override
   String? get status;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   String? get messageTxt;
   @override
   @JsonKey(ignore: true)

@@ -5,3 +5,4 @@ export 'rider_location/rider_location.dart';
 export 'place_entities/index.dart';
 export 'logistics/index.dart';
 export 'payment_method/payment_method.dart';
+export 'bank_account/bank_account.dart';
