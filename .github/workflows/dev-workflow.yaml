@@ -295,6 +295,9 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         run: echo "${env:GITHUB_WORKSPACE}\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+      - name: Get flutter packages
+        run: flutter pub get
+
       - name: Run tests with coverage
         run: flutter pub run test --coverage="coverage"
 
