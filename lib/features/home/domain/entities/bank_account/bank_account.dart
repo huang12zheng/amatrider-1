@@ -12,7 +12,7 @@ class BankAccount with _$BankAccount {
 
   const factory BankAccount({
     required UniqueId<String?> id,
-    required BasicTextField<String?> riderId,
+    required UniqueId<String?> riderId,
     required BasicTextField<String?> bank,
     required BasicTextField<String?> accountName,
     required BasicTextField<String?> accountNumber,

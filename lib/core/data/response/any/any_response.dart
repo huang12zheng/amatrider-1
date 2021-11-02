@@ -23,7 +23,7 @@ class AnyResponse with _$AnyResponse {
   const factory AnyResponse.error({
     int? code,
     String? status,
-    @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+    @JsonKey(name: 'message') String? messageTxt,
     @JsonKey(ignore: true) String? details,
     String? error,
     ServerFieldErrors? errors,
@@ -52,7 +52,7 @@ class AnyResponse with _$AnyResponse {
   const factory AnyResponse.success({
     @JsonKey(ignore: true) String? uuid,
     String? status,
-    @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+    @JsonKey(name: 'message') String? messageTxt,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(false) bool pop,
     @JsonKey(ignore: true) @Default(true) bool show,

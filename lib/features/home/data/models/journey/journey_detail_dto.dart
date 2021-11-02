@@ -13,8 +13,8 @@ class JourneyDetailDTO with _$JourneyDetailDTO {
   const JourneyDetailDTO._();
 
   const factory JourneyDetailDTO({
-    @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? distance,
-    @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? duration,
+    JourneyInfoDTO<int?>? distance,
+    JourneyInfoDTO<int?>? duration,
     @PlaceStatusSerializer() required PlaceStatus status,
   }) = _JourneyDetailDTO;
 
@@ -36,8 +36,8 @@ class JourneyInfoDTO<B> with _$JourneyInfoDTO<B> {
   const JourneyInfoDTO._();
 
   const factory JourneyInfoDTO({
-    @JsonKey(includeIfNull: false) String? text,
-    @JsonKey(includeIfNull: false) @JourneyInfoValueSerializer() B? value,
+    String? text,
+    @JourneyInfoValueSerializer() B? value,
   }) = _JourneyInfoDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

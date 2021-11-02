@@ -11,8 +11,8 @@ class SuccessResponse with _$SuccessResponse, Response implements Success {
 
   const factory SuccessResponse({
     @JsonKey(ignore: true) String? uuid,
-    @JsonKey(includeIfNull: false, defaultValue: 'success') String? status,
-    @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+    @JsonKey(defaultValue: 'success') String? status,
+    @JsonKey(defaultValue: '') required String message,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(false) bool pop,
     @JsonKey(ignore: true) @Default(true) bool show,

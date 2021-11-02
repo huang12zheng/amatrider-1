@@ -22,14 +22,14 @@ class _$MetaFieldTearOff {
   const _$MetaFieldTearOff();
 
   _MetaField call(
-      {@JsonKey(includeIfNull: false, name: 'current_page') int? currentPage,
-      @JsonKey(includeIfNull: false) int? from,
-      @JsonKey(includeIfNull: false, name: 'last_page') int? lastPage,
-      @JsonKey(includeIfNull: false) List<PaginationLinks> links = const [],
-      @JsonKey(includeIfNull: false) String? path,
-      @JsonKey(includeIfNull: false, name: 'per_page') int? perPage,
-      @JsonKey(includeIfNull: false) int? to,
-      @JsonKey(includeIfNull: false) int? total}) {
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      @JsonKey(defaultValue: []) required List<PaginationLinks> links,
+      String? path,
+      @JsonKey(name: 'per_page') int? perPage,
+      int? to,
+      int? total}) {
     return _MetaField(
       currentPage: currentPage,
       from: from,
@@ -52,21 +52,17 @@ const $MetaField = _$MetaFieldTearOff();
 
 /// @nodoc
 mixin _$MetaField {
-  @JsonKey(includeIfNull: false, name: 'current_page')
+  @JsonKey(name: 'current_page')
   int? get currentPage => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   int? get from => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'last_page')
+  @JsonKey(name: 'last_page')
   int? get lastPage => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<PaginationLinks> get links => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get path => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'per_page')
+  @JsonKey(name: 'per_page')
   int? get perPage => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   int? get to => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   int? get total => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -80,14 +76,14 @@ abstract class $MetaFieldCopyWith<$Res> {
   factory $MetaFieldCopyWith(MetaField value, $Res Function(MetaField) then) =
       _$MetaFieldCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false, name: 'current_page') int? currentPage,
-      @JsonKey(includeIfNull: false) int? from,
-      @JsonKey(includeIfNull: false, name: 'last_page') int? lastPage,
-      @JsonKey(includeIfNull: false) List<PaginationLinks> links,
-      @JsonKey(includeIfNull: false) String? path,
-      @JsonKey(includeIfNull: false, name: 'per_page') int? perPage,
-      @JsonKey(includeIfNull: false) int? to,
-      @JsonKey(includeIfNull: false) int? total});
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      @JsonKey(defaultValue: []) List<PaginationLinks> links,
+      String? path,
+      @JsonKey(name: 'per_page') int? perPage,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -153,14 +149,14 @@ abstract class _$MetaFieldCopyWith<$Res> implements $MetaFieldCopyWith<$Res> {
       __$MetaFieldCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false, name: 'current_page') int? currentPage,
-      @JsonKey(includeIfNull: false) int? from,
-      @JsonKey(includeIfNull: false, name: 'last_page') int? lastPage,
-      @JsonKey(includeIfNull: false) List<PaginationLinks> links,
-      @JsonKey(includeIfNull: false) String? path,
-      @JsonKey(includeIfNull: false, name: 'per_page') int? perPage,
-      @JsonKey(includeIfNull: false) int? to,
-      @JsonKey(includeIfNull: false) int? total});
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      @JsonKey(defaultValue: []) List<PaginationLinks> links,
+      String? path,
+      @JsonKey(name: 'per_page') int? perPage,
+      int? to,
+      int? total});
 }
 
 /// @nodoc
@@ -224,42 +220,38 @@ class __$MetaFieldCopyWithImpl<$Res> extends _$MetaFieldCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MetaField extends _MetaField {
   const _$_MetaField(
-      {@JsonKey(includeIfNull: false, name: 'current_page') this.currentPage,
-      @JsonKey(includeIfNull: false) this.from,
-      @JsonKey(includeIfNull: false, name: 'last_page') this.lastPage,
-      @JsonKey(includeIfNull: false) this.links = const [],
-      @JsonKey(includeIfNull: false) this.path,
-      @JsonKey(includeIfNull: false, name: 'per_page') this.perPage,
-      @JsonKey(includeIfNull: false) this.to,
-      @JsonKey(includeIfNull: false) this.total})
+      {@JsonKey(name: 'current_page') this.currentPage,
+      this.from,
+      @JsonKey(name: 'last_page') this.lastPage,
+      @JsonKey(defaultValue: []) required this.links,
+      this.path,
+      @JsonKey(name: 'per_page') this.perPage,
+      this.to,
+      this.total})
       : super._();
 
   factory _$_MetaField.fromJson(Map<String, dynamic> json) =>
       _$$_MetaFieldFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false, name: 'current_page')
+  @JsonKey(name: 'current_page')
   final int? currentPage;
   @override
-  @JsonKey(includeIfNull: false)
   final int? from;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_page')
+  @JsonKey(name: 'last_page')
   final int? lastPage;
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   final List<PaginationLinks> links;
   @override
-  @JsonKey(includeIfNull: false)
   final String? path;
   @override
-  @JsonKey(includeIfNull: false, name: 'per_page')
+  @JsonKey(name: 'per_page')
   final int? perPage;
   @override
-  @JsonKey(includeIfNull: false)
   final int? to;
   @override
-  @JsonKey(includeIfNull: false)
   final int? total;
 
   @override
@@ -301,42 +293,38 @@ class _$_MetaField extends _MetaField {
 
 abstract class _MetaField extends MetaField {
   const factory _MetaField(
-      {@JsonKey(includeIfNull: false, name: 'current_page') int? currentPage,
-      @JsonKey(includeIfNull: false) int? from,
-      @JsonKey(includeIfNull: false, name: 'last_page') int? lastPage,
-      @JsonKey(includeIfNull: false) List<PaginationLinks> links,
-      @JsonKey(includeIfNull: false) String? path,
-      @JsonKey(includeIfNull: false, name: 'per_page') int? perPage,
-      @JsonKey(includeIfNull: false) int? to,
-      @JsonKey(includeIfNull: false) int? total}) = _$_MetaField;
+      {@JsonKey(name: 'current_page') int? currentPage,
+      int? from,
+      @JsonKey(name: 'last_page') int? lastPage,
+      @JsonKey(defaultValue: []) required List<PaginationLinks> links,
+      String? path,
+      @JsonKey(name: 'per_page') int? perPage,
+      int? to,
+      int? total}) = _$_MetaField;
   const _MetaField._() : super._();
 
   factory _MetaField.fromJson(Map<String, dynamic> json) =
       _$_MetaField.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false, name: 'current_page')
+  @JsonKey(name: 'current_page')
   int? get currentPage;
   @override
-  @JsonKey(includeIfNull: false)
   int? get from;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_page')
+  @JsonKey(name: 'last_page')
   int? get lastPage;
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<PaginationLinks> get links;
   @override
-  @JsonKey(includeIfNull: false)
   String? get path;
   @override
-  @JsonKey(includeIfNull: false, name: 'per_page')
+  @JsonKey(name: 'per_page')
   int? get perPage;
   @override
-  @JsonKey(includeIfNull: false)
   int? get to;
   @override
-  @JsonKey(includeIfNull: false)
   int? get total;
   @override
   @JsonKey(ignore: true)

@@ -17,8 +17,8 @@ class AddressComponentDTO with _$AddressComponentDTO {
     @JsonKey(name: 'long_name') String? longName,
     @JsonKey(name: 'short_name') String? shortName,
     @AddressComponentTypeSerializer()
-    @Default([])
-        List<AddressComponentType> types,
+    @JsonKey(defaultValue: [])
+        required List<AddressComponentType> types,
   }) = _AddressComponentDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

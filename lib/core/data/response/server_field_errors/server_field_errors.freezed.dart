@@ -22,100 +22,55 @@ class _$ServerFieldErrorsTearOff {
   const _$ServerFieldErrorsTearOff();
 
   _ServerFieldErrors call(
-      {@JsonKey(includeIfNull: false)
-          List<String?>? name,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          List<String?>? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          List<String?>? lastName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? token,
-      @JsonKey(includeIfNull: false)
-          List<String?>? email,
-      @JsonKey(includeIfNull: false)
-          List<String?>? gender,
-      @JsonKey(includeIfNull: false)
-          List<String?>? age,
-      @JsonKey(includeIfNull: false)
-          List<String?>? phone,
-      @JsonKey(includeIfNull: false)
-          List<String?>? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
-          List<String?>? oldPassword,
-      @JsonKey(includeIfNull: false)
-          List<String?>? code,
-      @JsonKey(includeIfNull: false)
-          List<String?>? type,
-      @JsonKey(includeIfNull: false)
-          List<String?>? description,
-      @JsonKey(includeIfNull: false)
-          List<String?>? document,
-      @JsonKey(includeIfNull: false)
-          List<String?>? duration,
-      @JsonKey(includeIfNull: false)
-          List<String?>? amount,
-      @JsonKey(includeIfNull: false, name: 'currency_id')
-          List<String?>? currencyId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? country,
-      @JsonKey(includeIfNull: false)
-          List<String?>? comment,
-      @JsonKey(includeIfNull: false, name: 'account_number')
-          List<String?>? accountNumber,
-      @JsonKey(includeIfNull: false, name: 'bank_id')
-          List<String?>? bankId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? recipient,
-      @JsonKey(includeIfNull: false)
-          List<String?>? plan,
-      @JsonKey(includeIfNull: false, name: 'payment_method')
-          List<String?>? paymentMethod,
-      @JsonKey(includeIfNull: false)
-          List<String?>? lat,
-      @JsonKey(includeIfNull: false)
-          List<String?>? long,
-      @JsonKey(includeIfNull: false)
-          List<String?>? zip,
-      @JsonKey(includeIfNull: false)
-          List<String?>? instructions,
-      @JsonKey(includeIfNull: false, name: 'country_id')
-          List<String?>? countryId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? alias,
-      @JsonKey(includeIfNull: false)
-          List<String?>? apartment,
-      @JsonKey(includeIfNull: false)
-          List<String?>? street,
-      @JsonKey(includeIfNull: false)
-          List<String?>? town,
-      @JsonKey(includeIfNull: false)
-          List<String?>? city,
-      @JsonKey(includeIfNull: false, name: 'state_id')
-          List<String?>? stateId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? state,
-      @JsonKey(includeIfNull: false)
-          List<String?>? landmark,
-      @JsonKey(includeIfNull: false, name: 'card_number')
-          List<String?>? cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName,
-      @JsonKey(includeIfNull: false, name: 'pickup_lat')
-          List<String?>? pickupLat,
-      @JsonKey(includeIfNull: false, name: 'destination_lat')
-          List<String?>? destLat,
-      @JsonKey(includeIfNull: false, name: 'item_name')
-          List<String?>? itemName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? quantity,
-      @JsonKey(includeIfNull: false)
-          List<String?>? images,
-      @JsonKey(includeIfNull: false, name: 'unit_price')
-          List<String?>? unitPrice,
-      @JsonKey(includeIfNull: false, name: 'required_date')
-          List<String?>? requiredDate,
-      @JsonKey(includeIfNull: false, name: 'message')
-          List<String?>? supportMessage}) {
+      {List<String?>? name,
+      @JsonKey(name: 'first_name') List<String?>? firstName,
+      @JsonKey(name: 'last_name') List<String?>? lastName,
+      List<String?>? token,
+      List<String?>? email,
+      List<String?>? gender,
+      List<String?>? age,
+      List<String?>? phone,
+      List<String?>? password,
+      @JsonKey(name: 'current_password') List<String?>? oldPassword,
+      List<String?>? code,
+      List<String?>? type,
+      List<String?>? description,
+      List<String?>? document,
+      List<String?>? duration,
+      List<String?>? amount,
+      @JsonKey(name: 'currency_id') List<String?>? currencyId,
+      List<String?>? country,
+      List<String?>? comment,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'bank_id') List<String?>? bankId,
+      List<String?>? recipient,
+      List<String?>? plan,
+      @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
+      List<String?>? lat,
+      List<String?>? long,
+      List<String?>? zip,
+      List<String?>? instructions,
+      @JsonKey(name: 'country_id') List<String?>? countryId,
+      List<String?>? alias,
+      List<String?>? apartment,
+      List<String?>? street,
+      List<String?>? town,
+      List<String?>? city,
+      @JsonKey(name: 'state_id') List<String?>? stateId,
+      List<String?>? state,
+      List<String?>? landmark,
+      @JsonKey(name: 'card_number') List<String?>? cardNumber,
+      @JsonKey(name: 'card_name') List<String?>? cardName,
+      @JsonKey(name: 'pickup_lat') List<String?>? pickupLat,
+      @JsonKey(name: 'destination_lat') List<String?>? destLat,
+      @JsonKey(name: 'item_name') List<String?>? itemName,
+      List<String?>? quantity,
+      List<String?>? images,
+      @JsonKey(name: 'unit_price') List<String?>? unitPrice,
+      @JsonKey(name: 'required_date') List<String?>? requiredDate,
+      @JsonKey(name: 'message') List<String?>? supportMessage,
+      @JsonKey(name: 'front_image') List<String?>? frontImage,
+      @JsonKey(name: 'back_image') List<String?>? backImage}) {
     return _ServerFieldErrors(
       name: name,
       firstName: firstName,
@@ -164,6 +119,8 @@ class _$ServerFieldErrorsTearOff {
       unitPrice: unitPrice,
       requiredDate: requiredDate,
       supportMessage: supportMessage,
+      frontImage: frontImage,
+      backImage: backImage,
     );
   }
 
@@ -177,100 +134,74 @@ const $ServerFieldErrors = _$ServerFieldErrorsTearOff();
 
 /// @nodoc
 mixin _$ServerFieldErrors {
-  @JsonKey(includeIfNull: false)
   List<String?>? get name => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   List<String?>? get firstName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   List<String?>? get lastName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get token => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get email => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get gender => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get age => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get phone => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get password => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   List<String?>? get oldPassword => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get code => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get type => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get description => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get document => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get duration => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get amount => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'currency_id')
+  @JsonKey(name: 'currency_id')
   List<String?>? get currencyId => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get country => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get comment => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'account_number')
+  @JsonKey(name: 'account_number')
   List<String?>? get accountNumber => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'bank_id')
+  @JsonKey(name: 'bank_id')
   List<String?>? get bankId => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get recipient => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get plan => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'payment_method')
+  @JsonKey(name: 'payment_method')
   List<String?>? get paymentMethod => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get lat => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get long => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get zip => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get instructions => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'country_id')
+  @JsonKey(name: 'country_id')
   List<String?>? get countryId => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get alias => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get apartment => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get street => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get town => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get city => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'state_id')
+  @JsonKey(name: 'state_id')
   List<String?>? get stateId => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get state => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get landmark => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'card_number')
+  @JsonKey(name: 'card_number')
   List<String?>? get cardNumber => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'card_name')
+  @JsonKey(name: 'card_name')
   List<String?>? get cardName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @JsonKey(name: 'pickup_lat')
   List<String?>? get pickupLat => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @JsonKey(name: 'destination_lat')
   List<String?>? get destLat => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'item_name')
+  @JsonKey(name: 'item_name')
   List<String?>? get itemName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get quantity => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   List<String?>? get images => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'unit_price')
+  @JsonKey(name: 'unit_price')
   List<String?>? get unitPrice => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'required_date')
+  @JsonKey(name: 'required_date')
   List<String?>? get requiredDate => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   List<String?>? get supportMessage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'front_image')
+  List<String?>? get frontImage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'back_image')
+  List<String?>? get backImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -284,100 +215,55 @@ abstract class $ServerFieldErrorsCopyWith<$Res> {
           ServerFieldErrors value, $Res Function(ServerFieldErrors) then) =
       _$ServerFieldErrorsCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false)
-          List<String?>? name,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          List<String?>? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          List<String?>? lastName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? token,
-      @JsonKey(includeIfNull: false)
-          List<String?>? email,
-      @JsonKey(includeIfNull: false)
-          List<String?>? gender,
-      @JsonKey(includeIfNull: false)
-          List<String?>? age,
-      @JsonKey(includeIfNull: false)
-          List<String?>? phone,
-      @JsonKey(includeIfNull: false)
-          List<String?>? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
-          List<String?>? oldPassword,
-      @JsonKey(includeIfNull: false)
-          List<String?>? code,
-      @JsonKey(includeIfNull: false)
-          List<String?>? type,
-      @JsonKey(includeIfNull: false)
-          List<String?>? description,
-      @JsonKey(includeIfNull: false)
-          List<String?>? document,
-      @JsonKey(includeIfNull: false)
-          List<String?>? duration,
-      @JsonKey(includeIfNull: false)
-          List<String?>? amount,
-      @JsonKey(includeIfNull: false, name: 'currency_id')
-          List<String?>? currencyId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? country,
-      @JsonKey(includeIfNull: false)
-          List<String?>? comment,
-      @JsonKey(includeIfNull: false, name: 'account_number')
-          List<String?>? accountNumber,
-      @JsonKey(includeIfNull: false, name: 'bank_id')
-          List<String?>? bankId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? recipient,
-      @JsonKey(includeIfNull: false)
-          List<String?>? plan,
-      @JsonKey(includeIfNull: false, name: 'payment_method')
-          List<String?>? paymentMethod,
-      @JsonKey(includeIfNull: false)
-          List<String?>? lat,
-      @JsonKey(includeIfNull: false)
-          List<String?>? long,
-      @JsonKey(includeIfNull: false)
-          List<String?>? zip,
-      @JsonKey(includeIfNull: false)
-          List<String?>? instructions,
-      @JsonKey(includeIfNull: false, name: 'country_id')
-          List<String?>? countryId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? alias,
-      @JsonKey(includeIfNull: false)
-          List<String?>? apartment,
-      @JsonKey(includeIfNull: false)
-          List<String?>? street,
-      @JsonKey(includeIfNull: false)
-          List<String?>? town,
-      @JsonKey(includeIfNull: false)
-          List<String?>? city,
-      @JsonKey(includeIfNull: false, name: 'state_id')
-          List<String?>? stateId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? state,
-      @JsonKey(includeIfNull: false)
-          List<String?>? landmark,
-      @JsonKey(includeIfNull: false, name: 'card_number')
-          List<String?>? cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName,
-      @JsonKey(includeIfNull: false, name: 'pickup_lat')
-          List<String?>? pickupLat,
-      @JsonKey(includeIfNull: false, name: 'destination_lat')
-          List<String?>? destLat,
-      @JsonKey(includeIfNull: false, name: 'item_name')
-          List<String?>? itemName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? quantity,
-      @JsonKey(includeIfNull: false)
-          List<String?>? images,
-      @JsonKey(includeIfNull: false, name: 'unit_price')
-          List<String?>? unitPrice,
-      @JsonKey(includeIfNull: false, name: 'required_date')
-          List<String?>? requiredDate,
-      @JsonKey(includeIfNull: false, name: 'message')
-          List<String?>? supportMessage});
+      {List<String?>? name,
+      @JsonKey(name: 'first_name') List<String?>? firstName,
+      @JsonKey(name: 'last_name') List<String?>? lastName,
+      List<String?>? token,
+      List<String?>? email,
+      List<String?>? gender,
+      List<String?>? age,
+      List<String?>? phone,
+      List<String?>? password,
+      @JsonKey(name: 'current_password') List<String?>? oldPassword,
+      List<String?>? code,
+      List<String?>? type,
+      List<String?>? description,
+      List<String?>? document,
+      List<String?>? duration,
+      List<String?>? amount,
+      @JsonKey(name: 'currency_id') List<String?>? currencyId,
+      List<String?>? country,
+      List<String?>? comment,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'bank_id') List<String?>? bankId,
+      List<String?>? recipient,
+      List<String?>? plan,
+      @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
+      List<String?>? lat,
+      List<String?>? long,
+      List<String?>? zip,
+      List<String?>? instructions,
+      @JsonKey(name: 'country_id') List<String?>? countryId,
+      List<String?>? alias,
+      List<String?>? apartment,
+      List<String?>? street,
+      List<String?>? town,
+      List<String?>? city,
+      @JsonKey(name: 'state_id') List<String?>? stateId,
+      List<String?>? state,
+      List<String?>? landmark,
+      @JsonKey(name: 'card_number') List<String?>? cardNumber,
+      @JsonKey(name: 'card_name') List<String?>? cardName,
+      @JsonKey(name: 'pickup_lat') List<String?>? pickupLat,
+      @JsonKey(name: 'destination_lat') List<String?>? destLat,
+      @JsonKey(name: 'item_name') List<String?>? itemName,
+      List<String?>? quantity,
+      List<String?>? images,
+      @JsonKey(name: 'unit_price') List<String?>? unitPrice,
+      @JsonKey(name: 'required_date') List<String?>? requiredDate,
+      @JsonKey(name: 'message') List<String?>? supportMessage,
+      @JsonKey(name: 'front_image') List<String?>? frontImage,
+      @JsonKey(name: 'back_image') List<String?>? backImage});
 }
 
 /// @nodoc
@@ -438,6 +324,8 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
     Object? unitPrice = freezed,
     Object? requiredDate = freezed,
     Object? supportMessage = freezed,
+    Object? frontImage = freezed,
+    Object? backImage = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -628,6 +516,14 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.supportMessage
           : supportMessage // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      frontImage: frontImage == freezed
+          ? _value.frontImage
+          : frontImage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      backImage: backImage == freezed
+          ? _value.backImage
+          : backImage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
     ));
   }
 }
@@ -640,100 +536,55 @@ abstract class _$ServerFieldErrorsCopyWith<$Res>
       __$ServerFieldErrorsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false)
-          List<String?>? name,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          List<String?>? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          List<String?>? lastName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? token,
-      @JsonKey(includeIfNull: false)
-          List<String?>? email,
-      @JsonKey(includeIfNull: false)
-          List<String?>? gender,
-      @JsonKey(includeIfNull: false)
-          List<String?>? age,
-      @JsonKey(includeIfNull: false)
-          List<String?>? phone,
-      @JsonKey(includeIfNull: false)
-          List<String?>? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
-          List<String?>? oldPassword,
-      @JsonKey(includeIfNull: false)
-          List<String?>? code,
-      @JsonKey(includeIfNull: false)
-          List<String?>? type,
-      @JsonKey(includeIfNull: false)
-          List<String?>? description,
-      @JsonKey(includeIfNull: false)
-          List<String?>? document,
-      @JsonKey(includeIfNull: false)
-          List<String?>? duration,
-      @JsonKey(includeIfNull: false)
-          List<String?>? amount,
-      @JsonKey(includeIfNull: false, name: 'currency_id')
-          List<String?>? currencyId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? country,
-      @JsonKey(includeIfNull: false)
-          List<String?>? comment,
-      @JsonKey(includeIfNull: false, name: 'account_number')
-          List<String?>? accountNumber,
-      @JsonKey(includeIfNull: false, name: 'bank_id')
-          List<String?>? bankId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? recipient,
-      @JsonKey(includeIfNull: false)
-          List<String?>? plan,
-      @JsonKey(includeIfNull: false, name: 'payment_method')
-          List<String?>? paymentMethod,
-      @JsonKey(includeIfNull: false)
-          List<String?>? lat,
-      @JsonKey(includeIfNull: false)
-          List<String?>? long,
-      @JsonKey(includeIfNull: false)
-          List<String?>? zip,
-      @JsonKey(includeIfNull: false)
-          List<String?>? instructions,
-      @JsonKey(includeIfNull: false, name: 'country_id')
-          List<String?>? countryId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? alias,
-      @JsonKey(includeIfNull: false)
-          List<String?>? apartment,
-      @JsonKey(includeIfNull: false)
-          List<String?>? street,
-      @JsonKey(includeIfNull: false)
-          List<String?>? town,
-      @JsonKey(includeIfNull: false)
-          List<String?>? city,
-      @JsonKey(includeIfNull: false, name: 'state_id')
-          List<String?>? stateId,
-      @JsonKey(includeIfNull: false)
-          List<String?>? state,
-      @JsonKey(includeIfNull: false)
-          List<String?>? landmark,
-      @JsonKey(includeIfNull: false, name: 'card_number')
-          List<String?>? cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName,
-      @JsonKey(includeIfNull: false, name: 'pickup_lat')
-          List<String?>? pickupLat,
-      @JsonKey(includeIfNull: false, name: 'destination_lat')
-          List<String?>? destLat,
-      @JsonKey(includeIfNull: false, name: 'item_name')
-          List<String?>? itemName,
-      @JsonKey(includeIfNull: false)
-          List<String?>? quantity,
-      @JsonKey(includeIfNull: false)
-          List<String?>? images,
-      @JsonKey(includeIfNull: false, name: 'unit_price')
-          List<String?>? unitPrice,
-      @JsonKey(includeIfNull: false, name: 'required_date')
-          List<String?>? requiredDate,
-      @JsonKey(includeIfNull: false, name: 'message')
-          List<String?>? supportMessage});
+      {List<String?>? name,
+      @JsonKey(name: 'first_name') List<String?>? firstName,
+      @JsonKey(name: 'last_name') List<String?>? lastName,
+      List<String?>? token,
+      List<String?>? email,
+      List<String?>? gender,
+      List<String?>? age,
+      List<String?>? phone,
+      List<String?>? password,
+      @JsonKey(name: 'current_password') List<String?>? oldPassword,
+      List<String?>? code,
+      List<String?>? type,
+      List<String?>? description,
+      List<String?>? document,
+      List<String?>? duration,
+      List<String?>? amount,
+      @JsonKey(name: 'currency_id') List<String?>? currencyId,
+      List<String?>? country,
+      List<String?>? comment,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'bank_id') List<String?>? bankId,
+      List<String?>? recipient,
+      List<String?>? plan,
+      @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
+      List<String?>? lat,
+      List<String?>? long,
+      List<String?>? zip,
+      List<String?>? instructions,
+      @JsonKey(name: 'country_id') List<String?>? countryId,
+      List<String?>? alias,
+      List<String?>? apartment,
+      List<String?>? street,
+      List<String?>? town,
+      List<String?>? city,
+      @JsonKey(name: 'state_id') List<String?>? stateId,
+      List<String?>? state,
+      List<String?>? landmark,
+      @JsonKey(name: 'card_number') List<String?>? cardNumber,
+      @JsonKey(name: 'card_name') List<String?>? cardName,
+      @JsonKey(name: 'pickup_lat') List<String?>? pickupLat,
+      @JsonKey(name: 'destination_lat') List<String?>? destLat,
+      @JsonKey(name: 'item_name') List<String?>? itemName,
+      List<String?>? quantity,
+      List<String?>? images,
+      @JsonKey(name: 'unit_price') List<String?>? unitPrice,
+      @JsonKey(name: 'required_date') List<String?>? requiredDate,
+      @JsonKey(name: 'message') List<String?>? supportMessage,
+      @JsonKey(name: 'front_image') List<String?>? frontImage,
+      @JsonKey(name: 'back_image') List<String?>? backImage});
 }
 
 /// @nodoc
@@ -796,6 +647,8 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
     Object? unitPrice = freezed,
     Object? requiredDate = freezed,
     Object? supportMessage = freezed,
+    Object? frontImage = freezed,
+    Object? backImage = freezed,
   }) {
     return _then(_ServerFieldErrors(
       name: name == freezed
@@ -986,6 +839,14 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.supportMessage
           : supportMessage // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      frontImage: frontImage == freezed
+          ? _value.frontImage
+          : frontImage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      backImage: backImage == freezed
+          ? _value.backImage
+          : backImage // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
     ));
   }
 }
@@ -994,203 +855,181 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ServerFieldErrors extends _ServerFieldErrors {
   const _$_ServerFieldErrors(
-      {@JsonKey(includeIfNull: false) this.name,
-      @JsonKey(includeIfNull: false, name: 'first_name') this.firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name') this.lastName,
-      @JsonKey(includeIfNull: false) this.token,
-      @JsonKey(includeIfNull: false) this.email,
-      @JsonKey(includeIfNull: false) this.gender,
-      @JsonKey(includeIfNull: false) this.age,
-      @JsonKey(includeIfNull: false) this.phone,
-      @JsonKey(includeIfNull: false) this.password,
-      @JsonKey(includeIfNull: false, name: 'current_password') this.oldPassword,
-      @JsonKey(includeIfNull: false) this.code,
-      @JsonKey(includeIfNull: false) this.type,
-      @JsonKey(includeIfNull: false) this.description,
-      @JsonKey(includeIfNull: false) this.document,
-      @JsonKey(includeIfNull: false) this.duration,
-      @JsonKey(includeIfNull: false) this.amount,
-      @JsonKey(includeIfNull: false, name: 'currency_id') this.currencyId,
-      @JsonKey(includeIfNull: false) this.country,
-      @JsonKey(includeIfNull: false) this.comment,
-      @JsonKey(includeIfNull: false, name: 'account_number') this.accountNumber,
-      @JsonKey(includeIfNull: false, name: 'bank_id') this.bankId,
-      @JsonKey(includeIfNull: false) this.recipient,
-      @JsonKey(includeIfNull: false) this.plan,
-      @JsonKey(includeIfNull: false, name: 'payment_method') this.paymentMethod,
-      @JsonKey(includeIfNull: false) this.lat,
-      @JsonKey(includeIfNull: false) this.long,
-      @JsonKey(includeIfNull: false) this.zip,
-      @JsonKey(includeIfNull: false) this.instructions,
-      @JsonKey(includeIfNull: false, name: 'country_id') this.countryId,
-      @JsonKey(includeIfNull: false) this.alias,
-      @JsonKey(includeIfNull: false) this.apartment,
-      @JsonKey(includeIfNull: false) this.street,
-      @JsonKey(includeIfNull: false) this.town,
-      @JsonKey(includeIfNull: false) this.city,
-      @JsonKey(includeIfNull: false, name: 'state_id') this.stateId,
-      @JsonKey(includeIfNull: false) this.state,
-      @JsonKey(includeIfNull: false) this.landmark,
-      @JsonKey(includeIfNull: false, name: 'card_number') this.cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name') this.cardName,
-      @JsonKey(includeIfNull: false, name: 'pickup_lat') this.pickupLat,
-      @JsonKey(includeIfNull: false, name: 'destination_lat') this.destLat,
-      @JsonKey(includeIfNull: false, name: 'item_name') this.itemName,
-      @JsonKey(includeIfNull: false) this.quantity,
-      @JsonKey(includeIfNull: false) this.images,
-      @JsonKey(includeIfNull: false, name: 'unit_price') this.unitPrice,
-      @JsonKey(includeIfNull: false, name: 'required_date') this.requiredDate,
-      @JsonKey(includeIfNull: false, name: 'message') this.supportMessage})
+      {this.name,
+      @JsonKey(name: 'first_name') this.firstName,
+      @JsonKey(name: 'last_name') this.lastName,
+      this.token,
+      this.email,
+      this.gender,
+      this.age,
+      this.phone,
+      this.password,
+      @JsonKey(name: 'current_password') this.oldPassword,
+      this.code,
+      this.type,
+      this.description,
+      this.document,
+      this.duration,
+      this.amount,
+      @JsonKey(name: 'currency_id') this.currencyId,
+      this.country,
+      this.comment,
+      @JsonKey(name: 'account_number') this.accountNumber,
+      @JsonKey(name: 'bank_id') this.bankId,
+      this.recipient,
+      this.plan,
+      @JsonKey(name: 'payment_method') this.paymentMethod,
+      this.lat,
+      this.long,
+      this.zip,
+      this.instructions,
+      @JsonKey(name: 'country_id') this.countryId,
+      this.alias,
+      this.apartment,
+      this.street,
+      this.town,
+      this.city,
+      @JsonKey(name: 'state_id') this.stateId,
+      this.state,
+      this.landmark,
+      @JsonKey(name: 'card_number') this.cardNumber,
+      @JsonKey(name: 'card_name') this.cardName,
+      @JsonKey(name: 'pickup_lat') this.pickupLat,
+      @JsonKey(name: 'destination_lat') this.destLat,
+      @JsonKey(name: 'item_name') this.itemName,
+      this.quantity,
+      this.images,
+      @JsonKey(name: 'unit_price') this.unitPrice,
+      @JsonKey(name: 'required_date') this.requiredDate,
+      @JsonKey(name: 'message') this.supportMessage,
+      @JsonKey(name: 'front_image') this.frontImage,
+      @JsonKey(name: 'back_image') this.backImage})
       : super._();
 
   factory _$_ServerFieldErrors.fromJson(Map<String, dynamic> json) =>
       _$$_ServerFieldErrorsFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? name;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   final List<String?>? firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   final List<String?>? lastName;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? token;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? email;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? gender;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? age;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? phone;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? password;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   final List<String?>? oldPassword;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? code;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? type;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? description;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? document;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? duration;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? amount;
   @override
-  @JsonKey(includeIfNull: false, name: 'currency_id')
+  @JsonKey(name: 'currency_id')
   final List<String?>? currencyId;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? country;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? comment;
   @override
-  @JsonKey(includeIfNull: false, name: 'account_number')
+  @JsonKey(name: 'account_number')
   final List<String?>? accountNumber;
   @override
-  @JsonKey(includeIfNull: false, name: 'bank_id')
+  @JsonKey(name: 'bank_id')
   final List<String?>? bankId;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? recipient;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? plan;
   @override
-  @JsonKey(includeIfNull: false, name: 'payment_method')
+  @JsonKey(name: 'payment_method')
   final List<String?>? paymentMethod;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? lat;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? long;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? zip;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? instructions;
   @override
-  @JsonKey(includeIfNull: false, name: 'country_id')
+  @JsonKey(name: 'country_id')
   final List<String?>? countryId;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? alias;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? apartment;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? street;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? town;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? city;
   @override
-  @JsonKey(includeIfNull: false, name: 'state_id')
+  @JsonKey(name: 'state_id')
   final List<String?>? stateId;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? state;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? landmark;
   @override
-  @JsonKey(includeIfNull: false, name: 'card_number')
+  @JsonKey(name: 'card_number')
   final List<String?>? cardNumber;
   @override
-  @JsonKey(includeIfNull: false, name: 'card_name')
+  @JsonKey(name: 'card_name')
   final List<String?>? cardName;
   @override
-  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @JsonKey(name: 'pickup_lat')
   final List<String?>? pickupLat;
   @override
-  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @JsonKey(name: 'destination_lat')
   final List<String?>? destLat;
   @override
-  @JsonKey(includeIfNull: false, name: 'item_name')
+  @JsonKey(name: 'item_name')
   final List<String?>? itemName;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? quantity;
   @override
-  @JsonKey(includeIfNull: false)
   final List<String?>? images;
   @override
-  @JsonKey(includeIfNull: false, name: 'unit_price')
+  @JsonKey(name: 'unit_price')
   final List<String?>? unitPrice;
   @override
-  @JsonKey(includeIfNull: false, name: 'required_date')
+  @JsonKey(name: 'required_date')
   final List<String?>? requiredDate;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   final List<String?>? supportMessage;
+  @override
+  @JsonKey(name: 'front_image')
+  final List<String?>? frontImage;
+  @override
+  @JsonKey(name: 'back_image')
+  final List<String?>? backImage;
 
   @override
   String toString() {
-    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, accountNumber: $accountNumber, bankId: $bankId, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName, pickupLat: $pickupLat, destLat: $destLat, itemName: $itemName, quantity: $quantity, images: $images, unitPrice: $unitPrice, requiredDate: $requiredDate, supportMessage: $supportMessage)';
+    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, accountNumber: $accountNumber, bankId: $bankId, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName, pickupLat: $pickupLat, destLat: $destLat, itemName: $itemName, quantity: $quantity, images: $images, unitPrice: $unitPrice, requiredDate: $requiredDate, supportMessage: $supportMessage, frontImage: $frontImage, backImage: $backImage)';
   }
 
   @override
@@ -1253,7 +1092,10 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
             const DeepCollectionEquality()
                 .equals(other.requiredDate, requiredDate) &&
             const DeepCollectionEquality()
-                .equals(other.supportMessage, supportMessage));
+                .equals(other.supportMessage, supportMessage) &&
+            const DeepCollectionEquality()
+                .equals(other.frontImage, frontImage) &&
+            const DeepCollectionEquality().equals(other.backImage, backImage));
   }
 
   @override
@@ -1305,7 +1147,9 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
         const DeepCollectionEquality().hash(images),
         const DeepCollectionEquality().hash(unitPrice),
         const DeepCollectionEquality().hash(requiredDate),
-        const DeepCollectionEquality().hash(supportMessage)
+        const DeepCollectionEquality().hash(supportMessage),
+        const DeepCollectionEquality().hash(frontImage),
+        const DeepCollectionEquality().hash(backImage)
       ]);
 
   @JsonKey(ignore: true)
@@ -1321,246 +1165,178 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
 
 abstract class _ServerFieldErrors extends ServerFieldErrors {
   const factory _ServerFieldErrors(
-      {@JsonKey(includeIfNull: false)
-          List<String?>? name,
-      @JsonKey(includeIfNull: false, name: 'first_name')
-          List<String?>? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
-          List<String?>? lastName,
-      @JsonKey(includeIfNull: false)
+          {List<String?>? name,
+          @JsonKey(name: 'first_name') List<String?>? firstName,
+          @JsonKey(name: 'last_name') List<String?>? lastName,
           List<String?>? token,
-      @JsonKey(includeIfNull: false)
           List<String?>? email,
-      @JsonKey(includeIfNull: false)
           List<String?>? gender,
-      @JsonKey(includeIfNull: false)
           List<String?>? age,
-      @JsonKey(includeIfNull: false)
           List<String?>? phone,
-      @JsonKey(includeIfNull: false)
           List<String?>? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
-          List<String?>? oldPassword,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'current_password') List<String?>? oldPassword,
           List<String?>? code,
-      @JsonKey(includeIfNull: false)
           List<String?>? type,
-      @JsonKey(includeIfNull: false)
           List<String?>? description,
-      @JsonKey(includeIfNull: false)
           List<String?>? document,
-      @JsonKey(includeIfNull: false)
           List<String?>? duration,
-      @JsonKey(includeIfNull: false)
           List<String?>? amount,
-      @JsonKey(includeIfNull: false, name: 'currency_id')
-          List<String?>? currencyId,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'currency_id') List<String?>? currencyId,
           List<String?>? country,
-      @JsonKey(includeIfNull: false)
           List<String?>? comment,
-      @JsonKey(includeIfNull: false, name: 'account_number')
-          List<String?>? accountNumber,
-      @JsonKey(includeIfNull: false, name: 'bank_id')
-          List<String?>? bankId,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'account_number') List<String?>? accountNumber,
+          @JsonKey(name: 'bank_id') List<String?>? bankId,
           List<String?>? recipient,
-      @JsonKey(includeIfNull: false)
           List<String?>? plan,
-      @JsonKey(includeIfNull: false, name: 'payment_method')
-          List<String?>? paymentMethod,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
           List<String?>? lat,
-      @JsonKey(includeIfNull: false)
           List<String?>? long,
-      @JsonKey(includeIfNull: false)
           List<String?>? zip,
-      @JsonKey(includeIfNull: false)
           List<String?>? instructions,
-      @JsonKey(includeIfNull: false, name: 'country_id')
-          List<String?>? countryId,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'country_id') List<String?>? countryId,
           List<String?>? alias,
-      @JsonKey(includeIfNull: false)
           List<String?>? apartment,
-      @JsonKey(includeIfNull: false)
           List<String?>? street,
-      @JsonKey(includeIfNull: false)
           List<String?>? town,
-      @JsonKey(includeIfNull: false)
           List<String?>? city,
-      @JsonKey(includeIfNull: false, name: 'state_id')
-          List<String?>? stateId,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'state_id') List<String?>? stateId,
           List<String?>? state,
-      @JsonKey(includeIfNull: false)
           List<String?>? landmark,
-      @JsonKey(includeIfNull: false, name: 'card_number')
-          List<String?>? cardNumber,
-      @JsonKey(includeIfNull: false, name: 'card_name')
-          List<String?>? cardName,
-      @JsonKey(includeIfNull: false, name: 'pickup_lat')
-          List<String?>? pickupLat,
-      @JsonKey(includeIfNull: false, name: 'destination_lat')
-          List<String?>? destLat,
-      @JsonKey(includeIfNull: false, name: 'item_name')
-          List<String?>? itemName,
-      @JsonKey(includeIfNull: false)
+          @JsonKey(name: 'card_number') List<String?>? cardNumber,
+          @JsonKey(name: 'card_name') List<String?>? cardName,
+          @JsonKey(name: 'pickup_lat') List<String?>? pickupLat,
+          @JsonKey(name: 'destination_lat') List<String?>? destLat,
+          @JsonKey(name: 'item_name') List<String?>? itemName,
           List<String?>? quantity,
-      @JsonKey(includeIfNull: false)
           List<String?>? images,
-      @JsonKey(includeIfNull: false, name: 'unit_price')
-          List<String?>? unitPrice,
-      @JsonKey(includeIfNull: false, name: 'required_date')
-          List<String?>? requiredDate,
-      @JsonKey(includeIfNull: false, name: 'message')
-          List<String?>? supportMessage}) = _$_ServerFieldErrors;
+          @JsonKey(name: 'unit_price') List<String?>? unitPrice,
+          @JsonKey(name: 'required_date') List<String?>? requiredDate,
+          @JsonKey(name: 'message') List<String?>? supportMessage,
+          @JsonKey(name: 'front_image') List<String?>? frontImage,
+          @JsonKey(name: 'back_image') List<String?>? backImage}) =
+      _$_ServerFieldErrors;
   const _ServerFieldErrors._() : super._();
 
   factory _ServerFieldErrors.fromJson(Map<String, dynamic> json) =
       _$_ServerFieldErrors.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get name;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   List<String?>? get firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   List<String?>? get lastName;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get token;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get email;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get gender;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get age;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get phone;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get password;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   List<String?>? get oldPassword;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get code;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get type;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get description;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get document;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get duration;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get amount;
   @override
-  @JsonKey(includeIfNull: false, name: 'currency_id')
+  @JsonKey(name: 'currency_id')
   List<String?>? get currencyId;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get country;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get comment;
   @override
-  @JsonKey(includeIfNull: false, name: 'account_number')
+  @JsonKey(name: 'account_number')
   List<String?>? get accountNumber;
   @override
-  @JsonKey(includeIfNull: false, name: 'bank_id')
+  @JsonKey(name: 'bank_id')
   List<String?>? get bankId;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get recipient;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get plan;
   @override
-  @JsonKey(includeIfNull: false, name: 'payment_method')
+  @JsonKey(name: 'payment_method')
   List<String?>? get paymentMethod;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get lat;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get long;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get zip;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get instructions;
   @override
-  @JsonKey(includeIfNull: false, name: 'country_id')
+  @JsonKey(name: 'country_id')
   List<String?>? get countryId;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get alias;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get apartment;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get street;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get town;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get city;
   @override
-  @JsonKey(includeIfNull: false, name: 'state_id')
+  @JsonKey(name: 'state_id')
   List<String?>? get stateId;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get state;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get landmark;
   @override
-  @JsonKey(includeIfNull: false, name: 'card_number')
+  @JsonKey(name: 'card_number')
   List<String?>? get cardNumber;
   @override
-  @JsonKey(includeIfNull: false, name: 'card_name')
+  @JsonKey(name: 'card_name')
   List<String?>? get cardName;
   @override
-  @JsonKey(includeIfNull: false, name: 'pickup_lat')
+  @JsonKey(name: 'pickup_lat')
   List<String?>? get pickupLat;
   @override
-  @JsonKey(includeIfNull: false, name: 'destination_lat')
+  @JsonKey(name: 'destination_lat')
   List<String?>? get destLat;
   @override
-  @JsonKey(includeIfNull: false, name: 'item_name')
+  @JsonKey(name: 'item_name')
   List<String?>? get itemName;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get quantity;
   @override
-  @JsonKey(includeIfNull: false)
   List<String?>? get images;
   @override
-  @JsonKey(includeIfNull: false, name: 'unit_price')
+  @JsonKey(name: 'unit_price')
   List<String?>? get unitPrice;
   @override
-  @JsonKey(includeIfNull: false, name: 'required_date')
+  @JsonKey(name: 'required_date')
   List<String?>? get requiredDate;
   @override
-  @JsonKey(includeIfNull: false, name: 'message')
+  @JsonKey(name: 'message')
   List<String?>? get supportMessage;
+  @override
+  @JsonKey(name: 'front_image')
+  List<String?>? get frontImage;
+  @override
+  @JsonKey(name: 'back_image')
+  List<String?>? get backImage;
   @override
   @JsonKey(ignore: true)
   _$ServerFieldErrorsCopyWith<_ServerFieldErrors> get copyWith =>

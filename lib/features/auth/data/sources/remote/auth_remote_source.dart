@@ -126,8 +126,6 @@ class AuthRemoteDatasource {
     return _dio.patch(EndPoints.UPDATE_PASSWORD, data: data);
   }
 
-  // Future<Response<dynamic>> addBankInformation() {}
-
   Future<Response<dynamic>> signInWithGoogle(String? token) async {
     // Generate Form Data for request
     final data = FormData.fromMap({'token': token});

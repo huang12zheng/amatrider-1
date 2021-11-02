@@ -16,7 +16,7 @@ _$_OpeningHoursDTO _$$_OpeningHoursDTOFromJson(Map<String, dynamic> json) =>
       weekdayText: (json['weekday_text'] as List<dynamic>?)
               ?.map((e) => e as String?)
               .toList() ??
-          const [],
+          [],
     );
 
 Map<String, dynamic> _$$_OpeningHoursDTOToJson(_$_OpeningHoursDTO instance) {

@@ -1,9 +1,11 @@
 library utilities_remote.dart;
 
+import 'dart:io';
+
 import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -23,4 +25,14 @@ abstract class UtilitiesRemote {
 
   @GET(EndPoints.STORE_BANK_ACCOUNT)
   Future<BankAccountDTO> storeBankAccount(@Body() BankAccountDTO dto);
+
+  @POST(EndPoints.DOCUMENT_VERIFICATION)
+  @MultiPart()
+  @Headers(<String, dynamic>{'content-type': 'multipart/form-data'})
+  Future<AppHttpResponse> documentVerification({
+    @Part(name: 'front_image') File front,
+    @Part(name: 'back_image') File back,
+    @Part(name: 'country_id') String countryId,
+    @Part() String type,
+  });
 }

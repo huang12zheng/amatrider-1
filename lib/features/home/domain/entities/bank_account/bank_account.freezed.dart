@@ -19,7 +19,7 @@ class _$BankAccountTearOff {
 
   _BankAccount call(
       {required UniqueId<String?> id,
-      required BasicTextField<String?> riderId,
+      required UniqueId<String?> riderId,
       required BasicTextField<String?> bank,
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
@@ -43,7 +43,7 @@ const $BankAccount = _$BankAccountTearOff();
 /// @nodoc
 mixin _$BankAccount {
   UniqueId<String?> get id => throw _privateConstructorUsedError;
-  BasicTextField<String?> get riderId => throw _privateConstructorUsedError;
+  UniqueId<String?> get riderId => throw _privateConstructorUsedError;
   BasicTextField<String?> get bank => throw _privateConstructorUsedError;
   BasicTextField<String?> get accountName => throw _privateConstructorUsedError;
   BasicTextField<String?> get accountNumber =>
@@ -63,7 +63,7 @@ abstract class $BankAccountCopyWith<$Res> {
       _$BankAccountCopyWithImpl<$Res>;
   $Res call(
       {UniqueId<String?> id,
-      BasicTextField<String?> riderId,
+      UniqueId<String?> riderId,
       BasicTextField<String?> bank,
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
@@ -97,7 +97,7 @@ class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
       riderId: riderId == freezed
           ? _value.riderId
           : riderId // ignore: cast_nullable_to_non_nullable
-              as BasicTextField<String?>,
+              as UniqueId<String?>,
       bank: bank == freezed
           ? _value.bank
           : bank // ignore: cast_nullable_to_non_nullable
@@ -131,7 +131,7 @@ abstract class _$BankAccountCopyWith<$Res>
   @override
   $Res call(
       {UniqueId<String?> id,
-      BasicTextField<String?> riderId,
+      UniqueId<String?> riderId,
       BasicTextField<String?> bank,
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
@@ -167,7 +167,7 @@ class __$BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
       riderId: riderId == freezed
           ? _value.riderId
           : riderId // ignore: cast_nullable_to_non_nullable
-              as BasicTextField<String?>,
+              as UniqueId<String?>,
       bank: bank == freezed
           ? _value.bank
           : bank // ignore: cast_nullable_to_non_nullable
@@ -208,7 +208,7 @@ class _$_BankAccount extends _BankAccount {
   @override
   final UniqueId<String?> id;
   @override
-  final BasicTextField<String?> riderId;
+  final UniqueId<String?> riderId;
   @override
   final BasicTextField<String?> bank;
   @override
@@ -256,7 +256,7 @@ class _$_BankAccount extends _BankAccount {
 abstract class _BankAccount extends BankAccount {
   const factory _BankAccount(
       {required UniqueId<String?> id,
-      required BasicTextField<String?> riderId,
+      required UniqueId<String?> riderId,
       required BasicTextField<String?> bank,
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
@@ -267,7 +267,7 @@ abstract class _BankAccount extends BankAccount {
   @override
   UniqueId<String?> get id;
   @override
-  BasicTextField<String?> get riderId;
+  UniqueId<String?> get riderId;
   @override
   BasicTextField<String?> get bank;
   @override

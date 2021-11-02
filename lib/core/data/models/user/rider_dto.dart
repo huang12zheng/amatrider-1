@@ -7,39 +7,27 @@ class RiderDTO with _$RiderDTO {
 
   @Entity(tableName: RiderDTO.tableName)
   const factory RiderDTO({
-    @primaryKey @JsonKey(includeIfNull: false) String? id,
-    @JsonKey(includeIfNull: false) String? token,
-    @JsonKey(includeIfNull: false, name: 'first_name') String? firstName,
-    @JsonKey(includeIfNull: false, name: 'last_name') String? lastName,
-    @JsonKey(includeIfNull: false) String? email,
-    @JsonKey(includeIfNull: false) String? phone,
-    @JsonKey(includeIfNull: false) String? password,
-    @JsonKey(includeIfNull: false, name: 'current_password')
-        String? oldPassword,
-    @JsonKey(includeIfNull: false, name: 'password_confirmation')
-        String? confirmation,
-    @JsonKey(includeIfNull: false, name: 'image') String? image,
-    @JsonKey(includeIfNull: false, name: 'availability')
+    @primaryKey String? id,
+    String? token,
+    @JsonKey(name: 'first_name') String? firstName,
+    @JsonKey(name: 'last_name') String? lastName,
+    String? email,
+    String? phone,
+    String? password,
+    @JsonKey(name: 'current_password') String? oldPassword,
+    @JsonKey(name: 'password_confirmation') String? confirmation,
+    @JsonKey(name: 'image') String? image,
+    @JsonKey(name: 'availability')
     @RiderAvailabilitySerializer()
         RiderAvailability? availability,
-    @JsonKey(includeIfNull: false, name: 'current_latitude')
-    @DoubleSerializer()
-        double? lat,
-    @JsonKey(includeIfNull: false, name: 'current_longitude')
-    @DoubleSerializer()
-        double? lng,
-    @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+    @JsonKey(name: 'current_latitude') @DoubleSerializer() double? lat,
+    @JsonKey(name: 'current_longitude') @DoubleSerializer() double? lng,
+    @JsonKey(name: 'phone_verified_at')
     @TimestampConverter()
         DateTime? phoneVerifiedAt,
-    @JsonKey(includeIfNull: false, name: 'created_at')
-    @TimestampConverter()
-        DateTime? createdAt,
-    @JsonKey(includeIfNull: false, name: 'updated_at')
-    @TimestampConverter()
-        DateTime? updatedAt,
-    @JsonKey(includeIfNull: false, name: 'deleted_at')
-    @TimestampConverter()
-        DateTime? deletedAt,
+    @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
+    @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
+    @JsonKey(name: 'deleted_at') @TimestampConverter() DateTime? deletedAt,
   }) = _RiderDTO;
 
   const RiderDTO._();

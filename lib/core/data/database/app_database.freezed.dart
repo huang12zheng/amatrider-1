@@ -23,45 +23,40 @@ class _$RiderDTOTearOff {
 
   _RiderDTO call(
       {@primaryKey
-      @JsonKey(includeIfNull: false)
           String? id,
-      @JsonKey(includeIfNull: false)
-          String? token,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      String? token,
+      @JsonKey(name: 'first_name')
           String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false)
-          String? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
+      String? email,
+      String? phone,
+      String? password,
+      @JsonKey(name: 'current_password')
           String? oldPassword,
-      @JsonKey(includeIfNull: false, name: 'password_confirmation')
+      @JsonKey(name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'image')
+      @JsonKey(name: 'image')
           String? image,
-      @JsonKey(includeIfNull: false, name: 'availability')
+      @JsonKey(name: 'availability')
       @RiderAvailabilitySerializer()
           RiderAvailability? availability,
-      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @JsonKey(name: 'current_latitude')
       @DoubleSerializer()
           double? lat,
-      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @JsonKey(name: 'current_longitude')
       @DoubleSerializer()
           double? lng,
-      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @JsonKey(name: 'phone_verified_at')
       @TimestampConverter()
           DateTime? phoneVerifiedAt,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
-      @JsonKey(includeIfNull: false, name: 'updated_at')
+      @JsonKey(name: 'updated_at')
       @TimestampConverter()
           DateTime? updatedAt,
-      @JsonKey(includeIfNull: false, name: 'deleted_at')
+      @JsonKey(name: 'deleted_at')
       @TimestampConverter()
           DateTime? deletedAt}) {
     return _RiderDTO(
@@ -96,45 +91,40 @@ const $RiderDTO = _$RiderDTOTearOff();
 /// @nodoc
 mixin _$RiderDTO {
   @primaryKey
-  @JsonKey(includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get token => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   String? get firstName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   String? get lastName => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get email => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get phone => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get password => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   String? get oldPassword => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'password_confirmation')
+  @JsonKey(name: 'password_confirmation')
   String? get confirmation => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   String? get image => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'availability')
+  @JsonKey(name: 'availability')
   @RiderAvailabilitySerializer()
   RiderAvailability? get availability => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @JsonKey(name: 'current_latitude')
   @DoubleSerializer()
   double? get lat => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @JsonKey(name: 'current_longitude')
   @DoubleSerializer()
   double? get lng => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @JsonKey(name: 'phone_verified_at')
   @TimestampConverter()
   DateTime? get phoneVerifiedAt => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'updated_at')
+  @JsonKey(name: 'updated_at')
   @TimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'deleted_at')
+  @JsonKey(name: 'deleted_at')
   @TimestampConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
@@ -150,45 +140,40 @@ abstract class $RiderDTOCopyWith<$Res> {
       _$RiderDTOCopyWithImpl<$Res>;
   $Res call(
       {@primaryKey
-      @JsonKey(includeIfNull: false)
           String? id,
-      @JsonKey(includeIfNull: false)
-          String? token,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      String? token,
+      @JsonKey(name: 'first_name')
           String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false)
-          String? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
+      String? email,
+      String? phone,
+      String? password,
+      @JsonKey(name: 'current_password')
           String? oldPassword,
-      @JsonKey(includeIfNull: false, name: 'password_confirmation')
+      @JsonKey(name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'image')
+      @JsonKey(name: 'image')
           String? image,
-      @JsonKey(includeIfNull: false, name: 'availability')
+      @JsonKey(name: 'availability')
       @RiderAvailabilitySerializer()
           RiderAvailability? availability,
-      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @JsonKey(name: 'current_latitude')
       @DoubleSerializer()
           double? lat,
-      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @JsonKey(name: 'current_longitude')
       @DoubleSerializer()
           double? lng,
-      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @JsonKey(name: 'phone_verified_at')
       @TimestampConverter()
           DateTime? phoneVerifiedAt,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
-      @JsonKey(includeIfNull: false, name: 'updated_at')
+      @JsonKey(name: 'updated_at')
       @TimestampConverter()
           DateTime? updatedAt,
-      @JsonKey(includeIfNull: false, name: 'deleted_at')
+      @JsonKey(name: 'deleted_at')
       @TimestampConverter()
           DateTime? deletedAt});
 }
@@ -301,45 +286,40 @@ abstract class _$RiderDTOCopyWith<$Res> implements $RiderDTOCopyWith<$Res> {
   @override
   $Res call(
       {@primaryKey
-      @JsonKey(includeIfNull: false)
           String? id,
-      @JsonKey(includeIfNull: false)
-          String? token,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      String? token,
+      @JsonKey(name: 'first_name')
           String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false)
-          String? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
+      String? email,
+      String? phone,
+      String? password,
+      @JsonKey(name: 'current_password')
           String? oldPassword,
-      @JsonKey(includeIfNull: false, name: 'password_confirmation')
+      @JsonKey(name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'image')
+      @JsonKey(name: 'image')
           String? image,
-      @JsonKey(includeIfNull: false, name: 'availability')
+      @JsonKey(name: 'availability')
       @RiderAvailabilitySerializer()
           RiderAvailability? availability,
-      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @JsonKey(name: 'current_latitude')
       @DoubleSerializer()
           double? lat,
-      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @JsonKey(name: 'current_longitude')
       @DoubleSerializer()
           double? lng,
-      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @JsonKey(name: 'phone_verified_at')
       @TimestampConverter()
           DateTime? phoneVerifiedAt,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
-      @JsonKey(includeIfNull: false, name: 'updated_at')
+      @JsonKey(name: 'updated_at')
       @TimestampConverter()
           DateTime? updatedAt,
-      @JsonKey(includeIfNull: false, name: 'deleted_at')
+      @JsonKey(name: 'deleted_at')
       @TimestampConverter()
           DateTime? deletedAt});
 }
@@ -452,45 +432,40 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
 class _$_RiderDTO extends _RiderDTO {
   const _$_RiderDTO(
       {@primaryKey
-      @JsonKey(includeIfNull: false)
           this.id,
-      @JsonKey(includeIfNull: false)
-          this.token,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      this.token,
+      @JsonKey(name: 'first_name')
           this.firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           this.lastName,
-      @JsonKey(includeIfNull: false)
-          this.email,
-      @JsonKey(includeIfNull: false)
-          this.phone,
-      @JsonKey(includeIfNull: false)
-          this.password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
+      this.email,
+      this.phone,
+      this.password,
+      @JsonKey(name: 'current_password')
           this.oldPassword,
-      @JsonKey(includeIfNull: false, name: 'password_confirmation')
+      @JsonKey(name: 'password_confirmation')
           this.confirmation,
-      @JsonKey(includeIfNull: false, name: 'image')
+      @JsonKey(name: 'image')
           this.image,
-      @JsonKey(includeIfNull: false, name: 'availability')
+      @JsonKey(name: 'availability')
       @RiderAvailabilitySerializer()
           this.availability,
-      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @JsonKey(name: 'current_latitude')
       @DoubleSerializer()
           this.lat,
-      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @JsonKey(name: 'current_longitude')
       @DoubleSerializer()
           this.lng,
-      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @JsonKey(name: 'phone_verified_at')
       @TimestampConverter()
           this.phoneVerifiedAt,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           this.createdAt,
-      @JsonKey(includeIfNull: false, name: 'updated_at')
+      @JsonKey(name: 'updated_at')
       @TimestampConverter()
           this.updatedAt,
-      @JsonKey(includeIfNull: false, name: 'deleted_at')
+      @JsonKey(name: 'deleted_at')
       @TimestampConverter()
           this.deletedAt})
       : super._();
@@ -500,61 +475,56 @@ class _$_RiderDTO extends _RiderDTO {
 
   @override
   @primaryKey
-  @JsonKey(includeIfNull: false)
   final String? id;
   @override
-  @JsonKey(includeIfNull: false)
   final String? token;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   final String? firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   final String? lastName;
   @override
-  @JsonKey(includeIfNull: false)
   final String? email;
   @override
-  @JsonKey(includeIfNull: false)
   final String? phone;
   @override
-  @JsonKey(includeIfNull: false)
   final String? password;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   final String? oldPassword;
   @override
-  @JsonKey(includeIfNull: false, name: 'password_confirmation')
+  @JsonKey(name: 'password_confirmation')
   final String? confirmation;
   @override
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   final String? image;
   @override
-  @JsonKey(includeIfNull: false, name: 'availability')
+  @JsonKey(name: 'availability')
   @RiderAvailabilitySerializer()
   final RiderAvailability? availability;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @JsonKey(name: 'current_latitude')
   @DoubleSerializer()
   final double? lat;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @JsonKey(name: 'current_longitude')
   @DoubleSerializer()
   final double? lng;
   @override
-  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @JsonKey(name: 'phone_verified_at')
   @TimestampConverter()
   final DateTime? phoneVerifiedAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   final DateTime? createdAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'updated_at')
+  @JsonKey(name: 'updated_at')
   @TimestampConverter()
   final DateTime? updatedAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'deleted_at')
+  @JsonKey(name: 'deleted_at')
   @TimestampConverter()
   final DateTime? deletedAt;
 
@@ -632,45 +602,40 @@ class _$_RiderDTO extends _RiderDTO {
 abstract class _RiderDTO extends RiderDTO {
   const factory _RiderDTO(
       {@primaryKey
-      @JsonKey(includeIfNull: false)
           String? id,
-      @JsonKey(includeIfNull: false)
-          String? token,
-      @JsonKey(includeIfNull: false, name: 'first_name')
+      String? token,
+      @JsonKey(name: 'first_name')
           String? firstName,
-      @JsonKey(includeIfNull: false, name: 'last_name')
+      @JsonKey(name: 'last_name')
           String? lastName,
-      @JsonKey(includeIfNull: false)
-          String? email,
-      @JsonKey(includeIfNull: false)
-          String? phone,
-      @JsonKey(includeIfNull: false)
-          String? password,
-      @JsonKey(includeIfNull: false, name: 'current_password')
+      String? email,
+      String? phone,
+      String? password,
+      @JsonKey(name: 'current_password')
           String? oldPassword,
-      @JsonKey(includeIfNull: false, name: 'password_confirmation')
+      @JsonKey(name: 'password_confirmation')
           String? confirmation,
-      @JsonKey(includeIfNull: false, name: 'image')
+      @JsonKey(name: 'image')
           String? image,
-      @JsonKey(includeIfNull: false, name: 'availability')
+      @JsonKey(name: 'availability')
       @RiderAvailabilitySerializer()
           RiderAvailability? availability,
-      @JsonKey(includeIfNull: false, name: 'current_latitude')
+      @JsonKey(name: 'current_latitude')
       @DoubleSerializer()
           double? lat,
-      @JsonKey(includeIfNull: false, name: 'current_longitude')
+      @JsonKey(name: 'current_longitude')
       @DoubleSerializer()
           double? lng,
-      @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+      @JsonKey(name: 'phone_verified_at')
       @TimestampConverter()
           DateTime? phoneVerifiedAt,
-      @JsonKey(includeIfNull: false, name: 'created_at')
+      @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
-      @JsonKey(includeIfNull: false, name: 'updated_at')
+      @JsonKey(name: 'updated_at')
       @TimestampConverter()
           DateTime? updatedAt,
-      @JsonKey(includeIfNull: false, name: 'deleted_at')
+      @JsonKey(name: 'deleted_at')
       @TimestampConverter()
           DateTime? deletedAt}) = _$_RiderDTO;
   const _RiderDTO._() : super._();
@@ -679,61 +644,56 @@ abstract class _RiderDTO extends RiderDTO {
 
   @override
   @primaryKey
-  @JsonKey(includeIfNull: false)
   String? get id;
   @override
-  @JsonKey(includeIfNull: false)
   String? get token;
   @override
-  @JsonKey(includeIfNull: false, name: 'first_name')
+  @JsonKey(name: 'first_name')
   String? get firstName;
   @override
-  @JsonKey(includeIfNull: false, name: 'last_name')
+  @JsonKey(name: 'last_name')
   String? get lastName;
   @override
-  @JsonKey(includeIfNull: false)
   String? get email;
   @override
-  @JsonKey(includeIfNull: false)
   String? get phone;
   @override
-  @JsonKey(includeIfNull: false)
   String? get password;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_password')
+  @JsonKey(name: 'current_password')
   String? get oldPassword;
   @override
-  @JsonKey(includeIfNull: false, name: 'password_confirmation')
+  @JsonKey(name: 'password_confirmation')
   String? get confirmation;
   @override
-  @JsonKey(includeIfNull: false, name: 'image')
+  @JsonKey(name: 'image')
   String? get image;
   @override
-  @JsonKey(includeIfNull: false, name: 'availability')
+  @JsonKey(name: 'availability')
   @RiderAvailabilitySerializer()
   RiderAvailability? get availability;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_latitude')
+  @JsonKey(name: 'current_latitude')
   @DoubleSerializer()
   double? get lat;
   @override
-  @JsonKey(includeIfNull: false, name: 'current_longitude')
+  @JsonKey(name: 'current_longitude')
   @DoubleSerializer()
   double? get lng;
   @override
-  @JsonKey(includeIfNull: false, name: 'phone_verified_at')
+  @JsonKey(name: 'phone_verified_at')
   @TimestampConverter()
   DateTime? get phoneVerifiedAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'created_at')
+  @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'updated_at')
+  @JsonKey(name: 'updated_at')
   @TimestampConverter()
   DateTime? get updatedAt;
   @override
-  @JsonKey(includeIfNull: false, name: 'deleted_at')
+  @JsonKey(name: 'deleted_at')
   @TimestampConverter()
   DateTime? get deletedAt;
   @override

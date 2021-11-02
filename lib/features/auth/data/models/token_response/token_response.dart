@@ -13,9 +13,9 @@ class TokenResponse with _$TokenResponse {
   const TokenResponse._();
 
   const factory TokenResponse({
-    @JsonKey(includeIfNull: false, name: 'access_token') String? accessToken,
-    @JsonKey(includeIfNull: false, name: 'token_type') String? tokenType,
-    @JsonKey(includeIfNull: false, name: 'expires_in') int? expiryDate,
+    @JsonKey(name: 'access_token') String? accessToken,
+    @JsonKey(name: 'token_type') String? tokenType,
+    @JsonKey(name: 'expires_in') int? expiryDate,
   }) = _TokenResponse;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

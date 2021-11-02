@@ -12,7 +12,7 @@ _$_SendPackageListDTO _$$_SendPackageListDTOFromJson(
       data: (json['data'] as List<dynamic>?)
               ?.map((e) => SendPackageDTO.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const [],
+          [],
       links: json['links'] == null
           ? null
           : PaginationLinks.fromJson(json['links'] as Map<String, dynamic>),
