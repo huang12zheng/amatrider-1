@@ -30,9 +30,9 @@ abstract class UtilitiesRemote {
   @MultiPart()
   @Headers(<String, dynamic>{'content-type': 'multipart/form-data'})
   Future<AppHttpResponse> documentVerification({
-    @Part(name: 'front_image') File front,
-    @Part(name: 'back_image') File back,
-    @Part(name: 'country_id') String countryId,
-    @Part() String type,
+    @Part(name: 'front_image') required File front,
+    @Part(name: 'back_image') required File back,
+    @Part(name: 'country_id') required String countryId,
+    @Part() required String type,
   });
 }
