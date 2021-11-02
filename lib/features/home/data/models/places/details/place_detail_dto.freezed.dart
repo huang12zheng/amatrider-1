@@ -22,9 +22,8 @@ class _$PlaceDetailDTOTearOff {
   const _$PlaceDetailDTOTearOff();
 
   _PlaceDetailDTO call(
-      {@JsonKey(name: 'address_components')
-      @JsonKey(defaultValue: [])
-          required List<AddressComponentDTO> addressComponents,
+      {@JsonKey(name: 'address_components', defaultValue: [])
+          List<AddressComponentDTO> addressComponents = const [],
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
       @JsonKey(name: 'formatted_phone_number')
@@ -43,7 +42,7 @@ class _$PlaceDetailDTOTearOff {
           PlusCodeDTO? plusCode,
       String? reference,
       @JsonKey(defaultValue: [])
-          required List<String> types,
+          List<String> types = const [],
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -87,8 +86,7 @@ const $PlaceDetailDTO = _$PlaceDetailDTOTearOff();
 
 /// @nodoc
 mixin _$PlaceDetailDTO {
-  @JsonKey(name: 'address_components')
-  @JsonKey(defaultValue: [])
+  @JsonKey(name: 'address_components', defaultValue: [])
   List<AddressComponentDTO> get addressComponents =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'formatted_address')
@@ -134,8 +132,7 @@ abstract class $PlaceDetailDTOCopyWith<$Res> {
           PlaceDetailDTO value, $Res Function(PlaceDetailDTO) then) =
       _$PlaceDetailDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'address_components')
-      @JsonKey(defaultValue: [])
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -337,8 +334,7 @@ abstract class _$PlaceDetailDTOCopyWith<$Res>
       __$PlaceDetailDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'address_components')
-      @JsonKey(defaultValue: [])
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -495,12 +491,12 @@ class __$PlaceDetailDTOCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(createToJson: false)
 class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
   const _$_PlaceDetailDTO(
-      {@JsonKey(name: 'address_components')
-      @JsonKey(defaultValue: [])
-          required this.addressComponents,
+      {@JsonKey(name: 'address_components', defaultValue: [])
+          this.addressComponents = const [],
       @JsonKey(name: 'formatted_address')
           this.formattedAddress,
       @JsonKey(name: 'formatted_phone_number')
@@ -519,7 +515,7 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
           this.plusCode,
       this.reference,
       @JsonKey(defaultValue: [])
-          required this.types,
+          this.types = const [],
       this.url,
       this.website,
       this.geometry,
@@ -536,8 +532,7 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
       _$$_PlaceDetailDTOFromJson(json);
 
   @override
-  @JsonKey(name: 'address_components')
-  @JsonKey(defaultValue: [])
+  @JsonKey(name: 'address_components', defaultValue: [])
   final List<AddressComponentDTO> addressComponents;
   @override
   @JsonKey(name: 'formatted_address')
@@ -694,9 +689,8 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
 
 abstract class _PlaceDetailDTO extends PlaceDetailDTO {
   const factory _PlaceDetailDTO(
-      {@JsonKey(name: 'address_components')
-      @JsonKey(defaultValue: [])
-          required List<AddressComponentDTO> addressComponents,
+      {@JsonKey(name: 'address_components', defaultValue: [])
+          List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
       @JsonKey(name: 'formatted_phone_number')
@@ -715,7 +709,7 @@ abstract class _PlaceDetailDTO extends PlaceDetailDTO {
           PlusCodeDTO? plusCode,
       String? reference,
       @JsonKey(defaultValue: [])
-          required List<String> types,
+          List<String> types,
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -732,8 +726,7 @@ abstract class _PlaceDetailDTO extends PlaceDetailDTO {
       _$_PlaceDetailDTO.fromJson;
 
   @override
-  @JsonKey(name: 'address_components')
-  @JsonKey(defaultValue: [])
+  @JsonKey(name: 'address_components', defaultValue: [])
   List<AddressComponentDTO> get addressComponents;
   @override
   @JsonKey(name: 'formatted_address')

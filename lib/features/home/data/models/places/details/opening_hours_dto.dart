@@ -14,9 +14,11 @@ class OpeningHoursDTO with _$OpeningHoursDTO {
 
   const factory OpeningHoursDTO({
     @JsonKey(name: 'open_now') bool? openNow,
-    @JsonKey(defaultValue: []) required List<PeriodDTO> periods,
+    @JsonKey(defaultValue: []) @Default([]) List<PeriodDTO> periods,
     @JsonKey(name: 'weekday_text', defaultValue: [])
-        required List<String?> weekdayText,
+    @JsonKey(defaultValue: [])
+    @Default([])
+        List<String?> weekdayText,
   }) = _OpeningHoursDTO;
 
   factory OpeningHoursDTO.fromJson(Map<String, dynamic> json) =>

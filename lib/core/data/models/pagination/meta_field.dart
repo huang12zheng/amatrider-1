@@ -15,7 +15,7 @@ class MetaField with _$MetaField {
     @JsonKey(name: 'current_page') int? currentPage,
     int? from,
     @JsonKey(name: 'last_page') int? lastPage,
-    @JsonKey(defaultValue: []) required List<PaginationLinks> links,
+    @JsonKey(defaultValue: []) @Default([]) List<PaginationLinks> links,
     String? path,
     @JsonKey(name: 'per_page') int? perPage,
     int? to,

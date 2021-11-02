@@ -22,7 +22,7 @@ class _$CountryDTOListTearOff {
   const _$CountryDTOListTearOff();
 
   _CountryDTOList call(
-      {@JsonKey(defaultValue: []) required List<CountryDTO> data}) {
+      {@JsonKey(defaultValue: []) List<CountryDTO> data = const []}) {
     return _CountryDTOList(
       data: data,
     );
@@ -114,7 +114,7 @@ class __$CountryDTOListCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_CountryDTOList extends _CountryDTOList {
-  const _$_CountryDTOList({@JsonKey(defaultValue: []) required this.data})
+  const _$_CountryDTOList({@JsonKey(defaultValue: []) this.data = const []})
       : super._();
 
   factory _$_CountryDTOList.fromJson(Map<String, dynamic> json) =>
@@ -154,8 +154,7 @@ class _$_CountryDTOList extends _CountryDTOList {
 
 abstract class _CountryDTOList extends CountryDTOList {
   const factory _CountryDTOList(
-          {@JsonKey(defaultValue: []) required List<CountryDTO> data}) =
-      _$_CountryDTOList;
+      {@JsonKey(defaultValue: []) List<CountryDTO> data}) = _$_CountryDTOList;
   const _CountryDTOList._() : super._();
 
   factory _CountryDTOList.fromJson(Map<String, dynamic> json) =

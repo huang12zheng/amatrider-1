@@ -22,7 +22,7 @@ class _$SendPackageListDTOTearOff {
   const _$SendPackageListDTOTearOff();
 
   _SendPackageListDTO call(
-      {@JsonKey(defaultValue: []) required List<SendPackageDTO> data,
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data = const [],
       PaginationLinks? links,
       MetaField? meta}) {
     return _SendPackageListDTO(
@@ -177,7 +177,7 @@ class __$SendPackageListDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_SendPackageListDTO extends _SendPackageListDTO {
   const _$_SendPackageListDTO(
-      {@JsonKey(defaultValue: []) required this.data, this.links, this.meta})
+      {@JsonKey(defaultValue: []) this.data = const [], this.links, this.meta})
       : super._();
 
   factory _$_SendPackageListDTO.fromJson(Map<String, dynamic> json) =>
@@ -223,7 +223,7 @@ class _$_SendPackageListDTO extends _SendPackageListDTO {
 
 abstract class _SendPackageListDTO extends SendPackageListDTO {
   const factory _SendPackageListDTO(
-      {@JsonKey(defaultValue: []) required List<SendPackageDTO> data,
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data,
       PaginationLinks? links,
       MetaField? meta}) = _$_SendPackageListDTO;
   const _SendPackageListDTO._() : super._();

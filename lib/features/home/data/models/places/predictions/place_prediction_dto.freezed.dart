@@ -30,7 +30,7 @@ class _$PlacePredictionDTOTearOff {
       @JsonKey(name: 'matched_substrings')
           List<MatchedStringsDTO?> matchedSubstrings = const [],
       @JsonKey(defaultValue: [])
-          required List<PlacePredictionDTO?> predictions,
+          List<PlacePredictionDTO?> predictions = const [],
       @PlaceStatusSerializer()
           required PlaceStatus status,
       String? error}) {
@@ -244,7 +244,7 @@ class _$_PlacePredictionDTO extends _PlacePredictionDTO {
       this.description,
       this.types,
       @JsonKey(name: 'matched_substrings') this.matchedSubstrings = const [],
-      @JsonKey(defaultValue: []) required this.predictions,
+      @JsonKey(defaultValue: []) this.predictions = const [],
       @PlaceStatusSerializer() required this.status,
       this.error})
       : super._();
@@ -330,7 +330,7 @@ abstract class _PlacePredictionDTO extends PlacePredictionDTO {
       @JsonKey(name: 'matched_substrings')
           List<MatchedStringsDTO?> matchedSubstrings,
       @JsonKey(defaultValue: [])
-          required List<PlacePredictionDTO?> predictions,
+          List<PlacePredictionDTO?> predictions,
       @PlaceStatusSerializer()
           required PlaceStatus status,
       String? error}) = _$_PlacePredictionDTO;

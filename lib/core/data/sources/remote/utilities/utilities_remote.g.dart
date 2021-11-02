@@ -72,18 +72,14 @@ class _UtilitiesRemote implements UtilitiesRemote {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = FormData();
-    if (front != null) {
-      _data.files.add(MapEntry(
-          'front_image',
-          MultipartFile.fromFileSync(front.path,
-              filename: front.path.split(Platform.pathSeparator).last)));
-    }
-    if (back != null) {
-      _data.files.add(MapEntry(
-          'back_image',
-          MultipartFile.fromFileSync(back.path,
-              filename: back.path.split(Platform.pathSeparator).last)));
-    }
+    _data.files.add(MapEntry(
+        'front_image',
+        MultipartFile.fromFileSync(front.path,
+            filename: front.path.split(Platform.pathSeparator).last)));
+    _data.files.add(MapEntry(
+        'back_image',
+        MultipartFile.fromFileSync(back.path,
+            filename: back.path.split(Platform.pathSeparator).last)));
     _data.fields.add(MapEntry('country_id', countryId));
     _data.fields.add(MapEntry('type', type));
     final _result = await _dio.fetch<Map<String, dynamic>>(

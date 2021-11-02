@@ -28,7 +28,7 @@ class _$AddressComponentDTOTearOff {
           String? shortName,
       @AddressComponentTypeSerializer()
       @JsonKey(defaultValue: [])
-          required List<AddressComponentType> types}) {
+          List<AddressComponentType> types = const []}) {
     return _AddressComponentDTO(
       longName: longName,
       shortName: shortName,
@@ -168,7 +168,7 @@ class _$_AddressComponentDTO extends _AddressComponentDTO {
           this.shortName,
       @AddressComponentTypeSerializer()
       @JsonKey(defaultValue: [])
-          required this.types})
+          this.types = const []})
       : super._();
 
   factory _$_AddressComponentDTO.fromJson(Map<String, dynamic> json) =>
@@ -226,7 +226,7 @@ abstract class _AddressComponentDTO extends AddressComponentDTO {
           String? shortName,
       @AddressComponentTypeSerializer()
       @JsonKey(defaultValue: [])
-          required List<AddressComponentType> types}) = _$_AddressComponentDTO;
+          List<AddressComponentType> types}) = _$_AddressComponentDTO;
   const _AddressComponentDTO._() : super._();
 
   factory _AddressComponentDTO.fromJson(Map<String, dynamic> json) =

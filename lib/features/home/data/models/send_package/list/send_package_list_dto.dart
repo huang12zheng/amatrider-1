@@ -15,7 +15,7 @@ class SendPackageListDTO with _$SendPackageListDTO {
   const SendPackageListDTO._();
 
   const factory SendPackageListDTO({
-    @JsonKey(defaultValue: []) required List<SendPackageDTO> data,
+    @JsonKey(defaultValue: []) @Default([]) List<SendPackageDTO> data,
     PaginationLinks? links,
     MetaField? meta,
   }) = _SendPackageListDTO;

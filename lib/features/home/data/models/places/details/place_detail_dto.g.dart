@@ -8,9 +8,11 @@ part of 'place_detail_dto.dart';
 
 _$_PlaceDetailDTO _$$_PlaceDetailDTOFromJson(Map<String, dynamic> json) =>
     _$_PlaceDetailDTO(
-      addressComponents: (json['address_components'] as List<dynamic>)
-          .map((e) => AddressComponentDTO.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      addressComponents: (json['address_components'] as List<dynamic>?)
+              ?.map((e) =>
+                  AddressComponentDTO.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       formattedAddress: json['formatted_address'] as String?,
       formattedPhoneNumber: json['formatted_phone_number'] as String?,
       icon: json['icon'] as String?,
