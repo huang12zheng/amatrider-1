@@ -1,5 +1,6 @@
 library signup_screen.dart;
 
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/oauth_widgets.dart';

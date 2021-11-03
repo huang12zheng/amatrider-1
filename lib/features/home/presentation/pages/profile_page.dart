@@ -1,7 +1,6 @@
 library profile_page.dart;
 
 import 'package:amatrider/core/domain/entities/entities.dart';
-import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -17,9 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-part '../widgets/profile_page_widgets.dart';
 part '../widgets/edit_profile_bottom_sheet.dart';
 part '../widgets/phone_update_bottom_sheet.dart';
+part '../widgets/profile_page_widgets.dart';
 
 /// A stateless widget to render ProfilePage.
 class ProfilePage extends StatefulWidget with AutoRouteWrapper {
@@ -182,7 +181,7 @@ class _ProfileItem {
         ),
         _ProfileItem(
           title: 'Settings',
-          onPressed: () {},
+          onPressed: () => navigator.push(const SettingRoute()),
         ),
       ];
 }

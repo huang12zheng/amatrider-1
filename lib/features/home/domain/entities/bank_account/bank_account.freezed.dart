@@ -23,6 +23,7 @@ class _$BankAccountTearOff {
       required BasicTextField<String?> bank,
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
+      required BasicTextField<String?> sortCode,
       DateTime? createdAt,
       DateTime? updatedAt}) {
     return _BankAccount(
@@ -31,6 +32,7 @@ class _$BankAccountTearOff {
       bank: bank,
       accountName: accountName,
       accountNumber: accountNumber,
+      sortCode: sortCode,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -48,6 +50,7 @@ mixin _$BankAccount {
   BasicTextField<String?> get accountName => throw _privateConstructorUsedError;
   BasicTextField<String?> get accountNumber =>
       throw _privateConstructorUsedError;
+  BasicTextField<String?> get sortCode => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -67,6 +70,7 @@ abstract class $BankAccountCopyWith<$Res> {
       BasicTextField<String?> bank,
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
+      BasicTextField<String?> sortCode,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -86,6 +90,7 @@ class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
     Object? bank = freezed,
     Object? accountName = freezed,
     Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -109,6 +114,10 @@ class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
       accountNumber: accountNumber == freezed
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -135,6 +144,7 @@ abstract class _$BankAccountCopyWith<$Res>
       BasicTextField<String?> bank,
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
+      BasicTextField<String?> sortCode,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -156,6 +166,7 @@ class __$BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
     Object? bank = freezed,
     Object? accountName = freezed,
     Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -180,6 +191,10 @@ class __$BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -201,6 +216,7 @@ class _$_BankAccount extends _BankAccount {
       required this.bank,
       required this.accountName,
       required this.accountNumber,
+      required this.sortCode,
       this.createdAt,
       this.updatedAt})
       : super._();
@@ -216,13 +232,15 @@ class _$_BankAccount extends _BankAccount {
   @override
   final BasicTextField<String?> accountNumber;
   @override
+  final BasicTextField<String?> sortCode;
+  @override
   final DateTime? createdAt;
   @override
   final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'BankAccount(id: $id, riderId: $riderId, bank: $bank, accountName: $accountName, accountNumber: $accountNumber, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BankAccount(id: $id, riderId: $riderId, bank: $bank, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -237,6 +255,8 @@ class _$_BankAccount extends _BankAccount {
                 other.accountName == accountName) &&
             (identical(other.accountNumber, accountNumber) ||
                 other.accountNumber == accountNumber) &&
+            (identical(other.sortCode, sortCode) ||
+                other.sortCode == sortCode) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -245,7 +265,7 @@ class _$_BankAccount extends _BankAccount {
 
   @override
   int get hashCode => Object.hash(runtimeType, id, riderId, bank, accountName,
-      accountNumber, createdAt, updatedAt);
+      accountNumber, sortCode, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -260,6 +280,7 @@ abstract class _BankAccount extends BankAccount {
       required BasicTextField<String?> bank,
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
+      required BasicTextField<String?> sortCode,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_BankAccount;
   const _BankAccount._() : super._();
@@ -274,6 +295,8 @@ abstract class _BankAccount extends BankAccount {
   BasicTextField<String?> get accountName;
   @override
   BasicTextField<String?> get accountNumber;
+  @override
+  BasicTextField<String?> get sortCode;
   @override
   DateTime? get createdAt;
   @override

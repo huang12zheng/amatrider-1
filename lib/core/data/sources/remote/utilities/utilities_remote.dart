@@ -21,17 +21,17 @@ abstract class UtilitiesRemote {
   Future<List<CountryDTO>> countries();
 
   @GET(EndPoints.GET_BANK_ACCOUNT)
-  Future<List<BankAccountDTO>> bankAccounts();
+  Future<BankAccountDTO> bankAccount();
 
-  @GET(EndPoints.STORE_BANK_ACCOUNT)
+  @POST(EndPoints.STORE_BANK_ACCOUNT)
   Future<BankAccountDTO> storeBankAccount(@Body() BankAccountDTO dto);
 
   @POST(EndPoints.DOCUMENT_VERIFICATION)
   @MultiPart()
   @Headers(<String, dynamic>{'content-type': 'multipart/form-data'})
   Future<AppHttpResponse> documentVerification({
-    @Part(name: 'front_image') required File front,
-    @Part(name: 'back_image') required File back,
+    @Part(name: 'front_image') File? front,
+    @Part(name: 'back_image') File? back,
     @Part(name: 'country_id') required String countryId,
     @Part() required String type,
   });

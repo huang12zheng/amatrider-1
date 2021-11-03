@@ -10,41 +10,45 @@ import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.da
 import 'package:amatrider/features/auth/data/repositories/access_token/access_token_manager.dart'
     as _i3;
 import 'package:amatrider/features/auth/data/repositories/auth/auth_facade_impl.dart'
-    as _i33;
+    as _i34;
 import 'package:amatrider/features/auth/data/sources/local/auth_local_source.dart'
     as _i6;
 import 'package:amatrider/features/auth/data/sources/remote/auth_remote_source.dart'
     as _i7;
-import 'package:amatrider/features/auth/domain/index.dart' as _i32;
+import 'package:amatrider/features/auth/domain/index.dart' as _i33;
 import 'package:amatrider/features/auth/presentation/managers/auth_cubit/auth_cubit.dart'
-    as _i36;
+    as _i38;
+import 'package:amatrider/features/auth/presentation/managers/verification/verification_cubit.dart'
+    as _i37;
 import 'package:amatrider/features/auth/presentation/managers/watcher/auth_watcher_cubit.dart'
-    as _i34;
+    as _i35;
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart'
-    as _i28;
+    as _i29;
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart'
     as _i16;
 import 'package:amatrider/features/home/data/repositories/places_repository/places_repository.dart'
     as _i20;
+import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart'
+    as _i28;
 import 'package:amatrider/features/home/domain/repositories/index.dart' as _i15;
 import 'package:amatrider/features/home/presentation/managers/location/location_cubit.dart'
-    as _i29;
+    as _i30;
 import 'package:amatrider/features/home/presentation/managers/map_cubit/map_cubit.dart'
     as _i17;
 import 'package:amatrider/features/home/presentation/managers/request/request_cubit.dart'
     as _i22;
 import 'package:amatrider/features/home/presentation/managers/send_package/send_package_cubit.dart'
-    as _i31;
+    as _i32;
 import 'package:amatrider/features/home/presentation/managers/tab_navigation/tab_navigation_cubit.dart'
     as _i25;
 import 'package:amatrider/features/onborading/presentation/managers/onboarding/onboarding_cubit.dart'
     as _i18;
-import 'package:amatrider/manager/locator/modules/modules.dart' as _i37;
-import 'package:amatrider/manager/locator/modules/pusher_module.dart' as _i38;
+import 'package:amatrider/manager/locator/modules/modules.dart' as _i39;
+import 'package:amatrider/manager/locator/modules/pusher_module.dart' as _i40;
 import 'package:amatrider/manager/settings/external/preference_repository.dart'
-    as _i30;
+    as _i31;
 import 'package:amatrider/manager/settings/manager/global_app_preference_cubit.dart'
-    as _i35;
+    as _i36;
 import 'package:amatrider/manager/theme/manager/theme_cubit.dart' as _i26;
 import 'package:amatrider/utils/utils.dart' as _i5;
 import 'package:connectivity/connectivity.dart' as _i8;
@@ -113,36 +117,40 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i26.ThemeCubit>(() => _i26.ThemeCubit());
     gh.lazySingleton<_i27.UtilitiesRemote>(
         () => _i27.UtilitiesRemote(get<_i4.AppHttpClient>()));
-    gh.factory<_i28.LaravelEchoRepository>(
-        () => _i28.LaravelEchoRepository(get<_i21.PusherClient>()));
-    gh.factory<_i29.LocationCubit>(() => _i29.LocationCubit(
+    gh.lazySingleton<_i28.UtilitiesRepository>(
+        () => _i28.UtilitiesRepository(remote: get<_i27.UtilitiesRemote>()));
+    gh.factory<_i29.LaravelEchoRepository>(
+        () => _i29.LaravelEchoRepository(get<_i21.PusherClient>()));
+    gh.factory<_i30.LocationCubit>(() => _i30.LocationCubit(
         get<_i15.LocationService>(), get<_i20.PlacesRepository>()));
-    gh.singleton<_i30.PreferenceRepository>(
-        _i30.PreferenceRepository(get<_i23.SharedPreferences>()));
-    gh.factory<_i31.SendPackageCubit>(() => _i31.SendPackageCubit(
+    gh.singleton<_i31.PreferenceRepository>(
+        _i31.PreferenceRepository(get<_i23.SharedPreferences>()));
+    gh.factory<_i32.SendPackageCubit>(() => _i32.SendPackageCubit(
         get<_i16.LogisticsRepository>(),
-        get<_i28.LaravelEchoRepository>(),
+        get<_i29.LaravelEchoRepository>(),
         get<_i15.LocationService>()));
-    gh.lazySingleton<_i32.AuthFacade>(() => _i33.AuthFacadeImpl(
+    gh.lazySingleton<_i33.AuthFacade>(() => _i34.AuthFacadeImpl(
         get<_i7.AuthRemoteDatasource>(),
         get<_i6.AuthLocalDatasource>(),
         get<_i11.FirebaseAnalytics>(),
         get<_i10.FacebookLogin>(),
-        get<_i30.PreferenceRepository>()));
-    gh.factory<_i34.AuthWatcherCubit>(
-        () => _i34.AuthWatcherCubit(get<_i32.AuthFacade>()));
-    gh.singleton<_i35.GlobalAppPreferenceCubit>(
-        _i35.GlobalAppPreferenceCubit(get<_i30.PreferenceRepository>()));
-    gh.factory<_i36.AuthCubit>(() => _i36.AuthCubit(get<_i32.AuthFacade>(),
-        get<_i30.PreferenceRepository>(), get<_i27.UtilitiesRemote>()));
+        get<_i31.PreferenceRepository>()));
+    gh.factory<_i35.AuthWatcherCubit>(
+        () => _i35.AuthWatcherCubit(get<_i33.AuthFacade>()));
+    gh.singleton<_i36.GlobalAppPreferenceCubit>(
+        _i36.GlobalAppPreferenceCubit(get<_i31.PreferenceRepository>()));
+    gh.factory<_i37.VerificationCubit>(() => _i37.VerificationCubit(
+        get<_i28.UtilitiesRepository>(), get<_i33.AuthFacade>()));
+    gh.factory<_i38.AuthCubit>(() => _i38.AuthCubit(get<_i33.AuthFacade>(),
+        get<_i31.PreferenceRepository>(), get<_i28.UtilitiesRepository>()));
     return this;
   }
 }
 
-class _$Modules extends _i37.Modules {}
+class _$Modules extends _i39.Modules {}
 
-class _$ServiceModules extends _i37.ServiceModules {}
+class _$ServiceModules extends _i39.ServiceModules {}
 
-class _$GPSModules extends _i37.GPSModules {}
+class _$GPSModules extends _i39.GPSModules {}
 
-class _$PusherModule extends _i38.PusherModule {}
+class _$PusherModule extends _i40.PusherModule {}

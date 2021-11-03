@@ -2,21 +2,21 @@ library auth_cubit.dart;
 
 import 'dart:io';
 
-import 'package:amatrider/core/data/models/country/dto/country_dto.dart';
 import 'package:amatrider/core/data/response/index.dart';
-import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
+import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
+import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:kt_dart/kt.dart' hide StandardKt;
 import 'package:password_strength/password_strength.dart';
 
@@ -27,7 +27,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState>
     with BaseCubit<AuthState>, _ImagePickerMixin {
   final AuthFacade _auth;
-  final UtilitiesRemote _utils;
+  final UtilitiesRepository _utils;
   final PreferenceRepository _preferences;
 
   AuthCubit(this._auth, this._preferences, this._utils)
@@ -89,14 +89,14 @@ class AuthCubit extends Cubit<AuthState>
   void togglePasswordVisibility() =>
       emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
 
-  void firstNameChanged(String value) => emit(state.copyWith(
-      rider: state.rider.copyWith(firstName: DisplayName(value.trim()))));
+  void firstNameChanged(String value) =>
+      emit(state.copyWith.rider.call(firstName: DisplayName(value.trim())));
 
-  void lastNameChanged(String value) => emit(state.copyWith(
-      rider: state.rider.copyWith(lastName: DisplayName(value.trim()))));
+  void lastNameChanged(String value) =>
+      emit(state.copyWith.rider.call(lastName: DisplayName(value.trim())));
 
-  void emailChanged(String value) => emit(state.copyWith(
-      rider: state.rider.copyWith(email: EmailAddress(value.trim()))));
+  void emailChanged(String value) =>
+      emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
 
   void oldPasswordChanged(String value) =>
       emit(state.copyWith(oldPassword: Password(value)));
@@ -173,6 +173,18 @@ class AuthCubit extends Cubit<AuthState>
 
   void otpCodeChanged(String value) =>
       emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
+
+  void bankNameChanged(String value) =>
+      emit(state.copyWith.bankAccount.call(bank: BasicTextField(value.trim())));
+
+  void accountNameChanged(String value) => emit(state.copyWith.bankAccount
+      .call(accountName: BasicTextField(value.trim())));
+
+  void accountNumberChanged(String value) => emit(state.copyWith.bankAccount
+      .call(accountNumber: BasicTextField(value.trim())));
+
+  void sortCodeChanged(String value) => emit(state.copyWith.bankAccount
+      .call(sortCode: BasicTextField(value.trim(), validate: false)));
 
   void createAccount() async {
     toggleLoading();
@@ -509,25 +521,60 @@ class AuthCubit extends Cubit<AuthState>
   Future<void> fetchCountries() async {
     toggleLoading(true);
 
-    final _conn = await connection();
+    final _countries = await _utils.countries();
 
-    await _conn.fold(
-      () async {
-        final _countries = await _utils.countries();
+    _countries.fold(
+      (failure) => emit(state.copyWith(status: some(failure))),
+      (countries) {
         emit(
           state.copyWith(
             phoneTextController: TextEditingController(),
-            countries: _countries.domain.sorted(),
-            selectedCountry: _countries
-                .firstWhere((it) =>
-                    it.iso3 != null &&
-                    it.iso3!.caseInsensitiveContains(Country.turkeyISO3))
-                .domain,
+            countries: countries.sorted(),
+            selectedCountry: countries.firstOrNull((it) =>
+                it.iso3 != null &&
+                it.iso3!.getOrEmpty!.caseInsensitiveContains(
+                  Country.turkeyISO3,
+                )),
           ),
         );
       },
-      (response) async => emit(state.copyWith(status: some(response))),
     );
+
+    toggleLoading(false);
+  }
+
+  void getBankAccount() async {
+    toggleLoading(true);
+
+    final result = await _utils.bankAccount();
+
+    result.fold(
+      (failure) => emit(state.copyWith(status: some(failure))),
+      (account) => emit(state.copyWith(bankAccount: account)),
+    );
+
+    toggleLoading(false);
+  }
+
+  void addBankAccount() async {
+    toggleLoading(true);
+
+    // Enable form validation
+    emit(state.copyWith(validate: true, status: none()));
+
+    if (state.bankAccount.failure.isNone()) {
+      final result = await _utils.storeBankAccount(state.bankAccount);
+
+      result.fold(
+        (failure) => emit(state.copyWith(status: some(failure))),
+        (account) => emit(state.copyWith(
+          bankAccount: account,
+          status: some(AppHttpResponse.successful(
+            'Operation was successful!',
+          )),
+        )),
+      );
+    }
 
     toggleLoading(false);
   }

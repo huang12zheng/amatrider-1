@@ -1,5 +1,7 @@
 library home_page.dart;
 
+import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/horizontal_chip_widget.dart';
@@ -133,12 +135,15 @@ class _HomePageState extends State<HomePage> {
                   ).copyWith(top: App.longest * 0.01),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate.fixed([
-                      AdaptiveText(
-                        'Hello, John! 👋',
-                        softWrap: true,
-                        style: TextStyle(
-                          fontSize: 17.0.sp,
-                          fontWeight: FontWeight.w400,
+                      BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
+                        selector: (s) => s.rider,
+                        builder: (c, rider) => AdaptiveText(
+                          'Hello, ${rider?.firstName.getOrEmpty}! 👋',
+                          softWrap: true,
+                          style: TextStyle(
+                            fontSize: 17.0.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                       //
@@ -349,65 +354,65 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 //
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate.fixed([
-                      //
-                      Row(
-                        children: [
-                          Headline('Potential Requests', fontSize: 17.sp),
-                          //
-                          Headline(
-                            '(14)',
-                            fontSize: 15.5.sp,
-                            textColorLight: Palette.accentColor,
-                          ),
-                        ],
-                      ),
-                      //
-                      VerticalSpace(height: 0.04.sw),
-                      //
-                      const DeliveryRequestCard(
-                        asset: AppAssets.request1,
-                        initialExpanded: true,
-                        showActionButtons: false,
-                      ),
-                      //
-                      ...env.flavor.fold(
-                        dev: () => [],
-                        prod: () => [
-                          VerticalSpace(height: 0.04.sw),
-                          //
-                          const DeliveryRequestCard(
-                            asset: AppAssets.blackAvatar,
-                            initialExpanded: true,
-                            isOrder: false,
-                            time: '120 Mins',
-                            showActionButtons: false,
-                          ),
-                        ],
-                      ),
-                      //
-                      VerticalSpace(height: 0.04.sw),
-                      //
-                      const DeliveryRequestCard(
-                        asset: AppAssets.request2,
-                        showActionButtons: false,
-                        time: '20 Mins',
-                      ),
-                      //
-                      VerticalSpace(height: 0.04.sw),
-                      //
-                      const DeliveryRequestCard(
-                        asset: AppAssets.request3,
-                        showActionButtons: false,
-                      ),
-                      //
-                      VerticalSpace(height: 0.04.sw),
-                    ]),
-                  ),
-                ),
+                // SliverPadding(
+                //   padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                //   sliver: SliverList(
+                //     delegate: SliverChildListDelegate.fixed([
+                //       //
+                //       Row(
+                //         children: [
+                //           Headline('Potential Requests', fontSize: 17.sp),
+                //           //
+                //           Headline(
+                //             '(14)',
+                //             fontSize: 15.5.sp,
+                //             textColorLight: Palette.accentColor,
+                //           ),
+                //         ],
+                //       ),
+                //       //
+                //       VerticalSpace(height: 0.04.sw),
+                //       //
+                //       const DeliveryRequestCard(
+                //         asset: AppAssets.request1,
+                //         initialExpanded: true,
+                //         showActionButtons: false,
+                //       ),
+                //       //
+                //       ...env.flavor.fold(
+                //         dev: () => [],
+                //         prod: () => [
+                //           VerticalSpace(height: 0.04.sw),
+                //           //
+                //           const DeliveryRequestCard(
+                //             asset: AppAssets.blackAvatar,
+                //             initialExpanded: true,
+                //             isOrder: false,
+                //             time: '120 Mins',
+                //             showActionButtons: false,
+                //           ),
+                //         ],
+                //       ),
+                //       //
+                //       VerticalSpace(height: 0.04.sw),
+                //       //
+                //       const DeliveryRequestCard(
+                //         asset: AppAssets.request2,
+                //         showActionButtons: false,
+                //         time: '20 Mins',
+                //       ),
+                //       //
+                //       VerticalSpace(height: 0.04.sw),
+                //       //
+                //       const DeliveryRequestCard(
+                //         asset: AppAssets.request3,
+                //         showActionButtons: false,
+                //       ),
+                //       //
+                //       VerticalSpace(height: 0.04.sw),
+                //     ]),
+                //   ),
+                // ),
               ],
             ),
           ),

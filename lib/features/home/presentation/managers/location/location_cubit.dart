@@ -132,6 +132,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
         title: 'Grant Permission',
         content: 'Grant ${Const.appName} permission '
             "to use this device's location \"ALWAYS & ALL THE TIME\"",
+        defaultValue: true,
         onAccept: () async {
           final _granted = await _service.requestPermissions();
           emit(state.copyWith(hasPermissions: _granted));
@@ -161,6 +162,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
             'enable tracking your deliveries and calculating '
             'distance travelled even when the app is closed or not in use.',
         btnText: 'Turn on Location',
+        defaultValue: true,
         onAccept: () async {
           final _enabled = await _service.requestService();
           emit(state.copyWith(isServiceEnabled: _enabled));
@@ -188,6 +190,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
             'enable tracking your deliveries and calculating '
             'distance travelled even when the app is closed or not in use.',
         btnText: 'Enable background location',
+        defaultValue: true,
         onAccept: () async => await _service.requestBackgroundMode(),
       ));
 
@@ -202,6 +205,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     required String title,
     required String content,
     required B Function() onAccept,
+    B? defaultValue,
     String? btnText,
   }) async {
     return await App.showAlertDialog<B>(
@@ -211,9 +215,10 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
         Colors.grey.shade800.withOpacity(0.55),
         dark: Colors.white54,
       ),
-      builder: (_) => AdaptiveAlertdialog(
+      builder: (_) => AdaptiveAlertdialog<B>(
         title: title,
         content: content,
+        defaultValue: defaultValue,
         firstButtonText: btnText ?? 'Grant Access',
         minContentFonSize: 15,
         contentFonSize: 17.sp,

@@ -8,12 +8,14 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'dart:async' as _i13;
+import 'dart:async' as _i14;
 
 import 'package:amatrider/_404.dart' as _i6;
 import 'package:amatrider/core/presentation/index.dart' as _i5;
+import 'package:amatrider/features/auth/presentation/managers/managers.dart'
+    as _i12;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
-import 'package:amatrider/features/home/domain/entities/index.dart' as _i12;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i13;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i8;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -87,8 +89,10 @@ class AppRouter extends _i7.RootStackRouter {
           routeData: routeData, child: const _i3.AccountVerificationScreen());
     },
     DocumentUploadRoute.name: (routeData) {
+      final args = routeData.argsAs<DocumentUploadRouteArgs>();
       return _i7.AdaptivePage<dynamic>(
-          routeData: routeData, child: const _i3.DocumentUploadScreen());
+          routeData: routeData,
+          child: _i3.DocumentUploadScreen(key: args.key, cubit: args.cubit));
     },
     SettingRoute.name: (routeData) {
       return _i7.AdaptivePage<dynamic>(
@@ -427,10 +431,21 @@ class AccountVerificationRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for [_i3.DocumentUploadScreen]
-class DocumentUploadRoute extends _i7.PageRouteInfo<void> {
-  const DocumentUploadRoute() : super(name, path: 'document-upload-screen');
+class DocumentUploadRoute extends _i7.PageRouteInfo<DocumentUploadRouteArgs> {
+  DocumentUploadRoute({_i11.Key? key, required _i12.VerificationCubit cubit})
+      : super(name,
+            path: 'document-upload-screen',
+            args: DocumentUploadRouteArgs(key: key, cubit: cubit));
 
   static const String name = 'DocumentUploadRoute';
+}
+
+class DocumentUploadRouteArgs {
+  const DocumentUploadRouteArgs({this.key, required this.cubit});
+
+  final _i11.Key? key;
+
+  final _i12.VerificationCubit cubit;
 }
 
 /// generated route for [_i3.SettingScreen]
@@ -458,7 +473,7 @@ class EditBankDetailsRoute extends _i7.PageRouteInfo<void> {
 class PackageDeliveryAcceptedRoute
     extends _i7.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
   PackageDeliveryAcceptedRoute(
-      {_i11.Key? key, required _i12.SendPackage sendPackage})
+      {_i11.Key? key, required _i13.SendPackage sendPackage})
       : super(name,
             path: 'package-delivery-accepted-screen',
             args: PackageDeliveryAcceptedRouteArgs(
@@ -472,7 +487,7 @@ class PackageDeliveryAcceptedRouteArgs {
 
   final _i11.Key? key;
 
-  final _i12.SendPackage sendPackage;
+  final _i13.SendPackage sendPackage;
 }
 
 /// generated route for [_i3.OrderDeliveryAcceptedScreen]
@@ -520,7 +535,7 @@ class NotificationRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for [_i5.NotConnectedScreen]
 class NotConnectedRoute extends _i7.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i11.Key? key, required _i13.Future<dynamic> future})
+  NotConnectedRoute({_i11.Key? key, required _i14.Future<dynamic> future})
       : super(name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -533,7 +548,7 @@ class NotConnectedRouteArgs {
 
   final _i11.Key? key;
 
-  final _i13.Future<dynamic> future;
+  final _i14.Future<dynamic> future;
 }
 
 /// generated route for [_i5.NoHistoryScreen]

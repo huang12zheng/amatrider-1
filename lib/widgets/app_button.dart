@@ -12,6 +12,7 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? backgroundColor;
   final bool isLoading;
+  final bool disabled;
 
   const AppButton({
     Key? key,
@@ -22,6 +23,7 @@ class AppButton extends StatelessWidget {
     this.onPressed,
     this.backgroundColor,
     this.isLoading = false,
+    this.disabled = false,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class AppButton extends StatelessWidget {
       textColor: Colors.white,
       cupertinoHeight: 0.065.sh,
       isLoading: isLoading,
+      disabled: disabled,
       padding: App.platform.cupertino(EdgeInsets.zero),
       textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
       backgroundColor: backgroundColor ??

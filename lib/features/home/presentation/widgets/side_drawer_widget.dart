@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
@@ -32,35 +34,59 @@ class SideDrawerWidget extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: DrawerHeader(
-                curve: Curves.easeInOutCubic,
-                duration: const Duration(milliseconds: 600),
-                decoration: const BoxDecoration(
-                  color: Palette.accentColor,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 0.18.sw,
-                        height: 0.18.sw,
-                        child: defaultImage,
-                      ),
-                      //
-                      VerticalSpace(height: 0.03.sw),
-                      //
-                      AdaptiveText(
-                        'Guest User',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0.sp,
-                          fontWeight: FontWeight.w600,
+            BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
+              selector: (s) => s.rider,
+              builder: (c, rider) => SizedBox(
+                width: double.infinity,
+                child: DrawerHeader(
+                  curve: Curves.easeInOutCubic,
+                  duration: const Duration(milliseconds: 600),
+                  decoration: const BoxDecoration(
+                    color: Palette.accentColor,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 0.18.sw,
+                          height: 0.18.sw,
+                          child: rider?.photo.getOrNull?.let(
+                                (it) => CachedNetworkImage(
+                                  imageUrl: '$it',
+                                  fit: BoxFit.contain,
+                                  imageBuilder: (c, img) => CircleAvatar(
+                                    backgroundImage: img,
+                                    foregroundImage: img,
+                                    minRadius: 0.1.sw,
+                                    backgroundColor: App.resolveColor(
+                                        Palette.accentColor.shade600),
+                                  ),
+                                  progressIndicatorBuilder:
+                                      (_, url, download) => Center(
+                                    child: CircularProgressBar.adaptive(
+                                      value: download.progress,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                  errorWidget: (_, url, error) => defaultImage,
+                                ),
+                              ) ??
+                              defaultImage,
                         ),
-                      ),
-                    ],
+                        //
+                        VerticalSpace(height: 0.03.sw),
+                        //
+                        AdaptiveText(
+                          '${rider?.fullName.getOrEmpty}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -79,13 +105,13 @@ class SideDrawerWidget extends ConsumerWidget {
                 DrawerListTile(
                   title: 'Notification',
                   icon: AmatNow.drawer_bell,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const NotificationRoute()),
                 ),
                 //
                 DrawerListTile(
                   title: 'Promotions',
                   icon: AmatNow.drawer_discount,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const PromotionsRoute()),
                 ),
                 //
                 DrawerListTile(
@@ -98,17 +124,17 @@ class SideDrawerWidget extends ConsumerWidget {
                 DrawerListTile(
                   title: 'Contact Support',
                   icon: AmatNow.drawer_support,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const ContactSupportRoute()),
                 ),
                 //
                 DrawerListTile(
                   title: 'Privacy Policy',
                   icon: AmatNow.drawer_privacy,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const PrivacyPolicyRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'About AmatNinja',
+                  title: 'About AmatRider',
                   size: 18,
                   icon: AmatNow.drawer_people,
                   onPressed: () {},

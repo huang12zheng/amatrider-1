@@ -167,23 +167,6 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                               //
                               VerticalSpace(height: 0.03.sw),
                               //
-                              AdaptiveListTile.adaptiveSwitch(
-                                title: AdaptiveText(
-                                  'Enable Finger Print/Face ID',
-                                  style: listTileTextStyle,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: App.sidePadding),
-                                value: true,
-                                inactiveThumbColor: Palette.text40,
-                                inactiveTrackColor: Utils.foldTheme(
-                                  light: () => Colors.black12,
-                                  dark: () => Palette.secondaryColor.shade300,
-                                ),
-                                secondary: const Icon(AmatNow.scanner),
-                                onChanged: (_) {},
-                              ),
-                              //
                               AdaptiveListTile(
                                 title: AdaptiveText(
                                   'Manage Password',

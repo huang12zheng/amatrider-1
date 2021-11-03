@@ -1,0 +1,159 @@
+{
+    "result": {
+        "address_components": [
+            {
+                "long_name": "1600",
+                "short_name": "1600",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Amphitheatre Pkwy",
+                "short_name": "Amphitheatre Pkwy",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Mountain View",
+                "short_name": "Mountain View",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Santa Clara County",
+                "short_name": "Santa Clara County",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "California",
+                "short_name": "CA",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "United States",
+                "short_name": "US",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "94043",
+                "short_name": "94043",
+                "types": [
+                    "postal_code"
+                ]
+            }
+        ],
+        "formatted_address": "48 Pirrama Rd, Pyrmont NSW 2009, Australia",
+        "formatted_phone_number": "(02) 9374 4000",
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_pinlet",
+        "international_phone_number": "+61 2 9374 4000",
+        "name": "Google Workplace 6",
+        "place_id": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+        "plus_code": {
+            "compound_code": "45MW+C8 Pyrmont NSW, Australia",
+            "global_code": "4RRH45MW+C8"
+        },
+        "reference": "ChIJN1t_tDeuEmsRUsoyG83frY4",
+        "types": [
+            "point_of_interest",
+            "establishment"
+        ],
+        "url": "https://maps.google.com/?cid=10281119596374313554",
+        "website": "http://google.com/",
+        "geometry": {
+            "location": {
+                "lat": -33.866489,
+                "lng": 151.1958561
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": -33.8655112697085,
+                    "lng": 151.1971156302915
+                },
+                "southwest": {
+                    "lat": -33.86820923029149,
+                    "lng": 151.1944176697085
+                }
+            }
+        },
+        "opening_hours": {
+            "open_now": false,
+            "periods": [
+                {
+                    "close": {
+                        "day": 1,
+                        "time": "1700"
+                    },
+                    "open": {
+                        "day": 1,
+                        "time": "0900"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 2,
+                        "time": "1700"
+                    },
+                    "open": {
+                        "day": 2,
+                        "time": "0900"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 3,
+                        "time": "1700"
+                    },
+                    "open": {
+                        "day": 3,
+                        "time": "0900"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 4,
+                        "time": "1700"
+                    },
+                    "open": {
+                        "day": 4,
+                        "time": "0900"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 5,
+                        "time": "1700"
+                    },
+                    "open": {
+                        "day": 5,
+                        "time": "0900"
+                    }
+                }
+            ],
+            "weekday_text": [
+                "Monday: 9:00 AM – 5:00 PM",
+                "Tuesday: 9:00 AM – 5:00 PM",
+                "Wednesday: 9:00 AM – 5:00 PM",
+                "Thursday: 9:00 AM – 5:00 PM",
+                "Friday: 9:00 AM – 5:00 PM",
+                "Saturday: Closed",
+                "Sunday: Closed"
+            ]
+        }
+    },
+    "status": "OK"
+}

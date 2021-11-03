@@ -162,6 +162,9 @@ dependencies:
   # A Flutter plugin for iOS and Android for picking images from the image library,
   # and taking new pictures with the camera.
   image_picker: ^0.8.4+3
+  # A package that allows you to use the native file explorer to pick
+  # single or multiple files, with extensions filtering support.
+  file_picker: ^4.2.0
   # Cupertino version of the stock Material ListTile in Flutter.
   # PS: This is not a pixel perfect interpretation of the iOS Human Interface Guidelines.
   cupertino_list_tile: ^0.2.0
@@ -175,6 +178,8 @@ dependencies:
       ref: bugfix/type-casting
   # A Flutter widget that can be expanded or collapsed by the user.
   expandable: ^5.0.1
+  # A flutter package to easily added dotted borders around widgets.
+  dotted_border: ^2.0.0+1
   # A draggable Flutter widget that makes implementing a SlidingUpPanel much easier!
   sliding_up_panel: ^2.0.0+1
   # A Flutter implementation of slidable list item

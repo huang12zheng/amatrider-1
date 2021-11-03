@@ -77,6 +77,19 @@ mixin AppAssets {
   static const String dispatchRiderSVG =
       '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
 
+  static const String _pdf = '$DASHBOARD_SVG_DIR/pdf.svg';
+  static const String _docs = '$DASHBOARD_SVG_DIR/docs.svg';
+  static const String _cameraOutlined =
+      '$DASHBOARD_SVG_DIR/camera_outlined.svg';
+  static const String _cameraColored = '$DASHBOARD_SVG_DIR/camera_colored.svg';
+  static const String _folderOutlined =
+      '$DASHBOARD_SVG_DIR/folder_outlined.svg';
+  static const String _folderColored = '$DASHBOARD_SVG_DIR/folder_colored.svg';
+  static const String _galleryOutlined =
+      '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
+  static const String _galleryColored =
+      '$DASHBOARD_SVG_DIR/gallery_colored.svg';
+
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
   static const String closeAccount =
@@ -126,6 +139,14 @@ mixin AppAssets {
     _promoDiscount,
     ellipseSVG,
     dispatchRiderSVG,
+    _pdf,
+    _docs,
+    _cameraOutlined,
+    _cameraColored,
+    _folderOutlined,
+    _folderColored,
+    _galleryOutlined,
+    _galleryColored,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -162,36 +183,6 @@ mixin AppAssets {
     '$DASHBOARD_SVG_DIR/docs.svg',
     height: 40,
     width: 40,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture cameraOutlined = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/camera_outlined.svg',
-    height: 25,
-    width: 25,
-    color: Colors.white,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture cameraColored = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/camera_colored.svg',
-    height: 25,
-    width: 25,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture galleryOutlined = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/gallery_outlined.svg',
-    height: 25,
-    width: 25,
-    color: Colors.white,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture galleryColored = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/gallery_colored.svg',
-    height: 25,
-    width: 25,
     fit: BoxFit.contain,
   );
 
@@ -308,6 +299,51 @@ mixin AppAssets {
 
   static SvgPicture promoDiscount = SvgPicture.asset(
     _promoDiscount,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture cameraOutlined = SvgPicture.asset(
+    _cameraOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture cameraColored = SvgPicture.asset(
+    _cameraColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture folderOutlined = SvgPicture.asset(
+    _folderOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture folderColored = SvgPicture.asset(
+    _folderColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture galleryOutlined = SvgPicture.asset(
+    _galleryOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture galleryColored = SvgPicture.asset(
+    _galleryColored,
+    height: 25,
+    width: 25,
     fit: BoxFit.contain,
   );
 

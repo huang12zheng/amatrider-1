@@ -27,6 +27,7 @@ class _$BankAccountDTOTearOff {
       @JsonKey(name: 'bank_name') String? bankName,
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'sort_code') String? sortCode,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt}) {
     return _BankAccountDTO(
@@ -35,6 +36,7 @@ class _$BankAccountDTOTearOff {
       bankName: bankName,
       accountName: accountName,
       accountNumber: accountNumber,
+      sortCode: sortCode,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -59,6 +61,8 @@ mixin _$BankAccountDTO {
   String? get accountName => throw _privateConstructorUsedError;
   @JsonKey(name: 'account_number')
   String? get accountNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sort_code')
+  String? get sortCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -83,6 +87,7 @@ abstract class $BankAccountDTOCopyWith<$Res> {
       @JsonKey(name: 'bank_name') String? bankName,
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'sort_code') String? sortCode,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
 }
@@ -103,6 +108,7 @@ class _$BankAccountDTOCopyWithImpl<$Res>
     Object? bankName = freezed,
     Object? accountName = freezed,
     Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -126,6 +132,10 @@ class _$BankAccountDTOCopyWithImpl<$Res>
       accountNumber: accountNumber == freezed
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -152,6 +162,7 @@ abstract class _$BankAccountDTOCopyWith<$Res>
       @JsonKey(name: 'bank_name') String? bankName,
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'sort_code') String? sortCode,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
 }
@@ -174,6 +185,7 @@ class __$BankAccountDTOCopyWithImpl<$Res>
     Object? bankName = freezed,
     Object? accountName = freezed,
     Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -198,6 +210,10 @@ class __$BankAccountDTOCopyWithImpl<$Res>
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -219,6 +235,7 @@ class _$_BankAccountDTO extends _BankAccountDTO {
       @JsonKey(name: 'bank_name') this.bankName,
       @JsonKey(name: 'account_name') this.accountName,
       @JsonKey(name: 'account_number') this.accountNumber,
+      @JsonKey(name: 'sort_code') this.sortCode,
       @JsonKey(name: 'created_at') @TimestampConverter() this.createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() this.updatedAt})
       : super._();
@@ -241,6 +258,9 @@ class _$_BankAccountDTO extends _BankAccountDTO {
   @JsonKey(name: 'account_number')
   final String? accountNumber;
   @override
+  @JsonKey(name: 'sort_code')
+  final String? sortCode;
+  @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   final DateTime? createdAt;
@@ -251,7 +271,7 @@ class _$_BankAccountDTO extends _BankAccountDTO {
 
   @override
   String toString() {
-    return 'BankAccountDTO(id: $id, riderId: $riderId, bankName: $bankName, accountName: $accountName, accountNumber: $accountNumber, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BankAccountDTO(id: $id, riderId: $riderId, bankName: $bankName, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -267,6 +287,8 @@ class _$_BankAccountDTO extends _BankAccountDTO {
                 other.accountName == accountName) &&
             (identical(other.accountNumber, accountNumber) ||
                 other.accountNumber == accountNumber) &&
+            (identical(other.sortCode, sortCode) ||
+                other.sortCode == sortCode) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -275,7 +297,7 @@ class _$_BankAccountDTO extends _BankAccountDTO {
 
   @override
   int get hashCode => Object.hash(runtimeType, id, riderId, bankName,
-      accountName, accountNumber, createdAt, updatedAt);
+      accountName, accountNumber, sortCode, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -299,6 +321,8 @@ abstract class _BankAccountDTO extends BankAccountDTO {
           String? accountName,
       @JsonKey(name: 'account_number')
           String? accountNumber,
+      @JsonKey(name: 'sort_code')
+          String? sortCode,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -324,6 +348,9 @@ abstract class _BankAccountDTO extends BankAccountDTO {
   @override
   @JsonKey(name: 'account_number')
   String? get accountNumber;
+  @override
+  @JsonKey(name: 'sort_code')
+  String? get sortCode;
   @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()

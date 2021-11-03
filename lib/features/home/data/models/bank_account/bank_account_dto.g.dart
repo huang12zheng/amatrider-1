@@ -13,6 +13,7 @@ _$_BankAccountDTO _$$_BankAccountDTOFromJson(Map<String, dynamic> json) =>
       bankName: json['bank_name'] as String?,
       accountName: json['account_name'] as String?,
       accountNumber: json['account_number'] as String?,
+      sortCode: json['sort_code'] as String?,
       createdAt:
           const TimestampConverter().fromJson(json['created_at'] as String?),
       updatedAt:
@@ -33,6 +34,7 @@ Map<String, dynamic> _$$_BankAccountDTOToJson(_$_BankAccountDTO instance) {
   writeNotNull('bank_name', instance.bankName);
   writeNotNull('account_name', instance.accountName);
   writeNotNull('account_number', instance.accountNumber);
+  writeNotNull('sort_code', instance.sortCode);
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

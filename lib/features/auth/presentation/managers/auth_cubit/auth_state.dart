@@ -17,6 +17,10 @@ class AuthState extends BaseState with _$AuthState {
   static final FocusNode newPasswordFocus = FocusNode();
   static final FocusNode passwordFocus = FocusNode();
   static final FocusNode passwordConfirmationFocus = FocusNode();
+  static final FocusNode bankNameFocus = FocusNode();
+  static final FocusNode accountNameFocus = FocusNode();
+  static final FocusNode accountNumberFocus = FocusNode();
+  static final FocusNode sortCodeFocus = FocusNode();
 
   const factory AuthState({
     required Password oldPassword,
@@ -31,6 +35,7 @@ class AuthState extends BaseState with _$AuthState {
     @Default(true) bool isPasswordHidden,
     @Default(false) bool passwordMatches,
     Country? selectedCountry,
+    required BankAccount bankAccount,
     @Default(KtList.empty()) KtList<Country> countries,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _AuthState;
@@ -43,6 +48,7 @@ class AuthState extends BaseState with _$AuthState {
         oldPassword: Password(null),
         confirmPassword: Password(null),
         phoneTextController: TextEditingController(),
+        bankAccount: BankAccount.blank(),
       );
 }
 

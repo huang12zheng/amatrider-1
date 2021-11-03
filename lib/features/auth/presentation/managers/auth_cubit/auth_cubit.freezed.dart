@@ -30,6 +30,7 @@ class _$AuthStateTearOff {
       bool isPasswordHidden = true,
       bool passwordMatches = false,
       Country? selectedCountry,
+      required BankAccount bankAccount,
       KtList<Country> countries = const KtList.empty(),
       Option<AppHttpResponse?> status = const None()}) {
     return _AuthState(
@@ -45,6 +46,7 @@ class _$AuthStateTearOff {
       isPasswordHidden: isPasswordHidden,
       passwordMatches: passwordMatches,
       selectedCountry: selectedCountry,
+      bankAccount: bankAccount,
       countries: countries,
       status: status,
     );
@@ -69,6 +71,7 @@ mixin _$AuthState {
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get passwordMatches => throw _privateConstructorUsedError;
   Country? get selectedCountry => throw _privateConstructorUsedError;
+  BankAccount get bankAccount => throw _privateConstructorUsedError;
   KtList<Country> get countries => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
@@ -94,11 +97,13 @@ abstract class $AuthStateCopyWith<$Res> {
       bool isPasswordHidden,
       bool passwordMatches,
       Country? selectedCountry,
+      BankAccount bankAccount,
       KtList<Country> countries,
       Option<AppHttpResponse?> status});
 
   $RiderCopyWith<$Res> get rider;
   $CountryCopyWith<$Res>? get selectedCountry;
+  $BankAccountCopyWith<$Res> get bankAccount;
 }
 
 /// @nodoc
@@ -123,6 +128,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
+    Object? bankAccount = freezed,
     Object? countries = freezed,
     Object? status = freezed,
   }) {
@@ -175,6 +181,10 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
           ? _value.selectedCountry
           : selectedCountry // ignore: cast_nullable_to_non_nullable
               as Country?,
+      bankAccount: bankAccount == freezed
+          ? _value.bankAccount
+          : bankAccount // ignore: cast_nullable_to_non_nullable
+              as BankAccount,
       countries: countries == freezed
           ? _value.countries
           : countries // ignore: cast_nullable_to_non_nullable
@@ -203,6 +213,13 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       return _then(_value.copyWith(selectedCountry: value));
     });
   }
+
+  @override
+  $BankAccountCopyWith<$Res> get bankAccount {
+    return $BankAccountCopyWith<$Res>(_value.bankAccount, (value) {
+      return _then(_value.copyWith(bankAccount: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -224,6 +241,7 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       bool isPasswordHidden,
       bool passwordMatches,
       Country? selectedCountry,
+      BankAccount bankAccount,
       KtList<Country> countries,
       Option<AppHttpResponse?> status});
 
@@ -231,6 +249,8 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
   $RiderCopyWith<$Res> get rider;
   @override
   $CountryCopyWith<$Res>? get selectedCountry;
+  @override
+  $BankAccountCopyWith<$Res> get bankAccount;
 }
 
 /// @nodoc
@@ -256,6 +276,7 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
+    Object? bankAccount = freezed,
     Object? countries = freezed,
     Object? status = freezed,
   }) {
@@ -308,6 +329,10 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.selectedCountry
           : selectedCountry // ignore: cast_nullable_to_non_nullable
               as Country?,
+      bankAccount: bankAccount == freezed
+          ? _value.bankAccount
+          : bankAccount // ignore: cast_nullable_to_non_nullable
+              as BankAccount,
       countries: countries == freezed
           ? _value.countries
           : countries // ignore: cast_nullable_to_non_nullable
@@ -336,6 +361,7 @@ class _$_AuthState extends _AuthState {
       this.isPasswordHidden = true,
       this.passwordMatches = false,
       this.selectedCountry,
+      required this.bankAccount,
       this.countries = const KtList.empty(),
       this.status = const None()})
       : super._();
@@ -369,6 +395,8 @@ class _$_AuthState extends _AuthState {
   final bool passwordMatches;
   @override
   final Country? selectedCountry;
+  @override
+  final BankAccount bankAccount;
   @JsonKey(defaultValue: const KtList.empty())
   @override
   final KtList<Country> countries;
@@ -378,7 +406,7 @@ class _$_AuthState extends _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, countries: $countries, status: $status)';
+    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, countries: $countries, status: $status)';
   }
 
   @override
@@ -408,6 +436,8 @@ class _$_AuthState extends _AuthState {
                 other.passwordMatches == passwordMatches) &&
             (identical(other.selectedCountry, selectedCountry) ||
                 other.selectedCountry == selectedCountry) &&
+            (identical(other.bankAccount, bankAccount) ||
+                other.bankAccount == bankAccount) &&
             (identical(other.countries, countries) ||
                 other.countries == countries) &&
             (identical(other.status, status) || other.status == status));
@@ -428,6 +458,7 @@ class _$_AuthState extends _AuthState {
       isPasswordHidden,
       passwordMatches,
       selectedCountry,
+      bankAccount,
       countries,
       status);
 
@@ -451,6 +482,7 @@ abstract class _AuthState extends AuthState {
       bool isPasswordHidden,
       bool passwordMatches,
       Country? selectedCountry,
+      required BankAccount bankAccount,
       KtList<Country> countries,
       Option<AppHttpResponse?> status}) = _$_AuthState;
   const _AuthState._() : super._();
@@ -479,6 +511,8 @@ abstract class _AuthState extends AuthState {
   bool get passwordMatches;
   @override
   Country? get selectedCountry;
+  @override
+  BankAccount get bankAccount;
   @override
   KtList<Country> get countries;
   @override

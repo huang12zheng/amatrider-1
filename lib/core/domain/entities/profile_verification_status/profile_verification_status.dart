@@ -7,8 +7,13 @@ part 'profile_verification_status.g.dart';
 
 class ProfileVerificationStatus extends EnumClass {
   static const ProfileVerificationStatus verified = _$verified;
+
   @BuiltValueEnumConst(fallback: true)
   static const ProfileVerificationStatus unverified = _$unverified;
+
+  static const ProfileVerificationStatus in_review = _$in_review;
+
+  static const ProfileVerificationStatus failed = _$failed;
 
   const ProfileVerificationStatus._(String name) : super(name);
 

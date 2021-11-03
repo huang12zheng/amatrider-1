@@ -491,8 +491,7 @@ class __$PlaceDetailDTOCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
   const _$_PlaceDetailDTO(
       {@JsonKey(name: 'address_components', defaultValue: [])

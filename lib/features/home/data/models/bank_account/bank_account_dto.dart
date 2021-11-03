@@ -4,6 +4,7 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/serializer/serializers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kt_dart/kt.dart';
 
 part 'bank_account_dto.g.dart';
 part 'bank_account_dto.freezed.dart';
@@ -19,6 +20,7 @@ class BankAccountDTO with _$BankAccountDTO {
     @JsonKey(name: 'bank_name') String? bankName,
     @JsonKey(name: 'account_name') String? accountName,
     @JsonKey(name: 'account_number') String? accountNumber,
+    @JsonKey(name: 'sort_code') String? sortCode,
     @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
     @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
   }) = _BankAccountDTO;
@@ -28,6 +30,7 @@ class BankAccountDTO with _$BankAccountDTO {
         bankName: instance?.bank.getOrNull,
         accountName: instance?.accountName.getOrNull,
         accountNumber: instance?.accountNumber.getOrNull,
+        sortCode: instance?.sortCode.getOrNull,
       );
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
@@ -41,7 +44,12 @@ class BankAccountDTO with _$BankAccountDTO {
         bank: BasicTextField(bankName),
         accountName: BasicTextField(accountName),
         accountNumber: BasicTextField(accountNumber),
+        sortCode: BasicTextField(sortCode, validate: false),
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
+}
+
+extension BankAccountDTOListX on List<BankAccountDTO> {
+  KtList<BankAccount> get domain => KtList.from(map((e) => e.domain).toList());
 }

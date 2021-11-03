@@ -1,6 +1,5 @@
 export 'dashboard_screen.dart';
 export 'account_verification_screen.dart';
-export 'document_upload_screen.dart';
 export 'referral_screen.dart';
 export 'contact_support_screen.dart';
 export 'privacy_policy_screen.dart';

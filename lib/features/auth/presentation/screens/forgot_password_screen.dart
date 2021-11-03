@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/reset_pasword_dialog.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -250,10 +251,10 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                 isDownIcon: true,
                 showEnglishName: true,
                 searchHintText: 'Start typing..',
-                initialSelection: 'NG',
+                initialSelection: '${Country.turkeyISO}',
                 alphabetSelectedBackgroundColor: Palette.accentColor,
               ),
-              initialSelection: 'NG',
+              initialSelection: '${Country.turkeyISO}',
               onChanged: (code) {
                 print(code?.name);
                 print(code?.code);

@@ -41,8 +41,11 @@ class _$ServerFieldErrorsTearOff {
       @JsonKey(name: 'currency_id') List<String?>? currencyId,
       List<String?>? country,
       List<String?>? comment,
-      @JsonKey(name: 'account_number') List<String?>? accountNumber,
       @JsonKey(name: 'bank_id') List<String?>? bankId,
+      @JsonKey(name: 'bank_name') List<String?>? bankName,
+      @JsonKey(name: 'account_name') List<String?>? accountName,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'sort_code') List<String?>? sortCode,
       List<String?>? recipient,
       List<String?>? plan,
       @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
@@ -91,8 +94,11 @@ class _$ServerFieldErrorsTearOff {
       currencyId: currencyId,
       country: country,
       comment: comment,
-      accountNumber: accountNumber,
       bankId: bankId,
+      bankName: bankName,
+      accountName: accountName,
+      accountNumber: accountNumber,
+      sortCode: sortCode,
       recipient: recipient,
       plan: plan,
       paymentMethod: paymentMethod,
@@ -157,10 +163,16 @@ mixin _$ServerFieldErrors {
   List<String?>? get currencyId => throw _privateConstructorUsedError;
   List<String?>? get country => throw _privateConstructorUsedError;
   List<String?>? get comment => throw _privateConstructorUsedError;
-  @JsonKey(name: 'account_number')
-  List<String?>? get accountNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'bank_id')
   List<String?>? get bankId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bank_name')
+  List<String?>? get bankName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'account_name')
+  List<String?>? get accountName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'account_number')
+  List<String?>? get accountNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'sort_code')
+  List<String?>? get sortCode => throw _privateConstructorUsedError;
   List<String?>? get recipient => throw _privateConstructorUsedError;
   List<String?>? get plan => throw _privateConstructorUsedError;
   @JsonKey(name: 'payment_method')
@@ -234,8 +246,11 @@ abstract class $ServerFieldErrorsCopyWith<$Res> {
       @JsonKey(name: 'currency_id') List<String?>? currencyId,
       List<String?>? country,
       List<String?>? comment,
-      @JsonKey(name: 'account_number') List<String?>? accountNumber,
       @JsonKey(name: 'bank_id') List<String?>? bankId,
+      @JsonKey(name: 'bank_name') List<String?>? bankName,
+      @JsonKey(name: 'account_name') List<String?>? accountName,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'sort_code') List<String?>? sortCode,
       List<String?>? recipient,
       List<String?>? plan,
       @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
@@ -296,8 +311,11 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
     Object? currencyId = freezed,
     Object? country = freezed,
     Object? comment = freezed,
-    Object? accountNumber = freezed,
     Object? bankId = freezed,
+    Object? bankName = freezed,
+    Object? accountName = freezed,
+    Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? recipient = freezed,
     Object? plan = freezed,
     Object? paymentMethod = freezed,
@@ -404,13 +422,25 @@ class _$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      bankId: bankId == freezed
+          ? _value.bankId
+          : bankId // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      bankName: bankName == freezed
+          ? _value.bankName
+          : bankName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      accountName: accountName == freezed
+          ? _value.accountName
+          : accountName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
       accountNumber: accountNumber == freezed
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
-      bankId: bankId == freezed
-          ? _value.bankId
-          : bankId // ignore: cast_nullable_to_non_nullable
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
       recipient: recipient == freezed
           ? _value.recipient
@@ -555,8 +585,11 @@ abstract class _$ServerFieldErrorsCopyWith<$Res>
       @JsonKey(name: 'currency_id') List<String?>? currencyId,
       List<String?>? country,
       List<String?>? comment,
-      @JsonKey(name: 'account_number') List<String?>? accountNumber,
       @JsonKey(name: 'bank_id') List<String?>? bankId,
+      @JsonKey(name: 'bank_name') List<String?>? bankName,
+      @JsonKey(name: 'account_name') List<String?>? accountName,
+      @JsonKey(name: 'account_number') List<String?>? accountNumber,
+      @JsonKey(name: 'sort_code') List<String?>? sortCode,
       List<String?>? recipient,
       List<String?>? plan,
       @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
@@ -619,8 +652,11 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
     Object? currencyId = freezed,
     Object? country = freezed,
     Object? comment = freezed,
-    Object? accountNumber = freezed,
     Object? bankId = freezed,
+    Object? bankName = freezed,
+    Object? accountName = freezed,
+    Object? accountNumber = freezed,
+    Object? sortCode = freezed,
     Object? recipient = freezed,
     Object? plan = freezed,
     Object? paymentMethod = freezed,
@@ -727,13 +763,25 @@ class __$ServerFieldErrorsCopyWithImpl<$Res>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
+      bankId: bankId == freezed
+          ? _value.bankId
+          : bankId // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      bankName: bankName == freezed
+          ? _value.bankName
+          : bankName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
+      accountName: accountName == freezed
+          ? _value.accountName
+          : accountName // ignore: cast_nullable_to_non_nullable
+              as List<String?>?,
       accountNumber: accountNumber == freezed
           ? _value.accountNumber
           : accountNumber // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
-      bankId: bankId == freezed
-          ? _value.bankId
-          : bankId // ignore: cast_nullable_to_non_nullable
+      sortCode: sortCode == freezed
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
               as List<String?>?,
       recipient: recipient == freezed
           ? _value.recipient
@@ -874,8 +922,11 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
       @JsonKey(name: 'currency_id') this.currencyId,
       this.country,
       this.comment,
-      @JsonKey(name: 'account_number') this.accountNumber,
       @JsonKey(name: 'bank_id') this.bankId,
+      @JsonKey(name: 'bank_name') this.bankName,
+      @JsonKey(name: 'account_name') this.accountName,
+      @JsonKey(name: 'account_number') this.accountNumber,
+      @JsonKey(name: 'sort_code') this.sortCode,
       this.recipient,
       this.plan,
       @JsonKey(name: 'payment_method') this.paymentMethod,
@@ -952,11 +1003,20 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
   @override
   final List<String?>? comment;
   @override
+  @JsonKey(name: 'bank_id')
+  final List<String?>? bankId;
+  @override
+  @JsonKey(name: 'bank_name')
+  final List<String?>? bankName;
+  @override
+  @JsonKey(name: 'account_name')
+  final List<String?>? accountName;
+  @override
   @JsonKey(name: 'account_number')
   final List<String?>? accountNumber;
   @override
-  @JsonKey(name: 'bank_id')
-  final List<String?>? bankId;
+  @JsonKey(name: 'sort_code')
+  final List<String?>? sortCode;
   @override
   final List<String?>? recipient;
   @override
@@ -1029,7 +1089,7 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
 
   @override
   String toString() {
-    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, accountNumber: $accountNumber, bankId: $bankId, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName, pickupLat: $pickupLat, destLat: $destLat, itemName: $itemName, quantity: $quantity, images: $images, unitPrice: $unitPrice, requiredDate: $requiredDate, supportMessage: $supportMessage, frontImage: $frontImage, backImage: $backImage)';
+    return 'ServerFieldErrors(name: $name, firstName: $firstName, lastName: $lastName, token: $token, email: $email, gender: $gender, age: $age, phone: $phone, password: $password, oldPassword: $oldPassword, code: $code, type: $type, description: $description, document: $document, duration: $duration, amount: $amount, currencyId: $currencyId, country: $country, comment: $comment, bankId: $bankId, bankName: $bankName, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, recipient: $recipient, plan: $plan, paymentMethod: $paymentMethod, lat: $lat, long: $long, zip: $zip, instructions: $instructions, countryId: $countryId, alias: $alias, apartment: $apartment, street: $street, town: $town, city: $city, stateId: $stateId, state: $state, landmark: $landmark, cardNumber: $cardNumber, cardName: $cardName, pickupLat: $pickupLat, destLat: $destLat, itemName: $itemName, quantity: $quantity, images: $images, unitPrice: $unitPrice, requiredDate: $requiredDate, supportMessage: $supportMessage, frontImage: $frontImage, backImage: $backImage)';
   }
 
   @override
@@ -1059,9 +1119,13 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
                 .equals(other.currencyId, currencyId) &&
             const DeepCollectionEquality().equals(other.country, country) &&
             const DeepCollectionEquality().equals(other.comment, comment) &&
+            const DeepCollectionEquality().equals(other.bankId, bankId) &&
+            const DeepCollectionEquality().equals(other.bankName, bankName) &&
+            const DeepCollectionEquality()
+                .equals(other.accountName, accountName) &&
             const DeepCollectionEquality()
                 .equals(other.accountNumber, accountNumber) &&
-            const DeepCollectionEquality().equals(other.bankId, bankId) &&
+            const DeepCollectionEquality().equals(other.sortCode, sortCode) &&
             const DeepCollectionEquality().equals(other.recipient, recipient) &&
             const DeepCollectionEquality().equals(other.plan, plan) &&
             const DeepCollectionEquality()
@@ -1120,8 +1184,11 @@ class _$_ServerFieldErrors extends _ServerFieldErrors {
         const DeepCollectionEquality().hash(currencyId),
         const DeepCollectionEquality().hash(country),
         const DeepCollectionEquality().hash(comment),
-        const DeepCollectionEquality().hash(accountNumber),
         const DeepCollectionEquality().hash(bankId),
+        const DeepCollectionEquality().hash(bankName),
+        const DeepCollectionEquality().hash(accountName),
+        const DeepCollectionEquality().hash(accountNumber),
+        const DeepCollectionEquality().hash(sortCode),
         const DeepCollectionEquality().hash(recipient),
         const DeepCollectionEquality().hash(plan),
         const DeepCollectionEquality().hash(paymentMethod),
@@ -1184,8 +1251,11 @@ abstract class _ServerFieldErrors extends ServerFieldErrors {
           @JsonKey(name: 'currency_id') List<String?>? currencyId,
           List<String?>? country,
           List<String?>? comment,
-          @JsonKey(name: 'account_number') List<String?>? accountNumber,
           @JsonKey(name: 'bank_id') List<String?>? bankId,
+          @JsonKey(name: 'bank_name') List<String?>? bankName,
+          @JsonKey(name: 'account_name') List<String?>? accountName,
+          @JsonKey(name: 'account_number') List<String?>? accountNumber,
+          @JsonKey(name: 'sort_code') List<String?>? sortCode,
           List<String?>? recipient,
           List<String?>? plan,
           @JsonKey(name: 'payment_method') List<String?>? paymentMethod,
@@ -1263,11 +1333,20 @@ abstract class _ServerFieldErrors extends ServerFieldErrors {
   @override
   List<String?>? get comment;
   @override
+  @JsonKey(name: 'bank_id')
+  List<String?>? get bankId;
+  @override
+  @JsonKey(name: 'bank_name')
+  List<String?>? get bankName;
+  @override
+  @JsonKey(name: 'account_name')
+  List<String?>? get accountName;
+  @override
   @JsonKey(name: 'account_number')
   List<String?>? get accountNumber;
   @override
-  @JsonKey(name: 'bank_id')
-  List<String?>? get bankId;
+  @JsonKey(name: 'sort_code')
+  List<String?>? get sortCode;
   @override
   List<String?>? get recipient;
   @override

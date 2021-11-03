@@ -139,10 +139,10 @@ class _MaterialSignUp extends StatelessWidget {
                   isDownIcon: true,
                   showEnglishName: true,
                   searchHintText: 'Start typing..',
-                  initialSelection: 'NG',
+                  initialSelection: '${Country.turkeyISO}',
                   alphabetSelectedBackgroundColor: Palette.accentColor,
                 ),
-                initialSelection: 'NG',
+                initialSelection: '${Country.turkeyISO}',
                 onChanged: (code) {
                   print(code?.name);
                   print(code?.code);
