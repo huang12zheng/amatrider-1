@@ -39,16 +39,23 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
           () => null,
           (it) => it?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (res) => PopupDialog.success(
-              duration: const Duration(seconds: 4),
-              message: res.message,
-              listener: (status) => status?.fold(
-                dismissed: () {
-                  navigator.popUntil(
-                      (_) => navigator.current.name == DashboardRoute.name);
+            success: (res) => navigator.pushAndPopUntil(
+              SuccessRoute(
+                title: 'Document Submitted Successfully',
+                description: 'Your submission is under review.',
+                lottieJson: AppAssets.checkAnimation,
+                onInitState: () async {
+                  await Future.delayed(
+                    const Duration(seconds: 3),
+                    () {
+                      if (navigator.current.name != DashboardRoute.name)
+                        navigator.pop();
+                    },
+                  );
                 },
               ),
-            ).render(c),
+              predicate: (_) => navigator.current.name == DashboardRoute.name,
+            ),
           ),
         ),
         child: this,
@@ -72,19 +79,17 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AdaptiveText(
-                  'Account Verification',
-                  style: TextStyle(
+                Expanded(
+                  flex: 3,
+                  child: AdaptiveText(
+                    'Account Verification',
                     fontSize: 24.sp,
+                    maxLines: 1,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 //
-                const CustomChipWidget(
-                  'Unverified',
-                  backgroundColor: Palette.pastelYellow,
-                  textColor: Palette.yellow,
-                ),
+                const Flexible(child: VerificationStatusChip()),
               ],
             ),
             //
@@ -169,11 +174,11 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                       elevation: 0.0,
                       title: const Text('Choose a country'),
                     ),
-                    pickerBuilder: (context, countryCode) => Row(
+                    pickerBuilder: (_, country) => Row(
                       children: [
                         Flexible(
                           child: Image.asset(
-                            '${countryCode?.flagUri}',
+                            '${country?.flagUri}',
                             width: 30,
                             height: 30,
                             package: 'country_list_pick',
@@ -184,7 +189,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                         //
                         Flexible(
                           child: AdaptiveText(
-                            '${countryCode?.toCountryStringOnly()}',
+                            '${country?.toCountryStringOnly()}',
                             fontSize: 16.5.sp,
                             maxLines: 1,
                           ),
@@ -261,17 +266,22 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             //
             VerticalSpace(height: 0.1.sw),
             //
-            BlocSelector<VerificationCubit, VerificationState, bool>(
-              selector: (s) => s.isLoading,
-              builder: (c, isLaoding) {
-                return AppButton(
-                  text: 'Continue',
-                  disabled: isLaoding,
-                  onPressed: () => navigator.push(DocumentUploadRoute(
-                    cubit: context.read<VerificationCubit>(),
-                  )),
-                );
-              },
+            BlocBuilder<VerificationCubit, VerificationState>(
+              builder: (c, s) => BlocSelector<AuthWatcherCubit,
+                  AuthWatcherState, ProfileVerificationStatus?>(
+                selector: (s) => s.rider?.verificationStatus,
+                builder: (c, status) =>
+                    status == ProfileVerificationStatus.in_review ||
+                            status == ProfileVerificationStatus.verified
+                        ? Utils.nothing
+                        : AppButton(
+                            text: 'Continue',
+                            disabled: s.isLoading || s.documentID == null,
+                            onPressed: () => navigator.push(DocumentUploadRoute(
+                              cubit: context.read<VerificationCubit>(),
+                            )),
+                          ),
+              ),
             ),
           ],
         ),

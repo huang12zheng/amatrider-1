@@ -48,33 +48,47 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       location = _locationCubit.state.position;
     }
 
-    // ignore: unawaited_futures
-    connection().then((val) =>
-        val.fold(() => null, (e) => emit(state.copyWith(status: optionOf(e)))));
-
-    final _result = await _logisticsRepository.all(
+    final _result = await _logisticsRepository.allRequests(
       status: status,
       lat: '${location?.lat.getOrEmpty}',
       lng: '${location?.lng.getOrEmpty}',
     );
 
-    status.maybeWhen(
-      active: () => emit(state.copyWith(
-        isLoadingActivePackages: false,
-        activePackages: _result.domain,
-      )),
-      enroute: () {
-        emit(state.copyWith(
-          isLoadingTransitPackages: false,
+    _result.fold(
+      (e) => status.maybeWhen(
+        active: () => emit(state.copyWith(
+          status: optionOf(e),
           isLoadingActivePackages: false,
-          packagesInTransit: _result.domain
-              .plus(state.packagesInTransit)
-              .asList()
-              .unique((val) => val.id)
-              .toImmutableList(),
-        ));
+        )),
+        enroute: () {
+          emit(state.copyWith(
+            status: optionOf(e),
+            isLoadingTransitPackages: false,
+            isLoadingActivePackages: false,
+          ));
+        },
+        orElse: () => null,
+      ),
+      (list) {
+        status.maybeWhen(
+          active: () => emit(state.copyWith(
+            isLoadingActivePackages: false,
+            activePackages: list.domain,
+          )),
+          enroute: () {
+            emit(state.copyWith(
+              isLoadingTransitPackages: false,
+              isLoadingActivePackages: false,
+              packagesInTransit: list.domain
+                  .plus(state.packagesInTransit)
+                  .asList()
+                  .unique((val) => val.id)
+                  .toImmutableList(),
+            ));
+          },
+          orElse: () => null,
+        );
       },
-      orElse: () => null,
     );
 
     emit(state.copyWith(isLoading: false));

@@ -97,6 +97,74 @@ class _UtilitiesRemote implements UtilitiesRemote {
     return value;
   }
 
+  @override
+  Future<AppHttpResponse> depositCash(amount) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('amount', amount));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AppHttpResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/rider/deposit',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AppHttpResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AppHttpResponse> claimBonus() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AppHttpResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/rider/claim-bonus',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AppHttpResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ReviewDTO> getReviews() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ReviewDTO>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/rider/reviews',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ReviewDTO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<void> contactSupport(
+      {required type, required message, images = const []}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('type', type));
+    _data.fields.add(MapEntry('message', message));
+    _data.files.addAll(images.map((i) => MapEntry(
+        'images[]',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
+    await _dio.fetch<void>(_setStreamType<void>(
+        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+            .compose(_dio.options, '/rider/contact-support',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

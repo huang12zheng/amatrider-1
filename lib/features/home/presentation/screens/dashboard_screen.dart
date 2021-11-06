@@ -180,40 +180,81 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               scaffold: FutureBuilder(
                 future: _memoizer.runOnce(() async {
                   final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
+                  await cubit.subscribeUserChanges();
 
-                  if (!cubit.state.isListeningForUserChanges)
-                    await cubit.subscribeUserChanges();
+                  final locationCubit = BlocProvider.of<LocationCubit>(context);
+
+                  final hasPermission = await locationCubit.hasPermission;
+                  if (!hasPermission) if (navigator.current.name !=
+                      AccessRoute.name)
+                    await navigator.push(AccessRoute(
+                      title: 'Kindly Grant Location Access',
+                      onWillPop: () => locationCubit.requestPermission(),
+                      content: 'Your location is needed in calculating '
+                          'accurate distance and delivery time.',
+                      additionalContent: AdaptiveText.rich(
+                        const TextSpan(children: [
+                          TextSpan(text: 'It’s safe to grant '),
+                          TextSpan(
+                            text: '${Const.appName}',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          TextSpan(text: ' location access. '),
+                          TextSpan(text: 'It makes the system work better. '),
+                          TextSpan(text: 'Thank you.'),
+                        ]),
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: Utils.letterSpacing,
+                        softWrap: true,
+                      ),
+                      onAccept: () async {
+                        final _granted =
+                            await locationCubit.requestPermission();
+                        return _granted;
+                      },
+                    ));
 
                   return 0;
                 }),
-                builder: (_, __) => AdaptiveScaffold(
-                  cupertinoTabBuilder: (_, i) => _tabs[i],
-                  body: FadeTransition(opacity: animation, child: child),
-                  adaptiveBottomNav: PlatformNavBar(
-                    items: navItems(s),
-                    currentIndex: s.currentIndex,
-                    material: (_, __) => MaterialNavBarData(
-                      elevation: 0.0,
-                      type: BottomNavigationBarType.fixed,
-                      unselectedItemColor: Colors.grey,
-                      selectedItemColor: Utils.foldTheme(
-                        light: () => Palette.accentColor,
-                        dark: () => Palette.accentColor.shade100,
+                builder: (_, snapshot) => snapshot.hasData
+                    ? AdaptiveScaffold(
+                        cupertinoTabBuilder: (_, i) => _tabs[i],
+                        body: FadeTransition(opacity: animation, child: child),
+                        adaptiveBottomNav: PlatformNavBar(
+                          items: navItems(s),
+                          currentIndex: s.currentIndex,
+                          material: (_, __) => MaterialNavBarData(
+                            elevation: 0.0,
+                            type: BottomNavigationBarType.fixed,
+                            unselectedItemColor: Colors.grey,
+                            selectedItemColor: Utils.foldTheme(
+                              light: () => Palette.accentColor,
+                              dark: () => Palette.accentColor.shade100,
+                            ),
+                          ),
+                          cupertino: (_, __) => CupertinoTabBarData(
+                            iconSize: 20,
+                            inactiveColor: Colors.grey,
+                            currentIndex: s.currentIndex,
+                            activeColor: Utils.foldTheme(
+                              light: () => Palette.accentColor,
+                              dark: () => Palette.accentColor.shade100,
+                            ),
+                          ),
+                          itemChanged: (i) => c
+                              .read<TabNavigationCubit>()
+                              .setCurrentIndex(c, i),
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressBar.adaptive(
+                          width: 0.03.h,
+                          height: 0.03.h,
+                          strokeWidth: 3,
+                          radius: 14,
+                        ),
                       ),
-                    ),
-                    cupertino: (_, __) => CupertinoTabBarData(
-                      iconSize: 20,
-                      inactiveColor: Colors.grey,
-                      currentIndex: s.currentIndex,
-                      activeColor: Utils.foldTheme(
-                        light: () => Palette.accentColor,
-                        dark: () => Palette.accentColor.shade100,
-                      ),
-                    ),
-                    itemChanged: (i) =>
-                        c.read<TabNavigationCubit>().setCurrentIndex(c, i),
-                  ),
-                ),
               ),
             ),
           );

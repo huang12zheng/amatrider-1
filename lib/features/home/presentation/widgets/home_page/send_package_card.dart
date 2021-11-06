@@ -227,8 +227,30 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: Image.asset(AppAssets.slider0,
-                  width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
+              child: widget.package.sender.photo.ensure(
+                (it) => CachedNetworkImage(
+                  imageUrl: '${it.getOrEmpty}',
+                  fit: BoxFit.cover,
+                  width: 0.14.sw,
+                  height: double.infinity,
+                  progressIndicatorBuilder: (_, url, download) => Center(
+                    child: CircularProgressBar.adaptive(
+                      value: download.progress,
+                      strokeWidth: 1.5,
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => Image.asset(
+                    AppAssets.slider1,
+                    width: 0.14.sw,
+                    height: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                orElse: (_) => Image.asset(AppAssets.slider1,
+                    width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+              ),
             ),
             title: Center(
               child: Row(

@@ -3,6 +3,7 @@ import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/pages/index.dart';
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart';
 import 'package:amatrider/features/home/presentation/screens/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/features/onborading/presentation/screens/index.dart';
 import 'package:amatrider/manager/router/guards/guards.dart';
 import 'package:auto_route/annotations.dart';
@@ -141,6 +142,15 @@ import 'package:amatrider/_404.dart';
       fullMatch: true,
       maintainState: true,
       usesPathAsKey: true,
+      page: RiderReviewScreen,
+      cupertinoPageTitle: 'Customer Feedback',
+      guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
       page: ReferralScreen,
       cupertinoPageTitle: 'Invite Friends',
       guards: [AuthGuard],
@@ -171,6 +181,22 @@ import 'package:amatrider/_404.dart';
       page: PromotionsScreen,
       cupertinoPageTitle: 'Promotions',
       guards: [AuthGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      fullscreenDialog: true,
+      page: AccessScreen,
+      path: 'service-access-widget',
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      fullscreenDialog: true,
+      page: SuccessScreen,
+      path: 'success-screen',
     ),
     //
     AdaptiveRoute(

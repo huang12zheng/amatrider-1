@@ -7,7 +7,7 @@ class _EditProfileBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AuthCubit>()..init(loader: true, countries: false),
+      create: (_) => getIt<AuthCubit>()..init(loader: true),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -59,7 +59,9 @@ class _EditProfileBottomSheet extends StatelessWidget {
                         right: App.sidePadding,
                         child: Visibility(
                           visible: c.select(
-                            (AuthCubit it) => it.state.isLoading,
+                            (AuthCubit it) =>
+                                it.state.isLoading &&
+                                it.state.rider.profile.isSome(),
                           ),
                           child:
                               Utils.circularLoader(color: Palette.accentColor),
@@ -269,16 +271,16 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                 //
                                 Hero(
                                   tag: Const.profileLogoutBtnHerotag,
-                                  child: Visibility(
-                                    visible: !c.select(
-                                      (AuthCubit it) =>
-                                          it.state.rider.phone.getOrNull !=
-                                              null &&
-                                          it.state.isLoading,
-                                    ),
-                                    replacement: App.loadingSpinningLines,
-                                    child: AppButton(
+                                  child:
+                                      BlocSelector<AuthCubit, AuthState, bool>(
+                                    selector: (s) => s.isLoading,
+                                    builder: (c, isLaoding) => AppButton(
                                       text: 'Save Changes',
+                                      disabled: isLaoding,
+                                      isLoading: isLaoding &&
+                                          c.select((AuthCubit it) =>
+                                              it.state.rider.phone.getOrNull !=
+                                              null),
                                       onPressed:
                                           c.read<AuthCubit>().updateProfile,
                                     ),

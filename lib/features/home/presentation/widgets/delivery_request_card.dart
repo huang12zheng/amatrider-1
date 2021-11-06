@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 
-part 'delivery_history_card.dart';
-
 /// A stateless widget to render DeliveryRequestCard.
 class DeliveryRequestCard extends StatefulWidget {
   final String? asset;
@@ -74,7 +72,6 @@ class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
             ),
           ),
           child: ExpandableNotifier(
-            // initialExpanded: widget.initialExpanded,
             controller: controller,
             child: ScrollOnExpand(
               child: ExpandablePanel(

@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `riders` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `availability` TEXT, `lat` REAL, `lng` REAL, `phoneVerifiedAt` INTEGER, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `riders` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `availability` TEXT, `lat` REAL, `lng` REAL, `phoneVerifiedAt` INTEGER, `avgRating` REAL, `verificationStatus` TEXT, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -119,6 +119,38 @@ class _$RiderDAO extends RiderDAO {
                   'lng': item.lng,
                   'phoneVerifiedAt':
                       _timestampFloorConverter.encode(item.phoneVerifiedAt),
+                  'avgRating': item.avgRating,
+                  'verificationStatus': _verificationStatusConverter
+                      .encode(item.verificationStatus),
+                  'createdAt': _timestampFloorConverter.encode(item.createdAt),
+                  'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
+                  'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
+                },
+            changeListener),
+        __$_RiderDTOUpdateAdapter = UpdateAdapter(
+            database,
+            'riders',
+            ['id'],
+            (_$_RiderDTO item) => <String, Object?>{
+                  'id': item.id,
+                  'token': item.token,
+                  'firstName': item.firstName,
+                  'lastName': item.lastName,
+                  'email': item.email,
+                  'phone': item.phone,
+                  'password': item.password,
+                  'oldPassword': item.oldPassword,
+                  'confirmation': item.confirmation,
+                  'image': item.image,
+                  'availability':
+                      _riderAvailabilityConverter.encode(item.availability),
+                  'lat': item.lat,
+                  'lng': item.lng,
+                  'phoneVerifiedAt':
+                      _timestampFloorConverter.encode(item.phoneVerifiedAt),
+                  'avgRating': item.avgRating,
+                  'verificationStatus': _verificationStatusConverter
+                      .encode(item.verificationStatus),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -145,6 +177,9 @@ class _$RiderDAO extends RiderDAO {
                   'lng': item.lng,
                   'phoneVerifiedAt':
                       _timestampFloorConverter.encode(item.phoneVerifiedAt),
+                  'avgRating': item.avgRating,
+                  'verificationStatus': _verificationStatusConverter
+                      .encode(item.verificationStatus),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -158,6 +193,8 @@ class _$RiderDAO extends RiderDAO {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<_$_RiderDTO> __$_RiderDTOInsertionAdapter;
+
+  final UpdateAdapter<_$_RiderDTO> __$_RiderDTOUpdateAdapter;
 
   final DeletionAdapter<_$_RiderDTO> __$_RiderDTODeletionAdapter;
 
@@ -181,6 +218,9 @@ class _$RiderDAO extends RiderDAO {
             lng: row['lng'] as double?,
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
+            avgRating: row['avgRating'] as double?,
+            verificationStatus: _verificationStatusConverter
+                .decode(row['verificationStatus'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -211,6 +251,9 @@ class _$RiderDAO extends RiderDAO {
             lng: row['lng'] as double?,
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
+            avgRating: row['avgRating'] as double?,
+            verificationStatus: _verificationStatusConverter
+                .decode(row['verificationStatus'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -239,6 +282,9 @@ class _$RiderDAO extends RiderDAO {
             lng: row['lng'] as double?,
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
+            avgRating: row['avgRating'] as double?,
+            verificationStatus: _verificationStatusConverter
+                .decode(row['verificationStatus'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -273,6 +319,9 @@ class _$RiderDAO extends RiderDAO {
             lng: row['lng'] as double?,
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
+            avgRating: row['avgRating'] as double?,
+            verificationStatus: _verificationStatusConverter
+                .decode(row['verificationStatus'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -282,14 +331,24 @@ class _$RiderDAO extends RiderDAO {
   }
 
   @override
-  Future<void> insertRider(_$_RiderDTO Rider) async {
-    await __$_RiderDTOInsertionAdapter.insert(
-        Rider, OnConflictStrategy.replace);
+  Future<void> insertItem(_$_RiderDTO item) async {
+    await __$_RiderDTOInsertionAdapter.insert(item, OnConflictStrategy.replace);
   }
 
   @override
-  Future<void> removeRider(_$_RiderDTO Rider) async {
-    await __$_RiderDTODeletionAdapter.delete(Rider);
+  Future<void> insertItems(List<_$_RiderDTO> items) async {
+    await __$_RiderDTOInsertionAdapter.insertList(
+        items, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> updateItem(_$_RiderDTO item) async {
+    await __$_RiderDTOUpdateAdapter.update(item, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> removeItem(_$_RiderDTO item) async {
+    await __$_RiderDTODeletionAdapter.delete(item);
   }
 }
 
@@ -297,6 +356,7 @@ class _$RiderDAO extends RiderDAO {
 final _timestampFloorConverter = TimestampFloorConverter();
 final _countryDTOFloorConverter = CountryDTOFloorConverter();
 final _riderAvailabilityConverter = RiderAvailabilityConverter();
+final _verificationStatusConverter = VerificationStatusConverter();
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -319,6 +379,9 @@ _$_RiderDTO _$$_RiderDTOFromJson(Map<String, dynamic> json) => _$_RiderDTO(
       lng: const DoubleSerializer().fromJson(json['current_longitude']),
       phoneVerifiedAt: const TimestampConverter()
           .fromJson(json['phone_verified_at'] as String?),
+      avgRating: const DoubleSerializer().fromJson(json['average_rating']),
+      verificationStatus: const VerificationStatusSerializer()
+          .fromJson(json['verification_state'] as String?),
       createdAt:
           const TimestampConverter().fromJson(json['created_at'] as String?),
       updatedAt:
@@ -354,6 +417,10 @@ Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {
       'current_longitude', const DoubleSerializer().toJson(instance.lng));
   writeNotNull('phone_verified_at',
       const TimestampConverter().toJson(instance.phoneVerifiedAt));
+  writeNotNull(
+      'average_rating', const DoubleSerializer().toJson(instance.avgRating));
+  writeNotNull('verification_state',
+      const VerificationStatusSerializer().toJson(instance.verificationStatus));
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

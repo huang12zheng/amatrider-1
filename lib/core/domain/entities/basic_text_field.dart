@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 
 typedef LengthValidator<G> = StringValidator<G> Function(G?);
 
-class BasicTextField<U> extends FieldObject<U?> {
+class BasicTextField<U extends Object?> extends FieldObject<U?> {
   static const BasicTextField<num> DEFAULT_NUM =
       BasicTextField<num>._(Right(0));
 

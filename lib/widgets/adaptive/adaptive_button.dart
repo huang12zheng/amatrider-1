@@ -243,7 +243,9 @@ class AdaptiveButton extends StatelessWidget {
               onLongPress: onLongPress,
               style: TextButton.styleFrom(
                 backgroundColor: disabled
-                    ? backgroundColor.withOpacity(0.4)
+                    ? backgroundColor == Colors.transparent
+                        ? backgroundColor
+                        : backgroundColor.withOpacity(0.4)
                     : backgroundColor,
                 alignment: alignment,
                 elevation: elevation,
@@ -265,8 +267,11 @@ class AdaptiveButton extends StatelessWidget {
             clipBehavior: clipBehavior,
             onLongPress: onLongPress,
             style: ElevatedButton.styleFrom(
-              primary:
-                  disabled ? backgroundColor.withOpacity(0.4) : backgroundColor,
+              primary: disabled
+                  ? backgroundColor == Colors.transparent
+                      ? backgroundColor
+                      : backgroundColor.withOpacity(0.4)
+                  : backgroundColor,
               alignment: alignment,
               elevation: elevation,
               padding: padding,

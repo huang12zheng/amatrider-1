@@ -59,10 +59,12 @@ class LaravelEchoRepository {
   }
 
   LaravelEchoRepository listen(
-    String event, {
+    String? event, {
     void Function(PusherEvent?)? onListen,
     required void Function(String, LaravelEchoRepository) onData,
   }) {
+    assert(event != null, 'Event cannot be null!');
+
     if (_channel != null) {
       _channel.listen(event, (e) {
         // Started listening
@@ -82,7 +84,7 @@ class LaravelEchoRepository {
     void Function(PusherEvent?)? onListen,
     required void Function(String, LaravelEchoRepository) onData,
   }) {
-    if (event == null) throw Exception('Event cannot be null!');
+    assert(event != null, 'Event cannot be null!');
 
     // Creates an instance of Echo or resuse previous instance with a new connection
     if (echo == null) _init();
@@ -95,7 +97,7 @@ class LaravelEchoRepository {
 
     // Listen for webhook event from channel
     _channel = channelName?.let(
-      (it) => echo?.private(it).listen(event, (e) {
+      (it) => echo?.private(it).listen(event!, (e) {
         // Started listening
         onListen?.call(e is PusherEvent ? e : null);
         // On data received

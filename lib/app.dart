@@ -12,8 +12,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AmatRider extends StatelessWidget {
   /// This is the entry point for AmatRider App
@@ -48,6 +50,7 @@ class AmatRider extends StatelessWidget {
           locale: DevicePreview.locale(context),
           // useInheritedMediaQuery: true,
           localizationsDelegates: [
+            RefreshLocalizations.delegate,
             DefaultCupertinoLocalizations.delegate,
             DefaultMaterialLocalizations.delegate,
             DefaultWidgetsLocalizations.delegate,

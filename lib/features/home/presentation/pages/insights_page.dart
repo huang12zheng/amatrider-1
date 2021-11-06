@@ -1,11 +1,26 @@
+library insights_page.dart;
+
+import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/presentation/index.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+part '../widgets/insight_widgets/activity_chart_widget.dart';
+part '../widgets/insight_widgets/claim_bonus_dialog_builder.dart';
+part '../widgets/insight_widgets/deposit_cash_dialog_builder.dart';
 
 /// A stateless widget to render InsightsPage.
 class InsightsPage extends StatelessWidget with AutoRouteWrapper {
@@ -13,11 +28,31 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return this;
+    return BlocProvider(
+      create: (_) => getIt<InsightsCubit>(),
+      child: BlocListener<InsightsCubit, InsightsState>(
+        listenWhen: (p, c) =>
+            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.response.maybeMap(
+                      error: (f) => f.foldCode(orElse: () => false),
+                      orElse: () => false,
+                    ))),
+        listener: (c, s) => s.status.fold(
+          () => null,
+          (it) => it?.response.map(
+            error: (f) => PopupDialog.error(message: f.message).render(c),
+            success: (s) => PopupDialog.success(message: s.message).render(c),
+          ),
+        ),
+        child: this,
+      ),
+    );
   }
 
-  Future<void> onRefresh(BuildContext c) async {
-    return Future.delayed(const Duration(seconds: 5));
+  void onRefresh(BuildContext c, RefreshController controller) async {
+    await BlocProvider.of<InsightsCubit>(c).fetchInsights();
+    controller.refreshCompleted();
   }
 
   @override
@@ -45,7 +80,14 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                 fontWeight: FontWeight.w400,
               ),
               //
-              Headline('4.0', fontSize: 15.sp),
+              BlocSelector<AuthWatcherCubit, AuthWatcherState,
+                  BasicTextField<double?>?>(
+                selector: (s) => s.rider?.avgRating,
+                builder: (_, rating) => Headline(
+                  '${rating?.getOrNull ?? 0.0}',
+                  fontSize: 15.sp,
+                ),
+              ),
               //
               Icon(
                 Utils.platform_(
@@ -60,283 +102,323 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
           ),
         ],
       ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          edgeOffset: 10,
-          triggerMode: RefreshIndicatorTriggerMode.onEdge,
-          color: App.resolveColor(Palette.accentColor),
-          backgroundColor: App.resolveColor(
-            Palette.neutralF9,
-            dark: Palette.secondaryColor.shade400,
-          ),
-          onRefresh: () => onRefresh(context),
-          child: CustomScrollView(
-            shrinkWrap: true,
-            physics: Utils.physics,
-            scrollDirection: Axis.vertical,
-            controller: ScrollController(),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            slivers: <Widget>[
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: 0.01.sw),
-                sliver: SliverToBoxAdapter(
-                  child: AdaptiveText(
-                    'Insight',
-                    softWrap: true,
-                    fontSize: 25.0.sp,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: Utils.letterSpacing,
+      body: BlocBuilder<InsightsCubit, InsightsState>(
+        builder: (c, s) => SafeArea(
+          child: DragToRefresh(
+            initialRefresh: true,
+            onRefresh: (controller) => onRefresh(c, controller),
+            child: CustomScrollView(
+              shrinkWrap: true,
+              physics: Utils.physics,
+              scrollDirection: Axis.vertical,
+              controller: ScrollController(),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: App.sidePadding,
+                  ).copyWith(top: 0.01.sw),
+                  sliver: SliverToBoxAdapter(
+                    child: AdaptiveText(
+                      'Insight',
+                      softWrap: true,
+                      fontSize: 25.0.sp,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: Utils.letterSpacing,
+                    ),
                   ),
                 ),
-              ),
-              //
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: 0.03.sw),
-                sliver: SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      AdaptiveText(
-                        'Current Plan',
-                        fontSize: 19.0.sp,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: Utils.letterSpacing,
-                      ),
-                      //
-                      HorizontalSpace(width: 0.02.sw),
-                      //
-                      DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: Palette.accent20,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
+                //
+                if (s.insight.daysLeft.isValid)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: App.sidePadding,
+                    ).copyWith(top: 0.03.sw),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        children: [
+                          AdaptiveText(
+                            'Current Plan',
+                            fontSize: 19.0.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: Utils.letterSpacing,
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4.0),
-                          child: AdaptiveText(
-                            '24 days left',
-                            style: TextStyle(
-                              color: Palette.accentColor,
-                              fontSize: 15.sp,
+                          //
+                          HorizontalSpace(width: 0.02.sw),
+                          //
+                          DecoratedBox(
+                            decoration: const BoxDecoration(
+                              color: Palette.accent20,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              child: AdaptiveText(
+                                '${s.insight.daysLeft.getOrEmpty} days left',
+                                style: TextStyle(
+                                  color: Palette.accentColor,
+                                  fontSize: 15.sp,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              //
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: 0.03.sw),
-                sliver: SliverToBoxAdapter(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: App.resolveColor(
-                        Colors.white,
-                        dark: Palette.secondaryColor.shade700,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Utils.inputBorderRadius,
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: 0.17.sh,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 0.035.sw,
-                          vertical: 0.03.sw,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Flexible(
-                              child: _InsightColumn(
-                                title: 'Completed',
-                                subtitle: '20',
-                                color: Palette.pastelGreen,
-                                icon: AmatNow.check_circle,
-                                iconColor: Palette.accentGreen,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              ),
-                            ),
-                            //
-                            const Flexible(
-                              child: _InsightColumn(
-                                title: 'Target',
-                                subtitle: '50',
-                                color: Palette.pastelBlue,
-                                icon: AmatNow.target_icon,
-                                iconColor: Palette.accentBlue,
-                              ),
-                            ),
-                            //
-                            const Flexible(
-                              child: _InsightColumn(
-                                title: 'Progress',
-                                subtitle: '100%',
-                                color: Palette.pastelYellow,
-                                icon: AmatNow.progress_icon,
-                                iconColor: Palette.accentYellow,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   ),
-                ),
-              ),
-              //
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: 0.04.sw),
-                sliver: SliverToBoxAdapter(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: App.resolveColor(Colors.white,
-                          dark: Palette.secondaryColor.shade700),
-                      borderRadius: BorderRadius.circular(
-                        Utils.inputBorderRadius,
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: 0.16.sh,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 0.035.sw,
-                          vertical: 0.03.sw,
+                //
+                if (s.insight.completed.isValid &&
+                    s.insight.target.isValid &&
+                    s.insight.progress.isValid)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: App.sidePadding,
+                    ).copyWith(top: 0.03.sw),
+                    sliver: SliverToBoxAdapter(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: App.resolveColor(
+                            Colors.white,
+                            dark: Palette.secondaryColor.shade700,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            Utils.inputBorderRadius,
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: _InsightColumn(
-                                title: 'Extra Deliveries',
-                                titleFontSize: 19.0.sp,
-                                subtitle: '12',
-                                color: Palette.accent20,
-                                icon: AmatNow.gift_box,
-                                icon2: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: App.resolveColor(
-                                      Palette.neutralF5,
-                                      dark: Palette.neutralMoonDark,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                        Utils.inputBorderRadius),
+                        child: SizedBox(
+                          height: 0.17.sh,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 0.035.sw,
+                              vertical: 0.03.sw,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: _InsightColumn(
+                                    title: 'Completed',
+                                    subtitle:
+                                        '${s.insight.completed.getOrEmpty}',
+                                    color: Palette.pastelGreen,
+                                    icon: AmatNow.check_circle,
+                                    iconColor: Palette.accentGreen,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                   ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 0.03.sw,
-                                      vertical: 0.02.sw,
+                                ),
+                                //
+                                Flexible(
+                                  child: _InsightColumn(
+                                    title: 'Target',
+                                    subtitle: '${s.insight.target.getOrEmpty}',
+                                    color: Palette.pastelBlue,
+                                    icon: AmatNow.target_icon,
+                                    iconColor: Palette.accentBlue,
+                                  ),
+                                ),
+                                //
+                                Flexible(
+                                  child: _InsightColumn(
+                                    title: 'Progress',
+                                    subtitle:
+                                        '${s.insight.progress.getOrEmpty}%',
+                                    color: Palette.pastelYellow,
+                                    icon: AmatNow.progress_icon,
+                                    iconColor: Palette.accentYellow,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                //
+                if (s.insight.bonus.isValid && s.insight.bonus.getOrNull != 0)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: App.sidePadding,
+                    ).copyWith(top: 0.04.sw),
+                    sliver: SliverToBoxAdapter(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: App.resolveColor(Colors.white,
+                              dark: Palette.secondaryColor.shade700),
+                          borderRadius: BorderRadius.circular(
+                            Utils.inputBorderRadius,
+                          ),
+                        ),
+                        child: SizedBox(
+                          height: 0.16.sh,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 0.035.sw,
+                              vertical: 0.03.sw,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: _InsightColumn(
+                                    title: 'Extra Deliveries',
+                                    titleFontSize: 19.0.sp,
+                                    subtitle:
+                                        '${s.insight.extraDelivery.getOrEmpty}',
+                                    color: Palette.accent20,
+                                    icon: AmatNow.gift_box,
+                                    icon2: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: App.resolveColor(
+                                          Palette.neutralF5,
+                                          dark: Palette.neutralMoonDark,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                            Utils.inputBorderRadius),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 0.03.sw,
+                                          vertical: 0.02.sw,
+                                        ),
+                                        child: Headline(
+                                          '${s.insight.bonus.getOrEmpty}'
+                                              .asCurrency(),
+                                          fontSize: 15.sp,
+                                          textColor: Palette.neutralLabel,
+                                          textColorDark: Palette.neutralLabel,
+                                        ),
+                                      ),
                                     ),
-                                    child: Headline(
-                                      '\$32',
-                                      fontSize: 15.sp,
-                                      textColor: Palette.neutralLabel,
-                                      textColorDark: Palette.neutralLabel,
+                                    iconColor: Palette.accentColor,
+                                    padding: EdgeInsets.all(0.02.sw),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                  ),
+                                ),
+                                //
+                                Flexible(
+                                  flex: 5,
+                                  child: AppOutlinedButton(
+                                    text: 'Claim Bonus',
+                                    height: 0.09.sw,
+                                    cupertinoHeight: 0.028.sh,
+                                    width: 0.3.sw,
+                                    cupertinoWidth: 0.3.sw,
+                                    onPressed: () => App.showAlertDialog(
+                                      context: context,
+                                      barrierColor: App.resolveColor(
+                                        Colors.grey.shade800.withOpacity(0.55),
+                                        dark: Colors.white54,
+                                      ),
+                                      builder: (_) => _ClaimBonusDialogBuilder(
+                                        cubit: c.read<InsightsCubit>(),
+                                        cash: s.insight.cashAtHand,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                iconColor: Palette.accentColor,
-                                padding: EdgeInsets.all(0.02.sw),
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              ),
+                              ],
                             ),
-                            //
-                            Flexible(
-                              flex: 5,
-                              child: AppOutlinedButton(
-                                text: 'Claim Bonus',
-                                height: 0.09.sw,
-                                cupertinoHeight: 0.028.sh,
-                                width: 0.3.sw,
-                                cupertinoWidth: 0.3.sw,
-                                onPressed: () {},
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              //
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: 0.04.sw),
-                sliver: SliverToBoxAdapter(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: App.resolveColor(
-                        Colors.white,
-                        dark: Palette.secondaryColor.shade700,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Utils.inputBorderRadius,
-                      ),
-                    ),
-                    child: SizedBox(
-                      height: 0.16.sh,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 0.035.sw,
-                          vertical: 0.03.sw,
+                //
+                if (s.insight.cashAtHand.isValid &&
+                    s.insight.cashAtHand.getOrNull != 0)
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: App.sidePadding,
+                    ).copyWith(top: 0.04.sw),
+                    sliver: SliverToBoxAdapter(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: App.resolveColor(
+                            Colors.white,
+                            dark: Palette.secondaryColor.shade700,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            Utils.inputBorderRadius,
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 8,
-                              child: _InsightColumn(
-                                title: 'Total Cash at Hand',
-                                titleFontSize: 19.0.sp,
-                                subtitle: '\$10,000',
-                                color: Palette.pastelPurple,
-                                icon: AmatNow.cash_hand,
-                                iconColor: Palette.accentPurple,
-                                padding: EdgeInsets.all(0.02.sw),
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              ),
+                        child: SizedBox(
+                          height: 0.16.sh,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 0.035.sw,
+                              vertical: 0.03.sw,
                             ),
-                            //
-                            Flexible(
-                              flex: 5,
-                              child: AdaptiveButton(
-                                text: 'Deposit Cash',
-                                textColor: Colors.white,
-                                splashColor: Colors.white24,
-                                height: 0.09.sw,
-                                cupertinoHeight: 0.028.sh,
-                                width: 0.3.sw,
-                                cupertinoWidth: 0.3.sw,
-                                onPressed: () {},
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 8,
+                                  child: _InsightColumn(
+                                    title: 'Total Cash at Hand',
+                                    titleFontSize: 19.0.sp,
+                                    subtitle:
+                                        '${s.insight.cashAtHand.getOrEmpty}'
+                                            .asCurrency(),
+                                    color: Palette.pastelPurple,
+                                    icon: AmatNow.cash_hand,
+                                    iconColor: Palette.accentPurple,
+                                    padding: EdgeInsets.all(0.02.sw),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                  ),
+                                ),
+                                //
+                                Flexible(
+                                  flex: 5,
+                                  child: AdaptiveButton(
+                                    text: 'Deposit Cash',
+                                    textColor: Colors.white,
+                                    splashColor: Colors.white24,
+                                    height: 0.09.sw,
+                                    cupertinoHeight: 0.028.sh,
+                                    width: 0.3.sw,
+                                    cupertinoWidth: 0.3.sw,
+                                    onPressed: () => App.showAlertDialog(
+                                      context: context,
+                                      barrierColor: App.resolveColor(
+                                        Colors.grey.shade800.withOpacity(0.55),
+                                        dark: Colors.white54,
+                                      ),
+                                      builder: (_) => _DepositCashDialogBuilder(
+                                        cubit: c.read<InsightsCubit>(),
+                                        cash: s.insight.cashAtHand,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ],
+
+                if (s.insight.activities.isValid)
+                  SliverPadding(
+                    padding: EdgeInsets.all(App.sidePadding),
+                    sliver: const SliverToBoxAdapter(
+                      child: _ActivityChartWidget(),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

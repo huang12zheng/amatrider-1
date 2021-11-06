@@ -108,15 +108,16 @@ class _AuthenticatedCard extends StatelessWidget {
                         ),
                       ),
                       //
-                      Flexible(
-                        child: AdaptiveText(
-                          '${rider?.phone.getOrError}',
-                          style: TextStyle(
-                            fontSize: 17.0.sp,
-                            fontWeight: FontWeight.w400,
+                      if (rider != null && rider!.phone.isValid)
+                        Flexible(
+                          child: AdaptiveText(
+                            '${rider?.phone.getOrError}',
+                            style: TextStyle(
+                              fontSize: 17.0.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),

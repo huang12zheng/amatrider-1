@@ -35,4 +35,23 @@ abstract class UtilitiesRemote {
     @Part(name: 'country_id') required String countryId,
     @Part() required String type,
   });
+
+  @POST(EndPoints.DEPOSIT_CASH)
+  @MultiPart()
+  Future<AppHttpResponse> depositCash(@Part() String amount);
+
+  @POST(EndPoints.CLAIM_BONUS)
+  @MultiPart()
+  Future<AppHttpResponse> claimBonus();
+
+  @GET(EndPoints.GET_REVIEWS)
+  Future<ReviewDTO> getReviews();
+
+  @POST(EndPoints.CONTACT_SUPPORT)
+  @MultiPart()
+  Future<void> contactSupport({
+    @Part(name: 'type') required String type,
+    @Part(name: 'message') required String message,
+    @Part(name: 'images[]') List<File> images = const [],
+  });
 }

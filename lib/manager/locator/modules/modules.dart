@@ -10,7 +10,6 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -44,9 +43,6 @@ abstract class Modules {
 
   @preResolve
   Future<SharedPreferences> get preferences => SharedPreferences.getInstance();
-
-  @lazySingleton
-  FacebookLogin get facebookLogin => FacebookLogin();
 
   @lazySingleton
   SweetSheet get sweetSheet => SweetSheet();

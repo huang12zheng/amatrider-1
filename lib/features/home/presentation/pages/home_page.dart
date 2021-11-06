@@ -10,6 +10,7 @@ import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +111,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: ref.read(scaffoldController.notifier).open,
           ),
         ),
+        actions: [const AvailablilityWidget()],
       ),
       body: SafeArea(
         child: RefreshIndicator(

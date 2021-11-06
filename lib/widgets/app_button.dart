@@ -6,6 +6,10 @@ import 'package:flutter/cupertino.dart';
 /// A stateless widget to render AppButton.
 class AppButton extends StatelessWidget {
   final String? text;
+  final double? height;
+  final double width;
+  final double? cupertinoHeight;
+  final double? cupertinoWidth;
   final Widget? child;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -17,6 +21,10 @@ class AppButton extends StatelessWidget {
   const AppButton({
     Key? key,
     this.text,
+    this.height,
+    this.width = double.infinity,
+    this.cupertinoHeight,
+    this.cupertinoWidth,
     this.child,
     this.fontSize,
     this.fontWeight,
@@ -33,7 +41,10 @@ class AppButton extends StatelessWidget {
       fontSize: fontSize,
       fontWeight: fontWeight,
       textColor: Colors.white,
-      cupertinoHeight: 0.065.sh,
+      height: height,
+      width: width,
+      cupertinoHeight: cupertinoHeight,
+      cupertinoWidth: cupertinoWidth,
       isLoading: isLoading,
       disabled: disabled,
       padding: App.platform.cupertino(EdgeInsets.zero),

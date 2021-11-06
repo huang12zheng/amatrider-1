@@ -19,7 +19,9 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
   final TextStyle? contentTextStyle;
   final B? defaultValue;
   final String? firstButtonText;
+  final double? firstButtonHeight;
   final String secondButtonText;
+  final double? secondButtonHeight;
   final bool disableSecondButton;
   final String? cupertinoFirstButtonText;
   final String cupertinoSecondButtonText;
@@ -54,8 +56,10 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
     this.contentFonSize,
     this.minContentFonSize = 14,
     this.firstButtonText,
+    this.firstButtonHeight,
     this.defaultValue,
     this.secondButtonText = 'Close',
+    this.secondButtonHeight,
     this.disableSecondButton = false,
     String? cupertinoFirstButtonText,
     String? cupertinoSecondButtonText,
@@ -82,7 +86,7 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
         assert((onSecondPressed == null && onSecondPressedFuture != null) ||
             (onSecondPressed != null && onSecondPressedFuture == null) ||
             (onSecondPressed == null && onSecondPressedFuture == null)),
-        _width = width ?? 0.85.sw,
+        _width = width ?? 0.63.sw,
         cupertinoFirstButtonText = cupertinoFirstButtonText ?? firstButtonText,
         cupertinoSecondButtonText = secondButtonText,
         assert(isFirstDestructive || isSecondDestructive),
@@ -108,9 +112,10 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
             horizontal: 0.04.sw,
             vertical: 0.04.sw,
           ),
+          insetPadding: EdgeInsets.zero,
           contentPadding: EdgeInsets.symmetric(
-            horizontal: 0.04.sw,
-            vertical: 0.04.sw,
+            horizontal: App.sidePadding,
+            vertical: App.sidePadding,
           ).copyWith(top: title != null ? 0.0 : null),
           titleTextStyle: DefaultTextStyle.of(context).style.merge(
               TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600)
@@ -170,13 +175,13 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
             ),
           ),
         ),
-        content: SizedBox(
-          width: _width,
-          child: SingleChildScrollView(
-            clipBehavior: Clip.antiAlias,
-            physics: Utils.physics,
-            scrollDirection: Axis.vertical,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        content: SingleChildScrollView(
+          clipBehavior: Clip.antiAlias,
+          physics: Utils.physics,
+          scrollDirection: Axis.vertical,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: SizedBox(
+            width: _width,
             child: Column(
               children: [
                 Align(
@@ -227,13 +232,16 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                           //
                           firstButtonText?.let(
                                   (it) => VerticalSpace(height: 0.05.sw)) ??
-                              Utils.nothing,
+                              (materialFirstButton != null
+                                  ? VerticalSpace(height: 0.05.sw)
+                                  : Utils.nothing),
+                          Utils.nothing,
                           //
                           if (!disableSecondButton)
                             _secondButton(buttonDirection),
                         ])
                       : Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                               Flexible(child: _firstButton(buttonDirection)),
                               //
@@ -264,7 +272,7 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                   onFirstPressed?.call() ??
                   defaultValue),
           text: firstButtonText,
-          height: 0.045.h,
+          height: firstButtonHeight ?? 0.045.h,
           cupertinoHeight: 0.028.sh,
           fontSize: 15.sp,
           textColor: Colors.white,
@@ -293,7 +301,7 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                 onSecondPressed?.call() ??
                 defaultValue),
         text: secondButtonText,
-        height: 0.045.h,
+        height: secondButtonHeight ?? 0.045.h,
         cupertinoHeight: 0.028.sh,
         fontSize: 15.sp,
         textColor: App.resolveColor(Palette.accentColor),

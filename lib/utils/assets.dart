@@ -37,6 +37,10 @@ mixin AppAssets {
   static const String verifyAccount = '$AUTH_SVG_DIR/verify_account.svg';
   static const String forgotPassword = '$AUTH_SVG_DIR/forgot_password_boss.svg';
 
+  // Lottie Json
+  static const String checkAnimation = '$RAW_DIR/check_anim.json';
+  static const String hoorayAnimation = '$RAW_DIR/hooray_lottie_anim.json';
+
   /// USER
   static const String user = '$IMAGES_DIR/user.png';
   static const String female = '$IMAGES_DIR/female.png';
@@ -89,6 +93,9 @@ mixin AppAssets {
       '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
   static const String _galleryColored =
       '$DASHBOARD_SVG_DIR/gallery_colored.svg';
+
+  static const String _thumbLove = '$DASHBOARD_SVG_DIR/thumb_love.svg';
+  static const String _groupEllipse = '$DASHBOARD_SVG_DIR/group_ellipse.svg';
 
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
@@ -147,6 +154,8 @@ mixin AppAssets {
     _folderColored,
     _galleryOutlined,
     _galleryColored,
+    _thumbLove,
+    _groupEllipse,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -342,6 +351,20 @@ mixin AppAssets {
 
   static SvgPicture galleryColored = SvgPicture.asset(
     _galleryColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture thumbLove = SvgPicture.asset(
+    _thumbLove,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture groupEllipse = SvgPicture.asset(
+    _groupEllipse,
     height: 25,
     width: 25,
     fit: BoxFit.contain,

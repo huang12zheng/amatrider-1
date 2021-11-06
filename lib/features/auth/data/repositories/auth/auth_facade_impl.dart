@@ -14,16 +14,12 @@ import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: AuthFacade)
 class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   @override
   final FirebaseAnalytics analytics;
-
-  @override
-  final FacebookLogin facebookLogin;
 
   @override
   final AuthLocalDatasource local;
@@ -40,7 +36,6 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
     this.remote,
     this.local,
     this.analytics,
-    this.facebookLogin,
     this.preferences,
   )   : __controller = StreamController.broadcast(),
         __userChagesController = StreamController.broadcast();
@@ -307,6 +302,43 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       __controller.sink.add(userOrFailure ?? await currentRider);
 
   @override
+  Future<void> sleep() async {
+    try {
+      await remote.timeout();
+    } on AppHttpResponse catch (ex) {
+      log.w(ex);
+    } on AppNetworkException catch (ex) {
+      log.w(ex.asResponse());
+    }
+  }
+
+  @override
+  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
+      RiderAvailability availability) async {
+    try {
+      // Check if device has good connection
+      final _conn = await checkInternetConnectivity();
+
+      return _conn.fold(
+        (f) async => left(f),
+        (r) async {
+          final _result = await remote.toggleAvailability(availability);
+          final _riderDTO =
+              RiderDTO.fromJson(_result.data as Map<String, dynamic>);
+
+          return right(_riderDTO.domain);
+        },
+      );
+    } on AppHttpResponse catch (ex, trace) {
+      return left(await handleFailure(e: ex, trace: trace, notify: false));
+    } on AppNetworkException catch (ex, trace) {
+      return left(
+        await handleFailure(e: ex.asResponse(), trace: trace, notify: false),
+      );
+    }
+  }
+
+  @override
   Future<void> update(Option<Rider?> user) async =>
       __userChagesController.sink.add(user);
 
@@ -463,17 +495,6 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       return handleFailure(e: ex, trace: trace, notify: false);
     } on AppNetworkException catch (ex, trace) {
       return handleFailure(e: ex.asResponse(), trace: trace, notify: false);
-    }
-  }
-
-  @override
-  Future<void> sleep() async {
-    try {
-      await remote.timeout();
-    } on AppHttpResponse catch (ex) {
-      log.w(ex);
-    } on AppNetworkException catch (ex) {
-      log.w(ex.asResponse());
     }
   }
 

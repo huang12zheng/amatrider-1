@@ -11,6 +11,7 @@ import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -35,15 +36,11 @@ class AuthCubit extends Cubit<AuthState>
 
   @override
   Future<void> close() {
-    state.phoneTextController.dispose();
+    // state.phoneTextController.dispose();
     return super.close();
   }
 
-  void init({
-    bool loader = false,
-    bool countries = true,
-    bool newController = false,
-  }) async {
+  void init({bool loader = false}) async {
     if (loader) toggleLoading();
 
     // Retrieve stored / cached user data
@@ -51,29 +48,11 @@ class AuthCubit extends Cubit<AuthState>
 
     final _phone = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
-    if (countries) {
-      // Retrieve countries
-      await fetchCountries();
-
-      await _phone?.let((it) async {
-        try {
-          var _n = await PhoneNumber.getRegionInfoFromPhoneNumber('$it');
-          emit(state.copyWith(
-            selectedCountry: state.countries.first(
-              (it) => it.iso != null && it.iso!.compare(_n.isoCode),
-            ),
-          ));
-        } catch (e) {
-          print(e.toString());
-        }
-      });
-    }
-
     (_user.getOrElse(() => null) ?? state.rider)
         .let((it) => emit(state.copyWith(
               rider: it.copyWith(
                 phone: _phone?.let(
-                      (number) => Phone(number, country: state.selectedCountry),
+                      (number) => Phone(number, country: _mapCountry()),
                     ) ??
                     it.phone.ensure((p0) => (p0 as Phone),
                         orElse: (_) => state.rider.phone),
@@ -118,13 +97,13 @@ class AuthCubit extends Cubit<AuthState>
     ));
   }
 
-  void phoneNumberChanged([String? value = '']) async {
+  void phoneNumberChanged(String value) async {
     final country = state.selectedCountry;
 
     try {
-      if (value!.length > 3) {
+      if (value.length > 2) {
         var number = await PhoneNumber.getRegionInfoFromPhoneNumber(
-            value, country?.iso?.getOrNull ?? '');
+            value, country?.code ?? '');
 
         var _parsed = await PhoneNumber.getParsableNumber(number);
 
@@ -144,7 +123,7 @@ class AuthCubit extends Cubit<AuthState>
     } catch (e) {
       emit(state.copyWith(
         phoneTextController: state.phoneTextController
-          ..text = value!
+          ..text = value
           ..value = TextEditingValue(
             text: value,
             selection: TextSelection.fromPosition(
@@ -156,20 +135,30 @@ class AuthCubit extends Cubit<AuthState>
 
     emit(state.copyWith(
       rider: state.rider.copyWith(
-        phone: Phone(value.trim(), country: country),
+        phone: Phone(value.trim(), country: _mapCountry()),
       ),
     ));
   }
 
-  void countryChanged(Country? value) => emit(state.copyWith(
-        selectedCountry: value,
-        rider: state.rider.copyWith(
-          phone: state.rider.phone.copyWith(
-            state.rider.phone.getOrNull,
-            country: value,
-          ),
+  Country _mapCountry([CountryCode? country]) => Country(
+        dialCode: BasicTextField((country ?? state.selectedCountry)?.dialCode),
+        iso: BasicTextField((country ?? state.selectedCountry)?.code),
+        name: BasicTextField((country ?? state.selectedCountry)?.name),
+      );
+
+  void countryChanged(CountryCode? country) {
+    phoneNumberChanged('');
+
+    emit(state.copyWith(
+      selectedCountry: country,
+      rider: state.rider.copyWith(
+        phone: state.rider.phone.copyWith(
+          state.rider.phone.getOrNull,
+          country: _mapCountry(country),
         ),
-      ));
+      ),
+    ));
+  }
 
   void otpCodeChanged(String value) =>
       emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
@@ -518,31 +507,6 @@ class AuthCubit extends Cubit<AuthState>
     toggleLoading();
   }
 
-  Future<void> fetchCountries() async {
-    toggleLoading(true);
-
-    final _countries = await _utils.countries();
-
-    _countries.fold(
-      (failure) => emit(state.copyWith(status: some(failure))),
-      (countries) {
-        emit(
-          state.copyWith(
-            phoneTextController: TextEditingController(),
-            countries: countries.sorted(),
-            selectedCountry: countries.firstOrNull((it) =>
-                it.iso3 != null &&
-                it.iso3!.getOrEmpty!.caseInsensitiveContains(
-                  Country.turkeyISO3,
-                )),
-          ),
-        );
-      },
-    );
-
-    toggleLoading(false);
-  }
-
   void getBankAccount() async {
     toggleLoading(true);
 
@@ -575,6 +539,31 @@ class AuthCubit extends Cubit<AuthState>
         )),
       );
     }
+
+    toggleLoading(false);
+  }
+
+  void toggleAvailability(RiderAvailability availability) async {
+    toggleLoading(true);
+
+    final result = await _auth.toggleRiderAvailability(availability);
+
+    await result.fold(
+      (f) async => emit(state.copyWith(status: some(f))),
+      (rider) async {
+        await _auth.update(optionOf(rider));
+        final value = rider.availability == RiderAvailability.available;
+        emit(state.copyWith(
+          status: some(AppHttpResponse.successful(
+            'Toggled ${value ? 'On' : 'Off'}',
+          ).response.mapOrNull(
+                success: (s) => AppHttpResponse(s.copyWith(
+                  uuid: UniqueId<String>.v4().value,
+                )),
+              )),
+        ));
+      },
+    );
 
     toggleLoading(false);
   }

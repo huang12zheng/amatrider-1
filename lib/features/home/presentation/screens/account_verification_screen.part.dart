@@ -29,11 +29,14 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AdaptiveText(
-                  'Government-Issued ID Card',
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w600,
+                BlocSelector<VerificationCubit, VerificationState, DocumentID?>(
+                  selector: (s) => s.documentID,
+                  builder: (c, type) => AdaptiveText(
+                    '${type?.name}',
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 //

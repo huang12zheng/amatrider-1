@@ -1,19 +1,34 @@
-part of delivery_request_card.dart;
+part of grouped_history_card.dart;
 
 /// A stateless widget to render DeliveryHistoryCard.
-class DeliveryHistoryCard extends StatelessWidget {
-  final String? asset;
+class DeliveryHistoryCard extends StatefulWidget {
+  final DeliveryHistory history;
   final bool initialExpanded;
-  final VoidCallback? onAccept;
-  final VoidCallback? onDecline;
 
   const DeliveryHistoryCard({
     Key? key,
-    this.asset,
+    required this.history,
     this.initialExpanded = false,
-    this.onAccept,
-    this.onDecline,
   }) : super(key: key);
+
+  @override
+  State<DeliveryHistoryCard> createState() => _DeliveryHistoryCardState();
+}
+
+class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
+  ExpandableController? controller;
+
+  @override
+  void initState() {
+    controller = ExpandableController(initialExpanded: widget.initialExpanded);
+    super.initState();
+  }
+
+  Duration get totalDeliveryTime {
+    final start = widget.history.riderAcceptedAt;
+    final end = widget.history.riderDeliveredAt;
+    return end!.difference(start!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,37 +56,41 @@ class DeliveryHistoryCard extends StatelessWidget {
             ),
           ),
           child: ExpandableNotifier(
-            initialExpanded: initialExpanded,
+            controller: controller,
             child: ScrollOnExpand(
               child: ExpandablePanel(
                 header: header,
                 collapsed: const SizedBox.shrink(),
                 expanded: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                  ).copyWith(bottom: 10.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 0.04.sw,
+                  ).copyWith(bottom: 0.02.sw),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const TimelineStatusWidget(
+                      TimelineStatusWidget(
+                        padding: EdgeInsets.zero,
+                        itemHeight: (_, __) => 0.07.h,
                         statuses: [
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
                             title: 'Pick Up Location',
-                            subtitle: '1234 Main St, Anytown, CA 12345',
+                            subtitle:
+                                '${widget.history.pickup.address.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             title: 'Delivery Location',
-                            subtitle: 'Damaturu, Nigeria',
+                            subtitle:
+                                '${widget.history.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
                       //
-                      VerticalSpace(height: 0.015.sw),
+                      VerticalSpace(height: 0.007.sw),
                       //
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +104,7 @@ class DeliveryHistoryCard extends StatelessWidget {
                           ),
                           //
                           Headline(
-                            '12mins 30 sec',
+                            '${Utils.hoursAndMins(totalDeliveryTime)}',
                             fontSize: 17.sp,
                             textColor: Colors.black,
                             textColorDark: Colors.white,
@@ -113,10 +132,30 @@ class DeliveryHistoryCard extends StatelessWidget {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: asset?.let((it) => Image.asset(it,
-                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill)) ??
-                  Image.asset(AppAssets.slider0,
-                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
+              child: widget.history.sender.photo.ensure(
+                (it) => CachedNetworkImage(
+                  imageUrl: '${it.getOrEmpty}',
+                  fit: BoxFit.cover,
+                  width: 0.14.sw,
+                  height: double.infinity,
+                  progressIndicatorBuilder: (_, url, download) => Center(
+                    child: CircularProgressBar.adaptive(
+                      value: download.progress,
+                      strokeWidth: 1.5,
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => Image.asset(
+                    AppAssets.slider1,
+                    width: 0.14.sw,
+                    height: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                orElse: (_) => Image.asset(AppAssets.slider1,
+                    width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+              ),
             ),
             title: Center(
               child: Row(
@@ -126,7 +165,7 @@ class DeliveryHistoryCard extends StatelessWidget {
                   Expanded(
                     flex: 4,
                     child: AdaptiveText(
-                      'Emily Restaurant',
+                      '${widget.history.receiverFullName.getOrEmpty}',
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
                     ),
@@ -134,7 +173,7 @@ class DeliveryHistoryCard extends StatelessWidget {
                   //
                   Flexible(
                     child: AdaptiveText(
-                      '12'.asCurrency(),
+                      '${widget.history.amount.getOrEmpty}'.asCurrency(),
                       minFontSize: 14,
                       maxFontSize: 17,
                       fontSize: 18.sp,
@@ -151,44 +190,52 @@ class DeliveryHistoryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      flex: 5,
-                      child: HorizontalChipWidget(
-                        widgetPadding: EdgeInsets.symmetric(vertical: 0.004.sh),
-                        scrollMargin: EdgeInsets.only(right: 0.02.sw),
-                        wrapped: false,
-                        tags: [
-                          HorizontalChip(
-                            label: 'Package',
-                            maxFontSize: 13,
-                            labelColor: Palette.accentDarkBlue,
-                            backgroundColor: Palette.pastelBlue,
-                            type: HorizontalChipType.none,
-                          ),
-                          //
-                          HorizontalChip(
-                            label: '5hrs 10mins',
-                            maxFontSize: 13,
-                            labelColor: Palette.accentGreen,
-                            backgroundColor: Palette.pastelGreen,
-                            type: HorizontalChipType.none,
-                          ),
-                        ],
-                      ),
+                    HorizontalChipWidget(
+                      widgetPadding: EdgeInsets.symmetric(vertical: 0.004.sh),
+                      scrollMargin: EdgeInsets.only(right: 0.02.sw),
+                      wrapped: false,
+                      tags: [
+                        HorizontalChip(
+                          label: 'Package',
+                          maxFontSize: 13,
+                          labelColor: Palette.accentDarkYellow2,
+                          backgroundColor: Palette.pastelYellow,
+                          type: HorizontalChipType.none,
+                        ),
+                      ],
                     ),
                     //
-                    Flexible(
-                      flex: 2,
-                      child: AdaptiveText(
-                        'Card(POS)',
-                        minFontSize: 12,
-                        maxLines: 1,
-                        softWrap: true,
-                        textAlign: TextAlign.right,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 18.sp),
-                      ),
-                    ),
+                    widget.history.paymentMethod.maybeWhen(
+                          deliveryWithCard: () => Flexible(
+                            flex: 2,
+                            child: AdaptiveText(
+                              '${widget.history.paymentMethod.formatted}',
+                              minFontSize: 12,
+                              maxLines: 1,
+                              softWrap: true,
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          ),
+                          deliveryWithCash: () => Flexible(
+                            flex: 2,
+                            child: AdaptiveText(
+                              '${widget.history.paymentMethod.formatted}',
+                              minFontSize: 12,
+                              maxLines: 1,
+                              softWrap: true,
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          ),
+                          orElse: () => const Icon(
+                            Icons.check_circle,
+                            color: Palette.accentGreen,
+                          ),
+                        ) ??
+                        Utils.nothing,
                   ],
                 ),
               ),

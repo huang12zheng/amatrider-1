@@ -6,6 +6,7 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,7 +104,11 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
                           borderRadius:
                               BorderRadius.circular(Utils.inputBorderRadius),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Share.share(
+                                'Checkout AmatNow @ https://amatnow.com',
+                              );
+                            },
                             borderRadius:
                                 BorderRadius.circular(Utils.inputBorderRadius),
                             child: const Icon(

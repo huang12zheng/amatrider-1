@@ -58,16 +58,15 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
           p0.types.containsAll(KtList.from(_county)))
       .firstOrNull();
 
+  Future<bool> get hasPermission => _service.hasPermission;
+
+  Future<bool> requestPermission() => _service.requestPermissions();
+
   Future<void> request(
     BuildContext c, {
     bool enforce = true,
     bool background = false,
   }) async {
-    await requestPermissions(c, enforce: enforce);
-
-    // Update request state
-    emit(state.copyWith(isRequestingPermissions: false));
-
     await requestService(c, enforce: enforce);
 
     // Update request state
@@ -116,34 +115,6 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     final place = _response.geocodes.firstOrNull();
 
     emit(state.copyWith(position: state.position?.copyWith(place: place)));
-  }
-
-  Future<void> requestPermissions(
-    BuildContext c, {
-    bool enforce = true,
-  }) async {
-    final _hasPermission = await _service.hasPermission;
-
-    if (enforce) if (!_hasPermission) {
-      emit(state.copyWith(isRequestingPermissions: true));
-      //
-      final _granted = await (await showRationale<FutureOr<bool>>(
-        c,
-        title: 'Grant Permission',
-        content: 'Grant ${Const.appName} permission '
-            "to use this device's location \"ALWAYS & ALL THE TIME\"",
-        defaultValue: true,
-        onAccept: () async {
-          final _granted = await _service.requestPermissions();
-          emit(state.copyWith(hasPermissions: _granted));
-          return _granted;
-        },
-      ));
-
-      if (_granted == null || !_granted)
-        await requestPermissions(c, enforce: enforce);
-      return;
-    }
   }
 
   Future<void> requestService(

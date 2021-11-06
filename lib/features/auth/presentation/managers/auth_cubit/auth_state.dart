@@ -34,9 +34,8 @@ class AuthState extends BaseState with _$AuthState {
     @Default(false) bool validate,
     @Default(true) bool isPasswordHidden,
     @Default(false) bool passwordMatches,
-    Country? selectedCountry,
+    CountryCode? selectedCountry,
     required BankAccount bankAccount,
-    @Default(KtList.empty()) KtList<Country> countries,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _AuthState;
 

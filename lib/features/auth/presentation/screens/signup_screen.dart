@@ -1,6 +1,5 @@
 library signup_screen.dart;
 
-import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/oauth_widgets.dart';
@@ -10,7 +9,6 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +27,7 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => getIt<AuthCubit>()..fetchCountries()),
+        BlocProvider(create: (_) => getIt<AuthCubit>()),
         BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
       ],
       child: BlocListener<AuthCubit, AuthState>(
@@ -151,7 +149,7 @@ class _SignupScreenState extends State<SignupScreen>
                           tag: Const.authButtonHeroTag,
                           child: AppButton(
                             text: 'Create Account',
-                            isLoading: s.isLoading && !s.countries.isEmpty(),
+                            isLoading: s.isLoading,
                             onPressed: c.read<AuthCubit>().createAccount,
                           ),
                         ),

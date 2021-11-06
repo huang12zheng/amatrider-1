@@ -27,7 +27,10 @@ class _$RiderTearOff {
       required PhotoField photo,
       RiderAvailability availability = RiderAvailability.unavailable,
       required RiderLocation location,
+      ProfileVerificationStatus verificationStatus =
+          ProfileVerificationStatus.unverified,
       bool phoneVerified = false,
+      required BasicTextField<double?> avgRating,
       DateTime? createdAt,
       DateTime? updatedAt,
       DateTime? deletedAt}) {
@@ -41,7 +44,9 @@ class _$RiderTearOff {
       photo: photo,
       availability: availability,
       location: location,
+      verificationStatus: verificationStatus,
       phoneVerified: phoneVerified,
+      avgRating: avgRating,
       createdAt: createdAt,
       updatedAt: updatedAt,
       deletedAt: deletedAt,
@@ -63,7 +68,10 @@ mixin _$Rider {
   PhotoField get photo => throw _privateConstructorUsedError;
   RiderAvailability get availability => throw _privateConstructorUsedError;
   RiderLocation get location => throw _privateConstructorUsedError;
+  ProfileVerificationStatus get verificationStatus =>
+      throw _privateConstructorUsedError;
   bool get phoneVerified => throw _privateConstructorUsedError;
+  BasicTextField<double?> get avgRating => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   DateTime? get deletedAt => throw _privateConstructorUsedError;
@@ -86,7 +94,9 @@ abstract class $RiderCopyWith<$Res> {
       PhotoField photo,
       RiderAvailability availability,
       RiderLocation location,
+      ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      BasicTextField<double?> avgRating,
       DateTime? createdAt,
       DateTime? updatedAt,
       DateTime? deletedAt});
@@ -113,7 +123,9 @@ class _$RiderCopyWithImpl<$Res> implements $RiderCopyWith<$Res> {
     Object? photo = freezed,
     Object? availability = freezed,
     Object? location = freezed,
+    Object? verificationStatus = freezed,
     Object? phoneVerified = freezed,
+    Object? avgRating = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -155,10 +167,18 @@ class _$RiderCopyWithImpl<$Res> implements $RiderCopyWith<$Res> {
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as RiderLocation,
+      verificationStatus: verificationStatus == freezed
+          ? _value.verificationStatus
+          : verificationStatus // ignore: cast_nullable_to_non_nullable
+              as ProfileVerificationStatus,
       phoneVerified: phoneVerified == freezed
           ? _value.phoneVerified
           : phoneVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -197,7 +217,9 @@ abstract class _$RiderCopyWith<$Res> implements $RiderCopyWith<$Res> {
       PhotoField photo,
       RiderAvailability availability,
       RiderLocation location,
+      ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      BasicTextField<double?> avgRating,
       DateTime? createdAt,
       DateTime? updatedAt,
       DateTime? deletedAt});
@@ -226,7 +248,9 @@ class __$RiderCopyWithImpl<$Res> extends _$RiderCopyWithImpl<$Res>
     Object? photo = freezed,
     Object? availability = freezed,
     Object? location = freezed,
+    Object? verificationStatus = freezed,
     Object? phoneVerified = freezed,
+    Object? avgRating = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -268,10 +292,18 @@ class __$RiderCopyWithImpl<$Res> extends _$RiderCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as RiderLocation,
+      verificationStatus: verificationStatus == freezed
+          ? _value.verificationStatus
+          : verificationStatus // ignore: cast_nullable_to_non_nullable
+              as ProfileVerificationStatus,
       phoneVerified: phoneVerified == freezed
           ? _value.phoneVerified
           : phoneVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -301,7 +333,9 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       required this.photo,
       this.availability = RiderAvailability.unavailable,
       required this.location,
+      this.verificationStatus = ProfileVerificationStatus.unverified,
       this.phoneVerified = false,
+      required this.avgRating,
       this.createdAt,
       this.updatedAt,
       this.deletedAt})
@@ -326,9 +360,14 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
   final RiderAvailability availability;
   @override
   final RiderLocation location;
+  @JsonKey(defaultValue: ProfileVerificationStatus.unverified)
+  @override
+  final ProfileVerificationStatus verificationStatus;
   @JsonKey(defaultValue: false)
   @override
   final bool phoneVerified;
+  @override
+  final BasicTextField<double?> avgRating;
   @override
   final DateTime? createdAt;
   @override
@@ -338,7 +377,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Rider(uid: $uid, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, photo: $photo, availability: $availability, location: $location, phoneVerified: $phoneVerified, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'Rider(uid: $uid, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, photo: $photo, availability: $availability, location: $location, verificationStatus: $verificationStatus, phoneVerified: $phoneVerified, avgRating: $avgRating, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -355,7 +394,9 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('photo', photo))
       ..add(DiagnosticsProperty('availability', availability))
       ..add(DiagnosticsProperty('location', location))
+      ..add(DiagnosticsProperty('verificationStatus', verificationStatus))
       ..add(DiagnosticsProperty('phoneVerified', phoneVerified))
+      ..add(DiagnosticsProperty('avgRating', avgRating))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('updatedAt', updatedAt))
       ..add(DiagnosticsProperty('deletedAt', deletedAt));
@@ -380,8 +421,12 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
                 other.availability == availability) &&
             (identical(other.location, location) ||
                 other.location == location) &&
+            (identical(other.verificationStatus, verificationStatus) ||
+                other.verificationStatus == verificationStatus) &&
             (identical(other.phoneVerified, phoneVerified) ||
                 other.phoneVerified == phoneVerified) &&
+            (identical(other.avgRating, avgRating) ||
+                other.avgRating == avgRating) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -402,7 +447,9 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       photo,
       availability,
       location,
+      verificationStatus,
       phoneVerified,
+      avgRating,
       createdAt,
       updatedAt,
       deletedAt);
@@ -424,7 +471,9 @@ abstract class _Rider extends Rider {
       required PhotoField photo,
       RiderAvailability availability,
       required RiderLocation location,
+      ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      required BasicTextField<double?> avgRating,
       DateTime? createdAt,
       DateTime? updatedAt,
       DateTime? deletedAt}) = _$_Rider;
@@ -449,7 +498,11 @@ abstract class _Rider extends Rider {
   @override
   RiderLocation get location;
   @override
+  ProfileVerificationStatus get verificationStatus;
+  @override
   bool get phoneVerified;
+  @override
+  BasicTextField<double?> get avgRating;
   @override
   DateTime? get createdAt;
   @override

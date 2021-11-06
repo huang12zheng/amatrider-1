@@ -52,9 +52,6 @@ dependencies:
   # Permission plugin for Flutter.
   # This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
   permission_handler: ^8.2.5
-  # Flutter Plugin to login via Facebook.
-  # Easily add Facebook login feature in your application. User profile information included.
-  flutter_login_facebook: ^1.2.0
   # This plugin allows Flutter apps to discover network connectivity
   # and configure themselves accordingly.
   connectivity: ^3.0.6
@@ -221,6 +218,17 @@ dependencies:
   pusher_client:
     git:
       url: git://github.com/thijskuilman/pusher_client.git
+  # Flutter plugin for sharing content via the platform share UI,
+  # using the ACTION_SEND intent on Android and UIActivityViewController on iOS.
+  share_plus: ^3.0.4
+  # a widget provided to the flutter scroll component drop-down refresh and pull up load.
+  pull_to_refresh: ^2.0.0
+  # A simple yet fully customizable ratingbar for
+  # flutter which also include a rating bar indicator,
+  # supporting any fraction of rating.
+  flutter_rating_bar: ^4.0.0
+  # A powerful Flutter chart library, currently supporting Line Chart, Bar Chart and Pie Chart.
+  fl_chart: ^0.40.2
 
 dependency_overrides:
   provider: ^6.0.1

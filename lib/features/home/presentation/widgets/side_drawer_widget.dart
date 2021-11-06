@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -48,43 +49,52 @@ class SideDrawerWidget extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 0.18.sw,
-                          height: 0.18.sw,
-                          child: rider?.photo.getOrNull?.let(
-                                (it) => CachedNetworkImage(
-                                  imageUrl: '$it',
-                                  fit: BoxFit.contain,
-                                  imageBuilder: (c, img) => CircleAvatar(
-                                    backgroundImage: img,
-                                    foregroundImage: img,
-                                    minRadius: 0.1.sw,
-                                    backgroundColor: App.resolveColor(
-                                        Palette.accentColor.shade600),
-                                  ),
-                                  progressIndicatorBuilder:
-                                      (_, url, download) => Center(
-                                    child: CircularProgressBar.adaptive(
-                                      value: download.progress,
-                                      strokeWidth: 2,
+                        Flexible(
+                          flex: 2,
+                          child: SizedBox.square(
+                            dimension: 0.17.sw,
+                            child: rider?.photo.getOrNull?.let(
+                                  (it) => CachedNetworkImage(
+                                    imageUrl: '$it',
+                                    fit: BoxFit.contain,
+                                    imageBuilder: (c, img) => CircleAvatar(
+                                      backgroundImage: img,
+                                      foregroundImage: img,
+                                      minRadius: 0.1.sw,
+                                      backgroundColor: App.resolveColor(
+                                          Palette.accentColor.shade600),
                                     ),
+                                    progressIndicatorBuilder:
+                                        (_, url, download) => Center(
+                                      child: CircularProgressBar.adaptive(
+                                        value: download.progress,
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    errorWidget: (_, url, error) =>
+                                        defaultImage,
                                   ),
-                                  errorWidget: (_, url, error) => defaultImage,
-                                ),
-                              ) ??
-                              defaultImage,
+                                ) ??
+                                defaultImage,
+                          ),
                         ),
                         //
                         VerticalSpace(height: 0.03.sw),
                         //
-                        AdaptiveText(
-                          '${rider?.fullName.getOrEmpty}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0.sp,
-                            fontWeight: FontWeight.w600,
+                        Flexible(
+                          child: AdaptiveText(
+                            '${rider?.fullName.getOrEmpty}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
+                        //
+                        VerticalSpace(height: 0.02.sw),
+                        //
+                        const Flexible(child: VerificationStatusChip()),
                       ],
                     ),
                   ),

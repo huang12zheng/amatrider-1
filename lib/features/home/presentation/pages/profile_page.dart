@@ -86,38 +86,44 @@ class _ProfilePageState extends State<ProfilePage>
                                     material: () => 2.0,
                                     cupertino: () => 0.0,
                                   ),
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: Utils.platform_(
-                                        cupertino: App.resolveColor(
-                                          Colors.white,
-                                          dark: Palette.secondaryColor.shade400,
-                                        ),
-                                      ),
+                                  color: Utils.platform_(
+                                    cupertino: App.resolveColor(
+                                      Colors.white,
+                                      dark: Palette.secondaryColor.shade400,
                                     ),
-                                    child: AdaptiveListTile(
-                                      focusColor: Colors.black,
-                                      hoverColor: Colors.black,
-                                      selectedTileColor: Colors.black,
-                                      onTap: e.onPressed,
-                                      tileColor: App.resolveColor(
-                                        Colors.white,
-                                        dark: Palette.secondaryColor.shade600,
-                                      ),
-                                      title: AdaptiveText(
-                                        e.title,
-                                        fontSize: 17.0.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      trailing: Icon(
-                                        Theme.of(context).platform.fold(
-                                              material: () =>
-                                                  Icons.navigate_next_rounded,
-                                              cupertino: () =>
-                                                  CupertinoIcons.chevron_right,
-                                            ),
-                                        semanticLabel: e.title,
-                                      ),
+                                  ),
+                                  child: AdaptiveListTile(
+                                    focusColor: Colors.black,
+                                    hoverColor: Colors.black,
+                                    selectedTileColor: Colors.black,
+                                    onTap: e.onPressed,
+                                    tileColor: App.resolveColor(
+                                      Colors.white,
+                                      dark: Palette.secondaryColor.shade600,
+                                    ),
+                                    title: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        AdaptiveText(
+                                          e.title,
+                                          fontSize: 17.0.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        //
+                                        HorizontalSpace(width: 0.04.sw),
+                                        //
+                                        if (e.id == 'verification')
+                                          const VerificationStatusChip(),
+                                      ],
+                                    ),
+                                    trailing: Icon(
+                                      Theme.of(context).platform.fold(
+                                            material: () =>
+                                                Icons.navigate_next_rounded,
+                                            cupertino: () =>
+                                                CupertinoIcons.chevron_right,
+                                          ),
+                                      semanticLabel: e.title,
                                     ),
                                   ),
                                 ),
@@ -159,27 +165,38 @@ class _ProfilePageState extends State<ProfilePage>
 
 class _ProfileItem {
   final VoidCallback onPressed;
+  final String id;
   final String title;
 
   const _ProfileItem({
+    required this.id,
     required this.title,
     required this.onPressed,
   });
 
   static List<_ProfileItem> get items => [
         _ProfileItem(
+          id: 'verification',
           title: 'Verification',
           onPressed: () => navigator.push(const AccountVerificationRoute()),
         ),
         _ProfileItem(
+          id: 'reviews',
+          title: 'Reviews',
+          onPressed: () => navigator.push(const RiderReviewRoute()),
+        ),
+        _ProfileItem(
+          id: 'account-info',
           title: 'Bank Account Information',
           onPressed: () => navigator.push(const EditBankDetailsRoute()),
         ),
         _ProfileItem(
+          id: 'language',
           title: 'Language',
-          onPressed: () {},
+          onPressed: () => navigator.push(const LanguageRoute()),
         ),
         _ProfileItem(
+          id: 'settings',
           title: 'Settings',
           onPressed: () => navigator.push(const SettingRoute()),
         ),

@@ -23,7 +23,7 @@ class _$SendPackageTearOff {
       required RiderLocation destination,
       PackageSize packageSize = PackageSize.small,
       bool isFragile = false,
-      required AmountField<double> amount,
+      required AmountField<double?> amount,
       required DisplayName receiverFullName,
       required Phone receiverPhone,
       required EmailAddress receiverEmailAddress,
@@ -81,7 +81,7 @@ mixin _$SendPackage {
   RiderLocation get destination => throw _privateConstructorUsedError;
   PackageSize get packageSize => throw _privateConstructorUsedError;
   bool get isFragile => throw _privateConstructorUsedError;
-  AmountField<double> get amount => throw _privateConstructorUsedError;
+  AmountField<double?> get amount => throw _privateConstructorUsedError;
   DisplayName get receiverFullName => throw _privateConstructorUsedError;
   Phone get receiverPhone => throw _privateConstructorUsedError;
   EmailAddress get receiverEmailAddress => throw _privateConstructorUsedError;
@@ -119,7 +119,7 @@ abstract class $SendPackageCopyWith<$Res> {
       RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      AmountField<double> amount,
+      AmountField<double?> amount,
       DisplayName receiverFullName,
       Phone receiverPhone,
       EmailAddress receiverEmailAddress,
@@ -204,7 +204,7 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as AmountField<double>,
+              as AmountField<double?>,
       receiverFullName: receiverFullName == freezed
           ? _value.receiverFullName
           : receiverFullName // ignore: cast_nullable_to_non_nullable
@@ -322,7 +322,7 @@ abstract class _$SendPackageCopyWith<$Res>
       RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      AmountField<double> amount,
+      AmountField<double?> amount,
       DisplayName receiverFullName,
       Phone receiverPhone,
       EmailAddress receiverEmailAddress,
@@ -413,7 +413,7 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as AmountField<double>,
+              as AmountField<double?>,
       receiverFullName: receiverFullName == freezed
           ? _value.receiverFullName
           : receiverFullName // ignore: cast_nullable_to_non_nullable
@@ -533,7 +533,7 @@ class _$_SendPackage extends _SendPackage {
   @override
   final bool isFragile;
   @override
-  final AmountField<double> amount;
+  final AmountField<double?> amount;
   @override
   final DisplayName receiverFullName;
   @override
@@ -668,7 +668,7 @@ abstract class _SendPackage extends SendPackage {
       required RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      required AmountField<double> amount,
+      required AmountField<double?> amount,
       required DisplayName receiverFullName,
       required Phone receiverPhone,
       required EmailAddress receiverEmailAddress,
@@ -700,7 +700,7 @@ abstract class _SendPackage extends SendPackage {
   @override
   bool get isFragile;
   @override
-  AmountField<double> get amount;
+  AmountField<double?> get amount;
   @override
   DisplayName get receiverFullName;
   @override

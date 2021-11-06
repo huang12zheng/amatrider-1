@@ -27,7 +27,10 @@ class Rider with _$Rider {
     required PhotoField photo,
     @Default(RiderAvailability.unavailable) RiderAvailability availability,
     required RiderLocation location,
+    @Default(ProfileVerificationStatus.unverified)
+        ProfileVerificationStatus verificationStatus,
     @Default(false) bool phoneVerified,
+    required BasicTextField<double?> avgRating,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? deletedAt,
@@ -54,11 +57,30 @@ class Rider with _$Rider {
         phone: phone ?? Phone(null),
         photo: PhotoField(null),
         password: password ?? Password(null),
+        avgRating: BasicTextField(null),
         location: RiderLocation(
           lat: BasicTextField(null),
           lng: BasicTextField(null),
           address: BasicTextField(null),
         ),
+      );
+
+  Rider merge(Rider? value) => copyWith(
+        uid: value?.uid ?? uid,
+        firstName: value?.firstName ?? firstName,
+        lastName: value?.lastName ?? lastName,
+        email: value?.email ?? email,
+        password: value?.password ?? password,
+        phone: value?.phone ?? phone,
+        photo: value?.photo ?? photo,
+        location: value?.location ?? location,
+        availability: value?.availability ?? availability,
+        verificationStatus: value?.verificationStatus ?? verificationStatus,
+        phoneVerified: value?.phoneVerified ?? phoneVerified,
+        avgRating: value?.avgRating ?? avgRating,
+        createdAt: value?.createdAt ?? createdAt,
+        updatedAt: value?.updatedAt ?? updatedAt,
+        deletedAt: value?.deletedAt ?? deletedAt,
       );
 
   Option<FieldObjectException<dynamic>> get signup => firstName.mapped
@@ -78,4 +100,22 @@ class Rider with _$Rider {
       .andThen(lastName.mapped)
       .andThen(email.mapped)
       .fold((f) => some(f), (_) => none());
+}
+
+extension RiderAvailabilityX on RiderAvailability {
+  bool get boolean => this == RiderAvailability.available;
+
+  T when<T>({
+    required T Function() available,
+    required T Function() unavailable,
+  }) {
+    switch (this) {
+      case RiderAvailability.available:
+        return available.call();
+      case RiderAvailability.unavailable:
+        return unavailable.call();
+      default:
+        return unavailable.call();
+    }
+  }
 }

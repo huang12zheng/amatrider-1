@@ -3,6 +3,7 @@ library auth_remote_source.dart;
 import 'dart:io';
 
 import 'package:amatrider/core/data/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
@@ -132,16 +133,17 @@ class AuthRemoteDatasource {
     return _dio.post(EndPoints.GOOGLE_SIGNIN, data: data);
   }
 
-  Future<Response<dynamic>> signInWithFacebook(String? token) async {
-    // Generate Form Data for request
-    final data = FormData.fromMap({'token': token});
-    return _dio.post(EndPoints.FACEBOOK_SIGNIN, data: data);
-  }
-
   Future<Response<dynamic>> signInWithApple(String? token) async {
     // Generate Form Data for request
     final data = FormData.fromMap({'token': token});
     return _dio.post(EndPoints.APPLE_SIGNIN, data: data);
+  }
+
+  Future<Response<dynamic>> toggleAvailability(RiderAvailability value) async {
+    // Generate Form Data for request
+    final data = {'availability': value.boolean};
+    // Perform request to reset user's password
+    return _dio.patch(EndPoints.TOGGLE_RIDER_AVAILABILITY, data: data);
   }
 
   Future<Either<AppHttpResponse, RiderDTO?>> getRider([

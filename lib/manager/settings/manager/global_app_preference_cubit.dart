@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -20,12 +21,19 @@ part 'global_app_preference_state.dart';
 class GlobalAppPreferenceCubit extends Cubit<GlobalPreferenceState>
     with _ImagePickerMixin {
   final PreferenceRepository _preferences;
+  final UtilitiesRepository _utils;
 
-  GlobalAppPreferenceCubit(this._preferences)
+  GlobalAppPreferenceCubit(this._preferences, this._utils)
       : super(GlobalPreferenceState.initial());
 
   bool get isFirstAppLaunch =>
       _preferences.getBool(PrefKeys.APP_LAUNCHED_PREF_KEY, ifNull: true);
+
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
+      emit(state.copyWith(
+        isLoading: isLoading ?? !state.isLoading,
+        status: status ?? state.status,
+      ));
 
   void updateLaunchSettings() async => await _preferences.setBool(
       key: PrefKeys.APP_LAUNCHED_PREF_KEY, value: false);
@@ -35,6 +43,20 @@ class GlobalAppPreferenceCubit extends Cubit<GlobalPreferenceState>
 
   void supportMessageChanged(String value) =>
       emit(state.copyWith(supportMessage: BasicTextField(value)));
+
+  void contactSupport() async {
+    toggleLoading(true);
+
+    final response = await _utils.contactSupport(
+      type: state.feedbackType,
+      message: '${state.supportMessage.getOrEmpty}',
+      images: state.supportImages.asList(),
+    );
+
+    emit(state.copyWith(status: some(response)));
+
+    toggleLoading(false);
+  }
 }
 
 mixin _ImagePickerMixin on Cubit<GlobalPreferenceState> {

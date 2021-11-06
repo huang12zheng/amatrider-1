@@ -22,6 +22,7 @@ part 'package:amatrider/core/data/models/user/rider_dto.dart';
   TimestampFloorConverter,
   CountryDTOFloorConverter,
   RiderAvailabilityConverter,
+  VerificationStatusConverter,
 ])
 @Database(version: 1, entities: [
   _$_RiderDTO,

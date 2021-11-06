@@ -1,6 +1,7 @@
 library contact_support_screen.dart;
 
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
@@ -18,7 +19,35 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return this;
+    return BlocProvider(
+      create: (_) => getIt<GlobalAppPreferenceCubit>(),
+      child: BlocListener<GlobalAppPreferenceCubit, GlobalPreferenceState>(
+        listenWhen: (p, c) =>
+            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.response.maybeMap(
+                      error: (f) => f.foldCode(orElse: () => false),
+                      orElse: () => false,
+                    ))),
+        listener: (c, s) => s.status.fold(
+          () => null,
+          (it) => it?.response.map(
+            error: (f) => PopupDialog.error(message: f.message).render(c),
+            success: (s) => PopupDialog.success(
+              duration: const Duration(seconds: 3),
+              message: s.message,
+              listener: (_) => _?.fold(
+                dismissed: () {
+                  if (s.pop && navigator.current.name != DashboardRoute.name)
+                    navigator.popUntil((route) => route.isFirst);
+                },
+              ),
+            ).render(c),
+          ),
+        ),
+        child: this,
+      ),
+    );
   }
 
   void _pickImage(BuildContext ctx, [bool isLoading = false]) async {
@@ -99,7 +128,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Radio(
-                              value: FeedbackType.suggesstion,
+                              value: FeedbackType.suggestion,
                               groupValue: s.feedbackType,
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
@@ -111,8 +140,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                             GestureDetector(
                               onTap: () => c
                                   .read<GlobalAppPreferenceCubit>()
-                                  .feedbackTypeChanged(
-                                      FeedbackType.suggesstion),
+                                  .feedbackTypeChanged(FeedbackType.suggestion),
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 3.0),
@@ -293,7 +321,8 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                     builder: (c, s) => AppButton(
                       text: 'Send Message',
                       isLoading: s.isLoading,
-                      onPressed: () {},
+                      onPressed:
+                          c.read<GlobalAppPreferenceCubit>().contactSupport,
                     ),
                   )
                 ],

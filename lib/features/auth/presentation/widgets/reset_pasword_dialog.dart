@@ -17,7 +17,7 @@ class ResetPaswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AuthCubit>()..init(countries: false),
+      create: (_) => getIt<AuthCubit>()..init(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||

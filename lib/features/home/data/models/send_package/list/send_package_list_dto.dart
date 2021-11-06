@@ -24,7 +24,7 @@ class SendPackageListDTO with _$SendPackageListDTO {
   factory SendPackageListDTO.fromJson(Map<String, dynamic> json) =>
       _$SendPackageListDTOFromJson(json);
 
-  /// Maps the Data Transfer Object to a KtList<UserAddress> Object.
+  /// Maps the Data Transfer Object to a KtList<SendPackage> Object.
   KtList<SendPackage> get domain =>
       KtList.from(data.map((e) => e.domain).toList());
 }

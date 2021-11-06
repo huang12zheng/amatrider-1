@@ -9,3 +9,4 @@ export 'setting_screen.dart';
 export 'language_screen.dart';
 export 'package_delivery_accepted_screen.dart';
 export 'order_delivery_accepted_screen.dart';
+export 'rider_review_screen.dart';

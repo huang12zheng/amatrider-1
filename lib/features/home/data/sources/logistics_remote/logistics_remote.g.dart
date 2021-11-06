@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of logistics_repository.dart;
+part of logistics_remote.dart;
 
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-class _LogisticsRepository implements LogisticsRepository {
-  _LogisticsRepository(this._dio, {this.baseUrl});
+class _LogisticsRemote implements LogisticsRemote {
+  _LogisticsRemote(this._dio, {this.baseUrl});
 
   final AppHttpClient _dio;
 

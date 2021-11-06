@@ -77,9 +77,10 @@ abstract class AuthFacade {
     required Password confirmation,
   });
 
-  Future<AppHttpResponse> googleAuthentication();
+  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
+      RiderAvailability availability);
 
-  Future<AppHttpResponse> facebookAuthentication();
+  Future<AppHttpResponse> googleAuthentication();
 
   Future<AppHttpResponse> appleAuthentication();
 

@@ -56,8 +56,7 @@ class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
 
   String maskPhoneNumber(AuthState s) {
     return s.rider.phone.getOrNull?.let((it) {
-          final dialCodeLength =
-              s.selectedCountry?.dialCode?.getOrEmpty?.length ?? 0;
+          final dialCodeLength = s.selectedCountry?.dialCode?.length ?? 0;
           final count = it.length;
 
           final prefix = it.substring(0, dialCodeLength + 2);

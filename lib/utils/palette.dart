@@ -114,43 +114,6 @@ class Palette {
     700: Color(0xFFFF8985),
   });
 
-  // // Dark Color is computed as 200 added to base color within the Material
-  // // based color system palettes which is usually the variant
-  // // The contrast is computed by switching to the accents for
-  // // example primary contrast in purple base 500 would
-  // // be A100 and dark color being A200
-  // static CupertinoDynamicColor myBasePrimaryColor =
-  //     const CupertinoDynamicColor.withBrightnessAndContrast(
-  //   color: myPrimaryColor, //purple 500
-  //   darkColor: myPrimaryVariantColor, //purple700
-  //   darkHighContrastColor: Color(0xFFba2d1a), //purple900
-  //   highContrastColor: Color(0xFFFF8985), //purple A700
-  // );
-
-  // static CupertinoDynamicColor myBasePrimaryVariantColor =
-  //     const CupertinoDynamicColor.withBrightnessAndContrast(
-  //   color: myPrimaryVariantColor, //purple700
-  //   darkColor: Color(0xFFba2d1a), //purple900
-  //   highContrastColor: Color(0xFFFFA29E), //purpleA400
-  //   darkHighContrastColor: Color(0xFFFF8985), //purpleA700
-  // );
-
-  // static CupertinoDynamicColor myBaseSecondaryColor =
-  //     const CupertinoDynamicColor.withBrightnessAndContrast(
-  //   color: mySecondaryColor, // teal 200
-  //   darkColor: mySecondaryVariantColor, // teal 400
-  //   highContrastColor: Color(0xff64ffda), // teal A200
-  //   darkHighContrastColor: Color(0xff009688), // teal 500
-  // );
-
-  // static CupertinoDynamicColor myBaseSecondaryVariantColor =
-  //     const CupertinoDynamicColor.withBrightnessAndContrast(
-  //   color: mySecondaryVariantColor, //teal400
-  //   darkColor: Color(0xff00897b), //teal600
-  //   highContrastColor: Color(0xff1de9b6), //teal A400
-  //   darkHighContrastColor: Color(0xff00695c), //teal800
-  // );
-
   static const Color cardColorLight = Colors.white;
   static const Color cardColorDark = Color(0xff20252c);
 
@@ -165,6 +128,7 @@ class Palette {
 
   static const Color pastelPurple = Color(0xFFFAEEFF);
   static const Color pastelYellow = Color(0xFFFAF5E5);
+  static const Color pastelYellow2 = Color(0xFFFFF7DD);
   static const Color accentLightYellow = pastelYellow;
   static const Color accentLightYellow2 = Color(0xFFFFF9DB);
   static const Color pastelGreen = Color(0xFFE7F9E8);
@@ -208,24 +172,6 @@ class Palette {
   static const Color accentDarkYellow2 = Color(0xFFF5C739);
   static const Color accentDarkGreen = Color(0xFF237D28);
   static const Color accentDarkBlue = Color(0xFF3F7695);
-
-  /// CUPERTINO START ///
-  // static const Color myPrimaryColor = Color(0xffE93821);
-  // static const Color myPrimaryVariantColor = Color(0xffba2d1a);
-  // static const Color mySecondaryColor = Color(0xff80cbc4);
-  // static const Color mySecondaryVariantColor = Color(0xff26a69a);
-  // static const Color myBackgroundColor = Color(0xffffffff);
-  // static const Color myOnBackgroundColor = Color(0xff000000);
-  // static const Color mySurfaceColor = Color(0xffffffff);
-  // static const Color myOnSurfaceColor = Color(0xff000000);
-  // static const Color myOnErrorColor = Color(0xff000000);
-  // static const Color myErrorColor = errorRed;
-  // static const Color myOnPrimaryColor = Color(0xffffffff);
-  // static const Color myOnSecondaryColor = Color(0xff000000);
-  // static const Color myBarBackgroundColor = Color(0xffa32717);
-  // static const Color myScaffoldBackgroundColor = Color(0xff8c2214);
-
-  /// CUPERTINO END ///
 
   static const Color permissionGreen1 = Color(0xFF138750);
   static const Color permissionGreen2 = Color(0xFF177649);

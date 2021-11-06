@@ -3,6 +3,7 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/domain/validator/validator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
+import 'package:country_list_pick/country_list_pick.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
   final String? Function(ReactiveState)? initial;
   final FieldObject<String?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
+  final void Function(Reactive, CountryCode?)? onCountryChanged;
+  final void Function(Reactive, CountryCode?)? onPickerBuilder;
   final int? Function(ReactiveState)? maxLength;
   final bool? Function(ReactiveState)? readOnly;
   final Option<AppHttpResponse?> Function(ReactiveState)? response;
@@ -62,6 +65,8 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.border,
     this.errorBorder,
     this.focusedErrorBorder,
+    this.onCountryChanged,
+    this.onPickerBuilder,
   }) : super(key: key);
 
   ReactiveState get state => _state;
@@ -78,7 +83,7 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
           cupertinoFormType: cupertinoFormType,
           cupertinoPadding: cupertinoPadding,
           materialPadding: materialPadding,
-          prefixIcon: prefixWidget,
+          prefixIcon: prefixWidget ?? countryWidget,
           prefix: prefix == null ? null : TextFormInputLabel(text: prefix!),
           initial: initial?.call(s),
           disabled: disabled?.call(s) ?? false,
@@ -123,4 +128,60 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
       },
     );
   }
+
+  Widget get countryWidget => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 0.22.w),
+        child: BlocBuilder<Reactive, ReactiveState>(
+          builder: (c, s) => CountryListPick(
+            appBar: AppBar(
+              backgroundColor: Utils.foldTheme(
+                light: () => Palette.cardColorLight,
+                dark: () => Palette.cardColorDark,
+              ),
+              elevation: 0.0,
+              title: const Text('Choose a country'),
+            ),
+            pickerBuilder: (_, country) => Builder(builder: (_) {
+              onPickerBuilder?.call(c.read<Reactive>(), country);
+
+              return Row(
+                children: [
+                  Flexible(
+                    child: Image.asset(
+                      '${country?.flagUri}',
+                      width: 30,
+                      height: 30,
+                      package: 'country_list_pick',
+                    ),
+                  ),
+                  //
+                  HorizontalSpace(width: 0.02.sw),
+                  //
+                  Flexible(
+                    child: AdaptiveText(
+                      '${country?.dialCode}',
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              );
+            }),
+            theme: CountryTheme(
+              isShowFlag: true,
+              isShowTitle: true,
+              isShowCode: true,
+              isDownIcon: true,
+              showEnglishName: true,
+              searchHintText: 'Start typing..',
+              initialSelection: '${Country.turkeyISO}',
+              alphabetSelectedBackgroundColor: Palette.accentColor,
+            ),
+            initialSelection: '${Country.turkeyISO}',
+            onChanged: (code) =>
+                onCountryChanged?.call(c.read<Reactive>(), code),
+            useUiOverlay: true,
+            useSafeArea: false,
+          ),
+        ),
+      );
 }

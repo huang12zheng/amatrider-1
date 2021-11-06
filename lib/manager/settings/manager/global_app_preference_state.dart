@@ -1,6 +1,6 @@
 part of global_app_preference_cubit.dart;
 
-enum FeedbackType { suggesstion, inquiry }
+enum FeedbackType { suggestion, inquiry }
 
 @freezed
 @immutable
@@ -20,4 +20,17 @@ class GlobalPreferenceState with _$GlobalPreferenceState {
   factory GlobalPreferenceState.initial() => GlobalPreferenceState(
         supportMessage: BasicTextField(null),
       );
+}
+
+extension FeedbackTypeX on FeedbackType {
+  String get value {
+    switch (this) {
+      case FeedbackType.suggestion:
+        return 'suggestion';
+      case FeedbackType.inquiry:
+        return 'inquiry';
+      default:
+        return 'inquiry';
+    }
+  }
 }

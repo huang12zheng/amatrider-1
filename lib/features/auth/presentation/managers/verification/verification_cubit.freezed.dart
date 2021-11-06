@@ -28,7 +28,7 @@ class _$VerificationStateTearOff {
       bool backIsImage = false,
       required BasicTextField<String?> frontName,
       required BasicTextField<String?> backName,
-      DocumentID documentID = DocumentID.kdefault,
+      DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries = const KtList.empty(),
       Option<AppHttpResponse?> status = const None()}) {
@@ -66,7 +66,7 @@ mixin _$VerificationState {
   bool get backIsImage => throw _privateConstructorUsedError;
   BasicTextField<String?> get frontName => throw _privateConstructorUsedError;
   BasicTextField<String?> get backName => throw _privateConstructorUsedError;
-  DocumentID get documentID => throw _privateConstructorUsedError;
+  DocumentID? get documentID => throw _privateConstructorUsedError;
   Country? get selectedCountry => throw _privateConstructorUsedError;
   KtList<Country> get countries => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
@@ -92,7 +92,7 @@ abstract class $VerificationStateCopyWith<$Res> {
       bool backIsImage,
       BasicTextField<String?> frontName,
       BasicTextField<String?> backName,
-      DocumentID documentID,
+      DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
       Option<AppHttpResponse?> status});
@@ -170,7 +170,7 @@ class _$VerificationStateCopyWithImpl<$Res>
       documentID: documentID == freezed
           ? _value.documentID
           : documentID // ignore: cast_nullable_to_non_nullable
-              as DocumentID,
+              as DocumentID?,
       selectedCountry: selectedCountry == freezed
           ? _value.selectedCountry
           : selectedCountry // ignore: cast_nullable_to_non_nullable
@@ -216,7 +216,7 @@ abstract class _$VerificationStateCopyWith<$Res>
       bool backIsImage,
       BasicTextField<String?> frontName,
       BasicTextField<String?> backName,
-      DocumentID documentID,
+      DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
       Option<AppHttpResponse?> status});
@@ -297,7 +297,7 @@ class __$VerificationStateCopyWithImpl<$Res>
       documentID: documentID == freezed
           ? _value.documentID
           : documentID // ignore: cast_nullable_to_non_nullable
-              as DocumentID,
+              as DocumentID?,
       selectedCountry: selectedCountry == freezed
           ? _value.selectedCountry
           : selectedCountry // ignore: cast_nullable_to_non_nullable
@@ -328,7 +328,7 @@ class _$_VerificationState extends _VerificationState {
       this.backIsImage = false,
       required this.frontName,
       required this.backName,
-      this.documentID = DocumentID.kdefault,
+      this.documentID,
       this.selectedCountry,
       this.countries = const KtList.empty(),
       this.status = const None()})
@@ -358,9 +358,8 @@ class _$_VerificationState extends _VerificationState {
   final BasicTextField<String?> frontName;
   @override
   final BasicTextField<String?> backName;
-  @JsonKey(defaultValue: DocumentID.kdefault)
   @override
-  final DocumentID documentID;
+  final DocumentID? documentID;
   @override
   final Country? selectedCountry;
   @JsonKey(defaultValue: const KtList.empty())
@@ -443,7 +442,7 @@ abstract class _VerificationState extends VerificationState {
       bool backIsImage,
       required BasicTextField<String?> frontName,
       required BasicTextField<String?> backName,
-      DocumentID documentID,
+      DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
       Option<AppHttpResponse?> status}) = _$_VerificationState;
@@ -470,7 +469,7 @@ abstract class _VerificationState extends VerificationState {
   @override
   BasicTextField<String?> get backName;
   @override
-  DocumentID get documentID;
+  DocumentID? get documentID;
   @override
   Country? get selectedCountry;
   @override

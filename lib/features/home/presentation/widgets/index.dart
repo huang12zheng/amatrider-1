@@ -10,3 +10,8 @@ export 'map_widgets/marker_widget_creator.dart';
 export 'map_widgets/map_user_card.dart';
 export 'map_widgets/marker_painter.dart';
 export 'map_widgets/marker_generator.dart';
+export 'verification_status_chip.dart';
+export 'service_access_widget.dart';
+export 'home_page/availablility_widget.dart';
+export 'history_widgets/grouped_history_card.dart';
+export 'horizontal_chip_widget.dart';

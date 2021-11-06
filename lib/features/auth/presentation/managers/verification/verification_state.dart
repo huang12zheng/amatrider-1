@@ -15,7 +15,7 @@ class VerificationState extends BaseState with _$VerificationState {
     @Default(false) bool backIsImage,
     required BasicTextField<String?> frontName,
     required BasicTextField<String?> backName,
-    @Default(DocumentID.kdefault) DocumentID documentID,
+    DocumentID? documentID,
     Country? selectedCountry,
     @Default(KtList.empty()) KtList<Country> countries,
     @Default(None()) Option<AppHttpResponse?> status,
@@ -66,7 +66,6 @@ class DocumentID {
   ];
 
   final IconData icon;
-  // final bool isSelected;
   final String name;
   final String value;
 
@@ -74,7 +73,6 @@ class DocumentID {
     required this.name,
     required this.value,
     required this.icon,
-    // this.isSelected = false,
   });
 
   @override

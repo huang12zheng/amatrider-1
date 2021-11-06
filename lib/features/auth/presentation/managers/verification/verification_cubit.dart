@@ -91,7 +91,7 @@ class VerificationCubit extends Cubit<VerificationState>
       final result = await _repository.verifyDocuments(
         back: state.backID,
         front: state.frontID,
-        type: state.documentID.value,
+        type: state.documentID!.value,
         country: state.selectedCountry!,
       );
 

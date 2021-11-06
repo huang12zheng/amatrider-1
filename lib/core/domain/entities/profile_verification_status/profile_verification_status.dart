@@ -17,10 +17,34 @@ class ProfileVerificationStatus extends EnumClass {
 
   const ProfileVerificationStatus._(String name) : super(name);
 
+  bool get isVerified => this == ProfileVerificationStatus.verified;
+
   static BuiltSet<ProfileVerificationStatus> get values => _$values;
 
   static BuiltList<ProfileVerificationStatus> get list =>
       _$values.toBuiltList();
 
   static ProfileVerificationStatus valueOf(String name) => _$valueOf(name);
+}
+
+extension ProfileVerificationStatusX on ProfileVerificationStatus {
+  T when<T>({
+    required T Function() verified,
+    required T Function() inReview,
+    required T Function() failed,
+    required T Function() unverified,
+  }) {
+    switch (this) {
+      case ProfileVerificationStatus.verified:
+        return verified.call();
+      case ProfileVerificationStatus.in_review:
+        return inReview.call();
+      case ProfileVerificationStatus.failed:
+        return failed.call();
+      case ProfileVerificationStatus.unverified:
+        return unverified.call();
+      default:
+        return unverified.call();
+    }
+  }
 }
