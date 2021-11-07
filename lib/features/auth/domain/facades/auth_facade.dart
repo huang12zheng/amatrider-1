@@ -16,12 +16,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class AuthFacade {
   Future<Either<AppHttpResponse, Option<Rider?>>> get currentRider;
-
-  Future<Option<Rider?>> get rider;
-
   Stream<Either<AppHttpResponse, Option<Rider?>>> get onAuthStateChanges;
-
   Stream<Option<Rider?>> get onRiderChanges;
+  Future<Option<Rider?>> get rider;
 
   Future<void> sink([Either<AppHttpResponse, Option<Rider?>> riderOrFailure]);
 
@@ -85,6 +82,8 @@ abstract class AuthFacade {
   Future<AppHttpResponse> appleAuthentication();
 
   Future<void> signOut([bool? notify]);
+
+  Future<AppHttpResponse> deleteAccount();
 
   Future<void> sleep();
 

@@ -77,7 +77,7 @@ import 'package:amatrider/_404.dart';
       page: OTPVerificationScreen,
       path: 'otp-verification-screen',
       cupertinoPageTitle: 'OTP',
-      guards: [GuestGuard, AuthGuard],
+      // guards: [GuestGuard, AuthGuard],
     ),
     //
     dashboardRouter,

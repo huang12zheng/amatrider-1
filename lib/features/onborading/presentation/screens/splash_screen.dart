@@ -1,6 +1,5 @@
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
-import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
@@ -22,9 +21,11 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
       if (isAuthenticated)
         navigator.pushAndPopUntil(const DashboardRoute(),
             predicate: (_) => false);
-      else
-        navigator.pushAndPopUntil(const GetStartedRoute(),
-            predicate: (_) => false);
+      else {
+        if (navigator.current.name != OTPVerificationRoute.name)
+          navigator.pushAndPopUntil(const GetStartedRoute(),
+              predicate: (_) => false);
+      }
     } else {
       navigator.pushAndPopUntil(const OnboardingRoute(),
           predicate: (_) => false);
@@ -33,8 +34,8 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<OnboardingCubit>()..startSplash(),
+    return BlocProvider.value(
+      value: BlocProvider.of<OnboardingCubit>(context)..startSplash(),
       child: BlocListener<OnboardingCubit, OnboardingState>(
         listenWhen: (p, c) => p.playbackEnded != c.playbackEnded,
         listener: (c, s) async {
@@ -50,12 +51,7 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final AsyncMemoizer<dynamic> _memoizer = AsyncMemoizer();
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +71,30 @@ class _SplashScreenState extends State<SplashScreen> {
                       (either) => either.fold(
                         (failure) => failure.foldCode(
                           orElse: () => null,
-                          is4031: () => navigator.pushAndPopUntil(
-                            OTPVerificationRoute(),
-                            predicate: (route) => route.isFirst,
-                          ),
+                          is4031: () {
+                            App.context
+                                .read<OnboardingCubit>()
+                                .subscribeToPlayback(
+                              after: () async {
+                                if (navigator.current.name !=
+                                    OTPVerificationRoute.name)
+                                  await navigator.pushAndPopUntil(
+                                    OTPVerificationRoute(),
+                                    predicate: (route) => route.isFirst,
+                                  );
+                              },
+                            );
+
+                            // final state =
+                            //     App.context.read<OnboardingCubit>().state;
+                            // if (state.playbackEnded &&
+                            //     navigator.current.name !=
+                            //         OTPVerificationRoute.name)
+                            //   navigator.pushAndPopUntil(
+                            //     OTPVerificationRoute(),
+                            //     predicate: (route) => route.isFirst,
+                            //   );
+                          },
                         ),
                         (option) => option.fold(
                           () {
@@ -86,15 +102,26 @@ class _SplashScreenState extends State<SplashScreen> {
                               navigator.pushAndPopUntil(const GetStartedRoute(),
                                   predicate: (route) => false);
                           },
-                          (_) {
-                            // if (s.playbackEnded)
-                            //   navigator.pushAndPopUntil(const DashboardRoute(),
-                            //       predicate: (_) => false);
+                          (_) async {
+                            final state =
+                                App.context.read<OnboardingCubit>().state;
+
+                            if (state.playbackEnded &&
+                                navigator.current.name != DashboardRoute.name) {
+                              WidgetsBinding.instance!.addPostFrameCallback(
+                                (_) async => await Future.delayed(
+                                  env.greetingDuration,
+                                  () async {
+                                    await navigator
+                                        .replaceAll([const DashboardRoute()]);
+                                  },
+                                ),
+                              );
+                            }
                           },
                         ),
                       ),
                     );
-                    return 0;
                   }),
                   builder: (_, __) => Visibility(
                     visible: s.isVideoPlaying,

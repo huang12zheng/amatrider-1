@@ -163,6 +163,33 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
+  Future<AppHttpResponse> deleteAccount() async {
+    try {
+      // Check if device has good connection
+      final _conn = await checkInternetConnectivity();
+
+      return _conn.fold(
+        (f) async => f,
+        (r) async {
+          final _response = await remote.deleteAccount();
+
+          await sink(await currentRider);
+
+          await signOut(true);
+
+          return AppHttpResponse.fromJson(
+              _response.data as Map<String, dynamic>);
+        },
+      );
+    } on AppHttpResponse catch (ex, trace) {
+      return await handleFailure(e: ex, trace: trace, notify: true);
+    } on AppNetworkException catch (ex, trace) {
+      return await handleFailure(
+          e: ex.asResponse(), trace: trace, notify: true);
+    }
+  }
+
+  @override
   Future<AppHttpResponse> login({
     required EmailAddress email,
     required Password password,
@@ -486,7 +513,8 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         error: (_) => null,
         success: (_) async {
           final cached = await retrieveAndCacheUpdatedRider();
-          await cached.fold((l) => null, (user) async => update(user));
+          await sink(cached);
+          // await cached.fold((l) => null, (user) async => update(user));
         },
       );
 

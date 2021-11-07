@@ -8,17 +8,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum OTPVerificationType { phoneNumber, newPhoneNumber }
 
 /// A stateless widget to render OTPVerificationScreen.
-class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
+class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
   final OTPVerificationType? type;
 
   const OTPVerificationScreen({
     Key? key,
     this.type = OTPVerificationType.phoneNumber,
   }) : super(key: key);
+
+  @override
+  State<OTPVerificationScreen> createState() => _OTPVerificationScreenState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -53,6 +57,13 @@ class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
       ),
     );
   }
+}
+
+class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
+  DateTime _timestampPressed = DateTime.now();
+
+  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()
+    ..onTap = (() => navigator.replace(const LoginRoute()));
 
   String maskPhoneNumber(AuthState s) {
     return s.rider.phone.getOrNull?.let((it) {
@@ -67,248 +78,275 @@ class OTPVerificationScreen extends StatelessWidget with AutoRouteWrapper {
         'your mobile number';
   }
 
+  Future<bool> maybePop() async {
+    if (!navigator.isRoot) return true;
+
+    final now = DateTime.now();
+    final difference = now.difference(_timestampPressed);
+    final _showWarn = difference >= Utils.willPopTimeout;
+
+    _timestampPressed = DateTime.now();
+
+    if (_showWarn) {
+      await Fluttertoast.showToast(
+        msg: 'Tap again to exit',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      return Future.value(false);
+    } else {
+      await Fluttertoast.cancel();
+      return Future.value(true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-      child: AdaptiveScaffold(
-        body: SingleChildScrollView(
-          clipBehavior: Clip.antiAlias,
-          controller: ScrollController(),
-          physics: Utils.physics,
-          padding: EdgeInsets.symmetric(
-            horizontal: App.sidePadding,
-          ).copyWith(top: App.longest * 0.02),
-          child: SizedBox(
-            width: double.infinity,
-            child: BlocBuilder<AuthCubit, AuthState>(
-              builder: (c, s) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SafeArea(
-                    child: Align(
-                      alignment: Alignment.topCenter,
+    return WillPopScope(
+      onWillPop: maybePop,
+      child: Theme(
+        data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
+        child: AdaptiveScaffold(
+          body: SingleChildScrollView(
+            clipBehavior: Clip.antiAlias,
+            controller: ScrollController(),
+            physics: Utils.physics,
+            padding: EdgeInsets.symmetric(
+              horizontal: App.sidePadding,
+            ).copyWith(top: App.longest * 0.02),
+            child: SizedBox(
+              width: double.infinity,
+              child: BlocBuilder<AuthCubit, AuthState>(
+                builder: (c, s) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SafeArea(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 0.04.sw),
+                          child: SvgPicture.asset(
+                            AppAssets.verifyAccount,
+                            width: 0.77.sw,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //
+                    VerticalSpace(height: 0.05.sw),
+                    //
+                    AdaptiveText(
+                      'Verify Phone Number',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 26.sp,
+                            color: Palette.accentColor.shade400,
+                          ),
+                    ),
+                    //
+                    VerticalSpace(height: 0.03.sw),
+                    //
+                    BlocBuilder<AuthCubit, AuthState>(
+                      buildWhen: (p, c) => p.rider.phone != c.rider.phone,
+                      builder: (c, s) => AdaptiveText(
+                        'We sent a unique code to '
+                        '${maskPhoneNumber(s)}, kindly enter the code below.',
+                        softWrap: true,
+                        maxLines: 3,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 17.sp,
+                        ),
+                      ),
+                    ),
+                    //
+                    VerticalSpace(height: 0.1.sw),
+                    //
+                    Material(
+                      type: MaterialType.transparency,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 0.04.sw),
-                        child: SvgPicture.asset(
-                          AppAssets.verifyAccount,
-                          width: 0.77.sw,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.05.sw),
-                  //
-                  AdaptiveText(
-                    'Verify Phone Number',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 26.sp,
-                          color: Palette.accentColor.shade400,
-                        ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.03.sw),
-                  //
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.rider.phone != c.rider.phone,
-                    builder: (c, s) => AdaptiveText(
-                      'We sent a unique code to '
-                      '${maskPhoneNumber(s)}, kindly enter the code below.',
-                      softWrap: true,
-                      maxLines: 3,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 17.sp,
-                      ),
-                    ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.1.sw),
-                  //
-                  Material(
-                    type: MaterialType.transparency,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0.07.sw),
-                      child: PinInputWidget<AuthCubit, AuthState>(
-                        length: AuthState.OTP_CODE_LENGTH,
-                        validate: (s) => s.validate,
-                        disabled: (s) => s.isLoading,
-                        controller: (s) => TextEditingController(
-                          text: s.code.getOrEmpty,
-                        ),
-                        cursorColor: Utils.foldTheme(
-                          light: () => null,
-                          dark: () => Colors.white,
-                        ),
-                        keyboardType: TextInputType.text,
-                        onChanged: context.read<AuthCubit>().otpCodeChanged,
-                        onCompleted: (_) => type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
-                        ),
-                        onSubmitted: (_) => type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
-                        ),
-                        listenWhen: (p, c) => p.isLoading != c.isLoading,
-                        validator: (s) => s.code.value.fold(
-                          (f) => f.message,
-                          (_) => s.status.fold(
-                            () => null,
-                            (http) => http?.response.maybeMap(
-                              error: (f) => f.errors?.token?.firstOrNone,
-                              orElse: () => null,
-                            ),
+                        padding: EdgeInsets.symmetric(horizontal: 0.07.sw),
+                        child: PinInputWidget<AuthCubit, AuthState>(
+                          length: AuthState.OTP_CODE_LENGTH,
+                          validate: (s) => s.validate,
+                          disabled: (s) => s.isLoading,
+                          controller: (s) => TextEditingController(
+                            text: s.code.getOrEmpty,
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.06.sw),
-                  //
-                  Align(
-                    alignment: Alignment.center,
-                    child: CountdownWidget(
-                      duration: env.flavor.fold(
-                        dev: () => const Duration(seconds: 2),
-                        prod: () => const Duration(minutes: 2, seconds: 3),
-                      ),
-                      child: (callback) => GestureDetector(
-                        onTap: () async {
-                          await type?.fold(
-                            phone: () => c.read<AuthCubit>().resendPhoneOTP(),
+                          cursorColor: Utils.foldTheme(
+                            light: () => null,
+                            dark: () => Colors.white,
+                          ),
+                          keyboardType: TextInputType.text,
+                          onChanged: context.read<AuthCubit>().otpCodeChanged,
+                          onCompleted: (_) => widget.type?.fold(
+                            phone: () => c.read<AuthCubit>().verifyPhone,
                             newPhone: () =>
-                                c.read<AuthCubit>().sendPhoneUpdateOTP(false),
-                          );
-                          callback();
-                        },
-                        child: IgnorePointer(
-                          ignoring: s.isLoading,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AdaptiveText.rich(
-                              TextSpan(children: [
-                                const TextSpan(text: 'Didn’t get the code? '),
-                                //
-                                TextSpan(
-                                  text: 'Resend.',
-                                  style: TextStyle(
-                                    color: Utils.foldTheme(
-                                      context: context,
-                                      light: () => Palette.accentColor,
-                                      dark: () => Palette.accentColor.shade50,
-                                    ),
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ]),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w400),
+                                c.read<AuthCubit>().confirmPhoneUpdate,
+                          ),
+                          onSubmitted: (_) => widget.type?.fold(
+                            phone: () => c.read<AuthCubit>().verifyPhone,
+                            newPhone: () =>
+                                c.read<AuthCubit>().confirmPhoneUpdate,
+                          ),
+                          listenWhen: (p, c) => p.isLoading != c.isLoading,
+                          validator: (s) => s.code.value.fold(
+                            (f) => f.message,
+                            (_) => s.status.fold(
+                              () => null,
+                              (http) => http?.response.maybeMap(
+                                error: (f) => f.errors?.token?.firstOrNone,
+                                orElse: () => null,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.07.sw),
-                  //
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.isLoading != c.isLoading,
-                    builder: (c, s) => Hero(
-                      tag: Const.authButtonHeroTag,
-                      child: AppButton(
-                        text: 'Verify',
-                        isLoading: s.isLoading,
-                        fontWeight: FontWeight.w700,
-                        onPressed: type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
+                    //
+                    VerticalSpace(height: 0.06.sw),
+                    //
+                    Align(
+                      alignment: Alignment.center,
+                      child: CountdownWidget(
+                        duration: env.flavor.fold(
+                          dev: () => const Duration(seconds: 2),
+                          prod: () => const Duration(minutes: 2, seconds: 3),
+                        ),
+                        child: (callback) => GestureDetector(
+                          onTap: () async {
+                            await widget.type?.fold(
+                              phone: () => c.read<AuthCubit>().resendPhoneOTP(),
+                              newPhone: () =>
+                                  c.read<AuthCubit>().sendPhoneUpdateOTP(false),
+                            );
+                            callback();
+                          },
+                          child: IgnorePointer(
+                            ignoring: s.isLoading,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AdaptiveText.rich(
+                                TextSpan(children: [
+                                  const TextSpan(text: 'Didn’t get the code? '),
+                                  //
+                                  TextSpan(
+                                    text: 'Resend.',
+                                    style: TextStyle(
+                                      color: Utils.foldTheme(
+                                        context: context,
+                                        light: () => Palette.accentColor,
+                                        dark: () => Palette.accentColor.shade50,
+                                      ),
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ]),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  env.flavor.fold(
-                    dev: () => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        VerticalSpace(height: 0.04.sw),
-                        //
-                        AdaptiveButton(
-                          text: 'Skip for Now',
-                          textColor: App.resolveColor(
-                            Palette.accentColor,
-                            dark: Colors.white,
+                    //
+                    VerticalSpace(height: 0.07.sw),
+                    //
+                    BlocBuilder<AuthCubit, AuthState>(
+                      buildWhen: (p, c) => p.isLoading != c.isLoading,
+                      builder: (c, s) => Hero(
+                        tag: Const.authButtonHeroTag,
+                        child: AppButton(
+                          text: 'Verify',
+                          isLoading: s.isLoading,
+                          fontWeight: FontWeight.w700,
+                          onPressed: widget.type?.fold(
+                            phone: () => c.read<AuthCubit>().verifyPhone,
+                            newPhone: () =>
+                                c.read<AuthCubit>().confirmPhoneUpdate,
                           ),
-                          textStyle: const TextStyle(
-                            letterSpacing: Utils.labelLetterSpacing,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          splashColor: Utils.foldTheme(
-                            light: () => Colors.grey.shade200,
-                            dark: () => Colors.grey.shade800,
-                          ),
-                          side: const BorderSide(color: Palette.accentColor),
-                          onPressed: () {},
                         ),
-                      ],
+                      ),
                     ),
-                    prod: () => Utils.nothing,
-                  ),
-                  //
-                  VerticalSpace(height: 0.04.sw),
-                  //
-                  type!.fold(
-                    phone: () => Utils.nothing,
-                    newPhone: () => Hero(
-                      tag: Const.loginAndSignupSwitchTag,
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: AdaptiveText.rich(
-                              TextSpan(children: [
-                                const TextSpan(text: 'Wrong mobile number? '),
-                                TextSpan(
-                                  text: 'Try again',
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = navigator.pop,
-                                  style: TextStyle(
-                                    color: Utils.foldTheme(
-                                      context: context,
-                                      light: () => Palette.accentColor,
-                                      dark: () => Palette.accentColor.shade100,
-                                    ),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ]),
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w400,
+                    //
+                    env.flavor.fold(
+                      dev: () => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          VerticalSpace(height: 0.04.sw),
+                          //
+                          AdaptiveButton(
+                            text: 'Skip for Now',
+                            textColor: App.resolveColor(
+                              Palette.accentColor,
+                              dark: Colors.white,
+                            ),
+                            textStyle: const TextStyle(
                               letterSpacing: Utils.labelLetterSpacing,
-                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.transparent,
+                            splashColor: Utils.foldTheme(
+                              light: () => Colors.grey.shade200,
+                              dark: () => Colors.grey.shade800,
+                            ),
+                            side: const BorderSide(color: Palette.accentColor),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                      prod: () => Utils.nothing,
+                    ),
+                    //
+                    VerticalSpace(height: 0.04.sw),
+                    //
+                    widget.type!.fold(
+                      phone: () => Utils.nothing,
+                      newPhone: () => Hero(
+                        tag: Const.loginAndSignupSwitchTag,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: AdaptiveText.rich(
+                                TextSpan(children: [
+                                  const TextSpan(text: 'Wrong mobile number? '),
+                                  TextSpan(
+                                    text: 'Try again',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = navigator.pop,
+                                    style: TextStyle(
+                                      color: Utils.foldTheme(
+                                        context: context,
+                                        light: () => Palette.accentColor,
+                                        dark: () =>
+                                            Palette.accentColor.shade100,
+                                      ),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ]),
+                                fontSize: 17.sp,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: Utils.labelLetterSpacing,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: App.sidePadding),
-                ],
+                    //
+                    VerticalSpace(height: App.sidePadding),
+                  ],
+                ),
               ),
             ),
           ),

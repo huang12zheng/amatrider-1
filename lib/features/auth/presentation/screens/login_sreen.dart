@@ -44,21 +44,8 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
           (th) => th?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
-              duration: const Duration(seconds: 1),
-              message: s.message,
-              listener: (_) => _?.fold(
-                dismissed: () {
-                  final isAuthenticated =
-                      BlocProvider.of<AuthWatcherCubit>(context)
-                          .state
-                          .isAuthenticated;
-
-                  if (isAuthenticated)
-                    navigator.pushAndPopUntil(const DashboardRoute(),
-                        predicate: (_) => false);
-                },
-              ),
-            ).render(c),
+                    duration: env.greetingDuration, message: s.message)
+                .render(c),
           ),
         ),
         child: this,
@@ -75,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (navigator.canPopSelfOrChildren) return true;
+    if (!navigator.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);

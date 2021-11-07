@@ -70,5 +70,10 @@
 		<string>fr_FR</string>
 		<string>tr_TR</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+	</array>
 </dict>
 </plist>

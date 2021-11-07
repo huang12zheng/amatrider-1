@@ -7,7 +7,6 @@ import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/router/export.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -43,20 +42,12 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
           (th) => th?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
-              duration: const Duration(seconds: 1),
+              duration: env.greetingDuration,
               message: s.message,
-              listener: (_) => _?.fold(
-                dismissed: () {
-                  final isAuthenticated =
-                      BlocProvider.of<AuthWatcherCubit>(context)
-                          .state
-                          .isAuthenticated;
-
-                  if (isAuthenticated)
-                    navigator.pushAndPopUntil(const DashboardRoute(),
-                        predicate: (_) => false);
-                },
-              ),
+              listener: (status) => status?.fold(dismissed: () {
+                if (navigator.current.name != OTPVerificationRoute.name)
+                  navigator.replaceAll([OTPVerificationRoute()]);
+              }),
             ).render(c),
           ),
         ),
@@ -68,7 +59,6 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
 
 class _SignupScreenState extends State<SignupScreen>
     with AutomaticKeepAliveClientMixin<SignupScreen> {
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
   DateTime _timestampPressed = DateTime.now();
 
   final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()
@@ -78,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen>
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (navigator.canPopSelfOrChildren) return true;
+    if (!navigator.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);

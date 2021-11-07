@@ -27,6 +27,7 @@ class _$AuthStateTearOff {
       double passwordStrength = 0.0,
       bool isLoading = false,
       bool validate = false,
+      bool isOldPasswordHidden = true,
       bool isPasswordHidden = true,
       bool passwordMatches = false,
       CountryCode? selectedCountry,
@@ -42,6 +43,7 @@ class _$AuthStateTearOff {
       passwordStrength: passwordStrength,
       isLoading: isLoading,
       validate: validate,
+      isOldPasswordHidden: isOldPasswordHidden,
       isPasswordHidden: isPasswordHidden,
       passwordMatches: passwordMatches,
       selectedCountry: selectedCountry,
@@ -66,6 +68,7 @@ mixin _$AuthState {
   double get passwordStrength => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
+  bool get isOldPasswordHidden => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get passwordMatches => throw _privateConstructorUsedError;
   CountryCode? get selectedCountry => throw _privateConstructorUsedError;
@@ -91,6 +94,7 @@ abstract class $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -120,6 +124,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
@@ -162,6 +167,10 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       validate: validate == freezed
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOldPasswordHidden: isOldPasswordHidden == freezed
+          ? _value.isOldPasswordHidden
+          : isOldPasswordHidden // ignore: cast_nullable_to_non_nullable
               as bool,
       isPasswordHidden: isPasswordHidden == freezed
           ? _value.isPasswordHidden
@@ -217,6 +226,7 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -249,6 +259,7 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
@@ -292,6 +303,10 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isOldPasswordHidden: isOldPasswordHidden == freezed
+          ? _value.isOldPasswordHidden
+          : isOldPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isPasswordHidden: isPasswordHidden == freezed
           ? _value.isPasswordHidden
           : isPasswordHidden // ignore: cast_nullable_to_non_nullable
@@ -329,6 +344,7 @@ class _$_AuthState extends _AuthState {
       this.passwordStrength = 0.0,
       this.isLoading = false,
       this.validate = false,
+      this.isOldPasswordHidden = true,
       this.isPasswordHidden = true,
       this.passwordMatches = false,
       this.selectedCountry,
@@ -359,6 +375,9 @@ class _$_AuthState extends _AuthState {
   final bool validate;
   @JsonKey(defaultValue: true)
   @override
+  final bool isOldPasswordHidden;
+  @JsonKey(defaultValue: true)
+  @override
   final bool isPasswordHidden;
   @JsonKey(defaultValue: false)
   @override
@@ -373,7 +392,7 @@ class _$_AuthState extends _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
+    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isOldPasswordHidden: $isOldPasswordHidden, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
   }
 
   @override
@@ -397,6 +416,8 @@ class _$_AuthState extends _AuthState {
                 other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
                 other.validate == validate) &&
+            (identical(other.isOldPasswordHidden, isOldPasswordHidden) ||
+                other.isOldPasswordHidden == isOldPasswordHidden) &&
             (identical(other.isPasswordHidden, isPasswordHidden) ||
                 other.isPasswordHidden == isPasswordHidden) &&
             (identical(other.passwordMatches, passwordMatches) ||
@@ -420,6 +441,7 @@ class _$_AuthState extends _AuthState {
       passwordStrength,
       isLoading,
       validate,
+      isOldPasswordHidden,
       isPasswordHidden,
       passwordMatches,
       selectedCountry,
@@ -443,6 +465,7 @@ abstract class _AuthState extends AuthState {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -468,6 +491,8 @@ abstract class _AuthState extends AuthState {
   bool get isLoading;
   @override
   bool get validate;
+  @override
+  bool get isOldPasswordHidden;
   @override
   bool get isPasswordHidden;
   @override

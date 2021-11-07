@@ -12,7 +12,7 @@ class GuestGuard extends AutoRouteGuard {
             .isAuthenticated;
 
     if (authenticated)
-      await router.popAndPush(const DashboardRoute());
+      await router.replaceAll([const DashboardRoute()]);
     else
       resolver.next(true);
   }

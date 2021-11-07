@@ -374,28 +374,36 @@ class _ActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        AppOutlinedButton(
-          text: '${tr.decline}',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Palette.accentColor,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onDecline,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AppOutlinedButton(
+            text: '${tr.decline}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) ||
+                !isAvailable,
+            textColor: Palette.accentColor,
+            height: 0.05.sh,
+            cupertinoHeight: 0.09.sw,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: onDecline,
+          ),
         ),
         //
-        AdaptiveButton(
-          text: '${tr.accept}',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Colors.white,
-          backgroundColor: Palette.accentColor,
-          splashColor: Colors.white24,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onAccept,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AdaptiveButton(
+            text: '${tr.accept}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) ||
+                !isAvailable,
+            textColor: Colors.white,
+            backgroundColor: Palette.accentColor,
+            splashColor: Colors.white24,
+            height: 0.05.sh,
+            cupertinoHeight: 0.09.sw,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: onAccept,
+          ),
         ),
       ],
     );

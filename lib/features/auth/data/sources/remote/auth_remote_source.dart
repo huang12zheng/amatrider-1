@@ -146,6 +146,11 @@ class AuthRemoteDatasource {
     return _dio.patch(EndPoints.TOGGLE_RIDER_AVAILABILITY, data: data);
   }
 
+  Future<Response<dynamic>> deleteAccount() async {
+    // Perform request to reset user's password
+    return _dio.delete(EndPoints.DELETE_ACCOUNT);
+  }
+
   Future<Either<AppHttpResponse, RiderDTO?>> getRider([
     VoidCallback? callback,
   ]) async {

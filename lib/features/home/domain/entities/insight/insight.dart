@@ -3,7 +3,6 @@ library insight.dart;
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:kt_dart/kt.dart';
 
 part 'insight.freezed.dart';
 

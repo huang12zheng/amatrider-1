@@ -1,6 +1,7 @@
 library setting_screen.dart;
 
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/theme/theme.dart';
 import 'package:amatrider/utils/amat_now_icons.dart';
@@ -205,7 +206,17 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                   semanticLabel: 'Delete Account',
                                   color: Palette.accentColor,
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  App.showAlertDialog(
+                                    context: context,
+                                    barrierColor: App.resolveColor(
+                                      Colors.grey.shade800.withOpacity(0.55),
+                                      dark: Colors.white54,
+                                    ),
+                                    builder: (_) =>
+                                        const DeleteAccountAlertdialog(),
+                                  );
+                                },
                               ),
                             ],
                           ),

@@ -11,7 +11,6 @@ import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/index.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/settings/index.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';

@@ -2,6 +2,7 @@ library app.dart;
 
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/generated/l10n.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
@@ -28,6 +29,7 @@ class AmatRider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<ThemeCubit>()),
+        BlocProvider(create: (_) => getIt<OnboardingCubit>()),
         BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
         BlocProvider(create: (_) => getIt<LocationCubit>()),
         BlocProvider(create: (_) => getIt<GlobalAppPreferenceCubit>()),

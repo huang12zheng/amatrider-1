@@ -202,47 +202,7 @@ class _GuestCard extends StatelessWidget {
                     ),
                   ),
                   //
-                  VerticalSpace(height: 0.01.sw),
-                  //
-                  Flexible(
-                    flex: 2,
-                    child: AdaptiveButton(
-                      text: 'Login',
-                      height: 0.08.sw,
-                      cupertinoHeight: 0.08.sw,
-                      width: 0.22.sw,
-                      fontSize: 15.0.sp,
-                      maxFontSize: 16,
-                      textColor: App.resolveColor(Colors.white),
-                      padding: EdgeInsets.symmetric(
-                              vertical: 0.015.sw, horizontal: 0.015.sw)
-                          .copyWith(right: 15),
-                      trailing: Padding(
-                        padding: EdgeInsets.only(left: 0.02.sw),
-                        child: Icon(
-                          AmatNow.thin_long_right,
-                          size: 10,
-                          color: App.resolveColor(Colors.white),
-                        ),
-                      ),
-                      backgroundColor: App.resolveColor(
-                        Palette.accentColor,
-                        dark: Colors.transparent,
-                      ),
-                      splashColor: App.resolveColor(
-                        Colors.white24,
-                        dark: Colors.grey.shade800,
-                      ),
-                      side: Utils.foldTheme(
-                        light: () => null,
-                        dark: () => const BorderSide(color: Colors.white70),
-                      ),
-                      onPressed: () => navigator.pushAndPopUntil(
-                        const LoginRoute(),
-                        predicate: (_) => false,
-                      ),
-                    ),
-                  ),
+                  VerticalSpace(height: 0.02.sw),
                 ],
               ),
             ),

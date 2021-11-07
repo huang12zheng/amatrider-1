@@ -113,9 +113,8 @@ class GetStartedScreen extends StatelessWidget with AutoRouteWrapper {
                                   child: AppButton(
                                     text: 'Create Account',
                                     fontWeight: FontWeight.w600,
-                                    onPressed: () => navigator.pushAndPopUntil(
-                                      const SignupRoute(),
-                                      predicate: (_) => false,
+                                    onPressed: () => navigator.replaceAll(
+                                      [const SignupRoute()],
                                     ),
                                   ),
                                 ),
@@ -129,9 +128,8 @@ class GetStartedScreen extends StatelessWidget with AutoRouteWrapper {
                                     textColor: Palette.accentColor,
                                     splashColor: Colors.black12,
                                     backgroundColor: Palette.accent20,
-                                    onPressed: () => navigator.pushAndPopUntil(
-                                      const LoginRoute(),
-                                      predicate: (_) => false,
+                                    onPressed: () => navigator.replaceAll(
+                                      [const LoginRoute()],
                                     ),
                                   ),
                                 ),

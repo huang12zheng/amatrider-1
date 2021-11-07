@@ -231,6 +231,8 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   # A powerful Flutter chart library, currently supporting Line Chart, Bar Chart and Pie Chart.
   fl_chart: ^0.40.2
+  # Flutter plugin for launching a URL. Supports web, phone, SMS, and email schemes.
+  url_launcher: ^6.0.12
 
 flutter_intl:
   enabled: true

@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 enum PositionAccuracy { balanced, high, low, navigation, powerSave, reduced }
 
 class LocationService {
-  Location _location = Location();
+  final Location _location = Location();
 
   Future<bool> get isServiceEnabled =>
       Permission.locationAlways.serviceStatus.isEnabled;

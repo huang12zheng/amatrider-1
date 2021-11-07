@@ -29,6 +29,8 @@ class BuildEnvironment implements Secrets {
     this.baseUri,
   });
 
+  Duration get greetingDuration => const Duration(milliseconds: 1200);
+
   String get googleMapsAPI => Utils.platform_(
       material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
 

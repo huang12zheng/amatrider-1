@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -14,33 +16,58 @@ part 'onboarding_cubit.freezed.dart';
 @injectable
 class OnboardingCubit extends Cubit<OnboardingState> {
   VideoPlayerController? playerController;
+  late StreamSubscription<bool> _playbackSubscription;
   final KtList<OnboardingItem<String>> items = OnboardingItem.list;
+  final StreamController<bool> _playbackController;
 
-  OnboardingCubit() : super(OnboardingState.initial());
+  OnboardingCubit()
+      : _playbackController = StreamController.broadcast(),
+        super(OnboardingState.initial());
+
+  Stream<bool> get onPlaybackUpdated => _playbackController.stream;
 
   void startSplash() async {
-    playerController = VideoPlayerController.asset(
-      AppAssets.splashVideo,
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-    );
+    if (!state.isVideoPlaying) {
+      playerController = VideoPlayerController.asset(
+        AppAssets.splashVideo,
+        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+      );
 
-    // Initialize controller
-    await playerController?.initialize();
-    // Attach Listener to controller
-    playerController?.addListener(_playbackListener);
+      // Initialize controller
+      await playerController?.initialize();
+      // Attach Listener to controller
+      playerController?.addListener(_playbackListener);
 
-    // Start video
-    await playerController?.play();
-    await playerController?.setLooping(false);
+      // Start video
+      await playerController?.play();
+      await playerController?.setLooping(false);
 
-    // Ensure the first frame is shown after the video is initialized
-    emit(state.copyWith(isVideoPlaying: true));
+      // Ensure the first frame is shown after the video is initialized
+      emit(state.copyWith(isVideoPlaying: true));
+    }
+  }
+
+  void subscribeToPlayback({
+    Future<void> Function()? before,
+    Future<void> Function()? after,
+  }) async {
+    // if (state.playbackEnded) after?.call();
+    // if (!state.playbackEnded) before?.call();
+
+    _playbackSubscription = onPlaybackUpdated.listen((playbackEnded) async {
+      if (!playbackEnded) await before?.call();
+      if (playbackEnded) await after?.call();
+    });
   }
 
   void _playbackListener() {
-    if (!playerController!.value.isPlaying &&
+    final hasPlaybackEnded = !playerController!.value.isPlaying &&
         playerController!.value.position.inSeconds >=
-            playerController!.value.duration.inSeconds) {
+            playerController!.value.duration.inSeconds;
+
+    _playbackController.sink.add(hasPlaybackEnded);
+
+    if (hasPlaybackEnded) {
       emit(state.copyWith(playbackEnded: true));
     }
   }
@@ -83,6 +110,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   @override
   Future<void> close() {
+    _playbackSubscription.cancel();
     state.controller.removeListener(_pageControllerListener);
     playerController?.removeListener(_playbackListener);
     state.controller.dispose();

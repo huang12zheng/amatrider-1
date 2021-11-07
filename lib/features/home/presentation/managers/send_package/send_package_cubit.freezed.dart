@@ -22,12 +22,16 @@ class _$SendPackageStateTearOff {
       bool validate = false,
       required JourneyDetail journey,
       required SendPackage package,
+      bool isOtherReason = true,
+      required BasicTextField<String?> cancelReason,
       Option<AppHttpResponse?> status = const None()}) {
     return _SendPackageState(
       isLoading: isLoading,
       validate: validate,
       journey: journey,
       package: package,
+      isOtherReason: isOtherReason,
+      cancelReason: cancelReason,
       status: status,
     );
   }
@@ -42,6 +46,9 @@ mixin _$SendPackageState {
   bool get validate => throw _privateConstructorUsedError;
   JourneyDetail get journey => throw _privateConstructorUsedError;
   SendPackage get package => throw _privateConstructorUsedError;
+  bool get isOtherReason => throw _privateConstructorUsedError;
+  BasicTextField<String?> get cancelReason =>
+      throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -59,6 +66,8 @@ abstract class $SendPackageStateCopyWith<$Res> {
       bool validate,
       JourneyDetail journey,
       SendPackage package,
+      bool isOtherReason,
+      BasicTextField<String?> cancelReason,
       Option<AppHttpResponse?> status});
 
   $JourneyDetailCopyWith<$Res> get journey;
@@ -80,6 +89,8 @@ class _$SendPackageStateCopyWithImpl<$Res>
     Object? validate = freezed,
     Object? journey = freezed,
     Object? package = freezed,
+    Object? isOtherReason = freezed,
+    Object? cancelReason = freezed,
     Object? status = freezed,
   }) {
     return _then(_value.copyWith(
@@ -99,6 +110,14 @@ class _$SendPackageStateCopyWithImpl<$Res>
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
               as SendPackage,
+      isOtherReason: isOtherReason == freezed
+          ? _value.isOtherReason
+          : isOtherReason // ignore: cast_nullable_to_non_nullable
+              as bool,
+      cancelReason: cancelReason == freezed
+          ? _value.cancelReason
+          : cancelReason // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -133,6 +152,8 @@ abstract class _$SendPackageStateCopyWith<$Res>
       bool validate,
       JourneyDetail journey,
       SendPackage package,
+      bool isOtherReason,
+      BasicTextField<String?> cancelReason,
       Option<AppHttpResponse?> status});
 
   @override
@@ -158,6 +179,8 @@ class __$SendPackageStateCopyWithImpl<$Res>
     Object? validate = freezed,
     Object? journey = freezed,
     Object? package = freezed,
+    Object? isOtherReason = freezed,
+    Object? cancelReason = freezed,
     Object? status = freezed,
   }) {
     return _then(_SendPackageState(
@@ -177,6 +200,14 @@ class __$SendPackageStateCopyWithImpl<$Res>
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
               as SendPackage,
+      isOtherReason: isOtherReason == freezed
+          ? _value.isOtherReason
+          : isOtherReason // ignore: cast_nullable_to_non_nullable
+              as bool,
+      cancelReason: cancelReason == freezed
+          ? _value.cancelReason
+          : cancelReason // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -194,6 +225,8 @@ class _$_SendPackageState extends _SendPackageState
       this.validate = false,
       required this.journey,
       required this.package,
+      this.isOtherReason = true,
+      required this.cancelReason,
       this.status = const None()})
       : super._();
 
@@ -207,13 +240,18 @@ class _$_SendPackageState extends _SendPackageState
   final JourneyDetail journey;
   @override
   final SendPackage package;
+  @JsonKey(defaultValue: true)
+  @override
+  final bool isOtherReason;
+  @override
+  final BasicTextField<String?> cancelReason;
   @JsonKey(defaultValue: const None())
   @override
   final Option<AppHttpResponse?> status;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SendPackageState(isLoading: $isLoading, validate: $validate, journey: $journey, package: $package, status: $status)';
+    return 'SendPackageState(isLoading: $isLoading, validate: $validate, journey: $journey, package: $package, isOtherReason: $isOtherReason, cancelReason: $cancelReason, status: $status)';
   }
 
   @override
@@ -225,6 +263,8 @@ class _$_SendPackageState extends _SendPackageState
       ..add(DiagnosticsProperty('validate', validate))
       ..add(DiagnosticsProperty('journey', journey))
       ..add(DiagnosticsProperty('package', package))
+      ..add(DiagnosticsProperty('isOtherReason', isOtherReason))
+      ..add(DiagnosticsProperty('cancelReason', cancelReason))
       ..add(DiagnosticsProperty('status', status));
   }
 
@@ -239,12 +279,16 @@ class _$_SendPackageState extends _SendPackageState
                 other.validate == validate) &&
             (identical(other.journey, journey) || other.journey == journey) &&
             (identical(other.package, package) || other.package == package) &&
+            (identical(other.isOtherReason, isOtherReason) ||
+                other.isOtherReason == isOtherReason) &&
+            (identical(other.cancelReason, cancelReason) ||
+                other.cancelReason == cancelReason) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, validate, journey, package, status);
+  int get hashCode => Object.hash(runtimeType, isLoading, validate, journey,
+      package, isOtherReason, cancelReason, status);
 
   @JsonKey(ignore: true)
   @override
@@ -258,6 +302,8 @@ abstract class _SendPackageState extends SendPackageState {
       bool validate,
       required JourneyDetail journey,
       required SendPackage package,
+      bool isOtherReason,
+      required BasicTextField<String?> cancelReason,
       Option<AppHttpResponse?> status}) = _$_SendPackageState;
   const _SendPackageState._() : super._();
 
@@ -269,6 +315,10 @@ abstract class _SendPackageState extends SendPackageState {
   JourneyDetail get journey;
   @override
   SendPackage get package;
+  @override
+  bool get isOtherReason;
+  @override
+  BasicTextField<String?> get cancelReason;
   @override
   Option<AppHttpResponse?> get status;
   @override

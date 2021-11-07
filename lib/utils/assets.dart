@@ -128,6 +128,7 @@ mixin AppAssets {
     femaleAvatar,
     dudeAvatar,
     guestAvatarPng,
+    closeAccount,
   ];
 
   static const List<String> svgs = [

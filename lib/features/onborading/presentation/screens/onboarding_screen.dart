@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
@@ -10,10 +8,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

@@ -106,7 +106,7 @@ class _MaterialUpdateForm extends StatelessWidget {
           response: (s) => s.status,
           errorField: (f) => f.errors?.oldPassword,
           onChanged: (fn, str) => fn.oldPasswordChanged(str),
-          onToggle: (it) => it.togglePasswordVisibility(),
+          onToggle: (it) => it.toggleOldPasswordVisibility(),
         ),
         //
         VerticalSpace(height: 0.03.sw),

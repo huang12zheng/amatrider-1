@@ -5,12 +5,7 @@ class _MaterialSignUp extends StatelessWidget {
     topLeft: Radius.circular(Utils.inputBorderRadius),
     bottomLeft: Radius.circular(Utils.inputBorderRadius),
   );
-
-  static const dropdownErrorBorder = UnderlineInputBorder(
-    borderSide: BorderSide(color: Palette.errorRed, width: 1.5),
-    borderRadius: dropdownBorderRadius,
-  );
-
+  
   const _MaterialSignUp({Key? key}) : super(key: key);
 
   @override

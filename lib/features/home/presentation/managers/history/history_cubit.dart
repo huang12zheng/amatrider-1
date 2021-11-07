@@ -4,7 +4,6 @@ import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
-import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -13,8 +12,8 @@ import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:meta/meta.dart';
 
-part 'history_state.dart';
 part 'history_cubit.freezed.dart';
+part 'history_state.dart';
 
 @injectable
 class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {

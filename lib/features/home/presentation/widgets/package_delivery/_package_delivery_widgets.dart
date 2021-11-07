@@ -177,7 +177,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           SendPackage>(
                         selector: (s) => s.package,
                         builder: (c, package) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: _BottomSheetItem.pickup(context)
                               .map(
                                 (e) => Column(
@@ -202,7 +202,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                                           ),
                                           borderRadius: BorderRadius.circular(
                                               Utils.buttonRadius),
-                                          onPressed: () {},
+                                          onPressed: e.onPressed,
                                           child:
                                               Icon(e.icon, color: e.iconColor),
                                         ),
@@ -282,19 +282,27 @@ class _BottomSheetItem {
         _BottomSheetItem(
           title: 'Call Sender',
           icon: Icons.phone_sharp,
-          onPressed: () {
-            log.wtf(c.read<SendPackageCubit>().state.package.pickup);
+          onPressed: () async {
+            final senderPhone =
+                BlocProvider.of<SendPackageCubit>(c).state.package.sender.phone;
+
+            final formattedPhone = 'tel:${senderPhone.getOrEmpty}';
+
+            await canLaunch(formattedPhone)
+                ? await launch(formattedPhone)
+                : print('could not launch phone');
           },
-        ),
-        _BottomSheetItem(
-          title: 'Support',
-          icon: Icons.contact_support,
-          onPressed: () {},
         ),
         _BottomSheetItem(
           title: 'Report a Problem',
           icon: Icons.report,
-          onPressed: () {},
+          onPressed: () {
+            App.showAdaptiveBottomSheet(
+              c,
+              elevation: 2.0,
+              builder: (_) => const _DeliveryIssueBottomsheet(),
+            );
+          },
         ),
       ];
 }

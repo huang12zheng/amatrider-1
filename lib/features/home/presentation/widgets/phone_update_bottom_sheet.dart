@@ -7,11 +7,6 @@ class _PhoneUpdateBottomSheet extends StatelessWidget {
     bottomLeft: Radius.circular(Utils.inputBorderRadius),
   );
 
-  static const dropdownErrorBorder = UnderlineInputBorder(
-    borderSide: BorderSide(color: Palette.errorRed, width: 1.5),
-    borderRadius: dropdownBorderRadius,
-  );
-
   const _PhoneUpdateBottomSheet({Key? key}) : super(key: key);
 
   @override

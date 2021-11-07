@@ -18,7 +18,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:kt_dart/kt.dart' hide StandardKt;
 import 'package:password_strength/password_strength.dart';
 
 part 'auth_cubit.freezed.dart';
@@ -62,8 +61,14 @@ class AuthCubit extends Cubit<AuthState>
     if (loader) toggleLoading();
   }
 
-  void toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
+      emit(state.copyWith(
+        isLoading: isLoading ?? !state.isLoading,
+        status: status ?? state.status,
+      ));
+
+  void toggleOldPasswordVisibility() =>
+      emit(state.copyWith(isOldPasswordHidden: !state.isOldPasswordHidden));
 
   void togglePasswordVisibility() =>
       emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
@@ -176,7 +181,7 @@ class AuthCubit extends Cubit<AuthState>
       .call(sortCode: BasicTextField(value.trim(), validate: false)));
 
   void createAccount() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -208,11 +213,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void login() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -238,11 +243,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> resendPhoneOTP() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -255,11 +260,11 @@ class AuthCubit extends Cubit<AuthState>
       emit(state.copyWith(status: optionOf(result)));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> verifyPhone() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -284,11 +289,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<bool> forgotPassword([bool pop = true]) async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse? result;
 
@@ -322,7 +327,7 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
 
     return result?.response.map(
           error: (_) => false,
@@ -332,7 +337,7 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void resetPassword() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -369,11 +374,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void updateProfile() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -400,11 +405,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> sendPhoneUpdateOTP([bool shouldPop = true]) async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -426,11 +431,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void confirmPhoneUpdate() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -461,7 +466,7 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void sleep() async {
@@ -475,7 +480,7 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void updatePassword() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -504,11 +509,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void getBankAccount() async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     final result = await _utils.bankAccount();
 
@@ -521,7 +526,7 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void addBankAccount() async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -544,7 +549,7 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void toggleAvailability(RiderAvailability availability) async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     final result = await _auth.toggleRiderAvailability(availability);
 
@@ -564,6 +569,16 @@ class AuthCubit extends Cubit<AuthState>
         ));
       },
     );
+
+    toggleLoading(false);
+  }
+
+  Future<void> deleteAccount() async {
+    toggleLoading(true, none());
+
+    final result = await _auth.deleteAccount();
+
+    emit(state.copyWith(status: some(result)));
 
     toggleLoading(false);
   }

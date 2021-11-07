@@ -32,6 +32,7 @@ class AuthState extends BaseState with _$AuthState {
     @Default(0.0) double passwordStrength,
     @Default(false) bool isLoading,
     @Default(false) bool validate,
+    @Default(true) bool isOldPasswordHidden,
     @Default(true) bool isPasswordHidden,
     @Default(false) bool passwordMatches,
     CountryCode? selectedCountry,

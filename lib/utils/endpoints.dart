@@ -18,6 +18,7 @@ mixin EndPoints {
   static const String CONFIRM_PASSWORD_RESET = '/rider/auth/reset-password';
   static const String GOOGLE_SIGNIN = '/rider/auth/social/google';
   static const String APPLE_SIGNIN = '/rider/auth/social/apple';
+  static const String DELETE_ACCOUNT = '/rider/delete-account';
 
   /// .......///////...// USER ENDPOINTS .......///////./....//
   static const String GET_RIDER = '/rider/rider';
