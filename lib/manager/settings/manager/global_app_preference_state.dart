@@ -10,16 +10,17 @@ class GlobalPreferenceState with _$GlobalPreferenceState {
   const factory GlobalPreferenceState({
     @Default(false) bool isLoading,
     @Default(false) bool validate,
-    @Default(false) bool signedInRecently,
+    @Default(true) bool isInitalization,
     @Default(FeedbackType.inquiry) FeedbackType feedbackType,
     required BasicTextField<String> supportMessage,
     @Default(KtList.empty()) KtList<File> supportImages,
+    required Locale currentLocale,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _GlobalPreferenceState;
 
   factory GlobalPreferenceState.initial() => GlobalPreferenceState(
-        supportMessage: BasicTextField(null),
-      );
+      supportMessage: BasicTextField(null),
+      currentLocale: Locale(Intl.getCurrentLocale()));
 }
 
 extension FeedbackTypeX on FeedbackType {

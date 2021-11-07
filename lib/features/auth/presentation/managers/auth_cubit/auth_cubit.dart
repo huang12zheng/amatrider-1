@@ -574,13 +574,25 @@ mixin _ImagePickerMixin on Cubit<AuthState> {
 
   void pickImage(ImageSource source) async {
     File? file;
+    var fileSize = 0;
 
     var _result = await _picker.pickImage(source: source);
 
     if (_result == null)
       file = await _attemptFileRetrieval(_picker);
-    else
+    else {
       file = File(_result.path);
+      fileSize = file.lengthSync();
+    }
+
+    if (fileSize > Const.maxUploadSize) {
+      emit(state.copyWith(
+        status: some(AppHttpResponse.failure(
+          'Max. image upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+        )),
+      ));
+      return;
+    }
 
     if (file != null) emit(state.copyWith(selectedPhoto: file));
   }

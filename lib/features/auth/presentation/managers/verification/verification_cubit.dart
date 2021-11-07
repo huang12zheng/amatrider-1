@@ -141,6 +141,7 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
   void pickCamera(IdSection section) async {
     File? file;
     String? fileName;
+    var fileSize = 0;
 
     var _result = await _picker.pickImage(source: ImageSource.camera);
 
@@ -150,6 +151,16 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
     } else {
       file = File(_result.path);
       fileName = p.basenameWithoutExtension(file.path);
+      fileSize = file.lengthSync();
+    }
+
+    if (fileSize > Const.maxUploadSize) {
+      emit(state.copyWith(
+        status: some(AppHttpResponse.failure(
+          'Max. image upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+        )),
+      ));
+      return;
     }
 
     var mime = _resolveMimeType(file);
@@ -177,6 +188,7 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
   void pickFileExplorer(IdSection section) async {
     File? file;
     String? fileName;
+    var fileSize = 0;
 
     var _result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -187,6 +199,16 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
     if (_result != null && _result.files.isNotEmpty) {
       file = File(_result.files.first.path!);
       fileName = p.basenameWithoutExtension(file.path);
+      fileSize = file.lengthSync();
+    }
+
+    if (fileSize > Const.maxUploadSize) {
+      emit(state.copyWith(
+        status: some(AppHttpResponse.failure(
+          'Max. document upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+        )),
+      ));
+      return;
     }
 
     var mime = _resolveMimeType(file);

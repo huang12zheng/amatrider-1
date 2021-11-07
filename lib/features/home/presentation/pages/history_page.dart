@@ -49,7 +49,7 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
-        tooltip: 'Menu',
+        tooltip: '${tr.menu}',
         showCustomLeading: true,
         leadingAction: () {},
         leadingIcon: Consumer(
@@ -79,7 +79,7 @@ class HistoryPage extends StatelessWidget with AutoRouteWrapper {
                   ).copyWith(top: 0.01.sw),
                   sliver: SliverToBoxAdapter(
                     child: AdaptiveText(
-                      'History',
+                      '${tr.history}',
                       softWrap: true,
                       style: TextStyle(
                         fontSize: 25.0.sp,

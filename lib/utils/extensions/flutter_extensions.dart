@@ -1,3 +1,4 @@
+import 'package:amatrider/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 extension InputDecorationX on InputDecoration {
@@ -33,4 +34,8 @@ extension EdgeInsetsGeometryX on EdgeInsets {
       top: insets?.top != null && insets?.top != 0.0 ? insets?.top : top,
     );
   }
+}
+
+extension BuildContextX on BuildContext {
+  S get tr => S.of(this);
 }

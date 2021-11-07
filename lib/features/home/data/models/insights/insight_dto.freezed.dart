@@ -28,6 +28,7 @@ class _$InsightDTOTearOff {
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
+      @IntegerSerializer()
           int? progress,
       @JsonKey(name: 'days_left')
       @IntegerSerializer()
@@ -78,6 +79,7 @@ mixin _$InsightDTO {
   @IntegerSerializer()
   int? get target => throw _privateConstructorUsedError;
   @JsonKey(name: 'percentage')
+  @IntegerSerializer()
   int? get progress => throw _privateConstructorUsedError;
   @JsonKey(name: 'days_left')
   @IntegerSerializer()
@@ -117,6 +119,7 @@ abstract class $InsightDTOCopyWith<$Res> {
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
+      @IntegerSerializer()
           int? progress,
       @JsonKey(name: 'days_left')
       @IntegerSerializer()
@@ -231,6 +234,7 @@ abstract class _$InsightDTOCopyWith<$Res> implements $InsightDTOCopyWith<$Res> {
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
+      @IntegerSerializer()
           int? progress,
       @JsonKey(name: 'days_left')
       @IntegerSerializer()
@@ -334,6 +338,7 @@ class _$_InsightDTO extends _InsightDTO {
       @IntegerSerializer()
           this.target,
       @JsonKey(name: 'percentage')
+      @IntegerSerializer()
           this.progress,
       @JsonKey(name: 'days_left')
       @IntegerSerializer()
@@ -368,6 +373,7 @@ class _$_InsightDTO extends _InsightDTO {
   final int? target;
   @override
   @JsonKey(name: 'percentage')
+  @IntegerSerializer()
   final int? progress;
   @override
   @JsonKey(name: 'days_left')
@@ -459,6 +465,7 @@ abstract class _InsightDTO extends InsightDTO {
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
+      @IntegerSerializer()
           int? progress,
       @JsonKey(name: 'days_left')
       @IntegerSerializer()
@@ -493,6 +500,7 @@ abstract class _InsightDTO extends InsightDTO {
   int? get target;
   @override
   @JsonKey(name: 'percentage')
+  @IntegerSerializer()
   int? get progress;
   @override
   @JsonKey(name: 'days_left')

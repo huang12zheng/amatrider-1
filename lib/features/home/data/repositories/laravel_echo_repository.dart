@@ -108,6 +108,32 @@ class LaravelEchoRepository {
     return this;
   }
 
+  LaravelEchoRepository notification(
+    String? channelName, {
+    void Function(PusherEvent?)? onListen,
+    required void Function(String, LaravelEchoRepository) onData,
+  }) {
+    assert(channelName != null, 'Channel Name cannot be null!');
+
+    // Creates an instance of Echo or resuse previous instance with a new connection
+    if (echo == null) _init();
+
+    // Leave the current channel if already listening
+    leave(channelName);
+
+    // Listen for webhook event from channel
+    _channel = channelName?.let(
+      (it) => echo?.private(it).notification((e) {
+        // Started listening
+        onListen?.call(e is PusherEvent ? e : null);
+        // On data received
+        if (e is PusherEvent && e.data != null) onData.call(e.data!, this);
+      }),
+    );
+
+    return this;
+  }
+
   void stopListening(String channelName, String event) {
     echo?.channel(channelName).stopListening(event);
   }

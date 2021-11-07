@@ -20,24 +20,25 @@ class _DepositCashDialogBuilder extends StatelessWidget {
         ),
         child: AdaptiveAlertdialog(
           width: 0.75.w,
-          title: 'Deposit Cash',
+          title: '${tr.insightDepositCash}',
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               AdaptiveText.rich(
                 TextSpan(children: [
-                  const TextSpan(
-                    text: 'Kindly deposit ',
-                  ),
                   TextSpan(
-                    text: '${cash.getOrEmpty}'.asCurrency().toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    text:
+                        '${tr.insightDepositAlertContent('${cash.getOrEmpty}'.asCurrency())}',
                   ),
-                  const TextSpan(
-                    text: ' into the account below.',
-                  ),
+                  // TextSpan(
+                  //   text: ' ${cash.getOrEmpty} '.asCurrency(),
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
+                  // TextSpan(
+                  //   text: '${tr.insightDepositAlertContent2}',
+                  // ),
                 ]),
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w400,
@@ -100,7 +101,7 @@ class _DepositCashDialogBuilder extends StatelessWidget {
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
             builder: (c, isLoading) => AppButton(
-              text: 'I have made the deposit',
+              text: '${tr.insightDepositAlertConfirmBtn}',
               isLoading: isLoading,
               height: 0.055.h,
               cupertinoHeight: 0.028.sh,
@@ -115,7 +116,7 @@ class _DepositCashDialogBuilder extends StatelessWidget {
               BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
             builder: (c, isLoading) => AdaptiveButton(
-              text: 'Cancel',
+              text: '${tr.cancel}',
               disabled: isLoading,
               height: 0.055.h,
               cupertinoHeight: 0.028.sh,

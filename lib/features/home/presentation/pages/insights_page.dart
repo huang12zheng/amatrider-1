@@ -59,7 +59,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
-        tooltip: 'Menu',
+        tooltip: '${context.tr.menu}',
         showCustomLeading: true,
         leadingAction: () {},
         leadingIcon: Consumer(
@@ -70,35 +70,38 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
           ),
         ),
         actions: [
-          Row(
-            children: [
-              AdaptiveText(
-                'Rating: ',
-                fontSize: 16.sp,
-                textColor: Palette.text80,
-                textColorDark: Palette.text100Dark,
-                fontWeight: FontWeight.w400,
-              ),
-              //
-              BlocSelector<AuthWatcherCubit, AuthWatcherState,
-                  BasicTextField<double?>?>(
-                selector: (s) => s.rider?.avgRating,
-                builder: (_, rating) => Headline(
-                  '${rating?.getOrNull ?? 0.0}',
-                  fontSize: 15.sp,
+          GestureDetector(
+            onTap: () => navigator.push(const RiderReviewRoute()),
+            child: Row(
+              children: [
+                AdaptiveText(
+                  '${tr.rating}: ',
+                  fontSize: 16.sp,
+                  textColor: Palette.text80,
+                  textColorDark: Palette.text100Dark,
+                  fontWeight: FontWeight.w400,
                 ),
-              ),
-              //
-              Icon(
-                Utils.platform_(
-                  material: Icons.stars_rounded,
-                  cupertino: CupertinoIcons.star,
+                //
+                BlocSelector<AuthWatcherCubit, AuthWatcherState,
+                    BasicTextField<double?>?>(
+                  selector: (s) => s.rider?.avgRating,
+                  builder: (_, rating) => Headline(
+                    '${rating?.getOrNull ?? 0.0}',
+                    fontSize: 15.sp,
+                  ),
                 ),
-                color: Palette.accentYellow,
-              ),
-              //
-              HorizontalSpace(width: App.sidePadding),
-            ],
+                //
+                Icon(
+                  Utils.platform_(
+                    material: Icons.stars_rounded,
+                    cupertino: CupertinoIcons.star,
+                  ),
+                  color: Palette.accentYellow,
+                ),
+                //
+                HorizontalSpace(width: App.sidePadding),
+              ],
+            ),
           ),
         ],
       ),
@@ -120,7 +123,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                   ).copyWith(top: 0.01.sw),
                   sliver: SliverToBoxAdapter(
                     child: AdaptiveText(
-                      'Insight',
+                      '${context.tr.insightTitleText}',
                       softWrap: true,
                       fontSize: 25.0.sp,
                       fontWeight: FontWeight.w600,
@@ -138,7 +141,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                       child: Row(
                         children: [
                           AdaptiveText(
-                            'Current Plan',
+                            '${context.tr.insightCurrentPlan}',
                             fontSize: 19.0.sp,
                             fontWeight: FontWeight.w500,
                             letterSpacing: Utils.letterSpacing,
@@ -157,7 +160,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 4.0),
                               child: AdaptiveText(
-                                '${s.insight.daysLeft.getOrEmpty} days left',
+                                '${context.tr.insightDaysLeft('${s.insight.daysLeft.getOrEmpty}')}',
                                 style: TextStyle(
                                   color: Palette.accentColor,
                                   fontSize: 15.sp,
@@ -201,7 +204,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                               children: [
                                 Flexible(
                                   child: _InsightColumn(
-                                    title: 'Completed',
+                                    title: '${context.tr.completed}',
                                     subtitle:
                                         '${s.insight.completed.getOrEmpty}',
                                     color: Palette.pastelGreen,
@@ -214,7 +217,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 //
                                 Flexible(
                                   child: _InsightColumn(
-                                    title: 'Target',
+                                    title: '${context.tr.target}',
                                     subtitle: '${s.insight.target.getOrEmpty}',
                                     color: Palette.pastelBlue,
                                     icon: AmatNow.target_icon,
@@ -224,7 +227,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 //
                                 Flexible(
                                   child: _InsightColumn(
-                                    title: 'Progress',
+                                    title: '${context.tr.progress}',
                                     subtitle:
                                         '${s.insight.progress.getOrEmpty}%',
                                     color: Palette.pastelYellow,
@@ -269,7 +272,8 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 Expanded(
                                   flex: 8,
                                   child: _InsightColumn(
-                                    title: 'Extra Deliveries',
+                                    title:
+                                        '${context.tr.insightExtraDeliveries}',
                                     titleFontSize: 19.0.sp,
                                     subtitle:
                                         '${s.insight.extraDelivery.getOrEmpty}',
@@ -308,7 +312,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 Flexible(
                                   flex: 5,
                                   child: AppOutlinedButton(
-                                    text: 'Claim Bonus',
+                                    text: '${context.tr.insightClaimBonus}',
                                     height: 0.09.sw,
                                     cupertinoHeight: 0.028.sh,
                                     width: 0.3.sw,
@@ -365,7 +369,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 Expanded(
                                   flex: 8,
                                   child: _InsightColumn(
-                                    title: 'Total Cash at Hand',
+                                    title: '${context.tr.insightCashAtHand}',
                                     titleFontSize: 19.0.sp,
                                     subtitle:
                                         '${s.insight.cashAtHand.getOrEmpty}'
@@ -382,7 +386,7 @@ class InsightsPage extends StatelessWidget with AutoRouteWrapper {
                                 Flexible(
                                   flex: 5,
                                   child: AdaptiveButton(
-                                    text: 'Deposit Cash',
+                                    text: '${context.tr.insightDepositCash}',
                                     textColor: Colors.white,
                                     splashColor: Colors.white24,
                                     height: 0.09.sw,

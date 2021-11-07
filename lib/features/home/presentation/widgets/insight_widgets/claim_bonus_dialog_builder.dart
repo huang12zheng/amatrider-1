@@ -13,11 +13,11 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
   String mapIndexToTitle(int index) {
     switch (index) {
       case 0:
-        return 'Account Name';
+        return '${S.current.accountName}';
       case 1:
-        return 'Account Number';
+        return '${S.current.accountNumber}';
       case 2:
-        return 'Bank Name';
+        return '${S.current.bankName}';
       default:
         return '';
     }
@@ -49,24 +49,26 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
         ),
         child: AdaptiveAlertdialog(
           width: 0.75.w,
-          title: 'Claim Bonus',
+          title: '${tr.insightClaimBonus}',
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               AdaptiveText.rich(
                 TextSpan(children: [
-                  const TextSpan(
-                    text: 'Bonus of ',
-                  ),
                   TextSpan(
-                    text: '${cash.getOrEmpty}'.asCurrency().toUpperCase(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    text: '${tr.insightBonusAlertContent(
+                      '${cash.getOrEmpty}'.asCurrency(),
+                    )}',
                   ),
-                  const TextSpan(
-                    text: ' would be deposited into your account.',
-                  ),
+                  // TextSpan(
+                  //   text: '${cash.getOrEmpty}'.asCurrency(),
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
+                  // const TextSpan(
+                  //   text: ' would be deposited into your account.',
+                  // ),
                 ]),
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w400,
@@ -110,7 +112,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
             builder: (c, isLoading) => AppButton(
-              text: 'I have made the deposit',
+              text: '${tr.insightBonusAlertConfirmBtn}',
               isLoading: isLoading,
               height: 0.055.h,
               cupertinoHeight: 0.028.sh,
@@ -125,7 +127,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
               BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
             builder: (c, isLoading) => AdaptiveButton(
-              text: 'Cancel',
+              text: '${tr.cancel}',
               disabled: isLoading,
               height: 0.055.h,
               cupertinoHeight: 0.028.sh,

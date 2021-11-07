@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   # Contains utility classes in the style of
   # dart:async to work with asynchronous computations.
   async: any
@@ -230,6 +232,9 @@ dependencies:
   # A powerful Flutter chart library, currently supporting Line Chart, Bar Chart and Pie Chart.
   fl_chart: ^0.40.2
 
+flutter_intl:
+  enabled: true
+
 dependency_overrides:
   provider: ^6.0.1
   flutter_svg: "0.23.0+1"
@@ -263,6 +268,7 @@ dev_dependencies:
       path: floor_generator/
 
 flutter:
+  # generate: true
   uses-material-design: true
 
   assets:

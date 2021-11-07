@@ -105,7 +105,7 @@ class SideDrawerWidget extends ConsumerWidget {
             Column(
               children: [
                 DrawerListTile(
-                  title: 'Profile',
+                  title: '${tr.profile}',
                   icon: AmatNow.drawer_profile,
                   onPressed: () => context
                       .read<TabNavigationCubit>()
@@ -113,38 +113,38 @@ class SideDrawerWidget extends ConsumerWidget {
                 ),
                 //
                 DrawerListTile(
-                  title: 'Notification',
+                  title: '${tr.notifications}',
                   icon: AmatNow.drawer_bell,
                   onPressed: () => navigator.push(const NotificationRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Promotions',
+                  title: '${tr.promotions}',
                   icon: AmatNow.drawer_discount,
                   onPressed: () => navigator.push(const PromotionsRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Invite Friends',
+                  title: '${tr.inviteFriends}',
                   size: 18,
                   icon: AmatNow.drawer_add_people,
                   onPressed: () => navigator.push(const ReferralRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Contact Support',
+                  title: '${tr.contactSupport}',
                   icon: AmatNow.drawer_support,
                   onPressed: () => navigator.push(const ContactSupportRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Privacy Policy',
+                  title: '${tr.privacyPolicy}',
                   icon: AmatNow.drawer_privacy,
                   onPressed: () => navigator.push(const PrivacyPolicyRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'About AmatRider',
+                  title: '${tr.aboutAmatRider}',
                   size: 18,
                   icon: AmatNow.drawer_people,
                   onPressed: () {},
@@ -157,7 +157,7 @@ class SideDrawerWidget extends ConsumerWidget {
               child: ListTile(
                 dense: true,
                 title: AdaptiveText(
-                  'Download AmatNow',
+                  '${tr.downloadAmatNow}',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,
@@ -166,7 +166,7 @@ class SideDrawerWidget extends ConsumerWidget {
                   ),
                 ),
                 subtitle: AdaptiveText(
-                  'Your one stop shop for african meals',
+                  '${tr.downloadAmatNowDesc}',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,

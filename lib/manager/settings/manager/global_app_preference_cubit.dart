@@ -5,26 +5,59 @@ import 'dart:io';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
+import 'package:amatrider/generated/l10n.dart';
 import 'package:amatrider/manager/settings/external/preference_repository.dart';
-import 'package:bloc/bloc.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 import 'package:kt_dart/kt.dart';
 
 part 'global_app_preference_cubit.freezed.dart';
 part 'global_app_preference_state.dart';
 
 @singleton
-class GlobalAppPreferenceCubit extends Cubit<GlobalPreferenceState>
+class GlobalAppPreferenceCubit extends HydratedCubit<GlobalPreferenceState>
     with _ImagePickerMixin {
+  static const String _localeLanguageKey = '${Const.appName}-language-code-key';
+  static const String _localeCountryKey = '${Const.appName}-country-code-key';
+
   final PreferenceRepository _preferences;
   final UtilitiesRepository _utils;
 
   GlobalAppPreferenceCubit(this._preferences, this._utils)
       : super(GlobalPreferenceState.initial());
+
+  @override
+  GlobalPreferenceState? fromJson(Map<String, dynamic> json) {
+    try {
+      final _language = json[_localeLanguageKey] as String;
+      final _country = json[_localeCountryKey] as String;
+      return state.copyWith(currentLocale: Locale(_language, _country));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(GlobalPreferenceState state) {
+    if (state != GlobalPreferenceState.initial())
+      return <String, dynamic>{
+        _localeLanguageKey: state.currentLocale.languageCode,
+        _localeCountryKey: state.currentLocale.countryCode,
+      };
+    else
+      return null;
+  }
+
+  void initialize() async {
+    emit(state.copyWith(isInitalization: false));
+    await S.load(state.currentLocale);
+  }
 
   bool get isFirstAppLaunch =>
       _preferences.getBool(PrefKeys.APP_LAUNCHED_PREF_KEY, ifNull: true);
@@ -34,6 +67,11 @@ class GlobalAppPreferenceCubit extends Cubit<GlobalPreferenceState>
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
+
+  void changeLocale(Locale locale) {
+    emit(state.copyWith(currentLocale: locale));
+    App.forceAppUpdate();
+  }
 
   void updateLaunchSettings() async => await _preferences.setBool(
       key: PrefKeys.APP_LAUNCHED_PREF_KEY, value: false);
@@ -59,18 +97,30 @@ class GlobalAppPreferenceCubit extends Cubit<GlobalPreferenceState>
   }
 }
 
-mixin _ImagePickerMixin on Cubit<GlobalPreferenceState> {
+mixin _ImagePickerMixin on HydratedCubit<GlobalPreferenceState> {
   final ImagePicker _picker = ImagePicker();
 
   void pickImage(ImageSource source, [int? index]) async {
     File? file;
+    var fileSize = 0;
 
     var _result = await _picker.pickImage(source: source);
 
     if (_result == null)
       file = await _attemptFileRetrieval(_picker);
-    else
+    else {
       file = File(_result.path);
+      fileSize = file.lengthSync();
+    }
+
+    if (fileSize > Const.maxUploadSize) {
+      emit(state.copyWith(
+        status: some(AppHttpResponse.failure(
+          'Max. image upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+        )),
+      ));
+      return;
+    }
 
     if (file != null) {
       emit(state.copyWith(

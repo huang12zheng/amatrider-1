@@ -75,7 +75,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
-                            title: 'Pick Up Location',
+                            title: '${tr.pickupLocationText}',
                             subtitle:
                                 '${widget.history.pickup.address.getOrEmpty}',
                           ),
@@ -83,7 +83,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
-                            title: 'Delivery Location',
+                            title: '${tr.deliveryLocationText}',
                             subtitle:
                                 '${widget.history.destination.address.getOrEmpty}',
                           ),
@@ -96,7 +96,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Headline(
-                            'Total time',
+                            '${tr.totalTime}',
                             fontSize: 17.sp,
                             textColor: Palette.neutralLabel,
                             textColorDark: Palette.neutralLabelDark,
@@ -196,7 +196,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                       wrapped: false,
                       tags: [
                         HorizontalChip(
-                          label: 'Package',
+                          label: '${tr.package}',
                           maxFontSize: 13,
                           labelColor: Palette.accentDarkYellow2,
                           backgroundColor: Palette.pastelYellow,

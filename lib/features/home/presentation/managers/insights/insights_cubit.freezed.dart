@@ -20,7 +20,7 @@ class _$InsightsStateTearOff {
   _InsightsState call(
       {bool isLoading = false,
       bool validate = false,
-      DateFilter dateFilter = DateFilter.monthly,
+      DateFilter dateFilter = DateFilter.all_time,
       required DateTime? selectedDate,
       required Insight insight,
       Option<AppHttpResponse?> status = const None()}) {
@@ -196,7 +196,7 @@ class _$_InsightsState extends _InsightsState {
   const _$_InsightsState(
       {this.isLoading = false,
       this.validate = false,
-      this.dateFilter = DateFilter.monthly,
+      this.dateFilter = DateFilter.all_time,
       required this.selectedDate,
       required this.insight,
       this.status = const None()})
@@ -208,7 +208,7 @@ class _$_InsightsState extends _InsightsState {
   @JsonKey(defaultValue: false)
   @override
   final bool validate;
-  @JsonKey(defaultValue: DateFilter.monthly)
+  @JsonKey(defaultValue: DateFilter.all_time)
   @override
   final DateFilter dateFilter;
   @override

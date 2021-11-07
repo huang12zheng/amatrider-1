@@ -1,3 +1,6 @@
+import 'package:amatrider/app.dart';
+import 'package:amatrider/config/env.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:device_preview/plugins.dart';
 import 'package:flutter/foundation.dart';
@@ -6,15 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:amatrider/app.dart';
-import 'package:amatrider/config/env.dart';
-import 'package:amatrider/utils/utils.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Setup Environmental variables & Service provider
-  await BuildEnvironment.init(flavor: BuildFlavor.dev);
 
   try {
     // Initializes Hive with a valid directory in your app files.
@@ -32,6 +30,11 @@ void main() async {
   } catch (e, trace) {
     log.e('Error initializing HydratedStorage', e, trace);
   }
+
+  // Setup Environmental variables & Service provider
+  await BuildEnvironment.init(flavor: BuildFlavor.dev);
+
+  await initializeDateFormatting();
 
   runApp(ProviderScope(
     child: DevicePreview(

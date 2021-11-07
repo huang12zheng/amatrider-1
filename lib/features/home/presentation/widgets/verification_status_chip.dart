@@ -19,23 +19,23 @@ class VerificationStatusChip extends StatelessWidget {
       selector: (s) => s.rider?.verificationStatus,
       builder: (c, status) =>
           status?.when(
-            verified: () => const CustomChipWidget(
-              'Verified',
+            verified: () => CustomChipWidget(
+              '${tr.verified}',
               backgroundColor: Palette.pastelGreen,
               textColor: Palette.accentDarkGreen,
             ),
-            inReview: () => const CustomChipWidget(
-              'In Review',
+            inReview: () => CustomChipWidget(
+              '${tr.inReview}',
               backgroundColor: Palette.neutralE2,
               textColor: Palette.inputTextDark,
             ),
-            failed: () => const CustomChipWidget(
-              'Failed',
+            failed: () => CustomChipWidget(
+              '${tr.failed}',
               backgroundColor: Palette.accent20,
               textColor: Palette.accentColor,
             ),
-            unverified: () => const CustomChipWidget(
-              'Unverified',
+            unverified: () => CustomChipWidget(
+              '${tr.unverified}',
               backgroundColor: Palette.pastelYellow2,
               textColor: Palette.yellow,
             ),

@@ -12,16 +12,23 @@ class Destination {
   });
 
   static List<Destination> get list => [
-        const Destination(id: 0, title: 'Home', icon: AppAssets.bottomNavHome),
+        Destination(
+            id: 0, title: '${S.current.home}', icon: AppAssets.bottomNavHome),
         //
-        const Destination(
-            id: 1, title: 'History', icon: AppAssets.bottomNavDocument),
+        Destination(
+            id: 1,
+            title: '${S.current.history}',
+            icon: AppAssets.bottomNavDocument),
         //
-        const Destination(
-            id: 2, title: 'Insight', icon: AppAssets.bottomNavActivity),
+        Destination(
+            id: 2,
+            title: '${S.current.insightTitleText}',
+            icon: AppAssets.bottomNavActivity),
         //
-        const Destination(
-            id: 4, title: 'Profile', icon: AppAssets.bottomNavActivity),
+        Destination(
+            id: 4,
+            title: '${S.current.profile}',
+            icon: AppAssets.bottomNavActivity),
       ];
 
   @override

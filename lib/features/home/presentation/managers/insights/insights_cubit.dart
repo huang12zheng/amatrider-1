@@ -6,6 +6,7 @@ import 'package:amatrider/features/home/data/repositories/laravel_echo_repositor
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

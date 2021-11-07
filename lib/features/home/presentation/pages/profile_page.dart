@@ -10,7 +10,6 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage>
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
         showCustomLeading: false,
-        title: 'Profile',
+        title: '${tr.profile}',
         centerTitle: false,
         elevation: 0.0,
         titleStyle: App.titleStyle,
@@ -139,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage>
                         child: Hero(
                           tag: Const.profileLogoutBtnHerotag,
                           child: AppButton(
-                            text: 'Logout',
+                            text: '${tr.logout}',
                             isLoading: s.isLoading,
                             onPressed: () async {
                               await c.read<AuthWatcherCubit>().signOut();
@@ -177,27 +176,27 @@ class _ProfileItem {
   static List<_ProfileItem> get items => [
         _ProfileItem(
           id: 'verification',
-          title: 'Verification',
+          title: '${S.current.verification}',
           onPressed: () => navigator.push(const AccountVerificationRoute()),
         ),
         _ProfileItem(
           id: 'reviews',
-          title: 'Reviews',
+          title: '${S.current.reviews}',
           onPressed: () => navigator.push(const RiderReviewRoute()),
         ),
         _ProfileItem(
           id: 'account-info',
-          title: 'Bank Account Information',
+          title: '${S.current.bankAccountInformation}',
           onPressed: () => navigator.push(const EditBankDetailsRoute()),
         ),
         _ProfileItem(
           id: 'language',
-          title: 'Language',
+          title: '${S.current.language}',
           onPressed: () => navigator.push(const LanguageRoute()),
         ),
         _ProfileItem(
           id: 'settings',
-          title: 'Settings',
+          title: '${S.current.settings}',
           onPressed: () => navigator.push(const SettingRoute()),
         ),
       ];

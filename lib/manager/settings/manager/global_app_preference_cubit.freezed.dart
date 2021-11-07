@@ -20,18 +20,20 @@ class _$GlobalPreferenceStateTearOff {
   _GlobalPreferenceState call(
       {bool isLoading = false,
       bool validate = false,
-      bool signedInRecently = false,
+      bool isInitalization = true,
       FeedbackType feedbackType = FeedbackType.inquiry,
       required BasicTextField<String> supportMessage,
       KtList<File> supportImages = const KtList.empty(),
+      required Locale currentLocale,
       Option<AppHttpResponse?> status = const None()}) {
     return _GlobalPreferenceState(
       isLoading: isLoading,
       validate: validate,
-      signedInRecently: signedInRecently,
+      isInitalization: isInitalization,
       feedbackType: feedbackType,
       supportMessage: supportMessage,
       supportImages: supportImages,
+      currentLocale: currentLocale,
       status: status,
     );
   }
@@ -44,11 +46,12 @@ const $GlobalPreferenceState = _$GlobalPreferenceStateTearOff();
 mixin _$GlobalPreferenceState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
-  bool get signedInRecently => throw _privateConstructorUsedError;
+  bool get isInitalization => throw _privateConstructorUsedError;
   FeedbackType get feedbackType => throw _privateConstructorUsedError;
   BasicTextField<String> get supportMessage =>
       throw _privateConstructorUsedError;
   KtList<File> get supportImages => throw _privateConstructorUsedError;
+  Locale get currentLocale => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -64,10 +67,11 @@ abstract class $GlobalPreferenceStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       bool validate,
-      bool signedInRecently,
+      bool isInitalization,
       FeedbackType feedbackType,
       BasicTextField<String> supportMessage,
       KtList<File> supportImages,
+      Locale currentLocale,
       Option<AppHttpResponse?> status});
 }
 
@@ -84,10 +88,11 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? signedInRecently = freezed,
+    Object? isInitalization = freezed,
     Object? feedbackType = freezed,
     Object? supportMessage = freezed,
     Object? supportImages = freezed,
+    Object? currentLocale = freezed,
     Object? status = freezed,
   }) {
     return _then(_value.copyWith(
@@ -99,9 +104,9 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
-      signedInRecently: signedInRecently == freezed
-          ? _value.signedInRecently
-          : signedInRecently // ignore: cast_nullable_to_non_nullable
+      isInitalization: isInitalization == freezed
+          ? _value.isInitalization
+          : isInitalization // ignore: cast_nullable_to_non_nullable
               as bool,
       feedbackType: feedbackType == freezed
           ? _value.feedbackType
@@ -115,6 +120,10 @@ class _$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.supportImages
           : supportImages // ignore: cast_nullable_to_non_nullable
               as KtList<File>,
+      currentLocale: currentLocale == freezed
+          ? _value.currentLocale
+          : currentLocale // ignore: cast_nullable_to_non_nullable
+              as Locale,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -133,10 +142,11 @@ abstract class _$GlobalPreferenceStateCopyWith<$Res>
   $Res call(
       {bool isLoading,
       bool validate,
-      bool signedInRecently,
+      bool isInitalization,
       FeedbackType feedbackType,
       BasicTextField<String> supportMessage,
       KtList<File> supportImages,
+      Locale currentLocale,
       Option<AppHttpResponse?> status});
 }
 
@@ -155,10 +165,11 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? signedInRecently = freezed,
+    Object? isInitalization = freezed,
     Object? feedbackType = freezed,
     Object? supportMessage = freezed,
     Object? supportImages = freezed,
+    Object? currentLocale = freezed,
     Object? status = freezed,
   }) {
     return _then(_GlobalPreferenceState(
@@ -170,9 +181,9 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
-      signedInRecently: signedInRecently == freezed
-          ? _value.signedInRecently
-          : signedInRecently // ignore: cast_nullable_to_non_nullable
+      isInitalization: isInitalization == freezed
+          ? _value.isInitalization
+          : isInitalization // ignore: cast_nullable_to_non_nullable
               as bool,
       feedbackType: feedbackType == freezed
           ? _value.feedbackType
@@ -186,6 +197,10 @@ class __$GlobalPreferenceStateCopyWithImpl<$Res>
           ? _value.supportImages
           : supportImages // ignore: cast_nullable_to_non_nullable
               as KtList<File>,
+      currentLocale: currentLocale == freezed
+          ? _value.currentLocale
+          : currentLocale // ignore: cast_nullable_to_non_nullable
+              as Locale,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -200,10 +215,11 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   const _$_GlobalPreferenceState(
       {this.isLoading = false,
       this.validate = false,
-      this.signedInRecently = false,
+      this.isInitalization = true,
       this.feedbackType = FeedbackType.inquiry,
       required this.supportMessage,
       this.supportImages = const KtList.empty(),
+      required this.currentLocale,
       this.status = const None()});
 
   @JsonKey(defaultValue: false)
@@ -212,9 +228,9 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   @JsonKey(defaultValue: false)
   @override
   final bool validate;
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: true)
   @override
-  final bool signedInRecently;
+  final bool isInitalization;
   @JsonKey(defaultValue: FeedbackType.inquiry)
   @override
   final FeedbackType feedbackType;
@@ -223,13 +239,15 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
   @JsonKey(defaultValue: const KtList.empty())
   @override
   final KtList<File> supportImages;
+  @override
+  final Locale currentLocale;
   @JsonKey(defaultValue: const None())
   @override
   final Option<AppHttpResponse?> status;
 
   @override
   String toString() {
-    return 'GlobalPreferenceState(isLoading: $isLoading, validate: $validate, signedInRecently: $signedInRecently, feedbackType: $feedbackType, supportMessage: $supportMessage, supportImages: $supportImages, status: $status)';
+    return 'GlobalPreferenceState(isLoading: $isLoading, validate: $validate, isInitalization: $isInitalization, feedbackType: $feedbackType, supportMessage: $supportMessage, supportImages: $supportImages, currentLocale: $currentLocale, status: $status)';
   }
 
   @override
@@ -241,20 +259,30 @@ class _$_GlobalPreferenceState implements _GlobalPreferenceState {
                 other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
                 other.validate == validate) &&
-            (identical(other.signedInRecently, signedInRecently) ||
-                other.signedInRecently == signedInRecently) &&
+            (identical(other.isInitalization, isInitalization) ||
+                other.isInitalization == isInitalization) &&
             (identical(other.feedbackType, feedbackType) ||
                 other.feedbackType == feedbackType) &&
             (identical(other.supportMessage, supportMessage) ||
                 other.supportMessage == supportMessage) &&
             (identical(other.supportImages, supportImages) ||
                 other.supportImages == supportImages) &&
+            (identical(other.currentLocale, currentLocale) ||
+                other.currentLocale == currentLocale) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, validate,
-      signedInRecently, feedbackType, supportMessage, supportImages, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      validate,
+      isInitalization,
+      feedbackType,
+      supportMessage,
+      supportImages,
+      currentLocale,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -267,10 +295,11 @@ abstract class _GlobalPreferenceState implements GlobalPreferenceState {
   const factory _GlobalPreferenceState(
       {bool isLoading,
       bool validate,
-      bool signedInRecently,
+      bool isInitalization,
       FeedbackType feedbackType,
       required BasicTextField<String> supportMessage,
       KtList<File> supportImages,
+      required Locale currentLocale,
       Option<AppHttpResponse?> status}) = _$_GlobalPreferenceState;
 
   @override
@@ -278,13 +307,15 @@ abstract class _GlobalPreferenceState implements GlobalPreferenceState {
   @override
   bool get validate;
   @override
-  bool get signedInRecently;
+  bool get isInitalization;
   @override
   FeedbackType get feedbackType;
   @override
   BasicTextField<String> get supportMessage;
   @override
   KtList<File> get supportImages;
+  @override
+  Locale get currentLocale;
   @override
   Option<AppHttpResponse?> get status;
   @override

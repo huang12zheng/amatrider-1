@@ -15,3 +15,4 @@ export 'service_access_widget.dart';
 export 'home_page/availablility_widget.dart';
 export 'history_widgets/grouped_history_card.dart';
 export 'horizontal_chip_widget.dart';
+export 'expandable_shimmer.dart';

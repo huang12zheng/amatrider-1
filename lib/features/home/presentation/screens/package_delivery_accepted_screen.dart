@@ -1,6 +1,5 @@
 library package_delivery_accepted_screen.dart;
 
-import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
@@ -163,75 +162,82 @@ class _PackageDeliveryAcceptedScreenState
                       start: () => AppButton(
                         text: 'Confirm Pickup',
                         isLoading: s.isLoading,
-                        onPressed: () async => App.showAlertDialog(
-                          context: context,
-                          barrierColor: App.resolveColor(
-                            Colors.grey.shade800.withOpacity(0.55),
-                            dark: Colors.white54,
-                          ),
-                          builder: (_) => AdaptiveAlertdialog(
-                            title: 'Confirm Pickup',
-                            content: 'Confirm that you have received '
-                                'the package from ${s.package.sender.fullName.getOrEmpty}?',
-                            buttonDirection: Axis.horizontal,
-                            secondButtonText: 'Yes, Confirm',
-                            secondSplashColor: Colors.black12,
-                            secondTextStyle:
-                                const TextStyle(color: Colors.white),
-                            secondBgColor: Palette.accentColor,
-                            onSecondPressed:
-                                c.read<SendPackageCubit>().confirmPackagePickup,
-                            materialFirstButton: AppOutlinedButton(
-                              text: 'No, Go Back',
-                              textColor: Palette.text100,
-                              textColorDark: Palette.text100Dark,
-                              borderColor: Palette.text100,
-                              borderColorDark: Palette.text100Dark,
-                              height: 0.045.h,
-                              cupertinoHeight: 0.028.sh,
-                              width: 0.3.sw,
-                              cupertinoWidth: 0.3.sw,
-                              onPressed: navigator.pop,
-                            ),
-                          ),
-                        ),
+                        onPressed: () {
+                          if (!s.isLoading)
+                            App.showAlertDialog(
+                              context: context,
+                              barrierColor: App.resolveColor(
+                                Colors.grey.shade800.withOpacity(0.55),
+                                dark: Colors.white54,
+                              ),
+                              builder: (_) => AdaptiveAlertdialog(
+                                title: 'Confirm Pickup',
+                                content: 'Confirm that you have received '
+                                    'the package from ${s.package.sender.fullName.getOrEmpty}?',
+                                buttonDirection: Axis.horizontal,
+                                secondButtonText: 'Yes, Confirm',
+                                secondSplashColor: Colors.black12,
+                                secondTextStyle:
+                                    const TextStyle(color: Colors.white),
+                                secondBgColor: Palette.accentColor,
+                                onSecondPressed: c
+                                    .read<SendPackageCubit>()
+                                    .confirmPackagePickup,
+                                materialFirstButton: AppOutlinedButton(
+                                  text: 'No, Go Back',
+                                  textColor: Palette.text100,
+                                  textColorDark: Palette.text100Dark,
+                                  borderColor: Palette.text100,
+                                  borderColorDark: Palette.text100Dark,
+                                  height: 0.045.h,
+                                  cupertinoHeight: 0.028.sh,
+                                  width: 0.3.sw,
+                                  cupertinoWidth: 0.3.sw,
+                                  onPressed: navigator.pop,
+                                ),
+                              ),
+                            );
+                        },
                       ),
                       end: () => AppButton(
                         text: 'Package Delivered',
                         isLoading: s.isLoading,
-                        onPressed: () async => App.showAlertDialog(
-                          context: context,
-                          barrierColor: App.resolveColor(
-                            Colors.grey.shade800.withOpacity(0.55),
-                            dark: Colors.white54,
-                          ),
-                          builder: (_) => AdaptiveAlertdialog(
-                            title: 'Confirm Pickup',
-                            content: 'Confirm that you have delivered '
-                                'the package to ${s.package.receiverFullName.getOrEmpty}?',
-                            buttonDirection: Axis.horizontal,
-                            secondButtonText: 'Yes, Confirm',
-                            secondSplashColor: Colors.black12,
-                            secondTextStyle:
-                                const TextStyle(color: Colors.white),
-                            secondBgColor: Palette.accentColor,
-                            onSecondPressed: c
-                                .read<SendPackageCubit>()
-                                .confirmPackageDelivery,
-                            materialFirstButton: AppOutlinedButton(
-                              text: 'No, Go Back',
-                              textColor: Palette.text100,
-                              textColorDark: Palette.text100Dark,
-                              borderColor: Palette.text100,
-                              borderColorDark: Palette.text100Dark,
-                              height: 0.045.h,
-                              cupertinoHeight: 0.028.sh,
-                              width: 0.3.sw,
-                              cupertinoWidth: 0.3.sw,
-                              onPressed: navigator.pop,
-                            ),
-                          ),
-                        ),
+                        onPressed: () {
+                          if (!s.isLoading)
+                            App.showAlertDialog(
+                              context: context,
+                              barrierColor: App.resolveColor(
+                                Colors.grey.shade800.withOpacity(0.55),
+                                dark: Colors.white54,
+                              ),
+                              builder: (_) => AdaptiveAlertdialog(
+                                title: 'Confirm Pickup',
+                                content: 'Confirm that you have delivered '
+                                    'the package to ${s.package.receiverFullName.getOrEmpty}?',
+                                buttonDirection: Axis.horizontal,
+                                secondButtonText: 'Yes, Confirm',
+                                secondSplashColor: Colors.black12,
+                                secondTextStyle:
+                                    const TextStyle(color: Colors.white),
+                                secondBgColor: Palette.accentColor,
+                                onSecondPressed: c
+                                    .read<SendPackageCubit>()
+                                    .confirmPackageDelivery,
+                                materialFirstButton: AppOutlinedButton(
+                                  text: 'No, Go Back',
+                                  textColor: Palette.text100,
+                                  textColorDark: Palette.text100Dark,
+                                  borderColor: Palette.text100,
+                                  borderColorDark: Palette.text100Dark,
+                                  height: 0.045.h,
+                                  cupertinoHeight: 0.028.sh,
+                                  width: 0.3.sw,
+                                  cupertinoWidth: 0.3.sw,
+                                  onPressed: navigator.pop,
+                                ),
+                              ),
+                            );
+                        },
                       ),
                     ),
                   ),

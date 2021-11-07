@@ -11,7 +11,7 @@ _$_InsightDTO _$$_InsightDTOFromJson(Map<String, dynamic> json) =>
       completedOrder:
           const IntegerSerializer().fromJson(json['completed_orders']),
       target: const IntegerSerializer().fromJson(json['target']),
-      progress: json['percentage'] as int?,
+      progress: const IntegerSerializer().fromJson(json['percentage']),
       daysLeft: const IntegerSerializer().fromJson(json['days_left']),
       cashAtHand: const DoubleSerializer().fromJson(json['cash_at_hand']),
       bonus: const DoubleSerializer().fromJson(json['bonus']),
@@ -38,7 +38,8 @@ Map<String, dynamic> _$$_InsightDTOToJson(_$_InsightDTO instance) {
   writeNotNull('completed_orders',
       const IntegerSerializer().toJson(instance.completedOrder));
   writeNotNull('target', const IntegerSerializer().toJson(instance.target));
-  writeNotNull('percentage', instance.progress);
+  writeNotNull(
+      'percentage', const IntegerSerializer().toJson(instance.progress));
   writeNotNull(
       'days_left', const IntegerSerializer().toJson(instance.daysLeft));
   writeNotNull(

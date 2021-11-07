@@ -19,6 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part '../widgets/home_page/send_package_card.dart';
 
@@ -27,11 +28,8 @@ const inProgressColor = Color(0xff5ec792);
 const todoColor = Color(0xffd1d2d7);
 
 /// A stateless widget to render HomePage.
-class HomePage extends StatefulWidget with AutoRouteWrapper {
+class HomePage extends StatelessWidget with AutoRouteWrapper {
   const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -39,13 +37,6 @@ class HomePage extends StatefulWidget with AutoRouteWrapper {
       create: (_) => getIt<RequestCubit>(),
       child: MultiBlocListener(
         listeners: [
-          BlocListener<RequestCubit, RequestState>(
-            listenWhen: (p, c) => c.currentPackage != null,
-            listener: (context, state) {
-              //
-            },
-          ),
-          //
           BlocListener<RequestCubit, RequestState>(
             listenWhen: (p, c) =>
                 p.status.getOrElse(() => null) !=
@@ -80,21 +71,14 @@ class HomePage extends StatefulWidget with AutoRouteWrapper {
       ),
     );
   }
-}
 
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    onRefresh(context);
-  }
-
-  Future<void> onRefresh(BuildContext c) async {
+  Future<void> onRefresh(BuildContext c, RefreshController controller) async {
     await BlocProvider.of<RequestCubit>(c).allPackages(c);
     await BlocProvider.of<RequestCubit>(c)
         .allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
     await BlocProvider.of<RequestCubit>(c)
         .allPackages(c, status: SendPackageStatus.ENROUTE_TO_RECEIVER);
+    controller.refreshCompleted();
   }
 
   @override
@@ -114,15 +98,9 @@ class _HomePageState extends State<HomePage> {
         actions: [const AvailablilityWidget()],
       ),
       body: SafeArea(
-        child: RefreshIndicator(
-          edgeOffset: 10,
-          triggerMode: RefreshIndicatorTriggerMode.onEdge,
-          color: App.resolveColor(Palette.accentColor),
-          backgroundColor: App.resolveColor(
-            Palette.neutralF9,
-            dark: Palette.secondaryColor.shade400,
-          ),
-          onRefresh: () => onRefresh(context),
+        child: DragToRefresh(
+          initialRefresh: true,
+          onRefresh: (controller) => onRefresh(context, controller),
           child: BlocBuilder<RequestCubit, RequestState>(
             builder: (c, s) => CustomScrollView(
               shrinkWrap: true,
@@ -140,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                       BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
                         selector: (s) => s.rider,
                         builder: (c, rider) => AdaptiveText(
-                          'Hello, ${rider?.firstName.getOrEmpty}! 👋',
+                          '${tr.greeting('${rider?.firstName.getOrEmpty}')}! 👋',
                           softWrap: true,
                           style: TextStyle(
                             fontSize: 17.0.sp,
@@ -152,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                       VerticalSpace(height: 0.03.sw),
                       //
                       AdaptiveText(
-                        'A Good Day To Make Deliveries.',
+                        '${tr.homePageTxt2}',
                         softWrap: true,
                         style: TextStyle(
                           fontSize: 25.0.sp,
@@ -177,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(children: [
-                            Headline('In Transit', fontSize: 17.sp),
+                            Headline('${tr.inTransit}', fontSize: 17.sp),
                             //
                             if (!s.packagesInTransit.isEmpty())
                               Headline(
@@ -201,20 +179,21 @@ class _HomePageState extends State<HomePage> {
                     bottom: s.packagesInTransit.isEmpty() ? 0 : App.sidePadding,
                   ),
                   sliver: SliverToBoxAdapter(
-                    child: AnimatedCrossFade(
-                      duration: Utils.crossFadeDuration,
-                      layoutBuilder: Utils.crossFadeLayoutBuilder,
-                      crossFadeState: (s.isLoadingTransitPackages &&
-                              s.packagesInTransit.isEmpty())
-                          ? CrossFadeState.showSecond
-                          : CrossFadeState.showFirst,
-                      secondChild: SizedBox(
-                        height: 0.47.sw,
-                        child: const Center(
-                          child: CircularProgressBar.adaptive(),
+                    child: WidgetVisibility(
+                      duration: const Duration(milliseconds: 700),
+                      visible: !(s.isLoadingTransitPackages &&
+                          s.packagesInTransit.isEmpty()),
+                      replacement: WidgetVisibility(
+                        duration: const Duration(milliseconds: 800),
+                        visible: s.isLoadingTransitPackages,
+                        replacement: Utils.nothing,
+                        child: ExpandableShimmer.list(
+                          count: 2,
+                          initialExpanded: (i) => i == 0,
+                          footer: ExpandableShimmerFooter.single,
                         ),
                       ),
-                      firstChild: ListView.custom(
+                      child: ListView.custom(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         controller: ScrollController(),
@@ -271,7 +250,8 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(children: [
-                                Headline('Active Requests', fontSize: 17.sp),
+                                Headline('${tr.activeRequests}',
+                                    fontSize: 17.sp),
                                 //
                                 if (!s.activePackages.isEmpty())
                                   Headline(
@@ -303,20 +283,20 @@ class _HomePageState extends State<HomePage> {
                     horizontal: App.sidePadding,
                   ).copyWith(top: s.activePackages.isEmpty() ? 0 : 0.02.sw),
                   sliver: SliverToBoxAdapter(
-                    child: AnimatedCrossFade(
-                      duration: Utils.crossFadeDuration,
-                      layoutBuilder: Utils.crossFadeLayoutBuilder,
-                      crossFadeState: (s.isLoadingActivePackages &&
-                              s.activePackages.isEmpty())
-                          ? CrossFadeState.showSecond
-                          : CrossFadeState.showFirst,
-                      secondChild: SizedBox(
-                        height: 0.47.sw,
-                        child: const Center(
-                          child: CircularProgressBar.adaptive(),
+                    child: WidgetVisibility(
+                      duration: const Duration(milliseconds: 700),
+                      visible: !(s.isLoadingActivePackages &&
+                          s.activePackages.isEmpty()),
+                      replacement: WidgetVisibility(
+                        duration: const Duration(milliseconds: 800),
+                        visible: s.isLoadingActivePackages,
+                        replacement: Utils.nothing,
+                        child: ExpandableShimmer.list(
+                          count: 4,
+                          initialExpanded: (i) => i == 0,
                         ),
                       ),
-                      firstChild: ListView.custom(
+                      child: ListView.custom(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         controller: ScrollController(),
@@ -357,62 +337,15 @@ class _HomePageState extends State<HomePage> {
                 ),
                 //
                 // SliverPadding(
-                //   padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                //   sliver: SliverList(
-                //     delegate: SliverChildListDelegate.fixed([
-                //       //
-                //       Row(
-                //         children: [
-                //           Headline('Potential Requests', fontSize: 17.sp),
-                //           //
-                //           Headline(
-                //             '(14)',
-                //             fontSize: 15.5.sp,
-                //             textColorLight: Palette.accentColor,
-                //           ),
-                //         ],
-                //       ),
-                //       //
-                //       VerticalSpace(height: 0.04.sw),
-                //       //
-                //       const DeliveryRequestCard(
-                //         asset: AppAssets.request1,
-                //         initialExpanded: true,
-                //         showActionButtons: false,
-                //       ),
-                //       //
-                //       ...env.flavor.fold(
-                //         dev: () => [],
-                //         prod: () => [
-                //           VerticalSpace(height: 0.04.sw),
-                //           //
-                //           const DeliveryRequestCard(
-                //             asset: AppAssets.blackAvatar,
-                //             initialExpanded: true,
-                //             isOrder: false,
-                //             time: '120 Mins',
-                //             showActionButtons: false,
-                //           ),
-                //         ],
-                //       ),
-                //       //
-                //       VerticalSpace(height: 0.04.sw),
-                //       //
-                //       const DeliveryRequestCard(
-                //         asset: AppAssets.request2,
-                //         showActionButtons: false,
-                //         time: '20 Mins',
-                //       ),
-                //       //
-                //       VerticalSpace(height: 0.04.sw),
-                //       //
-                //       const DeliveryRequestCard(
-                //         asset: AppAssets.request3,
-                //         showActionButtons: false,
-                //       ),
-                //       //
-                //       VerticalSpace(height: 0.04.sw),
-                //     ]),
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: App.sidePadding,
+                //   ).copyWith(top: s.activePackages.isEmpty() ? 0 : 0.02.sw),
+                //   sliver: SliverToBoxAdapter(
+                //     child: ExpandableShimmer.list(
+                //       count: 2,
+                //       initialExpanded: (i) => i == 1,
+                //       footer: ExpandableShimmerFooter.single,
+                //     ),
                 //   ),
                 // ),
               ],

@@ -40,13 +40,15 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
     response.fold(
       (failure) => emit(state.copyWith(status: some(failure))),
       (history) {
-        final collection = history.groupBy(
-          (it) => DateTime(
-            it.createdAt!.year,
-            it.createdAt!.month,
-            it.createdAt!.day,
-          ),
-        );
+        final collection = history
+            .sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!))
+            .groupBy(
+              (it) => DateTime(
+                it.createdAt!.year,
+                it.createdAt!.month,
+                it.createdAt!.day,
+              ),
+            );
 
         emit(state.copyWith(
             status: none(), histories: collection, historyList: history));

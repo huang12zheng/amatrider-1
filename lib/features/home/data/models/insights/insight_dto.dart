@@ -17,7 +17,7 @@ class InsightDTO with _$InsightDTO {
   const factory InsightDTO({
     @JsonKey(name: 'completed_orders') @IntegerSerializer() int? completedOrder,
     @IntegerSerializer() int? target,
-    @JsonKey(name: 'percentage') int? progress,
+    @JsonKey(name: 'percentage') @IntegerSerializer() int? progress,
     @JsonKey(name: 'days_left') @IntegerSerializer() int? daysLeft,
     @JsonKey(name: 'cash_at_hand') @DoubleSerializer() double? cashAtHand,
     @DoubleSerializer() double? bonus,

@@ -54,12 +54,12 @@ class AvailablilityWidget extends StatelessWidget {
               //
               HorizontalSpace(width: 0.02.sw),
               //
-              Headline('Status: ', fontSize: 17.sp),
+              Headline('${tr.status}: ', fontSize: 17.sp),
               //
               AdaptiveText(
                 availability == RiderAvailability.available
-                    ? 'Active'
-                    : 'Inactive',
+                    ? '${tr.active}'
+                    : '${tr.inActive}',
                 fontSize: 17.sp,
                 textColor: Palette.text40,
                 fontWeight: FontWeight.w400,

@@ -185,13 +185,10 @@ class AdaptiveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      crossFadeState:
-          isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      layoutBuilder: Utils.crossFadeLayoutBuilder,
-      duration: const Duration(milliseconds: 250),
-      secondChild: App.loadingSpinningLines,
-      firstChild: PlatformBuilder(
+    return WidgetVisibility(
+      visible: !isLoading,
+      replacement: App.loadingSpinningLines,
+      child: PlatformBuilder(
         cupertino: (context) => type.fold(
           elevated: () => SizedBox(
             width: cupertinoWidth ?? width,

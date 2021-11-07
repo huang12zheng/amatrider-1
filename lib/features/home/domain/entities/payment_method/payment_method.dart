@@ -1,5 +1,6 @@
 library payment_method.dart;
 
+import 'package:amatrider/utils/utils.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 
@@ -24,13 +25,13 @@ class PaymentMethod extends EnumClass {
 
   String get formatted {
     return when(
-      card: () => 'Paid',
-      deliveryWithCard: () => 'Card(POS)',
-      deliveryWithCash: () => 'Cash',
-      transfer: () => 'Paid',
-      flutterwave: () => 'Paid',
-      stripe: () => 'Paid',
-      paystack: () => 'Paid',
+      card: () => '${S.current.paid}',
+      deliveryWithCard: () => '${S.current.cardPOS}',
+      deliveryWithCash: () => '${S.current.cash}',
+      transfer: () => '${S.current.paid}',
+      flutterwave: () => '${S.current.paid}',
+      stripe: () => '${S.current.paid}',
+      paystack: () => '${S.current.paid}',
     );
   }
 }

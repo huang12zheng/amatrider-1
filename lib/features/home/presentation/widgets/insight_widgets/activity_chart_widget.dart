@@ -33,7 +33,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextFormInputLabel(
-                  text: 'Activity',
+                  text: '${tr.activity}',
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -45,18 +45,23 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
-                        flex: 3,
+                        flex: 7,
                         child: BlocSelector<InsightsCubit, InsightsState,
                             DateFilter>(
                           selector: (s) => s.dateFilter,
                           builder: (c, filter) =>
                               DropdownFieldWidget<DateFilter>(
                             isDense: true,
-                            items: [DateFilter.monthly, DateFilter.yearly],
+                            items: [
+                              DateFilter.all_time,
+                              DateFilter.monthly,
+                              DateFilter.yearly,
+                            ],
                             height: 43,
                             backgroundColorLight: App.resolveColor(Colors.brown,
                                 dark: Palette.cardColorDark),
                             text: (it) => '${it?.label}',
+                            minFontSize: 13,
                             selected: filter,
                             onChanged:
                                 c.read<InsightsCubit>().dateFilterChanged,
@@ -64,63 +69,79 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                         ),
                       ),
                       //
-                      HorizontalSpace(width: 0.02.sw),
-                      //
                       Flexible(
-                        flex: 4,
+                        flex: 8,
                         child: BlocBuilder<InsightsCubit, InsightsState>(
-                          builder: (c, s) => AdaptiveListTile(
-                            dense: true,
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 8),
-                            trailing:
-                                const Icon(Icons.keyboard_arrow_down_rounded),
-                            title: s.dateFilter.when(
-                              monthly: AdaptiveText(
-                                  '${DateFormat.MMMM().format(s.selectedDate!)}',
-                                  maxLines: 1,
-                                  fontSize: 16.sp),
-                              yearly: AdaptiveText(
-                                  '${DateFormat.y().format(s.selectedDate!)}',
-                                  maxLines: 1,
-                                  fontSize: 16.sp),
-                            ),
-                            horizontalTitleGap: 0,
-                            minVerticalPadding: 5,
-                            material: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                Utils.inputBorderRadius,
-                              ),
-                            ),
-                            onTap: () {
-                              App.showAdaptiveDatePicker(
-                                context,
-                                selectedDate: s.selectedDate,
-                                firstDate: DispatchActivity.firstDate,
-                                lastDate: DispatchActivity.lastDate,
-                                initialDatePickerMode: s.dateFilter.when(
-                                  monthly: DatePickerMode.day,
-                                  yearly: DatePickerMode.year,
-                                ),
-                                confirmText: 'Done',
-                                cancelText: 'Cancel',
-                                errorInvalidText: 'Invalid date',
-                                builder: (ctx, child) => Theme(
-                                  data: Theme.of(ctx).copyWith(
-                                    primaryColor: Palette.accent20,
-                                    colorScheme: const ColorScheme.light(
-                                      primary: Palette.accentColor,
-                                      secondary: Palette.accent20,
+                          builder: (c, s) => WidgetVisibility(
+                            visible: s.dateFilter != DateFilter.all_time,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                HorizontalSpace(width: 0.02.sw),
+                                //
+                                Flexible(
+                                  child: AdaptiveListTile(
+                                    dense: true,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    trailing: const Icon(
+                                        Icons.keyboard_arrow_down_rounded),
+                                    title: s.dateFilter.when(
+                                      allTime: null,
+                                      monthly: AdaptiveText(
+                                          '${DateFormat.MMMM().format(s.selectedDate!)}',
+                                          maxLines: 1,
+                                          fontSize: 16.sp),
+                                      yearly: AdaptiveText(
+                                          '${DateFormat.y().format(s.selectedDate!)}',
+                                          maxLines: 1,
+                                          fontSize: 16.sp),
                                     ),
-                                    buttonTheme: const ButtonThemeData(
-                                        textTheme: ButtonTextTheme.primary),
+                                    horizontalTitleGap: 0,
+                                    minVerticalPadding: 5,
+                                    material: true,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        Utils.inputBorderRadius,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      App.showAdaptiveDatePicker(
+                                        context,
+                                        selectedDate: s.selectedDate,
+                                        firstDate: DispatchActivity.firstDate,
+                                        lastDate: DispatchActivity.lastDate,
+                                        initialDatePickerMode:
+                                            s.dateFilter.when(
+                                          allTime: DatePickerMode.day,
+                                          monthly: DatePickerMode.day,
+                                          yearly: DatePickerMode.year,
+                                        ),
+                                        confirmText: '${tr.done}',
+                                        cancelText: '${tr.cancel}',
+                                        errorInvalidText: 'Invalid date',
+                                        builder: (ctx, child) => Theme(
+                                          data: Theme.of(ctx).copyWith(
+                                            primaryColor: Palette.accent20,
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                              primary: Palette.accentColor,
+                                              secondary: Palette.accent20,
+                                            ),
+                                            buttonTheme: const ButtonThemeData(
+                                                textTheme:
+                                                    ButtonTextTheme.primary),
+                                          ),
+                                          child: child!,
+                                        ),
+                                        onChanged:
+                                            c.read<InsightsCubit>().dateChanged,
+                                      );
+                                    },
                                   ),
-                                  child: child!,
                                 ),
-                                onChanged: c.read<InsightsCubit>().dateChanged,
-                              );
-                            },
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -158,11 +179,10 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey,
+          tooltipBgColor: Palette.neutralF4,
           getTooltipItem: (group, groupIndex, rod, rodIndex) => BarTooltipItem(
             '${group.x.toDouble().label}\n',
             const TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -170,15 +190,15 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
               TextSpan(
                 text: (rod.y).toString().asCurrency(),
                 style: const TextStyle(
-                  color: Colors.yellow,
-                  fontSize: 16,
+                  color: Palette.accentColor,
                   fontWeight: FontWeight.w500,
+                  fontSize: 16,
                 ),
               ),
             ],
           ),
         ),
-        touchCallback: (FlTouchEvent event, barTouchResponse) {
+        touchCallback: (event, barTouchResponse) {
           setState(() {
             if (!event.isInterestedForInteractions ||
                 barTouchResponse == null ||
@@ -268,9 +288,9 @@ extension on double {
   String get label {
     switch (toInt()) {
       case 0:
-        return 'Card (POS)';
+        return '${S.current.cardPOS}';
       case 1:
-        return 'Cash';
+        return '${S.current.cash}';
       default:
         return '';
     }

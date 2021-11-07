@@ -25,13 +25,12 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           dark: Colors.white54,
         ),
         builder: (_) => AdaptiveAlertdialog(
-          title: 'Accept Request',
-          content: 'Are you sure you '
-              'want to accept this request?',
-          cupertinoFirstButtonText: 'No, Go Back',
+          title: '${tr.acceptRequestTitle}',
+          content: '${tr.requestConfirmTxt}',
+          cupertinoFirstButtonText: '${tr.noGoBack}',
           onFirstPressed: navigator.pop,
           buttonDirection: Axis.horizontal,
-          secondButtonText: 'Yes, Accept',
+          secondButtonText: '${tr.yesAccept}',
           secondSplashColor: Colors.black12,
           secondTextStyle: const TextStyle(color: Colors.white),
           secondBgColor: Palette.accentColor,
@@ -41,7 +40,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                 .acceptPackageDelivery(context, widget.package);
           },
           materialFirstButton: AppOutlinedButton(
-            text: 'No, Go Back',
+            text: '${tr.noGoBack}',
             height: 0.09.sw,
             cupertinoHeight: 0.028.sh,
             fontSize: 15.sp,
@@ -60,12 +59,12 @@ class __SendPackageCardState extends State<_SendPackageCard> {
         dark: Colors.white54,
       ),
       builder: (_) => AdaptiveAlertdialog(
-        title: 'Warning!',
-        content: "Are you sure? We'll try not show this request again.",
-        cupertinoFirstButtonText: 'No, Go Back',
+        title: '${tr.warning}!',
+        content: '${tr.requestDeclineTxt}',
+        cupertinoFirstButtonText: '${tr.noGoBack}',
         onFirstPressed: navigator.pop,
         buttonDirection: Axis.horizontal,
-        secondButtonText: 'Yes',
+        secondButtonText: '${tr.yes}',
         secondSplashColor: Colors.black12,
         secondTextStyle: const TextStyle(color: Colors.white),
         secondBgColor: Palette.accentColor,
@@ -75,7 +74,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
               .declinePackageDelivery(context, widget.package);
         },
         materialFirstButton: AppOutlinedButton(
-          text: 'No, Go Back',
+          text: '${tr.noGoBack}',
           height: 0.09.sw,
           cupertinoHeight: 0.028.sh,
           fontSize: 15.sp,
@@ -146,7 +145,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         onDecline: onDecline,
                       ),
                       orElse: () => AdaptiveButton(
-                        text: 'Continue',
+                        text: '${tr.continueTxt}',
                         disabled: context
                             .select((RequestCubit el) => el.state.isLoading),
                         textColor: Colors.white,
@@ -173,7 +172,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
-                            title: 'Pick Up Location',
+                            title: '${tr.pickupLocationText}',
                             subtitle:
                                 '${widget.package.pickup.address.getOrEmpty}',
                           ),
@@ -181,7 +180,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
-                            title: 'Delivery Location',
+                            title: '${tr.deliveryLocationText}',
                             subtitle:
                                 '${widget.package.destination.address.getOrEmpty}',
                           ),
@@ -196,7 +195,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           onDecline: onDecline,
                         ),
                         orElse: () => AdaptiveButton(
-                          text: 'Continue',
+                          text: '${tr.continueTxt}',
                           disabled: context
                               .select((RequestCubit el) => el.state.isLoading),
                           textColor: Colors.white,
@@ -293,7 +292,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         wrapped: false,
                         tags: [
                           HorizontalChip(
-                            label: 'Package',
+                            label: '${tr.package}',
                             maxFontSize: 13,
                             labelColor: Palette.accentDarkYellow,
                             backgroundColor: Palette.pastelYellow,
@@ -376,7 +375,7 @@ class _ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         AppOutlinedButton(
-          text: 'Decline',
+          text: '${tr.decline}',
           disabled: c.select((RequestCubit el) => el.state.isLoading),
           textColor: Palette.accentColor,
           height: 0.05.sh,
@@ -387,7 +386,7 @@ class _ActionButtons extends StatelessWidget {
         ),
         //
         AdaptiveButton(
-          text: 'Accept',
+          text: '${tr.accept}',
           disabled: c.select((RequestCubit el) => el.state.isLoading),
           textColor: Colors.white,
           backgroundColor: Palette.accentColor,

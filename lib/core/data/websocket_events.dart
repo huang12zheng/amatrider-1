@@ -10,3 +10,7 @@ mixin SendPackageSocket {
   // Rider has delivered package to receiver
   static String get delivered => '.package.rider.delivered';
 }
+
+mixin RiderNotification {
+  static String channel(String riderId) => 'rider.notifications.$riderId';
+}

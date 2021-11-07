@@ -21,4 +21,6 @@ mixin Const {
   static const String kAccessTokenExpiryKey = 'access-token-expiry-key';
   static const String kUserDTOPrefKey = 'user-dto-sembest-key';
   static const String kPhoneNumberPrefKey = 'user-phone-number-pref-key';
+
+  static const double maxUploadSize = 1e+7;
 }
