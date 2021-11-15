@@ -162,6 +162,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
               ),
               child: AdaptiveListTile(
                 dense: true,
+                material: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 trailing: const Icon(Icons.arrow_drop_down),
                 title: BlocBuilder<VerificationCubit, VerificationState>(

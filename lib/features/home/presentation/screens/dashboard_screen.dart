@@ -20,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// A stateless widget to render DashboardScreen.
@@ -49,7 +48,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     const ProfilePage(),
   ];
 
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
+  final AsyncMemoizer<dynamic> _memoizer = AsyncMemoizer();
   DateTime _timestampPressed = DateTime.now();
 
   @override
@@ -107,10 +106,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         (it) => CachedNetworkImage(
                           imageUrl: '${it.getOrEmpty}',
                           fit: BoxFit.contain,
-                          height: s.currentIndex == i.id ? 30 : 25,
+                          height: 24,
                           imageBuilder: (c, img) => CircleAvatar(
                             backgroundImage: img,
-                            maxRadius: s.currentIndex == i.id ? 16 : 15,
+                            maxRadius: s.currentIndex == i.id ? 16 : 14,
                             minRadius: 14,
                             backgroundColor: Colors.transparent,
                           ),
@@ -119,8 +118,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                             child: CircularProgressBar.adaptive(
                               value: download.progress,
                               strokeWidth: 2,
-                              width: 25,
-                              height: 25,
+                              width: 24,
+                              height: 24,
                             ),
                           ),
                           errorWidget: (_, url, error) => defaultImage(s, i),
@@ -129,11 +128,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       );
                     },
                   )
-                : SvgPicture.asset(
+                : Icon(
                     i.icon,
-                    height: s.currentIndex == i.id ? 30 : 25,
-                    width: s.currentIndex == i.id ? 30 : 25,
-                    fit: BoxFit.contain,
                     color: s.currentIndex == i.id
                         ? Utils.foldTheme(
                             light: () => Palette.accentColor,
@@ -214,47 +210,35 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         return _granted;
                       },
                     ));
-
-                  return 0;
                 }),
-                builder: (_, snapshot) => snapshot.hasData
-                    ? AdaptiveScaffold(
-                        cupertinoTabBuilder: (_, i) => _tabs[i],
-                        body: FadeTransition(opacity: animation, child: child),
-                        adaptiveBottomNav: PlatformNavBar(
-                          items: navItems(s),
-                          currentIndex: s.currentIndex,
-                          material: (_, __) => MaterialNavBarData(
-                            elevation: 0.0,
-                            type: BottomNavigationBarType.fixed,
-                            unselectedItemColor: Colors.grey,
-                            selectedItemColor: Utils.foldTheme(
-                              light: () => Palette.accentColor,
-                              dark: () => Palette.accentColor.shade100,
-                            ),
-                          ),
-                          cupertino: (_, __) => CupertinoTabBarData(
-                            iconSize: 20,
-                            inactiveColor: Colors.grey,
-                            currentIndex: s.currentIndex,
-                            activeColor: Utils.foldTheme(
-                              light: () => Palette.accentColor,
-                              dark: () => Palette.accentColor.shade100,
-                            ),
-                          ),
-                          itemChanged: (i) => c
-                              .read<TabNavigationCubit>()
-                              .setCurrentIndex(c, i),
-                        ),
-                      )
-                    : Center(
-                        child: CircularProgressBar.adaptive(
-                          width: 0.03.h,
-                          height: 0.03.h,
-                          strokeWidth: 3,
-                          radius: 14,
-                        ),
+                builder: (_, snapshot) => AdaptiveScaffold(
+                  cupertinoTabBuilder: (_, i) => _tabs[i],
+                  body: FadeTransition(opacity: animation, child: child),
+                  adaptiveBottomNav: PlatformNavBar(
+                    items: navItems(s),
+                    currentIndex: s.currentIndex,
+                    material: (_, __) => MaterialNavBarData(
+                      elevation: 0.0,
+                      type: BottomNavigationBarType.fixed,
+                      unselectedItemColor: Colors.grey,
+                      selectedItemColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
                       ),
+                    ),
+                    cupertino: (_, __) => CupertinoTabBarData(
+                      iconSize: 20,
+                      inactiveColor: Colors.grey,
+                      currentIndex: s.currentIndex,
+                      activeColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
+                      ),
+                    ),
+                    itemChanged: (i) =>
+                        c.read<TabNavigationCubit>().setCurrentIndex(c, i),
+                  ),
+                ),
               ),
             ),
           );

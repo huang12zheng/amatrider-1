@@ -66,6 +66,9 @@ class AmatNow {
   static const IconData waiter_service = IconData(0xe82a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData gallery_plus = IconData(0xe82b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData paystack = IconData(0xe82c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dashboard_activity = IconData(0xe830, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dashboard_document = IconData(0xe831, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dashboard_home = IconData(0xe832, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData verify_driver_license = IconData(0xe85e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData verify_govt_id = IconData(0xe85f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData verify_passport = IconData(0xe860, fontFamily: _kFontFam, fontPackage: _kFontPkg);

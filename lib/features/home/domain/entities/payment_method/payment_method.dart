@@ -25,13 +25,13 @@ class PaymentMethod extends EnumClass {
 
   String get formatted {
     return when(
-      card: () => '${S.current.paid}',
+      card: () => '${S.current.bankTransfer}',
       deliveryWithCard: () => '${S.current.cardPOS}',
       deliveryWithCash: () => '${S.current.cash}',
-      transfer: () => '${S.current.paid}',
-      flutterwave: () => '${S.current.paid}',
-      stripe: () => '${S.current.paid}',
-      paystack: () => '${S.current.paid}',
+      transfer: () => '${S.current.bankTransfer}',
+      flutterwave: () => '${S.current.bankTransfer}',
+      stripe: () => '${S.current.bankTransfer}',
+      paystack: () => '${S.current.bankTransfer}',
     );
   }
 }

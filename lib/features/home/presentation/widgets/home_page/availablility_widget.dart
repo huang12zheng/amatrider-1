@@ -34,10 +34,8 @@ class AvailablilityWidget extends StatelessWidget {
                 .render(c),
           ),
         ),
-        child: BlocSelector<AuthWatcherCubit, AuthWatcherState,
-            RiderAvailability?>(
-          selector: (s) => s.rider?.availability,
-          builder: (c, availability) => Row(
+        child: BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
+          builder: (c, s) => Row(
             children: [
               Visibility(
                 visible: c.select(
@@ -57,7 +55,7 @@ class AvailablilityWidget extends StatelessWidget {
               Headline('${tr.status}: ', fontSize: 17.sp),
               //
               AdaptiveText(
-                availability == RiderAvailability.available
+                s.rider?.availability == RiderAvailability.available
                     ? '${tr.active}'
                     : '${tr.inActive}',
                 fontSize: 17.sp,
@@ -66,20 +64,21 @@ class AvailablilityWidget extends StatelessWidget {
               ),
               //
               PlatformSwitch(
-                value: availability == RiderAvailability.available,
+                value: s.rider?.availability == RiderAvailability.available,
                 material: (_, __) => MaterialSwitchData(
                   inactiveThumbColor: Colors.grey,
                   inactiveTrackColor: Colors.grey.shade300,
                 ),
                 onChanged: (value) {
-                  if (value) {
-                    c
-                        .read<AuthCubit>()
-                        .toggleAvailability(RiderAvailability.available);
+                  final _availability =
+                      c.read<AuthWatcherCubit>().state.rider?.availability;
+
+                  final cubit = c.read<AuthCubit>();
+
+                  if (_availability == RiderAvailability.available) {
+                    cubit.toggleAvailability(RiderAvailability.unavailable);
                   } else {
-                    c
-                        .read<AuthCubit>()
-                        .toggleAvailability(RiderAvailability.unavailable);
+                    cubit.toggleAvailability(RiderAvailability.available);
                   }
                 },
               ),

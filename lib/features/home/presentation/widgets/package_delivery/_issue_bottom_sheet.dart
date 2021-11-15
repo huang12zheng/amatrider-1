@@ -1,6 +1,6 @@
 part of package_delivery_accepted_screen.dart;
 
-class _DeliveryIssueBottomsheet extends StatelessWidget {
+class _DeliveryIssueBottomsheet extends StatefulWidget {
   static const List<String> cancelReasons = [
     'Sender did not receive my calls',
     'Sender was too rude',
@@ -8,12 +8,26 @@ class _DeliveryIssueBottomsheet extends StatelessWidget {
     'I had an accident in transit',
   ];
 
-  const _DeliveryIssueBottomsheet({Key? key}) : super(key: key);
+  final SendPackageCubit cubit;
+
+  const _DeliveryIssueBottomsheet(this.cubit, {Key? key}) : super(key: key);
+
+  @override
+  State<_DeliveryIssueBottomsheet> createState() =>
+      _DeliveryIssueBottomsheetState();
+}
+
+class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
+  @override
+  void dispose() {
+    widget.cubit.resetIssueSheet();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<SendPackageCubit>(),
+    return BlocProvider.value(
+      value: widget.cubit,
       child: BlocListener<SendPackageCubit, SendPackageState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -71,38 +85,44 @@ class _DeliveryIssueBottomsheet extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                   child: Column(
                     children: [
-                      ...cancelReasons.map(
-                        (e) => RadioListTile<String>(
+                      ..._DeliveryIssueBottomsheet.cancelReasons.map(
+                        (e) => Material(
+                          type: MaterialType.transparency,
+                          child: RadioListTile<String>(
+                            dense: true,
+                            value: e,
+                            title: AdaptiveText(
+                              '$e',
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: Utils.letterSpacing,
+                            ),
+                            groupValue: s.cancelReason.getOrEmpty,
+                            contentPadding: EdgeInsets.zero,
+                            onChanged: (val) => c
+                                .read<SendPackageCubit>()
+                                .cancelReasonChanged(val, false),
+                          ),
+                        ),
+                      ),
+                      //
+                      Material(
+                        type: MaterialType.transparency,
+                        child: RadioListTile<bool>(
                           dense: true,
-                          value: e,
+                          value: true,
                           title: AdaptiveText(
-                            '$e',
+                            'Other',
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w500,
                             letterSpacing: Utils.letterSpacing,
                           ),
-                          groupValue: s.cancelReason.getOrEmpty,
+                          groupValue: s.isOtherReason,
                           contentPadding: EdgeInsets.zero,
                           onChanged: (val) => c
                               .read<SendPackageCubit>()
-                              .cancelReasonChanged(val, false),
+                              .cancelReasonChanged(null, true),
                         ),
-                      ),
-                      //
-                      RadioListTile<bool>(
-                        dense: true,
-                        value: true,
-                        title: AdaptiveText(
-                          'Other',
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: Utils.letterSpacing,
-                        ),
-                        groupValue: s.isOtherReason,
-                        contentPadding: EdgeInsets.zero,
-                        onChanged: (val) => c
-                            .read<SendPackageCubit>()
-                            .cancelReasonChanged(null, true),
                       ),
                       //
                       VerticalSpace(height: 0.04.sw),
@@ -110,6 +130,7 @@ class _DeliveryIssueBottomsheet extends StatelessWidget {
                       if (s.isOtherReason)
                         ReactiveTextFormField<SendPackageCubit,
                             SendPackageState>(
+                          hintText: (s) => 'Enter here..',
                           initial: (s) => s.cancelReason.getOrEmpty,
                           disabled: (s) => s.isLoading,
                           keyboardType: TextInputType.text,
@@ -125,7 +146,7 @@ class _DeliveryIssueBottomsheet extends StatelessWidget {
                       VerticalSpace(height: 0.08.sw),
                       //
                       AppButton(
-                        text: 'Cancel Delivery',
+                        text: 'Send Report',
                         disabled: !s.cancelReason.isValid,
                         isLoading: s.isLoading,
                         onPressed: c.read<SendPackageCubit>().cancelDelivery,

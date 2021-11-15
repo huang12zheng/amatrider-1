@@ -103,10 +103,12 @@ class _ProfilePageState extends State<ProfilePage>
                                     title: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        AdaptiveText(
-                                          e.title,
-                                          fontSize: 17.0.sp,
-                                          fontWeight: FontWeight.w700,
+                                        Flexible(
+                                          child: AdaptiveText(
+                                            e.title,
+                                            fontSize: 17.0.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
                                         //
                                         HorizontalSpace(width: 0.04.sw),

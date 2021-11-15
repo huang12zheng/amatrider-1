@@ -45,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation":
             MessageLookupByLibrary.simpleMessage("Banka Hesap Bilgileri"),
         "bankName": MessageLookupByLibrary.simpleMessage("Banka Adı"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Banka transferi"),
         "cancel": MessageLookupByLibrary.simpleMessage("İptal"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Kart"),
         "cash": MessageLookupByLibrary.simpleMessage("Nakit"),

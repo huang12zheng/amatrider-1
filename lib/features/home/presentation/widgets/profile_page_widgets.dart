@@ -61,23 +61,30 @@ class _AuthenticatedCard extends StatelessWidget {
             child: Row(
               children: [
                 Flexible(
-                  child: rider?.photo.getOrEmpty.let(
-                        (it) => CachedNetworkImage(
-                          imageUrl: '$it',
+                  child: GestureDetector(
+                    onTap: () => App.showAdaptiveBottomSheet(
+                      context,
+                      elevation: 2.0,
+                      isDismissible: false,
+                      bounce: true,
+                      builder: (_) => const _EditProfileBottomSheet(),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Utils.cardRadius),
+                      child: ImageBox(
+                        photo: rider?.photo.getOrNull,
+                        width: 0.18.w,
+                        height: 0.18.w,
+                        fit: BoxFit.cover,
+                        replacement: Image.asset(
+                          AppAssets.unnamed,
+                          width: 0.18.w,
+                          height: 0.18.w,
                           fit: BoxFit.contain,
-                          height: double.infinity,
-                          progressIndicatorBuilder: (_, url, download) =>
-                              Center(
-                            child: CircularProgressBar.adaptive(
-                              value: download.progress,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          errorWidget: (_, url, error) =>
-                              Image.asset(AppAssets.unnamed),
                         ),
-                      ) ??
-                      Image.asset(AppAssets.unnamed, fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
                 ),
                 //
                 HorizontalSpace(width: 0.04.sw),

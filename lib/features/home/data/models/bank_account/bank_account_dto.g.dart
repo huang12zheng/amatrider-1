@@ -14,10 +14,8 @@ _$_BankAccountDTO _$$_BankAccountDTOFromJson(Map<String, dynamic> json) =>
       accountName: json['account_name'] as String?,
       accountNumber: json['account_number'] as String?,
       sortCode: json['sort_code'] as String?,
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
     );
 
 Map<String, dynamic> _$$_BankAccountDTOToJson(_$_BankAccountDTO instance) {

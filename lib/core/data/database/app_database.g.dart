@@ -377,17 +377,14 @@ _$_RiderDTO _$$_RiderDTOFromJson(Map<String, dynamic> json) => _$_RiderDTO(
           .fromJson(json['availability'] as int?),
       lat: const DoubleSerializer().fromJson(json['current_latitude']),
       lng: const DoubleSerializer().fromJson(json['current_longitude']),
-      phoneVerifiedAt: const TimestampConverter()
-          .fromJson(json['phone_verified_at'] as String?),
+      phoneVerifiedAt:
+          const TimestampConverter().fromJson(json['phone_verified_at']),
       avgRating: const DoubleSerializer().fromJson(json['average_rating']),
       verificationStatus: const VerificationStatusSerializer()
           .fromJson(json['verification_state'] as String?),
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
-      deletedAt:
-          const TimestampConverter().fromJson(json['deleted_at'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
+      deletedAt: const TimestampConverter().fromJson(json['deleted_at']),
     );
 
 Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {

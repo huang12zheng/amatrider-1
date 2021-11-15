@@ -170,6 +170,16 @@ class S {
     );
   }
 
+  /// `Bank Transfer`
+  String get bankTransfer {
+    return Intl.message(
+      'Bank Transfer',
+      name: 'bankTransfer',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get cancel {
     return Intl.message(

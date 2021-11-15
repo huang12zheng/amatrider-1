@@ -519,7 +519,9 @@ class AuthCubit extends Cubit<AuthState>
 
     result.fold(
       (failure) => emit(state.copyWith(status: some(failure))),
-      (account) => emit(state.copyWith(bankAccount: account)),
+      (account) => emit(state.copyWith(
+        bankAccount: account ?? state.bankAccount,
+      )),
     );
 
     toggleLoading(false);
@@ -529,10 +531,12 @@ class AuthCubit extends Cubit<AuthState>
     toggleLoading(true, none());
 
     // Enable form validation
-    emit(state.copyWith(validate: true, status: none()));
+    emit(state.copyWith(validate: true));
 
     if (state.bankAccount.failure.isNone()) {
       final result = await _utils.storeBankAccount(state.bankAccount);
+
+      emit(state.copyWith(validate: false));
 
       result.fold(
         (failure) => emit(state.copyWith(status: some(failure))),
@@ -556,8 +560,8 @@ class AuthCubit extends Cubit<AuthState>
     await result.fold(
       (f) async => emit(state.copyWith(status: some(f))),
       (rider) async {
-        await _auth.update(optionOf(rider));
         final value = rider.availability == RiderAvailability.available;
+
         emit(state.copyWith(
           status: some(AppHttpResponse.successful(
             'Toggled ${value ? 'On' : 'Off'}',

@@ -87,10 +87,9 @@ class __SendPackageCardState extends State<_SendPackageCard> {
   }
 
   void onContinue() {
-    context.read<RequestCubit>().setCurrentPackage(widget.package);
-    navigator.navigate(PackageDeliveryAcceptedRoute(
-      sendPackage: widget.package,
-    ));
+    final cubit = context.read<RequestCubit>();
+    if (cubit.state.currentPackage == null)
+      cubit.setCurrentPackage(widget.package);
   }
 
   @override
@@ -227,28 +226,15 @@ class __SendPackageCardState extends State<_SendPackageCard> {
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
               child: widget.package.sender.photo.ensure(
-                (it) => CachedNetworkImage(
-                  imageUrl: '${it.getOrEmpty}',
+                (it) => ImageBox(
                   fit: BoxFit.cover,
                   width: 0.14.sw,
-                  height: double.infinity,
-                  progressIndicatorBuilder: (_, url, download) => Center(
-                    child: CircularProgressBar.adaptive(
-                      value: download.progress,
-                      strokeWidth: 1.5,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                  errorWidget: (_, __, ___) => Image.asset(
-                    AppAssets.slider1,
-                    width: 0.14.sw,
-                    height: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
+                  photo: '${it.getOrEmpty}',
+                  replacement: Image.asset(AppAssets.slider1,
+                      width: 0.14.sw, fit: BoxFit.cover),
                 ),
                 orElse: (_) => Image.asset(AppAssets.slider1,
-                    width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+                    width: 0.14.sw, fit: BoxFit.cover),
               ),
             ),
             title: Center(
@@ -375,7 +361,9 @@ class _ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
-          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          selector: (s) =>
+              s.rider?.availability == RiderAvailability.available &&
+              s.rider?.verificationStatus == ProfileVerificationStatus.verified,
           builder: (c, isAvailable) => AppOutlinedButton(
             text: '${tr.decline}',
             disabled: c.select((RequestCubit el) => el.state.isLoading) ||
@@ -390,7 +378,9 @@ class _ActionButtons extends StatelessWidget {
         ),
         //
         BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
-          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          selector: (s) =>
+              s.rider?.availability == RiderAvailability.available &&
+              s.rider?.verificationStatus == ProfileVerificationStatus.verified,
           builder: (c, isAvailable) => AdaptiveButton(
             text: '${tr.accept}',
             disabled: c.select((RequestCubit el) => el.state.isLoading) ||

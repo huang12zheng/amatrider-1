@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:amatrider/core/data/response/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart' hide PermissionStatus;
@@ -95,9 +97,19 @@ class LocationService {
     void Function(RiderLocation)? onData,
   }) async {
     try {
-      final _result = await _location.getLocation();
+      final _result = Utils.platform_(
+        material: await _location.getLocation(),
+        // cupertino: await _location.getLocation(),
+      );
 
-      final location = RiderLocation.fromLocation(_result);
+      final location = Utils.platform_(
+        material: RiderLocation.fromLocation(_result!),
+        cupertino: RiderLocation(
+          lat: BasicTextField(41.038284),
+          lng: BasicTextField(28.970329),
+          address: BasicTextField('Istanbul, Turkey'),
+        ),
+      )!;
 
       onData?.call(location);
 

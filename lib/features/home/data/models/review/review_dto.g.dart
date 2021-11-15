@@ -7,7 +7,7 @@ part of review_dto.dart;
 // **************************************************************************
 
 _$_ReviewDTO _$$_ReviewDTOFromJson(Map<String, dynamic> json) => _$_ReviewDTO(
-      data: PaginatedListWrapperDTO<CustomerFeedbackDTO>.fromJson(
+      data: GenericListDTO<CustomerFeedbackDTO>.fromJson(
           json['data'] as Map<String, dynamic>,
           (value) =>
               CustomerFeedbackDTO.fromJson(value as Map<String, dynamic>)),
@@ -47,10 +47,8 @@ _$_CustomerFeedbackDTO _$$_CustomerFeedbackDTOFromJson(
       userId: json['user_id'] as String?,
       orderId: json['order_id'] as String?,
       riderId: json['rider_id'] as String?,
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
     );
 
 Map<String, dynamic> _$$_CustomerFeedbackDTOToJson(

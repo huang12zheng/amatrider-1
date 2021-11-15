@@ -14,33 +14,39 @@ class VerificationStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AuthWatcherCubit, AuthWatcherState,
-        ProfileVerificationStatus?>(
-      selector: (s) => s.rider?.verificationStatus,
-      builder: (c, status) =>
-          status?.when(
-            verified: () => CustomChipWidget(
-              '${tr.verified}',
-              backgroundColor: Palette.pastelGreen,
-              textColor: Palette.accentDarkGreen,
-            ),
-            inReview: () => CustomChipWidget(
-              '${tr.inReview}',
-              backgroundColor: Palette.neutralE2,
-              textColor: Palette.inputTextDark,
-            ),
-            failed: () => CustomChipWidget(
-              '${tr.failed}',
-              backgroundColor: Palette.accent20,
-              textColor: Palette.accentColor,
-            ),
-            unverified: () => CustomChipWidget(
-              '${tr.unverified}',
-              backgroundColor: Palette.pastelYellow2,
-              textColor: Palette.yellow,
-            ),
-          ) ??
-          Utils.nothing,
+    return GestureDetector(
+      onTap: () {
+        if (navigator.current.name != AccountVerificationRoute.name)
+          navigator.navigate(const AccountVerificationRoute());
+      },
+      child: BlocSelector<AuthWatcherCubit, AuthWatcherState,
+          ProfileVerificationStatus?>(
+        selector: (s) => s.rider?.verificationStatus,
+        builder: (c, status) =>
+            status?.when(
+              verified: () => CustomChipWidget(
+                '${tr.verified}',
+                backgroundColor: Palette.pastelGreen,
+                textColor: Palette.accentDarkGreen,
+              ),
+              inReview: () => CustomChipWidget(
+                '${tr.inReview}',
+                backgroundColor: Palette.neutralE2,
+                textColor: Palette.inputTextDark,
+              ),
+              failed: () => CustomChipWidget(
+                '${tr.failed}',
+                backgroundColor: Palette.accent20,
+                textColor: Palette.accentColor,
+              ),
+              unverified: () => CustomChipWidget(
+                '${tr.unverified}',
+                backgroundColor: Palette.pastelYellow2,
+                textColor: Palette.yellow,
+              ),
+            ) ??
+            Utils.nothing,
+      ),
     );
   }
 }

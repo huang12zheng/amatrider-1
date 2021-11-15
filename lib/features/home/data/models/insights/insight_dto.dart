@@ -30,6 +30,8 @@ class InsightDTO with _$InsightDTO {
     @JsonKey(name: 'current_plan_ended')
     @TimestampConverter()
         DateTime? planEnded,
+    //
+    @JsonKey(name: 'insight') InsightDTO? insightData,
   }) = _InsightDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

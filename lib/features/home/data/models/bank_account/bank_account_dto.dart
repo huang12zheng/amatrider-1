@@ -6,14 +6,12 @@ import 'package:amatrider/manager/serializer/serializers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:kt_dart/kt.dart';
 
-part 'bank_account_dto.g.dart';
 part 'bank_account_dto.freezed.dart';
+part 'bank_account_dto.g.dart';
 
 @freezed
 @immutable
 class BankAccountDTO with _$BankAccountDTO {
-  const BankAccountDTO._();
-
   const factory BankAccountDTO({
     String? id,
     @JsonKey(name: 'rider_id') String? riderId,
@@ -24,6 +22,8 @@ class BankAccountDTO with _$BankAccountDTO {
     @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
     @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
   }) = _BankAccountDTO;
+
+  const BankAccountDTO._();
 
   /// Maps BankAccount to a Data Transfer Object.
   factory BankAccountDTO.fromDomain(BankAccount? instance) => BankAccountDTO(

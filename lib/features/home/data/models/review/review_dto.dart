@@ -16,7 +16,7 @@ class ReviewDTO with _$ReviewDTO {
   const ReviewDTO._();
 
   const factory ReviewDTO({
-    required PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+    required GenericListDTO<CustomerFeedbackDTO> data,
     @JsonKey(name: 'totalReviews') int? totalReviews,
     @JsonKey(name: 'avgRating') double? avgRating,
     @Default([]) List<ReviewGroupDTO> reviewGroups,
@@ -28,7 +28,7 @@ class ReviewDTO with _$ReviewDTO {
 
   /// Maps the Data Transfer Object to a Review Object.
   Review get domain => Review(
-        feedbacks: KtList.from(data.data.map((e) => e.domain)),
+        feedbacks: data.data.map((e) => e.domain).toImmutableList(),
         totalReviews: BasicTextField(totalReviews),
         avgRating: BasicTextField(avgRating),
         reviewGroups: KtList.from(reviewGroups.map((e) => e.domain)),

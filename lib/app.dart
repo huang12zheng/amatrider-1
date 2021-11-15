@@ -14,6 +14,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart' hide Router;
 import 'package:flutter/material.dart' hide Router;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -47,6 +48,7 @@ class AmatRider extends StatelessWidget {
             builder: (_, app) => PlatformApp.router(
               title: Const.appName.capitalizeFirst(),
               debugShowCheckedModeBanner: false,
+              // restorationScopeId: SplashRoute.name,
               material: (_, __) => MaterialAppRouterData(
                 theme: AppTheme.light().themeData(),
                 darkTheme: AppTheme.light().themeData(),
@@ -67,6 +69,9 @@ class AmatRider extends StatelessWidget {
                 DefaultMaterialLocalizations.delegate,
                 DefaultWidgetsLocalizations.delegate,
                 DefaultCupertinoLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
               routeInformationParser: _router.defaultRouteParser(),
               routerDelegate: AutoRouterDelegate(

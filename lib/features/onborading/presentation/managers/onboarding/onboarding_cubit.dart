@@ -16,7 +16,7 @@ part 'onboarding_cubit.freezed.dart';
 @injectable
 class OnboardingCubit extends Cubit<OnboardingState> {
   VideoPlayerController? playerController;
-  late StreamSubscription<bool> _playbackSubscription;
+  StreamSubscription<bool>? _playbackSubscription;
   final KtList<OnboardingItem<String>> items = OnboardingItem.list;
   final StreamController<bool> _playbackController;
 
@@ -110,7 +110,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   @override
   Future<void> close() {
-    _playbackSubscription.cancel();
+    _playbackSubscription?.cancel();
     state.controller.removeListener(_pageControllerListener);
     playerController?.removeListener(_playbackListener);
     state.controller.dispose();

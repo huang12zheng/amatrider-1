@@ -35,14 +35,14 @@ _$_SendPackageDTO _$$_SendPackageDTOFromJson(Map<String, dynamic> json) =>
       riderId: json['rider_id'] as String?,
       riderLat: const DoubleSerializer().fromJson(json['rider_current_lat']),
       riderLng: const DoubleSerializer().fromJson(json['rider_current_long']),
-      orderActiveAt: const TimestampConverter()
-          .fromJson(json['order_active_at'] as String?),
-      riderAcceptedAt: const TimestampConverter()
-          .fromJson(json['rider_accepted_at'] as String?),
+      orderActiveAt:
+          const TimestampConverter().fromJson(json['order_active_at']),
+      riderAcceptedAt:
+          const TimestampConverter().fromJson(json['rider_accepted_at']),
       riderReceivedAt: const TimestampConverter()
-          .fromJson(json['rider_received_package_at'] as String?),
+          .fromJson(json['rider_received_package_at']),
       riderDeliveredAt: const TimestampConverter()
-          .fromJson(json['rider_delivered_package_at'] as String?),
+          .fromJson(json['rider_delivered_package_at']),
       time: const SecondsToDurationConverter().fromJson(json['time']),
       distance: const DoubleSerializer().fromJson(json['distance']),
       journey: json['journeyDetails'] == null
@@ -55,10 +55,8 @@ _$_SendPackageDTO _$$_SendPackageDTOFromJson(Map<String, dynamic> json) =>
       sender: json['user'] == null
           ? null
           : SenderDTO.fromJson(json['user'] as Map<String, dynamic>),
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
     );
 
 Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {

@@ -39,6 +39,8 @@ class AdaptiveListTile extends StatelessWidget {
   final Widget? title;
   final Widget? trailing;
   final VisualDensity? visualDensity;
+  final BorderRadius borderRadius;
+  final BorderSide border;
   final _AdaptiveListTileType _type;
 
   // Switch
@@ -85,6 +87,8 @@ class AdaptiveListTile extends StatelessWidget {
     this.title,
     this.trailing,
     this.visualDensity,
+    this.borderRadius = BorderRadius.zero,
+    this.border = BorderSide.none,
     this.cupertinoPressedColor = CupertinoColors.systemFill,
     this.cupertinoBorder,
     this.material = false,
@@ -130,6 +134,8 @@ class AdaptiveListTile extends StatelessWidget {
     this.title,
     this.tileColor,
     this.trackColor,
+    this.borderRadius = BorderRadius.zero,
+    this.border = BorderSide.none,
     this.dragStartBehavior = DragStartBehavior.start,
     this.material = false,
     this.cupertino = false,
@@ -158,16 +164,25 @@ class AdaptiveListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (material)
-      return Theme.of(context).platform.material(Material(
-            // color: Colors.transparent,
-            elevation: 0.0,
-            type: MaterialType.transparency,
-            child: materialTiles,
-          ))!;
+      return ClipRRect(
+        borderRadius: borderRadius,
+        child: Material(
+          elevation: 0.0,
+          type: MaterialType.transparency,
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: border,
+          ),
+          child: materialTiles,
+        ),
+      );
     if (cupertino) return Theme.of(context).platform.cupertino(cupertinoTiles)!;
 
     return PlatformBuilder(
-      material: (_) => materialTiles,
+      material: (_) => ClipRRect(
+        borderRadius: borderRadius,
+        child: materialTiles,
+      ),
       cupertino: (_) => cupertinoTiles,
     );
   }

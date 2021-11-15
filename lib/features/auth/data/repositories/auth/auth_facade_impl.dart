@@ -353,6 +353,8 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
           final _riderDTO =
               RiderDTO.fromJson(_result.data as Map<String, dynamic>);
 
+          await update(optionOf(_riderDTO.domain));
+
           return right(_riderDTO.domain);
         },
       );
@@ -526,6 +528,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
     }
   }
 
+  @override
   Future<Either<AppHttpResponse, Option<Rider?>>> retrieveAndCacheUpdatedRider({
     RiderDTO? dto,
     bool shouldThrow = false,

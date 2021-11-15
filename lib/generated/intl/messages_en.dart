@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation":
             MessageLookupByLibrary.simpleMessage("Bank Account Information"),
         "bankName": MessageLookupByLibrary.simpleMessage("Bank Name"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Bank Transfer"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Card (POS)"),
         "cash": MessageLookupByLibrary.simpleMessage("Cash"),

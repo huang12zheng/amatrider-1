@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation": MessageLookupByLibrary.simpleMessage(
             "Informations sur le compte bancaire"),
         "bankName": MessageLookupByLibrary.simpleMessage("Nom de la banque"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Virement"),
         "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Carte"),
         "cash": MessageLookupByLibrary.simpleMessage("Espèces"),
@@ -70,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBack": MessageLookupByLibrary.simpleMessage("Revenir en arrière"),
         "greeting": m0,
         "history": MessageLookupByLibrary.simpleMessage("Histoire"),
-        "home": MessageLookupByLibrary.simpleMessage("Domicile"),
+        "home": MessageLookupByLibrary.simpleMessage("domicile"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "Une bonne journée pour faire des livraisons."),
         "inActive": MessageLookupByLibrary.simpleMessage("En cours"),

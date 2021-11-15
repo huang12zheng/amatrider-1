@@ -4,7 +4,24 @@ class _DepositCashDialogBuilder extends StatelessWidget {
   final InsightsCubit cubit;
   final AmountField<double?> cash;
 
-  const _DepositCashDialogBuilder({
+  final List<_DepositBankDetails> details = [
+    _DepositBankDetails(
+      title: '${S.current.accountName}: ',
+      value: 'AmatNow',
+    ),
+    _DepositBankDetails(
+      title: '${S.current.accountNumber}: ',
+      value: '0123456789',
+      icon: Icons.copy_rounded,
+      iconColor: Palette.accentColor,
+    ),
+    _DepositBankDetails(
+      title: '${S.current.bankName}: ',
+      value: 'First Bank',
+    ),
+  ];
+
+  _DepositCashDialogBuilder({
     Key? key,
     required this.cubit,
     required this.cash,
@@ -24,70 +41,101 @@ class _DepositCashDialogBuilder extends StatelessWidget {
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AdaptiveText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text:
-                        '${tr.insightDepositAlertContent('${cash.getOrEmpty}'.asCurrency())}',
+              Utils.platform_(
+                material: AdaptiveText.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: '${tr.insightDepositAlertContent(
+                        '${cash.getOrEmpty}'.asCurrency(),
+                      )}',
+                    ),
+                  ]),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: Utils.letterSpacing,
+                  textAlign: TextAlign.center,
+                ),
+                cupertino: Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: '${tr.insightDepositAlertContent(
+                        '${cash.getOrEmpty}'.asCurrency(),
+                      )}',
+                    ),
+                  ]),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: Utils.letterSpacing,
                   ),
-                  // TextSpan(
-                  //   text: ' ${cash.getOrEmpty} '.asCurrency(),
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
-                  // TextSpan(
-                  //   text: '${tr.insightDepositAlertContent2}',
-                  // ),
-                ]),
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w400,
-                letterSpacing: Utils.letterSpacing,
-                textAlign: TextAlign.center,
-              ),
+                ),
+              )!,
               //
               VerticalSpace(height: 0.04.sw),
               //
-              ..._DepositBankDetails.details.map(
+              ...details.map(
                 (e) => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextFormInputLabel(
-                      text: e.title,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      textAlign: TextAlign.end,
+                    Flexible(
+                      flex: 2,
+                      child: TextFormInputLabel(
+                        text: e.title,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        textAlign: TextAlign.end,
+                        useDefaultText: Utils.platform_(
+                          cupertino: true,
+                          material: false,
+                        )!,
+                      ),
                     ),
                     //
                     HorizontalSpace(width: 0.03.sw),
                     //
                     Expanded(
-                      child: AdaptiveText(
-                        e.value,
-                        fontSize: 18.sp,
-                        maxLines: 1,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: Utils.letterSpacing,
-                        textAlign: TextAlign.start,
-                      ),
+                      flex: 3,
+                      child: Utils.platform_(
+                        material: AdaptiveText(
+                          e.value,
+                          fontSize: 18.sp,
+                          maxLines: 1,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: Utils.letterSpacing,
+                          textAlign: TextAlign.start,
+                        ),
+                        cupertino: Text(
+                          e.value,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: Utils.letterSpacing,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      )!,
                     ),
                     //
                     if (e.icon != null)
-                      GestureDetector(
-                        onTap: () => ClipboardManager.copy(e.value),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Utils.buttonRadius),
-                              color: Palette.accent20,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Icon(
-                                e.icon,
-                                color: e.iconColor,
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () => ClipboardManager.copy(e.value),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Utils.buttonRadius),
+                                color: Palette.accent20,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Icon(
+                                  e.icon,
+                                  color: e.iconColor,
+                                ),
                               ),
                             ),
                           ),
@@ -97,6 +145,31 @@ class _DepositCashDialogBuilder extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          isSecondDestructive: true,
+          isSecondDefaultAction: true,
+          cupertinoSecondButtonText: '${tr.cancel}',
+          cupertinoFirstButton:
+              BlocSelector<InsightsCubit, InsightsState, bool>(
+            selector: (s) => s.isLoading,
+            builder: (c, isLoading) => WidgetVisibility(
+              visible: !isLoading,
+              replacement: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: App.loadingSpinningLines,
+                ),
+              ),
+              child: CupertinoDialogAction(
+                isDefaultAction: true,
+                isDestructiveAction: false,
+                onPressed: () async {
+                  await c.read<InsightsCubit>().depositCash(cash.getOrNull);
+                  await navigator.pop();
+                },
+                child: Text('${tr.insightDepositAlertConfirmBtn}'),
+              ),
+            ),
           ),
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
@@ -145,21 +218,4 @@ class _DepositBankDetails {
     this.icon,
     this.iconColor,
   });
-
-  static const List<_DepositBankDetails> details = [
-    _DepositBankDetails(
-      title: 'Account Name: ',
-      value: 'AmatNow',
-    ),
-    _DepositBankDetails(
-      title: 'Account Number: ',
-      value: '0123456789',
-      icon: Icons.copy_rounded,
-      iconColor: Palette.accentColor,
-    ),
-    _DepositBankDetails(
-      title: 'Bank Name: ',
-      value: 'First Bank',
-    ),
-  ];
 }

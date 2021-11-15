@@ -1,4 +1,3 @@
-
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -76,6 +75,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
                   height: 0.09.sw,
                   width: 0.18.sw,
                   fontSize: 18.sp,
+                  cupertinoHeight: 0.05.h,
                   splashColor: Colors.black.withOpacity(0.09),
                   padding: EdgeInsets.all(0.007.sw),
                   onPressed: () => navigator.pushAndPopUntil(
@@ -184,6 +184,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 VerticalSpace(height: 0.03.sw),
                                 //
                                 Flexible(
+                                  flex: 2,
                                   child: AdaptiveText(
                                     '${widget.item!.description}',
                                     textAlign: TextAlign.center,

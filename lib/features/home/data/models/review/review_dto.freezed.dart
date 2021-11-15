@@ -22,7 +22,7 @@ class _$ReviewDTOTearOff {
   const _$ReviewDTOTearOff();
 
   _ReviewDTO call(
-      {required PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {required GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups = const []}) {
@@ -44,7 +44,7 @@ const $ReviewDTO = _$ReviewDTOTearOff();
 
 /// @nodoc
 mixin _$ReviewDTO {
-  PaginatedListWrapperDTO<CustomerFeedbackDTO> get data =>
+  GenericListDTO<CustomerFeedbackDTO> get data =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'totalReviews')
   int? get totalReviews => throw _privateConstructorUsedError;
@@ -63,12 +63,10 @@ abstract class $ReviewDTOCopyWith<$Res> {
   factory $ReviewDTOCopyWith(ReviewDTO value, $Res Function(ReviewDTO) then) =
       _$ReviewDTOCopyWithImpl<$Res>;
   $Res call(
-      {PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups});
-
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data;
 }
 
 /// @nodoc
@@ -90,7 +88,7 @@ class _$ReviewDTOCopyWithImpl<$Res> implements $ReviewDTOCopyWith<$Res> {
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as PaginatedListWrapperDTO<CustomerFeedbackDTO>,
+              as GenericListDTO<CustomerFeedbackDTO>,
       totalReviews: totalReviews == freezed
           ? _value.totalReviews
           : totalReviews // ignore: cast_nullable_to_non_nullable
@@ -105,14 +103,6 @@ class _$ReviewDTOCopyWithImpl<$Res> implements $ReviewDTOCopyWith<$Res> {
               as List<ReviewGroupDTO>,
     ));
   }
-
-  @override
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data {
-    return $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res>(
-        _value.data, (value) {
-      return _then(_value.copyWith(data: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -122,13 +112,10 @@ abstract class _$ReviewDTOCopyWith<$Res> implements $ReviewDTOCopyWith<$Res> {
       __$ReviewDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups});
-
-  @override
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data;
 }
 
 /// @nodoc
@@ -151,7 +138,7 @@ class __$ReviewDTOCopyWithImpl<$Res> extends _$ReviewDTOCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as PaginatedListWrapperDTO<CustomerFeedbackDTO>,
+              as GenericListDTO<CustomerFeedbackDTO>,
       totalReviews: totalReviews == freezed
           ? _value.totalReviews
           : totalReviews // ignore: cast_nullable_to_non_nullable
@@ -182,7 +169,7 @@ class _$_ReviewDTO extends _ReviewDTO {
       _$$_ReviewDTOFromJson(json);
 
   @override
-  final PaginatedListWrapperDTO<CustomerFeedbackDTO> data;
+  final GenericListDTO<CustomerFeedbackDTO> data;
   @override
   @JsonKey(name: 'totalReviews')
   final int? totalReviews;
@@ -229,7 +216,7 @@ class _$_ReviewDTO extends _ReviewDTO {
 
 abstract class _ReviewDTO extends ReviewDTO {
   const factory _ReviewDTO(
-      {required PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {required GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups}) = _$_ReviewDTO;
@@ -239,7 +226,7 @@ abstract class _ReviewDTO extends ReviewDTO {
       _$_ReviewDTO.fromJson;
 
   @override
-  PaginatedListWrapperDTO<CustomerFeedbackDTO> get data;
+  GenericListDTO<CustomerFeedbackDTO> get data;
   @override
   @JsonKey(name: 'totalReviews')
   int? get totalReviews;

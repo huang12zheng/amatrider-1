@@ -21,7 +21,7 @@ abstract class UtilitiesRemote {
   Future<List<CountryDTO>> countries();
 
   @GET(EndPoints.GET_BANK_ACCOUNT)
-  Future<BankAccountDTO> bankAccount();
+  Future<GenericObjectDTO<BankAccountDTO?>> bankAccount();
 
   @POST(EndPoints.STORE_BANK_ACCOUNT)
   Future<BankAccountDTO> storeBankAccount(@Body() BankAccountDTO dto);
@@ -34,6 +34,8 @@ abstract class UtilitiesRemote {
     @Part(name: 'back_image') File? back,
     @Part(name: 'country_id') required String countryId,
     @Part() required String type,
+    @SendProgress() ProgressCallback? progressCallback,
+    @ReceiveProgress() ProgressCallback? receiveProgress,
   });
 
   @POST(EndPoints.DEPOSIT_CASH)

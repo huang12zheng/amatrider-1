@@ -49,41 +49,35 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
           create: (_) => getIt<SendPackageCubit>()..init(sendPackage),
         ),
       ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<SendPackageCubit, SendPackageState>(
-            listenWhen: (p, c) => c.package.status
-                .maybeWhen(delivered: () => true, orElse: () => false),
-            listener: (c, s) {
-              Future.delayed(const Duration(milliseconds: 500), () {
-                if (navigator.current.name == PackageDeliveryAcceptedRoute.name)
-                  navigator.popUntil(
-                      (route) => route.settings.name == DashboardRoute.name);
-              });
-            },
+      child: BlocListener<SendPackageCubit, SendPackageState>(
+        listenWhen: (p, c) =>
+            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.response.maybeMap(
+                      error: (f) => f.foldCode(orElse: () => false),
+                      orElse: () => false,
+                    ))),
+        listener: (c, s) => s.status.fold(
+          () => null,
+          (it) => it?.response.map(
+            error: (f) => PopupDialog.error(message: f.message).render(c),
+            success: (res) => PopupDialog.success(
+              duration: const Duration(seconds: 2),
+              message: res.message,
+              listener: (val) => val?.fold(dismissed: () async {
+                if (s.package.status == SendPackageStatus.DELIVERED) {
+                  // c.read<SendPackageCubit>().closeWebsocket();
+
+                  await Future.delayed(const Duration(milliseconds: 600), () {
+                    navigator.popUntil(
+                      (route) => route.settings.name == DashboardRoute.name,
+                    );
+                  });
+                }
+              }),
+            ).render(c),
           ),
-          //
-          BlocListener<SendPackageCubit, SendPackageState>(
-            listenWhen: (p, c) =>
-                p.status.getOrElse(() => null) !=
-                    c.status.getOrElse(() => null) ||
-                (c.status.getOrElse(() => null) != null &&
-                    (c.status.getOrElse(() => null)!.response.maybeMap(
-                          error: (f) => f.foldCode(orElse: () => false),
-                          orElse: () => false,
-                        ))),
-            listener: (c, s) => s.status.fold(
-              () => null,
-              (it) => it?.response.map(
-                error: (f) => PopupDialog.error(message: f.message).render(c),
-                success: (res) => PopupDialog.success(
-                  duration: const Duration(seconds: 2),
-                  message: res.message,
-                ).render(c),
-              ),
-            ),
-          ),
-        ],
+        ),
         child: this,
       ),
     );
@@ -109,6 +103,7 @@ class _PackageDeliveryAcceptedScreenState
       top: false,
       left: false,
       right: false,
+      // bottom: false,
       child: AdaptiveScaffold(
         body: Stack(
           children: [
@@ -177,14 +172,31 @@ class _PackageDeliveryAcceptedScreenState
                                 content: 'Confirm that you have received '
                                     'the package from ${s.package.sender.fullName.getOrEmpty}?',
                                 buttonDirection: Axis.horizontal,
+                                cupertinoSecondButtonText: 'No, Go Back',
+                                isSecondDestructive: true,
                                 secondButtonText: 'Yes, Confirm',
                                 secondSplashColor: Colors.black12,
                                 secondTextStyle:
                                     const TextStyle(color: Colors.white),
                                 secondBgColor: Palette.accentColor,
-                                onSecondPressed: c
-                                    .read<SendPackageCubit>()
-                                    .confirmPackagePickup,
+                                onSecondPressed: () {
+                                  Theme.of(context).platform.fold(
+                                      material: c
+                                          .read<SendPackageCubit>()
+                                          .confirmPackagePickup,
+                                      cupertino: navigator.pop);
+                                },
+                                cupertinoFirstButton: CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  isDestructiveAction: false,
+                                  onPressed: () {
+                                    c
+                                        .read<SendPackageCubit>()
+                                        .confirmPackagePickup();
+                                    navigator.pop();
+                                  },
+                                  child: const Text('Yes, Confirm'),
+                                ),
                                 materialFirstButton: AppOutlinedButton(
                                   text: 'No, Go Back',
                                   textColor: Palette.text100,
@@ -213,18 +225,35 @@ class _PackageDeliveryAcceptedScreenState
                                 dark: Colors.white54,
                               ),
                               builder: (_) => AdaptiveAlertdialog(
-                                title: 'Confirm Pickup',
+                                title: 'Confirm Delivery',
                                 content: 'Confirm that you have delivered '
                                     'the package to ${s.package.receiverFullName.getOrEmpty}?',
                                 buttonDirection: Axis.horizontal,
+                                cupertinoSecondButtonText: 'No, Go Back',
+                                isSecondDestructive: true,
                                 secondButtonText: 'Yes, Confirm',
                                 secondSplashColor: Colors.black12,
                                 secondTextStyle:
                                     const TextStyle(color: Colors.white),
                                 secondBgColor: Palette.accentColor,
-                                onSecondPressed: c
-                                    .read<SendPackageCubit>()
-                                    .confirmPackageDelivery,
+                                onSecondPressed: () {
+                                  Theme.of(context).platform.fold(
+                                      material: c
+                                          .read<SendPackageCubit>()
+                                          .confirmPackageDelivery,
+                                      cupertino: navigator.pop);
+                                },
+                                cupertinoFirstButton: CupertinoDialogAction(
+                                  isDefaultAction: true,
+                                  isDestructiveAction: false,
+                                  onPressed: () {
+                                    c
+                                        .read<SendPackageCubit>()
+                                        .confirmPackageDelivery();
+                                    navigator.pop();
+                                  },
+                                  child: const Text('Yes, Confirm'),
+                                ),
                                 materialFirstButton: AppOutlinedButton(
                                   text: 'No, Go Back',
                                   textColor: Palette.text100,

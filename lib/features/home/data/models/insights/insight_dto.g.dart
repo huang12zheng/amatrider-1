@@ -20,10 +20,13 @@ _$_InsightDTO _$$_InsightDTOFromJson(Map<String, dynamic> json) =>
           ? null
           : DispatchActivityDTO.fromJson(
               json['money_made_from_payment_methods'] as Map<String, dynamic>),
-      planStarted: const TimestampConverter()
-          .fromJson(json['current_plan_started'] as String?),
-      planEnded: const TimestampConverter()
-          .fromJson(json['current_plan_ended'] as String?),
+      planStarted:
+          const TimestampConverter().fromJson(json['current_plan_started']),
+      planEnded:
+          const TimestampConverter().fromJson(json['current_plan_ended']),
+      insightData: json['insight'] == null
+          ? null
+          : InsightDTO.fromJson(json['insight'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_InsightDTOToJson(_$_InsightDTO instance) {
@@ -53,5 +56,6 @@ Map<String, dynamic> _$$_InsightDTOToJson(_$_InsightDTO instance) {
       const TimestampConverter().toJson(instance.planStarted));
   writeNotNull('current_plan_ended',
       const TimestampConverter().toJson(instance.planEnded));
+  writeNotNull('insight', instance.insightData?.toJson());
   return val;
 }

@@ -24,6 +24,8 @@
   "@bankAccountInformation": {},
   "bankName": "Banka Adı",
   "@bankName": {},
+  "bankTransfer": "Banka transferi",
+  "@bankTransfer": {},
   "cancel": "İptal",
   "@cancel": {},
   "cardPOS": "Kart",

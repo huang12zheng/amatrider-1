@@ -67,6 +67,8 @@ class DeliveryHistoryDTO with _$DeliveryHistoryDTO {
         DateTime? depositConfirmedAt,
     @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
     @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
+    //
+    @JsonKey(name: 'history') DeliveryHistoryDTO? historyData,
   }) = _DeliveryHistoryDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

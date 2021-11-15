@@ -19,7 +19,6 @@ export 'extensions/failure_extension.dart';
 export 'extensions/flutter_extensions.dart';
 export 'helper_utils.dart';
 export 'amat_now_icons.dart';
-export 'smartlets_icons.dart';
 export 'endpoints.dart';
 export 'input_formatters/masked_input_formatter.dart';
 export 'drag_to_refresh.dart';

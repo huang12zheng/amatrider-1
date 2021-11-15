@@ -31,17 +31,20 @@ class _UtilitiesRemote implements UtilitiesRemote {
   }
 
   @override
-  Future<BankAccountDTO> bankAccount() async {
+  Future<GenericObjectDTO<BankAccountDTO?>> bankAccount() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<BankAccountDTO>(
+        _setStreamType<GenericObjectDTO<BankAccountDTO>>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/rider/account-information',
+                .compose(_dio.options, '/rider/account-information',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BankAccountDTO.fromJson(_result.data!);
+    final value = GenericObjectDTO<BankAccountDTO>.fromJson(
+      _result.data!,
+      (json) => BankAccountDTO.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 
@@ -54,7 +57,7 @@ class _UtilitiesRemote implements UtilitiesRemote {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BankAccountDTO>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/rider/account-information',
+                .compose(_dio.options, '/rider/account-information',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = BankAccountDTO.fromJson(_result.data!);
@@ -63,7 +66,12 @@ class _UtilitiesRemote implements UtilitiesRemote {
 
   @override
   Future<AppHttpResponse> documentVerification(
-      {front, back, required countryId, required type}) async {
+      {front,
+      back,
+      required countryId,
+      required type,
+      progressCallback,
+      receiveProgress}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -90,8 +98,11 @@ class _UtilitiesRemote implements UtilitiesRemote {
                 },
                 extra: _extra,
                 contentType: 'multipart/form-data')
-            .compose(_dio.options, '/rider/rider/verification-document',
-                queryParameters: queryParameters, data: _data)
+            .compose(_dio.options, '/rider/verification-document',
+                queryParameters: queryParameters,
+                data: _data,
+                onSendProgress: progressCallback,
+                onReceiveProgress: receiveProgress)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);
     return value;

@@ -48,7 +48,9 @@ class _$InsightDTOTearOff {
           DateTime? planStarted,
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
-          DateTime? planEnded}) {
+          DateTime? planEnded,
+      @JsonKey(name: 'insight')
+          InsightDTO? insightData}) {
     return _InsightDTO(
       completedOrder: completedOrder,
       target: target,
@@ -60,6 +62,7 @@ class _$InsightDTOTearOff {
       activities: activities,
       planStarted: planStarted,
       planEnded: planEnded,
+      insightData: insightData,
     );
   }
 
@@ -99,7 +102,9 @@ mixin _$InsightDTO {
   DateTime? get planStarted => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
-  DateTime? get planEnded => throw _privateConstructorUsedError;
+  DateTime? get planEnded => throw _privateConstructorUsedError; //
+  @JsonKey(name: 'insight')
+  InsightDTO? get insightData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -139,9 +144,12 @@ abstract class $InsightDTOCopyWith<$Res> {
           DateTime? planStarted,
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
-          DateTime? planEnded});
+          DateTime? planEnded,
+      @JsonKey(name: 'insight')
+          InsightDTO? insightData});
 
   $DispatchActivityDTOCopyWith<$Res>? get activities;
+  $InsightDTOCopyWith<$Res>? get insightData;
 }
 
 /// @nodoc
@@ -164,6 +172,7 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
     Object? activities = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
+    Object? insightData = freezed,
   }) {
     return _then(_value.copyWith(
       completedOrder: completedOrder == freezed
@@ -206,6 +215,10 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
           ? _value.planEnded
           : planEnded // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      insightData: insightData == freezed
+          ? _value.insightData
+          : insightData // ignore: cast_nullable_to_non_nullable
+              as InsightDTO?,
     ));
   }
 
@@ -217,6 +230,17 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
 
     return $DispatchActivityDTOCopyWith<$Res>(_value.activities!, (value) {
       return _then(_value.copyWith(activities: value));
+    });
+  }
+
+  @override
+  $InsightDTOCopyWith<$Res>? get insightData {
+    if (_value.insightData == null) {
+      return null;
+    }
+
+    return $InsightDTOCopyWith<$Res>(_value.insightData!, (value) {
+      return _then(_value.copyWith(insightData: value));
     });
   }
 }
@@ -254,10 +278,14 @@ abstract class _$InsightDTOCopyWith<$Res> implements $InsightDTOCopyWith<$Res> {
           DateTime? planStarted,
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
-          DateTime? planEnded});
+          DateTime? planEnded,
+      @JsonKey(name: 'insight')
+          InsightDTO? insightData});
 
   @override
   $DispatchActivityDTOCopyWith<$Res>? get activities;
+  @override
+  $InsightDTOCopyWith<$Res>? get insightData;
 }
 
 /// @nodoc
@@ -282,6 +310,7 @@ class __$InsightDTOCopyWithImpl<$Res> extends _$InsightDTOCopyWithImpl<$Res>
     Object? activities = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
+    Object? insightData = freezed,
   }) {
     return _then(_InsightDTO(
       completedOrder: completedOrder == freezed
@@ -324,6 +353,10 @@ class __$InsightDTOCopyWithImpl<$Res> extends _$InsightDTOCopyWithImpl<$Res>
           ? _value.planEnded
           : planEnded // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      insightData: insightData == freezed
+          ? _value.insightData
+          : insightData // ignore: cast_nullable_to_non_nullable
+              as InsightDTO?,
     ));
   }
 }
@@ -358,7 +391,9 @@ class _$_InsightDTO extends _InsightDTO {
           this.planStarted,
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
-          this.planEnded})
+          this.planEnded,
+      @JsonKey(name: 'insight')
+          this.insightData})
       : super._();
 
   factory _$_InsightDTO.fromJson(Map<String, dynamic> json) =>
@@ -401,10 +436,13 @@ class _$_InsightDTO extends _InsightDTO {
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
   final DateTime? planEnded;
+  @override //
+  @JsonKey(name: 'insight')
+  final InsightDTO? insightData;
 
   @override
   String toString() {
-    return 'InsightDTO(completedOrder: $completedOrder, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, bonus: $bonus, extraDelivery: $extraDelivery, activities: $activities, planStarted: $planStarted, planEnded: $planEnded)';
+    return 'InsightDTO(completedOrder: $completedOrder, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, bonus: $bonus, extraDelivery: $extraDelivery, activities: $activities, planStarted: $planStarted, planEnded: $planEnded, insightData: $insightData)';
   }
 
   @override
@@ -429,7 +467,9 @@ class _$_InsightDTO extends _InsightDTO {
             (identical(other.planStarted, planStarted) ||
                 other.planStarted == planStarted) &&
             (identical(other.planEnded, planEnded) ||
-                other.planEnded == planEnded));
+                other.planEnded == planEnded) &&
+            (identical(other.insightData, insightData) ||
+                other.insightData == insightData));
   }
 
   @override
@@ -444,7 +484,8 @@ class _$_InsightDTO extends _InsightDTO {
       extraDelivery,
       activities,
       planStarted,
-      planEnded);
+      planEnded,
+      insightData);
 
   @JsonKey(ignore: true)
   @override
@@ -485,7 +526,9 @@ abstract class _InsightDTO extends InsightDTO {
           DateTime? planStarted,
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
-          DateTime? planEnded}) = _$_InsightDTO;
+          DateTime? planEnded,
+      @JsonKey(name: 'insight')
+          InsightDTO? insightData}) = _$_InsightDTO;
   const _InsightDTO._() : super._();
 
   factory _InsightDTO.fromJson(Map<String, dynamic> json) =
@@ -528,6 +571,9 @@ abstract class _InsightDTO extends InsightDTO {
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
   DateTime? get planEnded;
+  @override //
+  @JsonKey(name: 'insight')
+  InsightDTO? get insightData;
   @override
   @JsonKey(ignore: true)
   _$InsightDTOCopyWith<_InsightDTO> get copyWith =>

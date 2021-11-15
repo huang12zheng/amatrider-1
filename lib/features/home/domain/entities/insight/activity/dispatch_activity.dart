@@ -25,7 +25,10 @@ class DispatchActivity with _$DispatchActivity {
   }) = _DispatchActivity;
 
   bool get isValid =>
-      deliveryWithCard.amount.isValid || deliveryWithCash.amount.isValid;
+      (deliveryWithCard.amount.getOrNull != null &&
+          deliveryWithCash.amount.getOrNull! > 0) ||
+      (deliveryWithCard.amount.getOrNull != null &&
+          deliveryWithCard.amount.getOrNull! > 0);
 
   static DispatchActivity blank() => DispatchActivity(
         card: DispatchActivityDecorator(

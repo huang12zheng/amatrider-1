@@ -24,6 +24,8 @@
   "@bankAccountInformation": {},
   "bankName": "Bank Name",
   "@bankName": {},
+  "bankTransfer": "Bank Transfer",
+  "@bankTransfer": {},
   "cancel": "Cancel",
   "@cancel": {},
   "cardPOS": "Card (POS)",

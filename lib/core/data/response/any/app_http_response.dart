@@ -28,12 +28,16 @@ class AppHttpResponse extends AppNetworkResponseException<DioError, dynamic>
   factory AppHttpResponse.fromJson(Map<String, dynamic> json) =>
       _$AppHttpResponseFromJson(json);
 
-  factory AppHttpResponse.successful([String? message, bool pop = true]) =>
+  factory AppHttpResponse.successful([
+    String? message,
+    bool pop = true,
+    String? uuid,
+  ]) =>
       AppHttpResponse(
         AnyResponse.success(
-          messageTxt: message ?? 'Operation was successful.',
-          pop: pop,
-        ),
+            messageTxt: message ?? 'Operation was successful.',
+            pop: pop,
+            uuid: uuid),
       );
 
   factory AppHttpResponse.failure([String? message]) => AppHttpResponse(

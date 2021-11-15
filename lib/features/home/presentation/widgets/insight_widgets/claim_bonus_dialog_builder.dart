@@ -53,28 +53,36 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
           body: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              AdaptiveText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text: '${tr.insightBonusAlertContent(
-                      '${cash.getOrEmpty}'.asCurrency(),
-                    )}',
+              Utils.platform_(
+                material: AdaptiveText.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: '${tr.insightBonusAlertContent(
+                        '${cash.getOrEmpty}'.asCurrency(),
+                      )}',
+                    ),
+                  ]),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: Utils.letterSpacing,
+                  textAlign: TextAlign.center,
+                ),
+                cupertino: Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: '${tr.insightBonusAlertContent(
+                        '${cash.getOrEmpty}'.asCurrency(),
+                      )}',
+                    ),
+                  ]),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: Utils.letterSpacing,
                   ),
-                  // TextSpan(
-                  //   text: '${cash.getOrEmpty}'.asCurrency(),
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
-                  // const TextSpan(
-                  //   text: ' would be deposited into your account.',
-                  // ),
-                ]),
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w400,
-                letterSpacing: Utils.letterSpacing,
-                textAlign: TextAlign.center,
-              ),
+                ),
+              )!,
               //
               VerticalSpace(height: 0.04.sw),
               //
@@ -86,28 +94,69 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
                     children: [
                       TextFormInputLabel(
                         text: mapIndexToTitle(i),
-                        fontSize: 16.sp,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w500,
                         textAlign: TextAlign.end,
+                        useDefaultText: Utils.platform_(
+                          cupertino: true,
+                          material: false,
+                        )!,
                       ),
                       //
                       HorizontalSpace(width: 0.03.sw),
                       //
                       Expanded(
-                        child: AdaptiveText(
-                          mapIndexToValue(i, account),
-                          fontSize: 18.sp,
-                          maxLines: 1,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: Utils.letterSpacing,
-                          textAlign: TextAlign.start,
-                        ),
+                        child: Utils.platform_(
+                          material: AdaptiveText(
+                            mapIndexToValue(i, account),
+                            fontSize: 18.sp,
+                            maxLines: 1,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: Utils.letterSpacing,
+                            textAlign: TextAlign.start,
+                          ),
+                          cupertino: Text(
+                            mapIndexToValue(i, account),
+                            maxLines: 1,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: Utils.letterSpacing,
+                            ),
+                          ),
+                        )!,
                       ),
                     ],
                   ),
                 );
               }).toList(),
             ],
+          ),
+          isSecondDestructive: true,
+          isSecondDefaultAction: true,
+          cupertinoSecondButtonText: '${tr.cancel}',
+          cupertinoFirstButton:
+              BlocSelector<InsightsCubit, InsightsState, bool>(
+            selector: (s) => s.isLoading,
+            builder: (c, isLoading) => WidgetVisibility(
+              visible: !isLoading,
+              replacement: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: App.loadingSpinningLines,
+                ),
+              ),
+              child: CupertinoDialogAction(
+                isDefaultAction: true,
+                isDestructiveAction: false,
+                onPressed: () async {
+                  await c.read<InsightsCubit>().depositCash(cash.getOrNull);
+                  await navigator.pop();
+                },
+                child: Text('${tr.insightBonusAlertConfirmBtn}'),
+              ),
+            ),
           ),
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,

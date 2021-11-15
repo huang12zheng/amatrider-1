@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:amatrider/core/data/database/app_database.dart';
+import 'package:amatrider/core/data/websocket_event.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/domain/response/index.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
+import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -19,13 +23,24 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   StreamSubscription<Either<Failure, Option<Rider?>>>? _authStateChanges;
   final AuthFacade _facade;
   StreamSubscription<Option<Rider?>>? _riderChanges;
+  final EchoRepository _echoRepository;
 
-  AuthWatcherCubit(this._facade) : super(AuthWatcherState.initial());
+  AuthWatcherCubit(
+    this._facade,
+    this._echoRepository,
+  ) : super(AuthWatcherState.initial());
 
   @override
   Future<void> close() async {
     await unsubscribeAuthChanges;
     await unsubscribeUserChanges;
+    if (state.rider != null) {
+      _echoRepository.stopListening(
+        DispatchRider.profile('${state.rider?.uid.value}'),
+        DispatchRider.profileEvent,
+      );
+      _echoRepository.close(DispatchRider.profile('${state.rider?.uid.value}'));
+    }
     return super.close();
   }
 
@@ -101,6 +116,27 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     });
 
     toggleLoading(false);
+
+    final rider = state.rider ?? (await _facade.rider).getOrElse(() => null);
+
+    _echoRepository.private(
+      DispatchRider.profile('${rider?.uid.value}'),
+      DispatchRider.profileEvent,
+      onData: (data, _) async {
+        final json = jsonDecode(data) as Map<String, dynamic>;
+        final dto = RiderDTO.fromJson(json['rider'] as Map<String, dynamic>);
+
+        emit(state.copyWith(rider: dto.domain));
+
+        final _storeResult =
+            await _facade.retrieveAndCacheUpdatedRider(dto: dto);
+
+        _storeResult.fold(
+          (_) => null,
+          (value) => emit(state.copyWith(option: value)),
+        );
+      },
+    );
   }
 
   Future<void> signOut() async {
@@ -109,6 +145,13 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     await _facade.signOut(true);
 
     toggleLoading(false);
+
+    if (state.rider != null) {
+      _echoRepository.leave(
+        DispatchRider.profile('${state.rider?.uid.value}'),
+        event: DispatchRider.profileEvent,
+      );
+    }
 
     emit(state.copyWith(
       isAuthenticated: false,

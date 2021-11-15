@@ -1,10 +1,14 @@
 library insights_cubit.dart;
 
+import 'dart:convert';
+
+import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
+import 'package:amatrider/features/auth/domain/index.dart';
+import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
-import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
@@ -18,15 +22,27 @@ part 'insights_state.dart';
 
 @injectable
 class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
+  final AuthFacade _auth;
+  final EchoRepository _echoRepository;
   final LogisticsRepository _repository;
-  final LaravelEchoRepository _echoRepository;
-  final UtilitiesRepository _utilitiesRepository;
+
+  late String? riderId;
 
   InsightsCubit(
     this._repository,
     this._echoRepository,
-    this._utilitiesRepository,
+    this._auth,
   ) : super(InsightsState.initial());
+
+  @override
+  Future<void> close() {
+    if (riderId != null) {
+      _echoRepository.stopListening(
+          InsightEvents.channel('$riderId'), InsightEvents.event);
+      _echoRepository.close(InsightEvents.channel('$riderId'));
+    }
+    return super.close();
+  }
 
   void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
       emit(state.copyWith(
@@ -40,18 +56,30 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
   void dateChanged(DateTime? date) =>
       emit(state.copyWith(selectedDate: date ?? state.selectedDate));
 
-  @override
-  Future<void> close() async {
-    // _echoRepository.stopListening(
-    //   SendPackageSocket.channel(state.package.id.value!),
-    //   SendPackageSocket.location,
-    // );
-    _echoRepository.close(
-      // SendPackageSocket.channel(state.package.id.value!),
-      null,
-      nullify: true,
+  void echo() async {
+    final _result = await _auth.rider;
+
+    _result.fold(
+      () => null,
+      (account) {
+        riderId = account!.uid.value!;
+
+        _echoRepository.private(
+          InsightEvents.channel('$riderId'),
+          InsightEvents.event,
+          onData: (data, _) {
+            final json = jsonDecode(data) as Map<String, dynamic>;
+
+            final insight =
+                InsightDTO.fromJson(json['insight'] as Map<String, dynamic>);
+
+            emit(state.copyWith(
+              insight: insight.insightData?.domain ?? state.insight,
+            ));
+          },
+        );
+      },
     );
-    return super.close();
   }
 
   Future<void> fetchInsights() async {

@@ -15,8 +15,8 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   @override
   void initState() {
     super.initState();
-    context.read<SendPackageCubit>().startTracker(context);
-    context.read<SendPackageCubit>().startWebsocket();
+    context.read<SendPackageCubit>().track(context);
+    context.read<SendPackageCubit>().echo();
   }
 
   @override
@@ -82,22 +82,24 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 8,
-                    child: BlocBuilder<SendPackageCubit, SendPackageState>(
-                      builder: (c, s) => TimelineStatusWidget(
+                    child: BlocSelector<SendPackageCubit, SendPackageState,
+                        SendPackage>(
+                      selector: (s) => s.package,
+                      builder: (c, package) => TimelineStatusWidget(
                         padding: EdgeInsets.zero,
                         itemHeight: (_, __) => 0.06.h,
                         statuses: [
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
-                            subtitle: '${s.package.pickup.address.getOrEmpty}',
+                            subtitle: '${package.pickup.address.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             subtitle:
-                                '${s.package.destination.address.getOrEmpty}',
+                                '${package.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -106,24 +108,28 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Headline(
-                          'Payment (Cash)',
-                          fontSize: 17.sp,
-                          maxFontSize: 18,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        //
-                        Headline(
-                          '\$20',
-                          textColor: Palette.accentColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20.sp,
-                          maxFontSize: 20,
-                        ),
-                      ],
+                    child: BlocSelector<SendPackageCubit, SendPackageState,
+                        SendPackage>(
+                      selector: (s) => s.package,
+                      builder: (c, package) => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Headline(
+                            'Payment - ${package.paymentMethod?.formatted}',
+                            fontSize: 17.sp,
+                            maxFontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          //
+                          Headline(
+                            '${package.amount.getOrEmpty}'.asCurrency(),
+                            textColor: Palette.accentColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.sp,
+                            maxFontSize: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   //
@@ -135,6 +141,11 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                         SendPackage>(
                       selector: (s) => s.package,
                       builder: (c, s) => UserContactDeliveryCard(
+                        photo: s.status.maybeWhen(
+                          riderAccepted: () => '${s.sender.photo.getOrEmpty}',
+                          enrouteToSender: () => '${s.sender.photo.getOrEmpty}',
+                          orElse: () => '',
+                        ),
                         title: s.status.maybeWhen(
                           riderAccepted: () => 'Sender',
                           enrouteToSender: () => 'Sender',
@@ -300,7 +311,9 @@ class _BottomSheetItem {
             App.showAdaptiveBottomSheet(
               c,
               elevation: 2.0,
-              builder: (_) => const _DeliveryIssueBottomsheet(),
+              builder: (_) => _DeliveryIssueBottomsheet(
+                BlocProvider.of<SendPackageCubit>(c),
+              ),
             );
           },
         ),

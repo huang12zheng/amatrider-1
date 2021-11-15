@@ -70,7 +70,7 @@ class UtilitiesRepository extends BaseRepository {
     );
   }
 
-  Future<Either<AppHttpResponse, BankAccount>> bankAccount() async {
+  Future<Either<AppHttpResponse, BankAccount?>> bankAccount() async {
     final _conn = await checkConnectivity();
 
     return _conn.fold(
@@ -79,7 +79,7 @@ class UtilitiesRepository extends BaseRepository {
         try {
           final _result = await remote.bankAccount();
 
-          return right(_result.domain);
+          return right(_result.domain((e) => e?.domain));
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {

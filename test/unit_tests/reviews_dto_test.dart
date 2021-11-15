@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:amatrider/features/home/data/models/generic/generic_list_object.dart';
 import 'package:amatrider/features/home/data/models/review/review_dto.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:flutter_test/flutter_test.dart';

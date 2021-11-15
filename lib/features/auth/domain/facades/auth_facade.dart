@@ -87,6 +87,12 @@ abstract class AuthFacade {
 
   Future<void> sleep();
 
+  Future<Either<AppHttpResponse, Option<Rider?>>> retrieveAndCacheUpdatedRider({
+    RiderDTO? dto,
+    bool shouldThrow = false,
+    bool forceGetLocalCache = false,
+  });
+
   Future<Either<AppHttpResponse, bool>> checkInternetConnectivity() async {
     final isConnected = (await getIt<Connectivity>().checkConnectivity()) !=
         ConnectivityResult.none;

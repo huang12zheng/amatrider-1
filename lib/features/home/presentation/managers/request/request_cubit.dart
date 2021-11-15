@@ -1,11 +1,19 @@
 library request_cubit.dart;
 
+import 'dart:convert';
+
 import 'package:amatrider/core/data/http_client/index.dart';
+import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
+import 'package:amatrider/features/auth/domain/index.dart';
+import 'package:amatrider/features/home/data/models/models.dart';
+import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -20,15 +28,155 @@ part 'request_state.dart';
 
 @injectable
 class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
+  final AuthFacade _auth;
+  final EchoRepository _echoRepository;
   final LogisticsRepository _logisticsRepository;
 
-  RequestCubit(this._logisticsRepository) : super(RequestState.initial());
+  late String? riderId;
+
+  RequestCubit(
+    this._auth,
+    this._logisticsRepository,
+    this._echoRepository,
+  ) : super(RequestState.initial());
+
+  @override
+  Future<void> close() {
+    _echoRepository.stopListening(RequestEvents.packageAcceptedChannel,
+        RequestEvents.packageAcceptedEvent);
+    if (riderId != null) {
+      _echoRepository.stopListening(
+          RequestEvents.packageDeliveredChannel('$riderId'),
+          RequestEvents.packageDeliveredEvent);
+      _echoRepository.close(DispatchRider.newRequest('$riderId'));
+    }
+    return super.close();
+  }
 
   void _toggleLoading([bool? isLoading]) =>
       emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
-  void setCurrentPackage(SendPackage package) =>
-      emit(state.copyWith(currentPackage: package));
+  void clearList() => emit(state.copyWith(
+        activePackages: const KtList.empty(),
+        packagesInTransit: const KtList.empty(),
+        potentialPackages: const KtList.empty(),
+        currentPackage: null,
+      ));
+
+  void setCurrentPackage(SendPackage? package) {
+    if (package != null && riderId != null) {
+      getIt<EchoRepository>()
+          .channel(RequestEvents.packageDeliveredChannel('$riderId'))
+          .listen(RequestEvents.packageDeliveredEvent, onData: (data, _this) {
+        final json = jsonDecode(data) as Map<String, dynamic>;
+        final result = SendPackageDTO.fromJson(json);
+
+        final _delivered =
+            result.id != null ? result.domain : result.packageData?.domain;
+
+        final _match = state.packagesInTransit
+            .firstOrNull((it) => it.id == _delivered?.id);
+
+        if (_match != null)
+          emit(state.copyWith(
+            packagesInTransit: state.packagesInTransit.minusElement(_match),
+          ));
+      });
+    }
+
+    emit(state.copyWith(currentPackage: package));
+  }
+
+  void _updateActivePackages({
+    KtList<SendPackage>? active,
+    SendPackage? package,
+  }) {
+    if (active != null)
+      emit(state.copyWith(
+        activePackages: active.sortedWith(
+          (a, b) => b.createdAt!.compareTo(a.createdAt!),
+        ),
+      ));
+    if (package != null)
+      emit(state.copyWith(
+        activePackages: state.activePackages
+            .plusElement(package)
+            .sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+      ));
+  }
+
+  void _updatePackagesInTransit({
+    KtList<SendPackage>? inTransit,
+    SendPackage? package,
+  }) {
+    if (inTransit != null)
+      emit(state.copyWith(
+        packagesInTransit: inTransit.sortedWith(
+          (a, b) => b.createdAt!.compareTo(a.createdAt!),
+        ),
+      ));
+    if (package != null)
+      emit(state.copyWith(
+        packagesInTransit: state.packagesInTransit
+            .plusElement(package)
+            .sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+      ));
+  }
+
+  void echo() async {
+    final _result = await _auth.rider;
+
+    _result.fold(
+      () => null,
+      (account) {
+        riderId = account!.uid.value!;
+
+        _echoRepository.notification(
+          DispatchRider.newRequest('$riderId'),
+          onData: (data, _) {
+            final json = jsonDecode(data) as Map<String, dynamic>;
+            final type = WebsocketResponseType.valueOf(json['type'] as String);
+            final title =
+                json.containsKey('title') ? json['title'] as String : null;
+
+            if (title != null)
+              emit(state.copyWith(
+                status: some(AppHttpResponse.successful(
+                  title,
+                  false,
+                  UniqueId<String>.v4().value,
+                )),
+              ));
+
+            type.when(
+              newPackage: () {
+                final package = SendPackageDTO.fromJson(json);
+                _updateActivePackages(package: package.packageData?.domain);
+              },
+            );
+          },
+        );
+
+        _echoRepository.public(
+          RequestEvents.packageAcceptedChannel,
+          RequestEvents.packageAcceptedEvent,
+          onData: (data, _) {
+            final json = jsonDecode(data) as Map<String, dynamic>;
+            final package = SendPackageDTO.fromJson(json);
+
+            if (package.packageData?.riderId == riderId) {
+              // Update in transit
+              _updatePackagesInTransit(package: package.packageData?.domain);
+              // Set current
+              setCurrentPackage(package.packageData?.domain);
+
+              emit(state.copyWith(isAccepting: false));
+            }
+          },
+        );
+      },
+    );
+  }
 
   Future<void> allPackages(
     BuildContext c, {
@@ -60,31 +208,32 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
           status: optionOf(e),
           isLoadingActivePackages: false,
         )),
-        enroute: () {
-          emit(state.copyWith(
-            status: optionOf(e),
-            isLoadingTransitPackages: false,
-            isLoadingActivePackages: false,
-          ));
-        },
+        enroute: () => emit(state.copyWith(
+          status: optionOf(e),
+          isLoadingTransitPackages: false,
+          isLoadingActivePackages: false,
+        )),
         orElse: () => null,
       ),
       (list) {
         status.maybeWhen(
-          active: () => emit(state.copyWith(
-            isLoadingActivePackages: false,
-            activePackages: list.domain,
-          )),
+          active: () {
+            emit(state.copyWith(isLoadingActivePackages: false));
+            _updateActivePackages(active: list.domain);
+          },
           enroute: () {
             emit(state.copyWith(
               isLoadingTransitPackages: false,
               isLoadingActivePackages: false,
-              packagesInTransit: list.domain
+            ));
+
+            _updatePackagesInTransit(
+              inTransit: list.domain
                   .plus(state.packagesInTransit)
                   .asList()
                   .unique((val) => val.id)
                   .toImmutableList(),
-            ));
+            );
           },
           orElse: () => null,
         );
@@ -116,14 +265,16 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
             lng: '${location?.lng.getOrNull}',
           );
 
-          emit(state.copyWith(
-            activePackages: state.activePackages.minusElement(package),
-            currentPackage: package,
-            status: some(_result),
-          ));
-
-          // ignore: unawaited_futures
-          allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
+          _result.response.map(
+            error: (_) => emit(state.copyWith(status: some(_result))),
+            success: (_) {
+              emit(state.copyWith(
+                activePackages: state.activePackages.minusElement(package),
+                currentPackage: package,
+                status: some(_result),
+              ));
+            },
+          );
         },
         (e) async => emit(state.copyWith(status: optionOf(e))),
       );
@@ -156,11 +307,15 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
             lng: '${location?.lng.getOrNull}',
           );
 
-          emit(state.copyWith(
-            activePackages: state.activePackages.minusElement(package),
-            currentPackage: null,
-            status: some(_result),
-          ));
+          _result.response.map(
+            error: (_) => emit(state.copyWith(status: some(_result))),
+            success: (_) {
+              emit(state.copyWith(
+                activePackages: state.activePackages.minusElement(package),
+                status: some(_result),
+              ));
+            },
+          );
         },
         (e) async => emit(state.copyWith(status: optionOf(e))),
       );

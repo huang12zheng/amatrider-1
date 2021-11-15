@@ -93,7 +93,9 @@ class _$DeliveryHistoryDTOTearOff {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt}) {
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData}) {
     return _DeliveryHistoryDTO(
       id: id,
       pickupLat: pickupLat,
@@ -124,6 +126,7 @@ class _$DeliveryHistoryDTOTearOff {
       depositConfirmedAt: depositConfirmedAt,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      historyData: historyData,
     );
   }
 
@@ -208,7 +211,9 @@ mixin _$DeliveryHistoryDTO {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError; //
+  @JsonKey(name: 'history')
+  DeliveryHistoryDTO? get historyData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -293,10 +298,13 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt});
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData});
 
   $RiderDTOCopyWith<$Res>? get rider;
   $SenderDTOCopyWith<$Res>? get sender;
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
 
 /// @nodoc
@@ -339,6 +347,7 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? depositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? historyData = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -457,6 +466,10 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      historyData: historyData == freezed
+          ? _value.historyData
+          : historyData // ignore: cast_nullable_to_non_nullable
+              as DeliveryHistoryDTO?,
     ));
   }
 
@@ -479,6 +492,17 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
 
     return $SenderDTOCopyWith<$Res>(_value.sender!, (value) {
       return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  @override
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData {
+    if (_value.historyData == null) {
+      return null;
+    }
+
+    return $DeliveryHistoryDTOCopyWith<$Res>(_value.historyData!, (value) {
+      return _then(_value.copyWith(historyData: value));
     });
   }
 }
@@ -562,12 +586,16 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt});
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData});
 
   @override
   $RiderDTOCopyWith<$Res>? get rider;
   @override
   $SenderDTOCopyWith<$Res>? get sender;
+  @override
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
 
 /// @nodoc
@@ -612,6 +640,7 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? depositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? historyData = freezed,
   }) {
     return _then(_DeliveryHistoryDTO(
       id: id == freezed
@@ -730,6 +759,10 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      historyData: historyData == freezed
+          ? _value.historyData
+          : historyData // ignore: cast_nullable_to_non_nullable
+              as DeliveryHistoryDTO?,
     ));
   }
 }
@@ -809,7 +842,9 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
           this.createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          this.updatedAt})
+          this.updatedAt,
+      @JsonKey(name: 'history')
+          this.historyData})
       : super._();
 
   factory _$_DeliveryHistoryDTO.fromJson(Map<String, dynamic> json) =>
@@ -916,10 +951,13 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
   final DateTime? updatedAt;
+  @override //
+  @JsonKey(name: 'history')
+  final DeliveryHistoryDTO? historyData;
 
   @override
   String toString() {
-    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
   }
 
   @override
@@ -977,7 +1015,9 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.historyData, historyData) ||
+                other.historyData == historyData));
   }
 
   @override
@@ -1011,7 +1051,8 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
         depositedAt,
         depositConfirmedAt,
         createdAt,
-        updatedAt
+        updatedAt,
+        historyData
       ]);
 
   @JsonKey(ignore: true)
@@ -1098,7 +1139,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt}) = _$_DeliveryHistoryDTO;
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData}) = _$_DeliveryHistoryDTO;
   const _DeliveryHistoryDTO._() : super._();
 
   factory _DeliveryHistoryDTO.fromJson(Map<String, dynamic> json) =
@@ -1205,6 +1248,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
   DateTime? get updatedAt;
+  @override //
+  @JsonKey(name: 'history')
+  DeliveryHistoryDTO? get historyData;
   @override
   @JsonKey(ignore: true)
   _$DeliveryHistoryDTOCopyWith<_DeliveryHistoryDTO> get copyWith =>

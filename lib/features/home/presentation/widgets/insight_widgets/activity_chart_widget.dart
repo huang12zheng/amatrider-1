@@ -157,7 +157,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           VerticalSpace(height: 0.025.h),
           //
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 0.42.h),
+            constraints: BoxConstraints(maxHeight: 0.4.h),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child:
@@ -216,6 +216,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
         rightTitles: SideTitles(showTitles: false),
         leftTitles: SideTitles(
           showTitles: true,
+          reservedSize: 35,
           checkToShowTitle:
               (minValue, maxValue, sideTitles, appliedInterval, value) =>
                   value % 10 == 0,
