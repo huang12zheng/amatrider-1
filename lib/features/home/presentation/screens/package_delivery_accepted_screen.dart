@@ -361,6 +361,14 @@ class _Body extends StatelessWidget {
         start: () {
           final package = c.read<SendPackageCubit>().state.package;
 
+          context
+              .read<MapCubit>()
+              .drawPolyline(package.riderLocation, package.pickup);
+
+          context
+              .read<MapCubit>()
+              .adjustMapBounds(package.riderLocation, package.pickup);
+
           return MapWidget(
             start: package.riderLocation,
             end: package.pickup,

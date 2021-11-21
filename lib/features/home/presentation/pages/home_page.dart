@@ -372,14 +372,11 @@ class _HomePageState extends State<HomePage> {
                             s.potentialPackages.isEmpty()))
                       SliverToBoxAdapter(
                         child: StageOwnerWidget(
-                          asset: right(AppAssets.noHistory(
-                            const Size.fromHeight(80),
-                          )),
+                          asset: right(AppAssets.noRequest),
                           height: 0.7.h,
                           useScaffold: false,
-                          title: 'No Delivery History Yet',
-                          description:
-                              'Past delivery history would appear here.',
+                          title: 'No Request Yet',
+                          description: 'Please check back later.',
                         ),
                       ),
                   ],

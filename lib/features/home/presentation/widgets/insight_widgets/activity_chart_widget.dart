@@ -41,16 +41,13 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                 HorizontalSpace(width: 0.1.sw),
                 //
                 Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        flex: 7,
-                        child: BlocSelector<InsightsCubit, InsightsState,
-                            DateFilter>(
-                          selector: (s) => s.dateFilter,
-                          builder: (c, filter) =>
-                              DropdownFieldWidget<DateFilter>(
+                  child: BlocBuilder<InsightsCubit, InsightsState>(
+                    builder: (c, s) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          flex: s.dateFilter != DateFilter.all_time ? 7 : 11,
+                          child: DropdownFieldWidget<DateFilter>(
                             isDense: true,
                             items: [
                               DateFilter.all_time,
@@ -62,17 +59,15 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                                 dark: Palette.cardColorDark),
                             text: (it) => '${it?.label}',
                             minFontSize: 13,
-                            selected: filter,
+                            selected: s.dateFilter,
                             onChanged:
                                 c.read<InsightsCubit>().dateFilterChanged,
                           ),
                         ),
-                      ),
-                      //
-                      Flexible(
-                        flex: 8,
-                        child: BlocBuilder<InsightsCubit, InsightsState>(
-                          builder: (c, s) => WidgetVisibility(
+                        //
+                        Flexible(
+                          flex: 8,
+                          child: WidgetVisibility(
                             visible: s.dateFilter != DateFilter.all_time,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -144,8 +139,8 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],

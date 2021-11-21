@@ -111,6 +111,7 @@ mixin AppAssets {
   static const String _noConnectivity =
       '$DASHBOARD_SVG_DIR/no_connectivity.svg';
   static const String _noHistory = '$DASHBOARD_SVG_DIR/no_history.svg';
+  static const String _noRequest = '$DASHBOARD_SVG_DIR/no_request.svg';
   static const String _bigHeart = '$DASHBOARD_SVG_DIR/big_heart.svg';
 
   /////////////////////////////////////////////////////
@@ -143,6 +144,7 @@ mixin AppAssets {
     _featherSearch,
     _noConnectivity,
     _noHistory,
+    _noRequest,
     timelinePinAsset,
     _friendship,
     _contactSupport,
@@ -287,6 +289,11 @@ mixin AppAssets {
         ),
         fit: BoxFit.contain,
       );
+
+  static SvgPicture noRequest = SvgPicture.asset(
+    _noRequest,
+    fit: BoxFit.contain,
+  );
 
   static SvgPicture bigHeart = SvgPicture.asset(
     _bigHeart,

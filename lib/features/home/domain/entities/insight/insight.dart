@@ -30,6 +30,10 @@ class Insight with _$Insight {
     DateTime? planEnded,
   }) = _Insight;
 
+  int get extraDeliveries =>
+      (totalExtraDeliveries.getOrNull ?? 0) -
+      (completedExtraDeliveries.getOrNull ?? 0);
+
   static Insight blank() => Insight(
         completed: BasicTextField(null),
         target: BasicTextField(null),

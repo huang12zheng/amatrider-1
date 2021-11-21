@@ -263,54 +263,67 @@ class _InsightsPageState extends State<InsightsPage> {
                       ),
                     //
                     if (s.insight.progress.getOrNull == 100) ...[
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: App.sidePadding,
-                        ).copyWith(top: 0.04.sw),
-                        sliver: SliverToBoxAdapter(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Palette.pastelYellow,
-                              borderRadius: BorderRadius.circular(
-                                Utils.inputBorderRadius,
+                      if (s.insight.extraDeliveries > 0)
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: App.sidePadding,
+                          ).copyWith(top: 0.04.sw),
+                          sliver: SliverToBoxAdapter(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Palette.pastelYellow,
+                                borderRadius: BorderRadius.circular(
+                                  Utils.inputBorderRadius,
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 0.035.sw,
-                                vertical: 0.03.sw,
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    Icons.info,
-                                    color: Palette.accentYellow,
-                                  ),
-                                  //
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 0.03.sw),
-                                      child: AdaptiveText(
-                                        'Congratulations, '
-                                        'you are eligible for ${s.insight.totalExtraDeliveries.getOrNull ?? 0} '
-                                        'extra deliveries at '
-                                        '${'${s.insight.bonusPerExtraDelivery.getOrNull ?? 0}'.asCurrency()} '
-                                        'per delivery.',
-                                        fontSize: 17.sp,
-                                        textColor: Palette.text100,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.6,
-                                        letterSpacing: Utils.letterSpacing,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 0.035.sw,
+                                  vertical: 0.03.sw,
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.info,
+                                      color: Palette.accentYellow,
+                                    ),
+                                    //
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 0.03.sw),
+                                        child: WidgetVisibility(
+                                          visible:
+                                              s.insight.extraDeliveries > 0,
+                                          replacement: AdaptiveText(
+                                            'You do not have any extra deliveries for this month.',
+                                            fontSize: 17.sp,
+                                            textColor: Palette.text100,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.6,
+                                            letterSpacing: Utils.letterSpacing,
+                                          ),
+                                          child: AdaptiveText(
+                                            'Congratulations, '
+                                            'you are eligible for ${s.insight.extraDeliveries} '
+                                            'extra deliveries at '
+                                            '${'${s.insight.bonusPerExtraDelivery.getOrNull ?? 0}'.asCurrency()} '
+                                            'per delivery.',
+                                            fontSize: 17.sp,
+                                            textColor: Palette.text100,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.6,
+                                            letterSpacing: Utils.letterSpacing,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
                       //
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
@@ -505,55 +518,26 @@ class _InsightsPageState extends State<InsightsPage> {
                                     //
                                     Flexible(
                                       flex: 5,
-                                      child: WidgetVisibility(
-                                        visible: false,
-                                        child: BlocConsumer<InsightsCubit,
-                                            InsightsState>(
-                                          listenWhen: (p, c) =>
-                                              p.depositCashLoading !=
-                                              c.depositCashLoading,
-                                          listener: (c, s) async {
-                                            if (!s.depositCashLoading &&
-                                                s.account != null) {
-                                              if (!s.depositDialogOpen) {
-                                                c
-                                                    .read<InsightsCubit>()
-                                                    .setCashDepositVisible(
-                                                        true);
-
-                                                App.showAlertDialog(
-                                                  context: c,
-                                                  barrierColor:
-                                                      App.resolveColor(
-                                                    Colors.grey.shade800
-                                                        .withOpacity(0.55),
-                                                    dark: Colors.white54,
-                                                  ),
-                                                  barrierDismissible: false,
-                                                  builder: (_) =>
-                                                      _DepositCashDialogBuilder(
-                                                    cubit:
-                                                        c.read<InsightsCubit>(),
-                                                    cash: s.insight.cashAtHand,
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                          builder: (c, s) => AdaptiveButton(
-                                            text:
-                                                '${context.tr.insightDepositCash}',
-                                            isLoading: s.depositCashLoading,
-                                            textColor: Colors.white,
-                                            splashColor: Colors.white24,
-                                            height: 0.09.sw,
-                                            cupertinoHeight: 0.05.h,
-                                            width: 0.3.sw,
-                                            backgroundColor:
-                                                Palette.accentColor,
-                                            onPressed: c
-                                                .read<InsightsCubit>()
-                                                .depositCash,
+                                      child: SizedBox(
+                                        height: double.infinity,
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            color: App.resolveColor(
+                                                Palette.pastelPurple),
+                                            borderRadius: BorderRadius.circular(
+                                                Utils.inputBorderRadius),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(0.03.sw),
+                                            child: Center(
+                                              child: AdaptiveText(
+                                                'Kindly deposit cash at the office.',
+                                                textColor: Palette.accentPurple,
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w400,
+                                                letterSpacing: 0.5.sp,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -107,7 +107,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
           cupertinoSecondButtonText: '${tr.cancel}',
           cupertinoFirstButton:
               BlocSelector<InsightsCubit, InsightsState, bool>(
-            selector: (s) => s.isLoading,
+            selector: (s) => s.claimBonusLoading,
             builder: (c, isLoading) => WidgetVisibility(
               visible: !isLoading,
               replacement: Center(
@@ -128,7 +128,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
             ),
           ),
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
-            selector: (s) => s.isLoading,
+            selector: (s) => s.claimBonusLoading,
             builder: (c, isLoading) => AppButton(
               text: '${tr.insightBonusAlertConfirmBtn}',
               isLoading: isLoading,

@@ -129,7 +129,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       )),
                       useScaffold: false,
                       title: 'No Delivery History Yet',
-                      description: 'Past delivery history would appear here.',
+                      description: 'Delivery history would appear here.',
                     ),
                   ),
                 ),
