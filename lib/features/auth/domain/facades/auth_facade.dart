@@ -77,11 +77,24 @@ abstract class AuthFacade {
   Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
       RiderAvailability availability);
 
-  Future<AppHttpResponse> googleAuthentication();
+  Future<Option<AppHttpResponse?>> googleAuthentication([bool notify = false]);
 
-  Future<AppHttpResponse> appleAuthentication();
+  Future<AppHttpResponse> updateSocialsProfile({
+    DisplayName? firstName,
+    DisplayName? lastName,
+    Phone? phone,
+  });
 
-  Future<void> signOut([bool? notify]);
+  Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]);
+
+  Future<void> signOut(
+    bool? notify, {
+    bool email = true,
+    bool google = true,
+    bool facebook = true,
+    bool twitter = true,
+    bool apple = true,
+  });
 
   Future<AppHttpResponse> deleteAccount();
 

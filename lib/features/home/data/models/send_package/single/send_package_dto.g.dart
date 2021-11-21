@@ -37,12 +37,18 @@ _$_SendPackageDTO _$$_SendPackageDTOFromJson(Map<String, dynamic> json) =>
       riderLng: const DoubleSerializer().fromJson(json['rider_current_long']),
       orderActiveAt:
           const TimestampConverter().fromJson(json['order_active_at']),
+      orderCancelledAt:
+          const TimestampConverter().fromJson(json['order_cancelled_at']),
       riderAcceptedAt:
           const TimestampConverter().fromJson(json['rider_accepted_at']),
       riderReceivedAt: const TimestampConverter()
           .fromJson(json['rider_received_package_at']),
       riderDeliveredAt: const TimestampConverter()
           .fromJson(json['rider_delivered_package_at']),
+      paymentDepositedAt:
+          const TimestampConverter().fromJson(json['payment_deposited_at']),
+      paymentDepositConfirmedAt: const TimestampConverter()
+          .fromJson(json['payment_deposited_confirmed_at']),
       time: const SecondsToDurationConverter().fromJson(json['time']),
       distance: const DoubleSerializer().fromJson(json['distance']),
       journey: json['journeyDetails'] == null
@@ -100,12 +106,18 @@ Map<String, dynamic> _$$_SendPackageDTOToJson(_$_SendPackageDTO instance) {
       'rider_current_long', const DoubleSerializer().toJson(instance.riderLng));
   writeNotNull('order_active_at',
       const TimestampConverter().toJson(instance.orderActiveAt));
+  writeNotNull('order_cancelled_at',
+      const TimestampConverter().toJson(instance.orderCancelledAt));
   writeNotNull('rider_accepted_at',
       const TimestampConverter().toJson(instance.riderAcceptedAt));
   writeNotNull('rider_received_package_at',
       const TimestampConverter().toJson(instance.riderReceivedAt));
   writeNotNull('rider_delivered_package_at',
       const TimestampConverter().toJson(instance.riderDeliveredAt));
+  writeNotNull('payment_deposited_at',
+      const TimestampConverter().toJson(instance.paymentDepositedAt));
+  writeNotNull('payment_deposited_confirmed_at',
+      const TimestampConverter().toJson(instance.paymentDepositConfirmedAt));
   writeNotNull(
       'time', const SecondsToDurationConverter().toJson(instance.time));
   writeNotNull('distance', const DoubleSerializer().toJson(instance.distance));

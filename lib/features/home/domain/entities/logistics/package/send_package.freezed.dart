@@ -36,9 +36,12 @@ class _$SendPackageTearOff {
       Duration durationToPickup = Duration.zero,
       required BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) {
@@ -61,9 +64,12 @@ class _$SendPackageTearOff {
       durationToPickup: durationToPickup,
       distanceToPickup: distanceToPickup,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
+      paymentDepositedAt: paymentDepositedAt,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt,
       sender: sender,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -96,9 +102,12 @@ mixin _$SendPackage {
   BasicTextField<double?> get distanceToPickup =>
       throw _privateConstructorUsedError;
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
   DateTime? get riderReceivedAt => throw _privateConstructorUsedError;
   DateTime? get riderDeliveredAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositedAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositConfirmedAt => throw _privateConstructorUsedError;
   Sender get sender => throw _privateConstructorUsedError; //
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
@@ -132,9 +141,12 @@ abstract class $SendPackageCopyWith<$Res> {
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
@@ -173,9 +185,12 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
     Object? durationToPickup = freezed,
     Object? distanceToPickup = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -253,6 +268,10 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -264,6 +283,14 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sender: sender == freezed
           ? _value.sender
@@ -335,9 +362,12 @@ abstract class _$SendPackageCopyWith<$Res>
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
@@ -382,9 +412,12 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
     Object? durationToPickup = freezed,
     Object? distanceToPickup = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -462,6 +495,10 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -473,6 +510,14 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sender: sender == freezed
           ? _value.sender
@@ -512,9 +557,12 @@ class _$_SendPackage extends _SendPackage {
       this.durationToPickup = Duration.zero,
       required this.distanceToPickup,
       this.orderActiveAt,
+      this.orderCancelledAt,
       this.riderAcceptedAt,
       this.riderReceivedAt,
       this.riderDeliveredAt,
+      this.paymentDepositedAt,
+      this.paymentDepositConfirmedAt,
       required this.sender,
       this.createdAt,
       this.updatedAt})
@@ -561,11 +609,17 @@ class _$_SendPackage extends _SendPackage {
   @override
   final DateTime? orderActiveAt;
   @override
+  final DateTime? orderCancelledAt;
+  @override
   final DateTime? riderAcceptedAt;
   @override
   final DateTime? riderReceivedAt;
   @override
   final DateTime? riderDeliveredAt;
+  @override
+  final DateTime? paymentDepositedAt;
+  @override
+  final DateTime? paymentDepositConfirmedAt;
   @override
   final Sender sender;
   @override //
@@ -575,7 +629,7 @@ class _$_SendPackage extends _SendPackage {
 
   @override
   String toString() {
-    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -613,12 +667,19 @@ class _$_SendPackage extends _SendPackage {
                 other.distanceToPickup == distanceToPickup) &&
             (identical(other.orderActiveAt, orderActiveAt) ||
                 other.orderActiveAt == orderActiveAt) &&
+            (identical(other.orderCancelledAt, orderCancelledAt) ||
+                other.orderCancelledAt == orderCancelledAt) &&
             (identical(other.riderAcceptedAt, riderAcceptedAt) ||
                 other.riderAcceptedAt == riderAcceptedAt) &&
             (identical(other.riderReceivedAt, riderReceivedAt) ||
                 other.riderReceivedAt == riderReceivedAt) &&
             (identical(other.riderDeliveredAt, riderDeliveredAt) ||
                 other.riderDeliveredAt == riderDeliveredAt) &&
+            (identical(other.paymentDepositedAt, paymentDepositedAt) ||
+                other.paymentDepositedAt == paymentDepositedAt) &&
+            (identical(other.paymentDepositConfirmedAt,
+                    paymentDepositConfirmedAt) ||
+                other.paymentDepositConfirmedAt == paymentDepositConfirmedAt) &&
             (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -647,9 +708,12 @@ class _$_SendPackage extends _SendPackage {
         durationToPickup,
         distanceToPickup,
         orderActiveAt,
+        orderCancelledAt,
         riderAcceptedAt,
         riderReceivedAt,
         riderDeliveredAt,
+        paymentDepositedAt,
+        paymentDepositConfirmedAt,
         sender,
         createdAt,
         updatedAt
@@ -681,9 +745,12 @@ abstract class _SendPackage extends SendPackage {
       Duration durationToPickup,
       required BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_SendPackage;
@@ -726,11 +793,17 @@ abstract class _SendPackage extends SendPackage {
   @override
   DateTime? get orderActiveAt;
   @override
+  DateTime? get orderCancelledAt;
+  @override
   DateTime? get riderAcceptedAt;
   @override
   DateTime? get riderReceivedAt;
   @override
   DateTime? get riderDeliveredAt;
+  @override
+  DateTime? get paymentDepositedAt;
+  @override
+  DateTime? get paymentDepositConfirmedAt;
   @override
   Sender get sender;
   @override //

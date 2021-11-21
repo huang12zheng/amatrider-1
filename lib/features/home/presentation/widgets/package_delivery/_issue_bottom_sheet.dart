@@ -3,7 +3,6 @@ part of package_delivery_accepted_screen.dart;
 class _DeliveryIssueBottomsheet extends StatefulWidget {
   static const List<String> cancelReasons = [
     'Sender did not receive my calls',
-    'Sender was too rude',
     "I'm currently low on Fuel",
     'I had an accident in transit',
   ];

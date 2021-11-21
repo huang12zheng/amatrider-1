@@ -73,6 +73,9 @@ class _$DeliveryHistoryDTOTearOff {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -119,6 +122,7 @@ class _$DeliveryHistoryDTOTearOff {
       rider: rider,
       sender: sender,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
@@ -191,6 +195,9 @@ mixin _$DeliveryHistoryDTO {
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
@@ -278,6 +285,9 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -340,6 +350,7 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
@@ -437,6 +448,10 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
       orderActiveAt: orderActiveAt == freezed
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
@@ -566,6 +581,9 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -633,6 +651,7 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
@@ -731,6 +750,10 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -822,6 +845,9 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           this.orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          this.orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           this.riderAcceptedAt,
@@ -924,6 +950,10 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
   @TimestampConverter()
   final DateTime? orderActiveAt;
   @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  final DateTime? orderCancelledAt;
+  @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   final DateTime? riderAcceptedAt;
@@ -957,7 +987,7 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
 
   @override
   String toString() {
-    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
+    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
   }
 
   @override
@@ -1002,6 +1032,8 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
             (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.orderActiveAt, orderActiveAt) ||
                 other.orderActiveAt == orderActiveAt) &&
+            (identical(other.orderCancelledAt, orderCancelledAt) ||
+                other.orderCancelledAt == orderCancelledAt) &&
             (identical(other.riderAcceptedAt, riderAcceptedAt) ||
                 other.riderAcceptedAt == riderAcceptedAt) &&
             (identical(other.riderReceivedAt, riderReceivedAt) ||
@@ -1045,6 +1077,7 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
         rider,
         sender,
         orderActiveAt,
+        orderCancelledAt,
         riderAcceptedAt,
         riderReceivedAt,
         riderDeliveredAt,
@@ -1119,6 +1152,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -1220,6 +1256,10 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
   DateTime? get orderActiveAt;
+  @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt;
   @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()

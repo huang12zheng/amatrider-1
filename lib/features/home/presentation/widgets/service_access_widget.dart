@@ -110,7 +110,7 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
               ),
               //
               Positioned(
-                top: 0.66.h,
+                top: 0.67.h,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -121,49 +121,65 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Flexible(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: AppAssets.thumbLove,
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: AppAssets.thumbLove,
+                              ),
+                            ),
+                            //
+                            VerticalSpace(height: 0.01.h),
+                            //
+                            Flexible(
+                              flex: 2,
+                              child: additionalContent ?? Utils.nothing,
+                            ),
+                          ],
                         ),
                       ),
                       //
                       Flexible(
-                        flex: 2,
-                        child: additionalContent ?? Utils.nothing,
-                      ),
-                      //
-                      Flexible(
-                        child: AppButton(
-                          text: '$firstButtonText',
-                          onPressed: () async {
-                            final _result = await onAccept.call();
-                            if (_result) await navigator.pop();
-                          },
-                        ),
-                      ),
-                      //
-                      Flexible(
-                        child: AppOutlinedButton(
-                          text:
-                              '${secondButtonText ?? 'Exit ${Const.appName}'}',
-                          textColor: Palette.text100,
-                          textColorDark: Palette.text100Dark,
-                          borderColor: Palette.cardColorLight,
-                          borderColorDark: Palette.cardColorDark,
-                          onPressed: () async {
-                            if (onDecline != null) {
-                              final _result = await onDecline!.call();
-                              if (_result) await navigator.pop();
-                              return;
-                            }
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Flexible(
+                              child: AppButton(
+                                text: '$firstButtonText',
+                                onPressed: () async {
+                                  final _result = await onAccept.call();
+                                  if (_result) await navigator.pop();
+                                },
+                              ),
+                            ),
+                            //
+                            Flexible(
+                              child: AppOutlinedButton(
+                                text:
+                                    '${secondButtonText ?? 'Exit ${Const.appName}'}',
+                                textColor: Palette.text100,
+                                textColorDark: Palette.text100Dark,
+                                borderColor: Colors.transparent,
+                                borderColorDark: Colors.transparent,
+                                onPressed: () async {
+                                  if (onDecline != null) {
+                                    final _result = await onDecline!.call();
+                                    if (_result) await navigator.pop();
+                                    return;
+                                  }
 
-                            // ignore: unawaited_futures
-                            Theme.of(context).platform.fold(
-                                  material: () => SystemChannels.platform
-                                      .invokeMethod('SystemNavigator.pop'),
-                                  cupertino: () => exit(0),
-                                );
-                          },
+                                  // ignore: unawaited_futures
+                                  Theme.of(context).platform.fold(
+                                        material: () => SystemChannels.platform
+                                            .invokeMethod(
+                                                'SystemNavigator.pop'),
+                                        cupertino: () => exit(0),
+                                      );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

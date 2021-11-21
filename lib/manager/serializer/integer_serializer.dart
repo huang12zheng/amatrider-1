@@ -5,11 +5,10 @@ class IntegerSerializer implements JsonConverter<int?, dynamic> {
 
   @override
   int? fromJson(dynamic value) {
-    return value == null
-        ? null
-        : value is int
-            ? value
-            : int.tryParse(value as String);
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is bool) return value ? 1 : 0;
+    return double.tryParse('$value')?.toInt();
   }
 
   @override

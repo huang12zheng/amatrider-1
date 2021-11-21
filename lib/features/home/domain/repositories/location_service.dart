@@ -65,6 +65,8 @@ class LocationService {
   Future<bool> requestBackgroundMode([bool enable = true]) async {
     var _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
 
+    if (!enable) await _location.enableBackgroundMode(enable: enable);
+
     if (enable && !_isBackgroundModeEnabled) {
       await _location.enableBackgroundMode(enable: enable);
       _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
@@ -97,9 +99,9 @@ class LocationService {
     void Function(RiderLocation)? onData,
   }) async {
     try {
-      final _result = Utils.platform_(
-        material: await _location.getLocation(),
-        // cupertino: await _location.getLocation(),
+      final _result = await Utils.platform_(
+        material: _location.getLocation(),
+        cupertino: null,
       );
 
       final location = Utils.platform_(

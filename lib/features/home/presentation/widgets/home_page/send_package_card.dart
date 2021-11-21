@@ -298,37 +298,18 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                       ),
                     ),
                     //
-                    widget.package.paymentMethod?.maybeWhen(
-                          deliveryWithCard: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          deliveryWithCash: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          orElse: () => const Icon(
-                            Icons.check_circle,
-                            color: Palette.accentGreen,
-                          ),
-                        ) ??
-                        Utils.nothing,
+                    Flexible(
+                      flex: 2,
+                      child: AdaptiveText(
+                        '${widget.package.paymentMethod?.formatted}',
+                        minFontSize: 12,
+                        maxLines: 1,
+                        softWrap: true,
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -361,9 +342,7 @@ class _ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
-          selector: (s) =>
-              s.rider?.availability == RiderAvailability.available &&
-              s.rider?.verificationStatus == ProfileVerificationStatus.verified,
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
           builder: (c, isAvailable) => AppOutlinedButton(
             text: '${tr.decline}',
             disabled: c.select((RequestCubit el) => el.state.isLoading) ||
@@ -373,14 +352,22 @@ class _ActionButtons extends StatelessWidget {
             cupertinoHeight: 0.09.sw,
             width: 0.3.sw,
             cupertinoWidth: 0.3.sw,
-            onPressed: onDecline,
+            onPressed: () {
+              final status =
+                  c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onDecline?.call();
+            },
           ),
         ),
         //
         BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
-          selector: (s) =>
-              s.rider?.availability == RiderAvailability.available &&
-              s.rider?.verificationStatus == ProfileVerificationStatus.verified,
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
           builder: (c, isAvailable) => AdaptiveButton(
             text: '${tr.accept}',
             disabled: c.select((RequestCubit el) => el.state.isLoading) ||
@@ -392,7 +379,17 @@ class _ActionButtons extends StatelessWidget {
             cupertinoHeight: 0.09.sw,
             width: 0.3.sw,
             cupertinoWidth: 0.3.sw,
-            onPressed: onAccept,
+            onPressed: () {
+              final status =
+                  c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onAccept?.call();
+            },
           ),
         ),
       ],

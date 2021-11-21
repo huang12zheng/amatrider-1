@@ -34,7 +34,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   Future<void> close() async {
     await unsubscribeAuthChanges;
     await unsubscribeUserChanges;
-    if (state.rider != null) {
+    if (state.rider?.uid.value != null && state.subscribedToChannel) {
       _echoRepository.stopListening(
         DispatchRider.profile('${state.rider?.uid.value}'),
         DispatchRider.profileEvent,
@@ -89,6 +89,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     await _req.fold(
       (f) async => f.foldCode(
         is4031: () async => await _facade.sink(),
+        is41101: () async => await _facade.sink(),
         orElse: () => null,
       ),
       (_) async => await _facade.sink(),
@@ -113,30 +114,33 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
       ));
 
       toggleLoading(false);
+
+      if (!state.subscribedToChannel)
+        _echoRepository.private(
+          DispatchRider.profile('${_rider?.uid.value}'),
+          DispatchRider.profileEvent,
+          onInit: () {
+            emit(state.copyWith(subscribedToChannel: true));
+          },
+          onData: (data, _) async {
+            final json = jsonDecode(data) as Map<String, dynamic>;
+            final dto =
+                RiderDTO.fromJson(json['rider'] as Map<String, dynamic>);
+
+            emit(state.copyWith(rider: dto.domain));
+
+            final _storeResult =
+                await _facade.retrieveAndCacheUpdatedRider(dto: dto);
+
+            _storeResult.fold(
+              (_) => null,
+              (value) => emit(state.copyWith(option: value)),
+            );
+          },
+        );
     });
 
     toggleLoading(false);
-
-    final rider = state.rider ?? (await _facade.rider).getOrElse(() => null);
-
-    _echoRepository.private(
-      DispatchRider.profile('${rider?.uid.value}'),
-      DispatchRider.profileEvent,
-      onData: (data, _) async {
-        final json = jsonDecode(data) as Map<String, dynamic>;
-        final dto = RiderDTO.fromJson(json['rider'] as Map<String, dynamic>);
-
-        emit(state.copyWith(rider: dto.domain));
-
-        final _storeResult =
-            await _facade.retrieveAndCacheUpdatedRider(dto: dto);
-
-        _storeResult.fold(
-          (_) => null,
-          (value) => emit(state.copyWith(option: value)),
-        );
-      },
-    );
   }
 
   Future<void> signOut() async {
@@ -146,7 +150,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
     toggleLoading(false);
 
-    if (state.rider != null) {
+    if (state.rider?.uid.value != null && state.subscribedToChannel) {
       _echoRepository.leave(
         DispatchRider.profile('${state.rider?.uid.value}'),
         event: DispatchRider.profileEvent,
@@ -155,6 +159,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
     emit(state.copyWith(
       isAuthenticated: false,
+      subscribedToChannel: false,
       rider: null,
       option: none(),
     ));

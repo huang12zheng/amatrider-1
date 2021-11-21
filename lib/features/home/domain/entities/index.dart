@@ -10,3 +10,4 @@ export 'insight/insight.dart';
 export 'insight/activity/dispatch_activity.dart';
 export 'history/delivery_history.dart';
 export 'review/review.dart';
+export 'notification/index.dart';

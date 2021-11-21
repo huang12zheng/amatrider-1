@@ -35,11 +35,12 @@ class _$DeliveryHistoryTearOff {
       required Rider rider,
       required Sender sender,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
-      DateTime? depositedAt,
-      DateTime? depositConfirmedAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       DateTime? createdAt,
       DateTime? updatedAt}) {
     return _DeliveryHistory(
@@ -60,11 +61,12 @@ class _$DeliveryHistoryTearOff {
       rider: rider,
       sender: sender,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
-      depositedAt: depositedAt,
-      depositConfirmedAt: depositConfirmedAt,
+      paymentDepositedAt: paymentDepositedAt,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -95,11 +97,12 @@ mixin _$DeliveryHistory {
   Rider get rider => throw _privateConstructorUsedError;
   Sender get sender => throw _privateConstructorUsedError; //
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
   DateTime? get riderReceivedAt => throw _privateConstructorUsedError;
   DateTime? get riderDeliveredAt => throw _privateConstructorUsedError;
-  DateTime? get depositedAt => throw _privateConstructorUsedError;
-  DateTime? get depositConfirmedAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositedAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositConfirmedAt => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -131,11 +134,12 @@ abstract class $DeliveryHistoryCopyWith<$Res> {
       Rider rider,
       Sender sender,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
-      DateTime? depositedAt,
-      DateTime? depositConfirmedAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       DateTime? createdAt,
       DateTime? updatedAt});
 
@@ -174,11 +178,12 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
-    Object? depositedAt = freezed,
-    Object? depositConfirmedAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -251,6 +256,10 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -263,13 +272,13 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      depositedAt: depositedAt == freezed
-          ? _value.depositedAt
-          : depositedAt // ignore: cast_nullable_to_non_nullable
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      depositConfirmedAt: depositConfirmedAt == freezed
-          ? _value.depositConfirmedAt
-          : depositConfirmedAt // ignore: cast_nullable_to_non_nullable
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -343,11 +352,12 @@ abstract class _$DeliveryHistoryCopyWith<$Res>
       Rider rider,
       Sender sender,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
-      DateTime? depositedAt,
-      DateTime? depositConfirmedAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       DateTime? createdAt,
       DateTime? updatedAt});
 
@@ -393,11 +403,12 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
-    Object? depositedAt = freezed,
-    Object? depositConfirmedAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -470,6 +481,10 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -482,13 +497,13 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      depositedAt: depositedAt == freezed
-          ? _value.depositedAt
-          : depositedAt // ignore: cast_nullable_to_non_nullable
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      depositConfirmedAt: depositConfirmedAt == freezed
-          ? _value.depositConfirmedAt
-          : depositConfirmedAt // ignore: cast_nullable_to_non_nullable
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -523,11 +538,12 @@ class _$_DeliveryHistory extends _DeliveryHistory {
       required this.rider,
       required this.sender,
       this.orderActiveAt,
+      this.orderCancelledAt,
       this.riderAcceptedAt,
       this.riderReceivedAt,
       this.riderDeliveredAt,
-      this.depositedAt,
-      this.depositConfirmedAt,
+      this.paymentDepositedAt,
+      this.paymentDepositConfirmedAt,
       this.createdAt,
       this.updatedAt})
       : super._();
@@ -568,15 +584,17 @@ class _$_DeliveryHistory extends _DeliveryHistory {
   @override //
   final DateTime? orderActiveAt;
   @override
+  final DateTime? orderCancelledAt;
+  @override
   final DateTime? riderAcceptedAt;
   @override
   final DateTime? riderReceivedAt;
   @override
   final DateTime? riderDeliveredAt;
   @override
-  final DateTime? depositedAt;
+  final DateTime? paymentDepositedAt;
   @override
-  final DateTime? depositConfirmedAt;
+  final DateTime? paymentDepositConfirmedAt;
   @override
   final DateTime? createdAt;
   @override
@@ -584,7 +602,7 @@ class _$_DeliveryHistory extends _DeliveryHistory {
 
   @override
   String toString() {
-    return 'DeliveryHistory(id: $id, pickup: $pickup, destination: $destination, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DeliveryHistory(id: $id, pickup: $pickup, destination: $destination, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -619,16 +637,19 @@ class _$_DeliveryHistory extends _DeliveryHistory {
             (identical(other.sender, sender) || other.sender == sender) &&
             (identical(other.orderActiveAt, orderActiveAt) ||
                 other.orderActiveAt == orderActiveAt) &&
+            (identical(other.orderCancelledAt, orderCancelledAt) ||
+                other.orderCancelledAt == orderCancelledAt) &&
             (identical(other.riderAcceptedAt, riderAcceptedAt) ||
                 other.riderAcceptedAt == riderAcceptedAt) &&
             (identical(other.riderReceivedAt, riderReceivedAt) ||
                 other.riderReceivedAt == riderReceivedAt) &&
             (identical(other.riderDeliveredAt, riderDeliveredAt) ||
                 other.riderDeliveredAt == riderDeliveredAt) &&
-            (identical(other.depositedAt, depositedAt) ||
-                other.depositedAt == depositedAt) &&
-            (identical(other.depositConfirmedAt, depositConfirmedAt) ||
-                other.depositConfirmedAt == depositConfirmedAt) &&
+            (identical(other.paymentDepositedAt, paymentDepositedAt) ||
+                other.paymentDepositedAt == paymentDepositedAt) &&
+            (identical(other.paymentDepositConfirmedAt,
+                    paymentDepositConfirmedAt) ||
+                other.paymentDepositConfirmedAt == paymentDepositConfirmedAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -655,11 +676,12 @@ class _$_DeliveryHistory extends _DeliveryHistory {
         rider,
         sender,
         orderActiveAt,
+        orderCancelledAt,
         riderAcceptedAt,
         riderReceivedAt,
         riderDeliveredAt,
-        depositedAt,
-        depositConfirmedAt,
+        paymentDepositedAt,
+        paymentDepositConfirmedAt,
         createdAt,
         updatedAt
       ]);
@@ -689,11 +711,12 @@ abstract class _DeliveryHistory extends DeliveryHistory {
       required Rider rider,
       required Sender sender,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
-      DateTime? depositedAt,
-      DateTime? depositConfirmedAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_DeliveryHistory;
   const _DeliveryHistory._() : super._();
@@ -733,15 +756,17 @@ abstract class _DeliveryHistory extends DeliveryHistory {
   @override //
   DateTime? get orderActiveAt;
   @override
+  DateTime? get orderCancelledAt;
+  @override
   DateTime? get riderAcceptedAt;
   @override
   DateTime? get riderReceivedAt;
   @override
   DateTime? get riderDeliveredAt;
   @override
-  DateTime? get depositedAt;
+  DateTime? get paymentDepositedAt;
   @override
-  DateTime? get depositConfirmedAt;
+  DateTime? get paymentDepositConfirmedAt;
   @override
   DateTime? get createdAt;
   @override

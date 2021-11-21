@@ -27,7 +27,7 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
   final EchoRepository _echoRepository;
   final LogisticsRepository _repository;
 
-  late String? riderId;
+  String? riderId;
 
   HistoryCubit(
     this._repository,

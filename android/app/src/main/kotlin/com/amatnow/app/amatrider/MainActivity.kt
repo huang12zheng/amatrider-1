@@ -1,4 +1,4 @@
-package com.amatnow.amatrider
+package com.amatnow.app.amatrider
 
 import io.flutter.embedding.android.FlutterActivity
 

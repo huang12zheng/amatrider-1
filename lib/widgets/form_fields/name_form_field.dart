@@ -54,11 +54,6 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
           cupertinoFormType: cupertinoFormType,
           cupertinoPadding: cupertinoPadding,
           materialPadding: materialPadding,
-          prefix: App.platform.fold(
-            material: () => null,
-            cupertino: () =>
-                prefix == null ? null : TextFormInputLabel(text: prefix!),
-          ),
           initial: initial?.call(s),
           keyboardType: TextInputType.name,
           disabled: disabled?.call(s) ?? false,

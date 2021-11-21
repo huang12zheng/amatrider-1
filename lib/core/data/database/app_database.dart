@@ -7,6 +7,7 @@ import 'package:amatrider/core/data/models/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/serializer/serializers.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
@@ -21,6 +22,7 @@ part 'package:amatrider/core/data/models/user/rider_dto.dart';
   CountryDTOFloorConverter,
   RiderAvailabilityConverter,
   VerificationStatusConverter,
+  AuthProviderFloorConverter,
 ])
 @Database(version: 1, entities: [
   _$_RiderDTO,

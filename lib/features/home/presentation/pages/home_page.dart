@@ -1,6 +1,7 @@
 library home_page.dart;
 
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -9,6 +10,7 @@ import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
+import 'package:dartz/dartz.dart' hide State;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -362,6 +364,24 @@ class _HomePageState extends State<HomePage> {
                     //     ),
                     //   ),
                     // ),
+                    if ((!s.isLoadingActivePackages &&
+                            !s.isLoadingTransitPackages &&
+                            !s.isLoadingTransitPackages) &&
+                        (s.activePackages.isEmpty() &&
+                            s.potentialPackages.isEmpty() &&
+                            s.potentialPackages.isEmpty()))
+                      SliverToBoxAdapter(
+                        child: StageOwnerWidget(
+                          asset: right(AppAssets.noHistory(
+                            const Size.fromHeight(80),
+                          )),
+                          height: 0.7.h,
+                          useScaffold: false,
+                          title: 'No Delivery History Yet',
+                          description:
+                              'Past delivery history would appear here.',
+                        ),
+                      ),
                   ],
                 ),
               ),

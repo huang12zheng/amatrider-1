@@ -66,6 +66,12 @@ class AppRouter extends _i8.RootStackRouter {
           child: const _i2.SignupScreen(),
           title: 'Sign Up');
     },
+    SocialsSignupRoute.name: (routeData) {
+      return _i8.AdaptivePage<dynamic>(
+          routeData: routeData,
+          child: const _i2.SocialsSignupScreen(),
+          title: 'Continue with Socials');
+    },
     ForgotPasswordRoute.name: (routeData) {
       return _i8.AdaptivePage<dynamic>(
           routeData: routeData,
@@ -267,6 +273,11 @@ class AppRouter extends _i8.RootStackRouter {
             fullMatch: true,
             usesPathAsKey: true,
             guards: [guestGuard]),
+        _i8.RouteConfig(SocialsSignupRoute.name,
+            path: 'socials-signup-screen',
+            fullMatch: true,
+            usesPathAsKey: true,
+            guards: [guestGuard]),
         _i8.RouteConfig(ForgotPasswordRoute.name,
             path: 'forgot-password-screen',
             fullMatch: true,
@@ -437,6 +448,13 @@ class SignupRoute extends _i8.PageRouteInfo<void> {
   const SignupRoute() : super(name, path: 'signup-screen');
 
   static const String name = 'SignupRoute';
+}
+
+/// generated route for [_i2.SocialsSignupScreen]
+class SocialsSignupRoute extends _i8.PageRouteInfo<void> {
+  const SocialsSignupRoute() : super(name, path: 'socials-signup-screen');
+
+  static const String name = 'SocialsSignupRoute';
 }
 
 /// generated route for [_i2.ForgotPasswordScreen]

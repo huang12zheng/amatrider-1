@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:amatrider/features/auth/presentation/managers/auth_cubit/auth_cubit.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OAuthWidgets extends StatelessWidget {
+  final bool email;
   final bool google;
   final bool facebook;
   final bool twitter;
@@ -13,6 +18,7 @@ class OAuthWidgets extends StatelessWidget {
 
   const OAuthWidgets({
     Key? key,
+    this.email = false,
     this.google = true,
     this.facebook = false,
     this.apple = true,
@@ -28,15 +34,39 @@ class OAuthWidgets extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Flexible(
-            child: SocialBuilder(
-              visiblility: google,
-              text: 'Continue with Google',
-              color: App.resolveColor(
-                const Color(0xff110D3A),
-                dark: Palette.secondaryColor.shade300,
+            child: BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+              selector: (s) => s.isLoading,
+              builder: (c, isLoading) => SocialBuilder(
+                isLoading: !isLoading,
+                visiblility: email,
+                text: 'Continue with Email',
+                color: App.resolveColor(
+                  const Color(0xff110D3A),
+                  dark: Palette.secondaryColor.shade300,
+                ),
+                icon: AppAssets.emailTo(Palette.accentColor),
+                onPressed: () async {
+                  await BlocProvider.of<AuthWatcherCubit>(context).signOut();
+                  unawaited(navigator.push(const GetStartedRoute()));
+                },
               ),
-              icon: AppAssets.google,
-              onPressed: () {},
+            ),
+          ),
+          //
+          Flexible(
+            child: BlocSelector<AuthCubit, AuthState, bool>(
+              selector: (s) => s.isGoogleAuthLoading,
+              builder: (c, isLoading) => SocialBuilder(
+                isLoading: !isLoading,
+                visiblility: google,
+                text: 'Continue with Google',
+                color: App.resolveColor(
+                  const Color(0xff110D3A),
+                  dark: Palette.secondaryColor.shade300,
+                ),
+                icon: AppAssets.google,
+                onPressed: BlocProvider.of<AuthCubit>(context).googleAuth,
+              ),
             ),
           ),
           //
@@ -59,20 +89,24 @@ class OAuthWidgets extends StatelessWidget {
           //
           if (Platform.isIOS || Platform.isMacOS)
             Flexible(
-              child: SocialBuilder(
-                visiblility: apple,
-                text: 'Continue with Apple',
-                color: App.resolveColor(
-                  null,
-                  dark: Palette.secondaryColor.shade400,
+              child: BlocSelector<AuthCubit, AuthState, bool>(
+                selector: (s) => s.isAppleAuthLoading,
+                builder: (c, isLoading) => SocialBuilder(
+                  isLoading: !isLoading,
+                  visiblility: apple,
+                  text: 'Continue with Apple',
+                  color: App.resolveColor(
+                    null,
+                    dark: Palette.secondaryColor.shade400,
+                  ),
+                  icon: AppAssets.apple(
+                    App.resolveColor(null,
+                        dark: Utils.computeLuminance(
+                          Theme.of(context).scaffoldBackgroundColor,
+                        )),
+                  ),
+                  onPressed: BlocProvider.of<AuthCubit>(context).appleAuth,
                 ),
-                icon: AppAssets.apple(
-                  App.resolveColor(null,
-                      dark: Utils.computeLuminance(
-                        Theme.of(context).scaffoldBackgroundColor,
-                      )),
-                ),
-                onPressed: () {},
               ),
             ),
         ],
@@ -83,6 +117,7 @@ class OAuthWidgets extends StatelessWidget {
 
 class SocialBuilder extends StatelessWidget {
   final bool visiblility;
+  final bool isLoading;
   final Color? color;
   final Color? bgColor;
   final Widget icon;
@@ -94,6 +129,7 @@ class SocialBuilder extends StatelessWidget {
   const SocialBuilder({
     Key? key,
     required this.visiblility,
+    this.isLoading = false,
     this.color,
     this.bgColor,
     required this.icon,
@@ -105,29 +141,33 @@ class SocialBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
+    return WidgetVisibility(
       visible: visiblility,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: AdaptiveButton(
-              leading: icon,
-              text: text,
-              textColor: App.resolveColor(color ?? Palette.neutralF4),
-              backgroundColor: App.resolveColor(bgColor ?? Palette.neutralFA),
-              childPadding: EdgeInsets.symmetric(horizontal: 0.04.sw),
-              side: const BorderSide(color: Palette.neutralF4),
-              splashColor: App.resolveColor(
-                splashLight ?? Colors.grey.shade300,
-                dark: splashDark ?? Colors.grey.shade800,
+      child: WidgetVisibility(
+        visible: isLoading,
+        replacement: App.loadingSpinningLines,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: AdaptiveButton(
+                leading: icon,
+                text: text,
+                textColor: App.resolveColor(color ?? Palette.neutralF4),
+                backgroundColor: App.resolveColor(bgColor ?? Palette.neutralF4),
+                childPadding: EdgeInsets.symmetric(horizontal: 0.04.sw),
+                side: const BorderSide(color: Palette.neutralF4),
+                splashColor: App.resolveColor(
+                  splashLight ?? Colors.grey.shade300,
+                  dark: splashDark ?? Colors.grey.shade800,
+                ),
+                onPressed: onPressed,
               ),
-              onPressed: onPressed,
             ),
-          ),
-          //
-          VerticalSpace(height: 0.03.sw),
-        ],
+            //
+            VerticalSpace(height: 0.03.sw),
+          ],
+        ),
       ),
     );
   }

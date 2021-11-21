@@ -109,37 +109,6 @@ class _UtilitiesRemote implements UtilitiesRemote {
   }
 
   @override
-  Future<AppHttpResponse> depositCash(amount) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry('amount', amount));
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/deposit',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AppHttpResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<AppHttpResponse> claimBonus() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/claim-bonus',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AppHttpResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
   Future<ReviewDTO> getReviews() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -151,6 +120,25 @@ class _UtilitiesRemote implements UtilitiesRemote {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ReviewDTO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GenericPaginatedListDTO<InAppNotificationDTO>>
+      inAppNotifications() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GenericPaginatedListDTO<InAppNotificationDTO>>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/rider/notifications',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GenericPaginatedListDTO<InAppNotificationDTO>.fromJson(
+      _result.data!,
+      (json) => InAppNotificationDTO.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 

@@ -89,17 +89,37 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                         padding: EdgeInsets.zero,
                         itemHeight: (_, __) => 0.06.h,
                         statuses: [
-                          TimelineStatus(
-                            asset: AppAssets.timelinePinAsset,
-                            assetColor: Palette.accentBlue,
-                            subtitle: '${package.pickup.address.getOrEmpty}',
-                          ),
-                          //
-                          TimelineStatus(
-                            asset: AppAssets.timelinePinAsset,
-                            assetColor: Palette.accentGreen,
-                            subtitle:
-                                '${package.destination.address.getOrEmpty}',
+                          ...package.status.between(
+                            start: () => [
+                              TimelineStatus(
+                                asset: AppAssets.timelinePinAsset,
+                                assetColor: Palette.accentBlue,
+                                subtitle: 'Your Location',
+                                titleFontSize: 18.sp,
+                              ),
+                              //
+                              TimelineStatus(
+                                asset: AppAssets.timelinePinAsset,
+                                assetColor: Palette.accentGreen,
+                                subtitle:
+                                    '${package.pickup.address.getOrEmpty}',
+                              ),
+                            ],
+                            end: () => [
+                              TimelineStatus(
+                                asset: AppAssets.timelinePinAsset,
+                                assetColor: Palette.accentBlue,
+                                subtitle: 'Your Location',
+                                titleFontSize: 18.sp,
+                              ),
+                              //
+                              TimelineStatus(
+                                asset: AppAssets.timelinePinAsset,
+                                assetColor: Palette.accentGreen,
+                                subtitle:
+                                    '${package.destination.address.getOrEmpty}',
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -152,20 +172,19 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           enrouteToReceiver: () => 'Receiver',
                           riderReceived: () => 'Receiver',
                           delivered: () => 'Receiver',
-                          orElse: () => '',
+                          orElse: () => 'Sender',
                         ),
                         subtitle: s.status.maybeWhen(
                           riderAccepted: () =>
-                              '${s.sender.fullName.getOrNull ?? '....'}',
+                              '${s.sender.fullName.getOrEmpty}',
                           enrouteToSender: () =>
-                              '${s.sender.fullName.getOrNull ?? '....'}',
+                              '${s.sender.fullName.getOrEmpty}',
                           enrouteToReceiver: () =>
-                              '${s.receiverFullName.getOrNull ?? '....'}',
+                              '${s.receiverFullName.getOrEmpty}',
                           riderReceived: () =>
-                              '${s.receiverFullName.getOrNull ?? '....'}',
-                          delivered: () =>
-                              '${s.receiverFullName.getOrNull ?? '....'}',
-                          orElse: () => '...',
+                              '${s.receiverFullName.getOrEmpty}',
+                          delivered: () => '${s.receiverFullName.getOrEmpty}',
+                          orElse: () => '....',
                         ),
                         phone: s.status.maybeWhen(
                           enrouteToReceiver: () =>
@@ -188,7 +207,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           SendPackage>(
                         selector: (s) => s.package,
                         builder: (c, package) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: _BottomSheetItem.pickup(context)
                               .map(
                                 (e) => Column(
@@ -271,7 +290,7 @@ String? formatJourneyInfo(SendPackageState s) {
       ),
       orElse: () => 'Head to the Destination address',
     ),
-    orElse: () => null,
+    orElse: () => 'Head to Pickup Location',
   );
 }
 
@@ -304,6 +323,26 @@ class _BottomSheetItem {
                 : print('could not launch phone');
           },
         ),
+        if (BlocProvider.of<SendPackageCubit>(c).state.package.notes.isValid)
+          _BottomSheetItem(
+            title: 'Notes',
+            icon: Icons.note,
+            onPressed: () {
+              final p = BlocProvider.of<SendPackageCubit>(c).state.package;
+
+              App.showAlertDialog(
+                context: c,
+                barrierColor: App.resolveColor(
+                  Colors.grey.shade800.withOpacity(0.55),
+                  dark: Colors.white54,
+                ),
+                builder: (_) => _AdditionalNotesDialog(
+                  p.notes,
+                  altPhone: p.receiverPhoneAlt,
+                ),
+              );
+            },
+          ),
         _BottomSheetItem(
           title: 'Report a Problem',
           icon: Icons.report,

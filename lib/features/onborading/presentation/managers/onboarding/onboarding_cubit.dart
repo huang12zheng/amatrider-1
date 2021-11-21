@@ -35,6 +35,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
       // Initialize controller
       await playerController?.initialize();
+      // await playerController?.setLooping(true);
       // Attach Listener to controller
       playerController?.addListener(_playbackListener);
 

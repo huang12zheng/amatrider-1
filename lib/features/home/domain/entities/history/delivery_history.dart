@@ -32,11 +32,12 @@ class DeliveryHistory with _$DeliveryHistory {
     required Sender sender,
     //
     DateTime? orderActiveAt,
+    DateTime? orderCancelledAt,
     DateTime? riderAcceptedAt,
     DateTime? riderReceivedAt,
     DateTime? riderDeliveredAt,
-    DateTime? depositedAt,
-    DateTime? depositConfirmedAt,
+    DateTime? paymentDepositedAt,
+    DateTime? paymentDepositConfirmedAt,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _DeliveryHistory;

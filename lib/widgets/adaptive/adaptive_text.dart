@@ -41,6 +41,7 @@ class AdaptiveText extends StatelessWidget {
   final double? wordSpacing;
   final TextDecoration? decoration;
   final _AutoSizeTextType _type;
+  final bool? isDefault;
 
   const AdaptiveText(
     this.data, {
@@ -63,6 +64,7 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
+    this.isDefault = false,
     Color? textColor,
     Color? textColorDark,
     this.fontSize,
@@ -98,6 +100,7 @@ class AdaptiveText extends StatelessWidget {
     this.textKey,
     this.textScaleFactor,
     this.wrapWords = true,
+    this.isDefault = false,
     Color? textColor,
     Color? textColorDark,
     this.fontSize,
@@ -112,94 +115,105 @@ class AdaptiveText extends StatelessWidget {
         textColorDark = textColorDark ?? Palette.text100Dark,
         super(key: key);
 
+  TextStyle? _style(BuildContext ctx) => Theme.of(ctx).platform.fold(
+        material: () => TextStyle(
+          color: App.resolveColor(textColor, dark: textColorDark),
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          height: height,
+          letterSpacing: letterSpacing,
+          decoration: decoration,
+          wordSpacing: wordSpacing,
+        ),
+        cupertino: () => AppTheme.cupertinoTextStyle(ctx)?.merge(
+          TextStyle(
+            color: App.resolveColor(textColor, dark: textColorDark),
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+            height: height,
+            letterSpacing: letterSpacing,
+            decoration: decoration,
+            wordSpacing: wordSpacing,
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return _type == _AutoSizeTextType.standard
-        ? AutoSizeText(
-            data,
-            key: key,
-            group: group,
-            locale: locale,
-            maxFontSize: maxFontSize,
-            maxLines: maxLines,
-            minFontSize: minFontSize,
-            overflow: overflow,
-            overflowReplacement: overflowReplacement,
-            presetFontSizes: presetFontSizes,
-            semanticsLabel: semanticsLabel,
-            softWrap: softWrap,
-            stepGranularity: stepGranularity,
-            strutStyle: strutStyle,
-            style: Theme.of(context).platform.fold(
-                  material: () => TextStyle(
-                    color: App.resolveColor(textColor, dark: textColorDark),
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    height: height,
-                    letterSpacing: letterSpacing,
-                    decoration: decoration,
-                    wordSpacing: wordSpacing,
-                  ).merge(style),
-                  cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
-                    TextStyle(
-                      color: App.resolveColor(textColor, dark: textColorDark),
-                      fontSize: fontSize,
-                      fontWeight: fontWeight,
-                      height: height,
-                      letterSpacing: letterSpacing,
-                      decoration: decoration,
-                      wordSpacing: wordSpacing,
-                    ).merge(style),
-                  ),
-                ),
-            textAlign: textAlign,
-            textDirection: textDirection,
-            textKey: textKey,
-            textScaleFactor: textScaleFactor,
-            wrapWords: wrapWords,
-          )
-        : AutoSizeText.rich(
-            textSpan,
-            key: key,
-            group: group,
-            locale: locale,
-            maxFontSize: maxFontSize,
-            maxLines: maxLines,
-            minFontSize: minFontSize,
-            overflow: overflow,
-            overflowReplacement: overflowReplacement,
-            presetFontSizes: presetFontSizes,
-            semanticsLabel: semanticsLabel,
-            softWrap: softWrap,
-            stepGranularity: stepGranularity,
-            strutStyle: strutStyle,
-            style: Theme.of(context).platform.fold(
-                  material: () => TextStyle(
-                    color: App.resolveColor(textColor, dark: textColorDark),
-                    fontSize: fontSize,
-                    fontWeight: fontWeight,
-                    height: height,
-                    letterSpacing: letterSpacing,
-                    decoration: decoration,
-                    wordSpacing: wordSpacing,
-                  ).merge(style),
-                  cupertino: () => AppTheme.cupertinoTextStyle(context)?.merge(
-                    TextStyle(
-                      color: App.resolveColor(textColor, dark: textColorDark),
-                      fontSize: fontSize,
-                      fontWeight: fontWeight,
-                      height: height,
-                      letterSpacing: letterSpacing,
-                      decoration: decoration,
-                      wordSpacing: wordSpacing,
-                    ).merge(style),
-                  ),
-                ),
-            textAlign: textAlign,
-            textDirection: textDirection,
-            textKey: textKey,
-            textScaleFactor: textScaleFactor,
-            wrapWords: wrapWords,
-          );
+        ? isDefault != null && isDefault!
+            ? Text(
+                data,
+                key: key,
+                locale: locale,
+                maxLines: maxLines,
+                overflow: overflow,
+                semanticsLabel: semanticsLabel,
+                softWrap: softWrap,
+                strutStyle: strutStyle,
+                textAlign: textAlign,
+                textDirection: textDirection,
+                textScaleFactor: textScaleFactor,
+                style: _style(context)?.merge(style),
+              )
+            : AutoSizeText(
+                data,
+                key: key,
+                group: group,
+                locale: locale,
+                maxFontSize: maxFontSize,
+                maxLines: maxLines,
+                minFontSize: minFontSize,
+                overflow: overflow,
+                overflowReplacement: overflowReplacement,
+                presetFontSizes: presetFontSizes,
+                semanticsLabel: semanticsLabel,
+                softWrap: softWrap,
+                stepGranularity: stepGranularity,
+                strutStyle: strutStyle,
+                style: _style(context)?.merge(style),
+                textAlign: textAlign,
+                textDirection: textDirection,
+                textKey: textKey,
+                textScaleFactor: textScaleFactor,
+                wrapWords: wrapWords,
+              )
+        : isDefault != null && isDefault!
+            ? Text.rich(
+                textSpan,
+                key: key,
+                locale: locale,
+                maxLines: maxLines,
+                overflow: overflow,
+                semanticsLabel: semanticsLabel,
+                softWrap: softWrap,
+                strutStyle: strutStyle,
+                textAlign: textAlign,
+                textDirection: textDirection,
+                textScaleFactor: textScaleFactor,
+                style: _style(context)?.merge(style),
+              )
+            : AutoSizeText.rich(
+                textSpan,
+                key: key,
+                group: group,
+                locale: locale,
+                maxFontSize: maxFontSize,
+                maxLines: maxLines,
+                minFontSize: minFontSize,
+                overflow: overflow,
+                overflowReplacement: overflowReplacement,
+                presetFontSizes: presetFontSizes,
+                semanticsLabel: semanticsLabel,
+                softWrap: softWrap,
+                stepGranularity: stepGranularity,
+                strutStyle: strutStyle,
+                style: _style(context)?.merge(style),
+                textAlign: textAlign,
+                textDirection: textDirection,
+                textKey: textKey,
+                textScaleFactor: textScaleFactor,
+                wrapWords: wrapWords,
+              );
   }
 }

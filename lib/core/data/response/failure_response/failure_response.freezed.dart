@@ -240,7 +240,8 @@ class __$FailureResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FailureResponse extends _FailureResponse {
+@With<Failure>()
+class _$_FailureResponse extends _FailureResponse with Failure {
   const _$_FailureResponse(
       {this.code,
       @JsonKey(defaultValue: 'error') this.status,
@@ -312,7 +313,7 @@ class _$_FailureResponse extends _FailureResponse {
   }
 }
 
-abstract class _FailureResponse extends FailureResponse {
+abstract class _FailureResponse extends FailureResponse implements Failure {
   const factory _FailureResponse(
       {int? code,
       @JsonKey(defaultValue: 'error') String? status,

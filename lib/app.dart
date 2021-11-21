@@ -34,6 +34,7 @@ class AmatRider extends StatelessWidget {
         BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
         BlocProvider(create: (_) => getIt<LocationCubit>()),
         BlocProvider(create: (_) => getIt<GlobalAppPreferenceCubit>()),
+        BlocProvider(create: (_) => getIt<NotificationCubit>()),
       ],
       child:
           BlocSelector<GlobalAppPreferenceCubit, GlobalPreferenceState, Locale>(

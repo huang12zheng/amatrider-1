@@ -143,6 +143,9 @@ class _ProfilePageState extends State<ProfilePage>
                             text: '${tr.logout}',
                             isLoading: s.isLoading,
                             onPressed: () async {
+                              // Cleanup
+                              c.read<NotificationCubit>().reset();
+                              // Signout the authenticated rider
                               await c.read<AuthWatcherCubit>().signOut();
                               // Reset current Index to 0
                               c.read<TabNavigationCubit>().reset();

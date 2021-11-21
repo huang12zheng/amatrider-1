@@ -10,6 +10,7 @@ import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -26,7 +27,7 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
   final EchoRepository _echoRepository;
   final LogisticsRepository _repository;
 
-  late String? riderId;
+  String? riderId;
 
   InsightsCubit(
     this._repository,
@@ -49,6 +50,15 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
+
+  void claimBonusLoading(bool loading) =>
+      emit(state.copyWith(claimBonusLoading: loading));
+
+  void cashDepositLoading(bool loading) =>
+      emit(state.copyWith(depositCashLoading: loading));
+
+  void setCashDepositVisible(bool isOpen) =>
+      emit(state.copyWith(depositDialogOpen: isOpen));
 
   void dateFilterChanged(DateFilter? filter) =>
       emit(state.copyWith(dateFilter: filter!));
@@ -73,6 +83,9 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
             final insight =
                 InsightDTO.fromJson(json['insight'] as Map<String, dynamic>);
 
+            if (insight.insightData?.cashAtHand == 0 && state.depositDialogOpen)
+              emit(state.copyWith(depositConfirmed: true));
+
             emit(state.copyWith(
               insight: insight.insightData?.domain ?? state.insight,
             ));
@@ -95,20 +108,57 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
     toggleLoading(false);
   }
 
-  Future<void> depositCash(double? cashAtHand) async {
-    toggleLoading(true);
+  Future<void> depositCash() async {
+    cashDepositLoading(true);
 
-    emit(state.copyWith(status: none()));
+    final response = await _repository.depositCash();
 
-    final response = await _repository.depositCash(cashAtHand);
+    response.fold(
+      (failure) => emit(state.copyWith(status: some(failure))),
+      (account) {
+        emit(state.copyWith(account: account, depositConfirmed: false));
 
-    emit(state.copyWith(status: some(response)));
+        depositEcho(account);
+      },
+    );
 
-    toggleLoading(false);
+    cashDepositLoading(false);
+  }
+
+  void cancelDeposit() {
+    setCashDepositVisible(false);
+    cashDepositLoading(false);
+    _echoRepository.stopListening(
+        InsightEvents.depositChannel('${state.account?.id.value}'),
+        InsightEvents.depositEvent);
+  }
+
+  void depositEcho(BankAccount account) {
+    cashDepositLoading(true);
+
+    getIt<EchoRepository>().private(
+      InsightEvents.depositChannel('${account.id.value}'),
+      InsightEvents.depositEvent,
+      onData: (data, _this) {
+        log.wtf(data);
+
+        final json = jsonDecode(data) as Map<String, dynamic>;
+
+        log.w('deposit log => \n $json');
+
+        emit(state.copyWith(depositConfirmed: true));
+
+        if (state.depositConfirmed) {
+          _this.leaveChannel(
+              InsightEvents.depositChannel('${state.account?.id.value}'),
+              event: InsightEvents.depositEvent);
+        }
+      },
+    );
   }
 
   Future<void> claimBonus() async {
-    toggleLoading(true);
+    claimBonusLoading(true);
 
     emit(state.copyWith(status: none()));
 
@@ -116,6 +166,6 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
 
     emit(state.copyWith(status: some(response)));
 
-    toggleLoading(false);
+    claimBonusLoading(false);
   }
 }

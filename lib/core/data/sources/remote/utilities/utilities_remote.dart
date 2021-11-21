@@ -38,16 +38,11 @@ abstract class UtilitiesRemote {
     @ReceiveProgress() ProgressCallback? receiveProgress,
   });
 
-  @POST(EndPoints.DEPOSIT_CASH)
-  @MultiPart()
-  Future<AppHttpResponse> depositCash(@Part() String amount);
-
-  @POST(EndPoints.CLAIM_BONUS)
-  @MultiPart()
-  Future<AppHttpResponse> claimBonus();
-
   @GET(EndPoints.GET_REVIEWS)
   Future<ReviewDTO> getReviews();
+
+  @GET(EndPoints.ALL_NOTIFICATIONS)
+  Future<GenericPaginatedListDTO<InAppNotificationDTO>> inAppNotifications();
 
   @POST(EndPoints.CONTACT_SUPPORT)
   @MultiPart()

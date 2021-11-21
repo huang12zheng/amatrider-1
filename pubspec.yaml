@@ -36,9 +36,14 @@ dependencies:
   firebase_analytics: ^8.3.4
   # Crashlytics helps you to collect analytics and
   # details about crashes and errors that occur in your app.
-  firebase_crashlytics: ^2.2.4
+  firebase_crashlytics: ^2.3.0
+  # A Flutter plugin to use the Google Performance Monitoring for Firebase API.
+  firebase_performance: ^0.7.1+4
   # Google services & Authentication
-  # google_sign_in: ^5.0.4
+  google_sign_in: ^5.2.1
+  # Flutter bridge to initiate Sign in with Apple (on iOS, macOS, and Android).
+  # Includes support for keychain entries as well as signing in with an Apple ID.
+  sign_in_with_apple: ^3.2.0
   # Customize App font
   google_fonts: ^2.1.0
   ###### Google Maps & Location Services ######
@@ -268,6 +273,7 @@ dev_dependencies:
       url: git://github.com/Flutter-Fox/floor.git
       ref: ft/require-freezed
       path: floor_generator/
+  change_app_package_name: ^1.0.0
 
 flutter:
   # generate: true
@@ -284,6 +290,7 @@ flutter:
     - assets/svgs/auth/
     - assets/svgs/onboarding/
     - assets/svgs/dashboard/
+    - assets/svgs/dashboard/notification/
     - assets/raw/
     - assets/videos/
 

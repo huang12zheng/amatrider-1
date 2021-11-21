@@ -24,19 +24,32 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<AuthCubit>()),
-        BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
-      ],
+    return BlocProvider(
+      create: (_) => getIt<AuthCubit>(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
-            (c.status.getOrElse(() => null) != null &&
-                (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+            c.status.fold(
+              () => false,
+              (http) =>
+                  http?.response.maybeMap(
+                    error: (f) => f.foldCode(
+                      is4031: () {
+                        WidgetsBinding.instance?.addPostFrameCallback(
+                            (_) => navigateToOTPVerification());
+                        return false;
+                      },
+                      is41101: () {
+                        WidgetsBinding.instance
+                            ?.addPostFrameCallback((_) => navigateToSocials());
+                        return false;
+                      },
                       orElse: () => false,
-                    ))),
+                    ),
+                    orElse: () => false,
+                  ) ??
+                  false,
+            ),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
@@ -44,10 +57,6 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
             success: (s) => PopupDialog.success(
               duration: env.greetingDuration,
               message: s.message,
-              listener: (status) => status?.fold(dismissed: () {
-                if (navigator.current.name != OTPVerificationRoute.name)
-                  navigator.replaceAll([OTPVerificationRoute()]);
-              }),
             ).render(c),
           ),
         ),
@@ -111,9 +120,12 @@ class _SignupScreenState extends State<SignupScreen>
             leadingAction: navigator.pop,
           ),
           body: CustomScrollView(
+            shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
             controller: ScrollController(),
             physics: Utils.physics,
+            scrollDirection: Axis.vertical,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               SliverPadding(
                 padding: EdgeInsets.symmetric(

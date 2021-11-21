@@ -1,3 +1,5 @@
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -68,13 +70,17 @@ class BuildEnvironment implements Secrets {
     await flavor?.fold(
       dev: () async {
         await locator(Environment.dev);
+        await getIt<FirebasePerformance>()
+            .setPerformanceCollectionEnabled(!kDebugMode);
         await getIt<FirebaseCrashlytics>()
-            .setCrashlyticsCollectionEnabled(false);
+            .setCrashlyticsCollectionEnabled(!kDebugMode);
       },
       prod: () async {
         await locator(Environment.prod);
+        await getIt<FirebasePerformance>()
+            .setPerformanceCollectionEnabled(!kDebugMode);
         await getIt<FirebaseCrashlytics>()
-            .setCrashlyticsCollectionEnabled(true);
+            .setCrashlyticsCollectionEnabled(!kDebugMode);
       },
     );
   }

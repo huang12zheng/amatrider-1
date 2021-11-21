@@ -9,10 +9,15 @@ class InsightsState extends BaseState with _$InsightsState {
 
   const factory InsightsState({
     @Default(false) bool isLoading,
+    @Default(false) bool claimBonusLoading,
+    @Default(false) bool depositCashLoading,
     @Default(false) bool validate,
     @Default(DateFilter.all_time) DateFilter dateFilter,
     required DateTime? selectedDate,
     required Insight insight,
+    BankAccount? account,
+    @Default(false) bool depositConfirmed,
+    @Default(false) bool depositDialogOpen,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _InsightsState;
 

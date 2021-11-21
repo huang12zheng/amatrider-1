@@ -161,12 +161,17 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-                  BlocSelector<InsightsCubit, InsightsState, DispatchActivity>(
+                  BlocSelector<InsightsCubit, InsightsState, DispatchActivity?>(
                 selector: (s) => s.insight.activities,
-                builder: (_, activities) => BarChart(
-                  barData(activities),
-                  swapAnimationDuration: animDuration,
-                ),
+                builder: (_, activities) {
+                  if (activities != null)
+                    return BarChart(
+                      barData(activities),
+                      swapAnimationDuration: animDuration,
+                    );
+
+                  return Utils.nothing;
+                },
               ),
             ),
           ),

@@ -125,7 +125,10 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                     App.platform.fold(
                       material: () => const Hero(
                         tag: Const.emailLabelHeroTag,
-                        child: TextFormInputLabel(text: 'Phone Number'),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextFormInputLabel(text: 'Phone Number'),
+                        ),
                       ),
                       cupertino: () => const SizedBox.shrink(),
                     ),

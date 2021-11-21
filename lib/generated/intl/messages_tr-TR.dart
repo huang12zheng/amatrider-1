@@ -70,7 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Ana Sayfa"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "Teslimat yapmak için güzel bir gün."),
-        "inActive": MessageLookupByLibrary.simpleMessage("Aktif olarak"),
+        "inActive": MessageLookupByLibrary.simpleMessage("etkin değil"),
         "inReview": MessageLookupByLibrary.simpleMessage("İnceleme"),
         "inTransit": MessageLookupByLibrary.simpleMessage("Transit"),
         "insightBonusAlertConfirmBtn":

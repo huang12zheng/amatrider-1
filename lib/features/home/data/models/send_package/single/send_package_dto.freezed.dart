@@ -73,6 +73,9 @@ class _$SendPackageDTOTearOff {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -82,6 +85,12 @@ class _$SendPackageDTOTearOff {
       @JsonKey(name: 'rider_delivered_package_at')
       @TimestampConverter()
           DateTime? riderDeliveredAt,
+      @JsonKey(name: 'payment_deposited_at')
+      @TimestampConverter()
+          DateTime? paymentDepositedAt,
+      @JsonKey(name: 'payment_deposited_confirmed_at')
+      @TimestampConverter()
+          DateTime? paymentDepositConfirmedAt,
       @SecondsToDurationConverter()
           Duration? time,
       @DoubleSerializer()
@@ -120,9 +129,12 @@ class _$SendPackageDTOTearOff {
       riderLat: riderLat,
       riderLng: riderLng,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
+      paymentDepositedAt: paymentDepositedAt,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt,
       time: time,
       distance: distance,
       journey: journey,
@@ -194,6 +206,9 @@ mixin _$SendPackageDTO {
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
@@ -203,10 +218,17 @@ mixin _$SendPackageDTO {
   @JsonKey(name: 'rider_delivered_package_at')
   @TimestampConverter()
   DateTime? get riderDeliveredAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'payment_deposited_at')
+  @TimestampConverter()
+  DateTime? get paymentDepositedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'payment_deposited_confirmed_at')
+  @TimestampConverter()
+  DateTime? get paymentDepositConfirmedAt =>
+      throw _privateConstructorUsedError; //
   @SecondsToDurationConverter()
   Duration? get time => throw _privateConstructorUsedError;
   @DoubleSerializer()
-  double? get distance => throw _privateConstructorUsedError;
+  double? get distance => throw _privateConstructorUsedError; //
   @JsonKey(name: 'journeyDetails')
   JourneyDetailDTO? get journey => throw _privateConstructorUsedError;
   @JsonKey(name: 'package')
@@ -283,6 +305,9 @@ abstract class $SendPackageDTOCopyWith<$Res> {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -292,6 +317,12 @@ abstract class $SendPackageDTOCopyWith<$Res> {
       @JsonKey(name: 'rider_delivered_package_at')
       @TimestampConverter()
           DateTime? riderDeliveredAt,
+      @JsonKey(name: 'payment_deposited_at')
+      @TimestampConverter()
+          DateTime? paymentDepositedAt,
+      @JsonKey(name: 'payment_deposited_confirmed_at')
+      @TimestampConverter()
+          DateTime? paymentDepositConfirmedAt,
       @SecondsToDurationConverter()
           Duration? time,
       @DoubleSerializer()
@@ -346,9 +377,12 @@ class _$SendPackageDTOCopyWithImpl<$Res>
     Object? riderLat = freezed,
     Object? riderLng = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? time = freezed,
     Object? distance = freezed,
     Object? journey = freezed,
@@ -442,6 +476,10 @@ class _$SendPackageDTOCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -453,6 +491,14 @@ class _$SendPackageDTOCopyWithImpl<$Res>
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       time: time == freezed
           ? _value.time
@@ -578,6 +624,9 @@ abstract class _$SendPackageDTOCopyWith<$Res>
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -587,6 +636,12 @@ abstract class _$SendPackageDTOCopyWith<$Res>
       @JsonKey(name: 'rider_delivered_package_at')
       @TimestampConverter()
           DateTime? riderDeliveredAt,
+      @JsonKey(name: 'payment_deposited_at')
+      @TimestampConverter()
+          DateTime? paymentDepositedAt,
+      @JsonKey(name: 'payment_deposited_confirmed_at')
+      @TimestampConverter()
+          DateTime? paymentDepositConfirmedAt,
       @SecondsToDurationConverter()
           Duration? time,
       @DoubleSerializer()
@@ -646,9 +701,12 @@ class __$SendPackageDTOCopyWithImpl<$Res>
     Object? riderLat = freezed,
     Object? riderLng = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? time = freezed,
     Object? distance = freezed,
     Object? journey = freezed,
@@ -742,6 +800,10 @@ class __$SendPackageDTOCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -753,6 +815,14 @@ class __$SendPackageDTOCopyWithImpl<$Res>
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       time: time == freezed
           ? _value.time
@@ -841,6 +911,9 @@ class _$_SendPackageDTO extends _SendPackageDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           this.orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          this.orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           this.riderAcceptedAt,
@@ -850,6 +923,12 @@ class _$_SendPackageDTO extends _SendPackageDTO {
       @JsonKey(name: 'rider_delivered_package_at')
       @TimestampConverter()
           this.riderDeliveredAt,
+      @JsonKey(name: 'payment_deposited_at')
+      @TimestampConverter()
+          this.paymentDepositedAt,
+      @JsonKey(name: 'payment_deposited_confirmed_at')
+      @TimestampConverter()
+          this.paymentDepositConfirmedAt,
       @SecondsToDurationConverter()
           this.time,
       @DoubleSerializer()
@@ -945,6 +1024,10 @@ class _$_SendPackageDTO extends _SendPackageDTO {
   @TimestampConverter()
   final DateTime? orderActiveAt;
   @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  final DateTime? orderCancelledAt;
+  @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   final DateTime? riderAcceptedAt;
@@ -957,12 +1040,20 @@ class _$_SendPackageDTO extends _SendPackageDTO {
   @TimestampConverter()
   final DateTime? riderDeliveredAt;
   @override
+  @JsonKey(name: 'payment_deposited_at')
+  @TimestampConverter()
+  final DateTime? paymentDepositedAt;
+  @override
+  @JsonKey(name: 'payment_deposited_confirmed_at')
+  @TimestampConverter()
+  final DateTime? paymentDepositConfirmedAt;
+  @override //
   @SecondsToDurationConverter()
   final Duration? time;
   @override
   @DoubleSerializer()
   final double? distance;
-  @override
+  @override //
   @JsonKey(name: 'journeyDetails')
   final JourneyDetailDTO? journey;
   @override
@@ -982,7 +1073,7 @@ class _$_SendPackageDTO extends _SendPackageDTO {
 
   @override
   String toString() {
-    return 'SendPackageDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, paymentMethod: $paymentMethod, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, time: $time, distance: $distance, journey: $journey, packageData: $packageData, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SendPackageDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, paymentMethod: $paymentMethod, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, time: $time, distance: $distance, journey: $journey, packageData: $packageData, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1027,12 +1118,19 @@ class _$_SendPackageDTO extends _SendPackageDTO {
                 other.riderLng == riderLng) &&
             (identical(other.orderActiveAt, orderActiveAt) ||
                 other.orderActiveAt == orderActiveAt) &&
+            (identical(other.orderCancelledAt, orderCancelledAt) ||
+                other.orderCancelledAt == orderCancelledAt) &&
             (identical(other.riderAcceptedAt, riderAcceptedAt) ||
                 other.riderAcceptedAt == riderAcceptedAt) &&
             (identical(other.riderReceivedAt, riderReceivedAt) ||
                 other.riderReceivedAt == riderReceivedAt) &&
             (identical(other.riderDeliveredAt, riderDeliveredAt) ||
                 other.riderDeliveredAt == riderDeliveredAt) &&
+            (identical(other.paymentDepositedAt, paymentDepositedAt) ||
+                other.paymentDepositedAt == paymentDepositedAt) &&
+            (identical(other.paymentDepositConfirmedAt,
+                    paymentDepositConfirmedAt) ||
+                other.paymentDepositConfirmedAt == paymentDepositConfirmedAt) &&
             (identical(other.time, time) || other.time == time) &&
             (identical(other.distance, distance) ||
                 other.distance == distance) &&
@@ -1070,9 +1168,12 @@ class _$_SendPackageDTO extends _SendPackageDTO {
         riderLat,
         riderLng,
         orderActiveAt,
+        orderCancelledAt,
         riderAcceptedAt,
         riderReceivedAt,
         riderDeliveredAt,
+        paymentDepositedAt,
+        paymentDepositConfirmedAt,
         time,
         distance,
         journey,
@@ -1146,6 +1247,9 @@ abstract class _SendPackageDTO extends SendPackageDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -1155,6 +1259,12 @@ abstract class _SendPackageDTO extends SendPackageDTO {
       @JsonKey(name: 'rider_delivered_package_at')
       @TimestampConverter()
           DateTime? riderDeliveredAt,
+      @JsonKey(name: 'payment_deposited_at')
+      @TimestampConverter()
+          DateTime? paymentDepositedAt,
+      @JsonKey(name: 'payment_deposited_confirmed_at')
+      @TimestampConverter()
+          DateTime? paymentDepositConfirmedAt,
       @SecondsToDurationConverter()
           Duration? time,
       @DoubleSerializer()
@@ -1249,6 +1359,10 @@ abstract class _SendPackageDTO extends SendPackageDTO {
   @TimestampConverter()
   DateTime? get orderActiveAt;
   @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt;
+  @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   DateTime? get riderAcceptedAt;
@@ -1261,12 +1375,20 @@ abstract class _SendPackageDTO extends SendPackageDTO {
   @TimestampConverter()
   DateTime? get riderDeliveredAt;
   @override
+  @JsonKey(name: 'payment_deposited_at')
+  @TimestampConverter()
+  DateTime? get paymentDepositedAt;
+  @override
+  @JsonKey(name: 'payment_deposited_confirmed_at')
+  @TimestampConverter()
+  DateTime? get paymentDepositConfirmedAt;
+  @override //
   @SecondsToDurationConverter()
   Duration? get time;
   @override
   @DoubleSerializer()
   double? get distance;
-  @override
+  @override //
   @JsonKey(name: 'journeyDetails')
   JourneyDetailDTO? get journey;
   @override

@@ -1,11 +1,6 @@
 part of signup_screen.dart;
 
 class _MaterialSignUp extends StatelessWidget {
-  static const dropdownBorderRadius = BorderRadius.only(
-    topLeft: Radius.circular(Utils.inputBorderRadius),
-    bottomLeft: Radius.circular(Utils.inputBorderRadius),
-  );
-  
   const _MaterialSignUp({Key? key}) : super(key: key);
 
   @override

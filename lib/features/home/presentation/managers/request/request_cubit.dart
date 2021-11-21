@@ -32,7 +32,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
   final EchoRepository _echoRepository;
   final LogisticsRepository _logisticsRepository;
 
-  late String? riderId;
+  String? riderId;
 
   RequestCubit(
     this._auth,
@@ -48,13 +48,13 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       _echoRepository.stopListening(
           RequestEvents.packageDeliveredChannel('$riderId'),
           RequestEvents.packageDeliveredEvent);
-      _echoRepository.close(DispatchRider.newRequest('$riderId'));
+      _echoRepository.close(RequestEvents.newRequestChannel('$riderId'));
     }
     return super.close();
   }
 
-  void _toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  // void _toggleLoading([bool? isLoading]) =>
+  //     emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
   void clearList() => emit(state.copyWith(
         activePackages: const KtList.empty(),
@@ -97,7 +97,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
           (a, b) => b.createdAt!.compareTo(a.createdAt!),
         ),
       ));
-    if (package != null)
+    if (package != null && !state.activePackages.contains(package))
       emit(state.copyWith(
         activePackages: state.activePackages
             .plusElement(package)
@@ -115,7 +115,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
           (a, b) => b.createdAt!.compareTo(a.createdAt!),
         ),
       ));
-    if (package != null)
+    if (package != null && !state.packagesInTransit.contains(package))
       emit(state.copyWith(
         packagesInTransit: state.packagesInTransit
             .plusElement(package)
@@ -131,11 +131,11 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       (account) {
         riderId = account!.uid.value!;
 
-        _echoRepository.notification(
-          DispatchRider.newRequest('$riderId'),
+        _echoRepository.private(
+          RequestEvents.newRequestChannel('$riderId'),
+          RequestEvents.newRequestEvent,
           onData: (data, _) {
             final json = jsonDecode(data) as Map<String, dynamic>;
-            final type = WebsocketResponseType.valueOf(json['type'] as String);
             final title =
                 json.containsKey('title') ? json['title'] as String : null;
 
@@ -143,17 +143,14 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
               emit(state.copyWith(
                 status: some(AppHttpResponse.successful(
                   title,
-                  false,
-                  UniqueId<String>.v4().value,
+                  pop: false,
+                  uuid: UniqueId<String>.v4().value,
                 )),
               ));
 
-            type.when(
-              newPackage: () {
-                final package = SendPackageDTO.fromJson(json);
-                _updateActivePackages(package: package.packageData?.domain);
-              },
-            );
+            final package = SendPackageDTO.fromJson(json);
+
+            _updateActivePackages(package: package.packageData?.domain);
           },
         );
 

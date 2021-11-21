@@ -12,7 +12,7 @@ mixin SendPackageEvents {
 }
 
 mixin DispatchRider {
-  static String newRequest(String riderId) => 'rider.notifications.$riderId';
+  static String notifications(String riderId) => 'rider.notifications.$riderId';
   static String profile(String riderId) => 'rider.profile.$riderId';
   static String get profileEvent => '.rider.profile.updated';
 }
@@ -27,9 +27,16 @@ mixin InsightEvents {
   static String channel(String riderId) => 'insight.$riderId';
 
   static String get event => '.insight.updated';
+
+  static String depositChannel(String id) => 'rider.deposit.$id';
+
+  static String get depositEvent => '.depost.confirmed';
 }
 
 mixin RequestEvents {
+  static String newRequestChannel(String riderId) => 'rider.packages.$riderId';
+  static String get newRequestEvent => '.rider.packages.new';
+
   static String get packageAcceptedChannel => 'package.info';
   static String get packageAcceptedEvent => '.package.accepted';
 

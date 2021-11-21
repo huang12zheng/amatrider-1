@@ -370,10 +370,10 @@ class S {
     );
   }
 
-  /// `In Active`
+  /// `Inactive`
   String get inActive {
     return Intl.message(
-      'In Active',
+      'Inactive',
       name: 'inActive',
       desc: '',
       args: [],

@@ -29,17 +29,17 @@ class _InsightRemote implements InsightRemote {
   }
 
   @override
-  Future<AppHttpResponse> deposit(amount) async {
+  Future<BankAccountDTO> deposit() async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'amount': amount};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AppHttpResponse>(
+        _setStreamType<BankAccountDTO>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/deposit',
+                .compose(_dio.options, '/rider/deposit/initiate',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = AppHttpResponse.fromJson(_result.data!);
+    final value = BankAccountDTO.fromJson(_result.data!);
     return value;
   }
 

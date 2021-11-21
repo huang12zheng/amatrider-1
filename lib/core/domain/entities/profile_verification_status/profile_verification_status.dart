@@ -25,6 +25,16 @@ class ProfileVerificationStatus extends EnumClass {
       _$values.toBuiltList();
 
   static ProfileVerificationStatus valueOf(String name) => _$valueOf(name);
+
+  static ProfileVerificationStatus fromInt(int value) {
+    switch (value) {
+      case 1:
+        return ProfileVerificationStatus.verified;
+      case 0:
+      default:
+        return ProfileVerificationStatus.unverified;
+    }
+  }
 }
 
 extension ProfileVerificationStatusX on ProfileVerificationStatus {

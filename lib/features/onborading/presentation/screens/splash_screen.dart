@@ -56,93 +56,99 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(color: Palette.accentColor),
-        child: SizedBox.expand(
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: BlocBuilder<OnboardingCubit, OnboardingState>(
-              builder: (c, s) {
-                final controller = c.read<OnboardingCubit>().playerController;
-                return FutureBuilder(
-                  future: _memoizer.runOnce(() async {
-                    await BlocProvider.of<AuthWatcherCubit>(App.context)
-                        .subscribeToAuthChanges(
-                      (either) => either.fold(
-                        (failure) => failure.foldCode(
-                          orElse: () => null,
-                          is4031: () {
-                            App.context
-                                .read<OnboardingCubit>()
-                                .subscribeToPlayback(
-                              after: () async {
-                                if (navigator.current.name !=
-                                    OTPVerificationRoute.name)
-                                  await navigator.pushAndPopUntil(
-                                    OTPVerificationRoute(),
-                                    predicate: (route) => route.isFirst,
-                                  );
-                              },
-                            );
-
-                            // final state =
-                            //     App.context.read<OnboardingCubit>().state;
-                            // if (state.playbackEnded &&
-                            //     navigator.current.name !=
-                            //         OTPVerificationRoute.name)
-                            //   navigator.pushAndPopUntil(
-                            //     OTPVerificationRoute(),
-                            //     predicate: (route) => route.isFirst,
-                            //   );
-                          },
-                        ),
-                        (option) => option.fold(
-                          () {
-                            if (navigator.current.name == DashboardRoute.name)
-                              navigator.pushAndPopUntil(const GetStartedRoute(),
-                                  predicate: (route) => false);
-                          },
-                          (_) async {
-                            final state =
-                                App.context.read<OnboardingCubit>().state;
-
-                            if (state.playbackEnded &&
-                                navigator.current.name != DashboardRoute.name) {
-                              WidgetsBinding.instance!.addPostFrameCallback(
-                                (_) async => await Future.delayed(
-                                  env.greetingDuration,
-                                  () async {
-                                    await navigator
-                                        .replaceAll([const DashboardRoute()]);
-                                  },
-                                ),
-                              );
-                            }
-                          },
-                        ),
+      body: SizedBox.expand(
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: BlocBuilder<OnboardingCubit, OnboardingState>(
+            builder: (c, s) {
+              final controller = c.read<OnboardingCubit>().playerController;
+              return FutureBuilder(
+                future: _memoizer.runOnce(() async {
+                  await BlocProvider.of<AuthWatcherCubit>(App.context)
+                      .subscribeToAuthChanges(
+                    (either) => either.fold(
+                      (failure) => failure.foldCode(
+                        orElse: () => null,
+                        is41101: () {
+                          App.context
+                              .read<OnboardingCubit>()
+                              .subscribeToPlayback(
+                            after: () async {
+                              navigateToSocials();
+                            },
+                          );
+                        },
+                        is4031: () {
+                          App.context
+                              .read<OnboardingCubit>()
+                              .subscribeToPlayback(
+                            after: () async {
+                              navigateToOTPVerification();
+                            },
+                          );
+                        },
                       ),
-                    );
-                  }),
-                  builder: (_, __) => Visibility(
-                    visible: s.isVideoPlaying,
-                    replacement: SizedBox.square(
-                      dimension: Theme.of(context).platform.fold(
-                            material: () => 1.5.sw,
-                            cupertino: () => 2.sw,
-                          ),
-                      child: Center(child: Utils.circularLoader(stroke: 2.5)),
+                      (option) => option.fold(
+                        () {
+                          if (navigator.current.name == DashboardRoute.name)
+                            navigator.pushAndPopUntil(const GetStartedRoute(),
+                                predicate: (route) => false);
+                        },
+                        (_) async {
+                          final state =
+                              App.context.read<OnboardingCubit>().state;
+
+                          if (state.playbackEnded &&
+                              navigator.current.name != DashboardRoute.name) {
+                            WidgetsBinding.instance!.addPostFrameCallback(
+                              (_) async => await Future.delayed(
+                                env.greetingDuration,
+                                () async {
+                                  await navigator
+                                      .replaceAll([const DashboardRoute()]);
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ),
-                    child: SizedBox(
-                      width: 1.5.sw,
-                      height: 1.5.sh,
-                      child: controller != null
-                          ? VideoPlayer(controller)
-                          : const SizedBox.shrink(),
+                  );
+                }),
+                builder: (_, __) => WidgetVisibility(
+                  visible: s.isVideoPlaying,
+                  replacement: SizedBox.square(
+                    dimension: Theme.of(context).platform.fold(
+                          material: () => 1.5.sw,
+                          cupertino: () => 2.sw,
+                        ),
+                    child: Center(
+                      child: Utils.circularLoader(
+                        stroke: 2.5,
+                        color: Palette.accentColor,
+                      ),
                     ),
                   ),
-                );
-              },
-            ),
+                  child: SizedBox(
+                    width: 1.w,
+                    height: 1.h,
+                    child: Center(
+                      child: controller == null
+                          ? const SizedBox.shrink()
+                          : OrientationBuilder(
+                              builder: (_, orientation) => AspectRatio(
+                                aspectRatio: orientation.index ==
+                                        Orientation.portrait.index
+                                    ? 0.49
+                                    : 1.91,
+                                child: VideoPlayer(controller),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

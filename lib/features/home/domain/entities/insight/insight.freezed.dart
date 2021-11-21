@@ -23,9 +23,15 @@ class _$InsightTearOff {
       required BasicTextField<int?> progress,
       required BasicTextField<int?> daysLeft,
       required AmountField<double?> cashAtHand,
-      required AmountField<double?> bonus,
-      required BasicTextField<int?> extraDelivery,
-      required DispatchActivity activities,
+      required AmountField<double?> currentBonus,
+      required AmountField<double?> totalBonusClaimed,
+      required AmountField<double?> totalBonusAvailable,
+      bool canClaimBonus = false,
+      required AmountField<double?> bonusPerExtraDelivery,
+      required BasicTextField<int?> totalExtraDeliveries,
+      required BasicTextField<int?> completedExtraDeliveries,
+      required DispatchActivity? activities,
+      required BasicTextField<double?> avgRating,
       DateTime? planStarted,
       DateTime? planEnded}) {
     return _Insight(
@@ -34,9 +40,15 @@ class _$InsightTearOff {
       progress: progress,
       daysLeft: daysLeft,
       cashAtHand: cashAtHand,
-      bonus: bonus,
-      extraDelivery: extraDelivery,
+      currentBonus: currentBonus,
+      totalBonusClaimed: totalBonusClaimed,
+      totalBonusAvailable: totalBonusAvailable,
+      canClaimBonus: canClaimBonus,
+      bonusPerExtraDelivery: bonusPerExtraDelivery,
+      totalExtraDeliveries: totalExtraDeliveries,
+      completedExtraDeliveries: completedExtraDeliveries,
       activities: activities,
+      avgRating: avgRating,
       planStarted: planStarted,
       planEnded: planEnded,
     );
@@ -53,9 +65,20 @@ mixin _$Insight {
   BasicTextField<int?> get progress => throw _privateConstructorUsedError;
   BasicTextField<int?> get daysLeft => throw _privateConstructorUsedError;
   AmountField<double?> get cashAtHand => throw _privateConstructorUsedError;
-  AmountField<double?> get bonus => throw _privateConstructorUsedError;
-  BasicTextField<int?> get extraDelivery => throw _privateConstructorUsedError;
-  DispatchActivity get activities => throw _privateConstructorUsedError;
+  AmountField<double?> get currentBonus => throw _privateConstructorUsedError;
+  AmountField<double?> get totalBonusClaimed =>
+      throw _privateConstructorUsedError;
+  AmountField<double?> get totalBonusAvailable =>
+      throw _privateConstructorUsedError;
+  bool get canClaimBonus => throw _privateConstructorUsedError;
+  AmountField<double?> get bonusPerExtraDelivery =>
+      throw _privateConstructorUsedError;
+  BasicTextField<int?> get totalExtraDeliveries =>
+      throw _privateConstructorUsedError;
+  BasicTextField<int?> get completedExtraDeliveries =>
+      throw _privateConstructorUsedError;
+  DispatchActivity? get activities => throw _privateConstructorUsedError;
+  BasicTextField<double?> get avgRating => throw _privateConstructorUsedError;
   DateTime? get planStarted => throw _privateConstructorUsedError;
   DateTime? get planEnded => throw _privateConstructorUsedError;
 
@@ -73,13 +96,19 @@ abstract class $InsightCopyWith<$Res> {
       BasicTextField<int?> progress,
       BasicTextField<int?> daysLeft,
       AmountField<double?> cashAtHand,
-      AmountField<double?> bonus,
-      BasicTextField<int?> extraDelivery,
-      DispatchActivity activities,
+      AmountField<double?> currentBonus,
+      AmountField<double?> totalBonusClaimed,
+      AmountField<double?> totalBonusAvailable,
+      bool canClaimBonus,
+      AmountField<double?> bonusPerExtraDelivery,
+      BasicTextField<int?> totalExtraDeliveries,
+      BasicTextField<int?> completedExtraDeliveries,
+      DispatchActivity? activities,
+      BasicTextField<double?> avgRating,
       DateTime? planStarted,
       DateTime? planEnded});
 
-  $DispatchActivityCopyWith<$Res> get activities;
+  $DispatchActivityCopyWith<$Res>? get activities;
 }
 
 /// @nodoc
@@ -97,9 +126,15 @@ class _$InsightCopyWithImpl<$Res> implements $InsightCopyWith<$Res> {
     Object? progress = freezed,
     Object? daysLeft = freezed,
     Object? cashAtHand = freezed,
-    Object? bonus = freezed,
-    Object? extraDelivery = freezed,
+    Object? currentBonus = freezed,
+    Object? totalBonusClaimed = freezed,
+    Object? totalBonusAvailable = freezed,
+    Object? canClaimBonus = freezed,
+    Object? bonusPerExtraDelivery = freezed,
+    Object? totalExtraDeliveries = freezed,
+    Object? completedExtraDeliveries = freezed,
     Object? activities = freezed,
+    Object? avgRating = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
   }) {
@@ -124,18 +159,42 @@ class _$InsightCopyWithImpl<$Res> implements $InsightCopyWith<$Res> {
           ? _value.cashAtHand
           : cashAtHand // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      bonus: bonus == freezed
-          ? _value.bonus
-          : bonus // ignore: cast_nullable_to_non_nullable
+      currentBonus: currentBonus == freezed
+          ? _value.currentBonus
+          : currentBonus // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      extraDelivery: extraDelivery == freezed
-          ? _value.extraDelivery
-          : extraDelivery // ignore: cast_nullable_to_non_nullable
+      totalBonusClaimed: totalBonusClaimed == freezed
+          ? _value.totalBonusClaimed
+          : totalBonusClaimed // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      totalBonusAvailable: totalBonusAvailable == freezed
+          ? _value.totalBonusAvailable
+          : totalBonusAvailable // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      canClaimBonus: canClaimBonus == freezed
+          ? _value.canClaimBonus
+          : canClaimBonus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bonusPerExtraDelivery: bonusPerExtraDelivery == freezed
+          ? _value.bonusPerExtraDelivery
+          : bonusPerExtraDelivery // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      totalExtraDeliveries: totalExtraDeliveries == freezed
+          ? _value.totalExtraDeliveries
+          : totalExtraDeliveries // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<int?>,
+      completedExtraDeliveries: completedExtraDeliveries == freezed
+          ? _value.completedExtraDeliveries
+          : completedExtraDeliveries // ignore: cast_nullable_to_non_nullable
               as BasicTextField<int?>,
       activities: activities == freezed
           ? _value.activities
           : activities // ignore: cast_nullable_to_non_nullable
-              as DispatchActivity,
+              as DispatchActivity?,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
       planStarted: planStarted == freezed
           ? _value.planStarted
           : planStarted // ignore: cast_nullable_to_non_nullable
@@ -148,8 +207,12 @@ class _$InsightCopyWithImpl<$Res> implements $InsightCopyWith<$Res> {
   }
 
   @override
-  $DispatchActivityCopyWith<$Res> get activities {
-    return $DispatchActivityCopyWith<$Res>(_value.activities, (value) {
+  $DispatchActivityCopyWith<$Res>? get activities {
+    if (_value.activities == null) {
+      return null;
+    }
+
+    return $DispatchActivityCopyWith<$Res>(_value.activities!, (value) {
       return _then(_value.copyWith(activities: value));
     });
   }
@@ -166,14 +229,20 @@ abstract class _$InsightCopyWith<$Res> implements $InsightCopyWith<$Res> {
       BasicTextField<int?> progress,
       BasicTextField<int?> daysLeft,
       AmountField<double?> cashAtHand,
-      AmountField<double?> bonus,
-      BasicTextField<int?> extraDelivery,
-      DispatchActivity activities,
+      AmountField<double?> currentBonus,
+      AmountField<double?> totalBonusClaimed,
+      AmountField<double?> totalBonusAvailable,
+      bool canClaimBonus,
+      AmountField<double?> bonusPerExtraDelivery,
+      BasicTextField<int?> totalExtraDeliveries,
+      BasicTextField<int?> completedExtraDeliveries,
+      DispatchActivity? activities,
+      BasicTextField<double?> avgRating,
       DateTime? planStarted,
       DateTime? planEnded});
 
   @override
-  $DispatchActivityCopyWith<$Res> get activities;
+  $DispatchActivityCopyWith<$Res>? get activities;
 }
 
 /// @nodoc
@@ -192,9 +261,15 @@ class __$InsightCopyWithImpl<$Res> extends _$InsightCopyWithImpl<$Res>
     Object? progress = freezed,
     Object? daysLeft = freezed,
     Object? cashAtHand = freezed,
-    Object? bonus = freezed,
-    Object? extraDelivery = freezed,
+    Object? currentBonus = freezed,
+    Object? totalBonusClaimed = freezed,
+    Object? totalBonusAvailable = freezed,
+    Object? canClaimBonus = freezed,
+    Object? bonusPerExtraDelivery = freezed,
+    Object? totalExtraDeliveries = freezed,
+    Object? completedExtraDeliveries = freezed,
     Object? activities = freezed,
+    Object? avgRating = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
   }) {
@@ -219,18 +294,42 @@ class __$InsightCopyWithImpl<$Res> extends _$InsightCopyWithImpl<$Res>
           ? _value.cashAtHand
           : cashAtHand // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      bonus: bonus == freezed
-          ? _value.bonus
-          : bonus // ignore: cast_nullable_to_non_nullable
+      currentBonus: currentBonus == freezed
+          ? _value.currentBonus
+          : currentBonus // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      extraDelivery: extraDelivery == freezed
-          ? _value.extraDelivery
-          : extraDelivery // ignore: cast_nullable_to_non_nullable
+      totalBonusClaimed: totalBonusClaimed == freezed
+          ? _value.totalBonusClaimed
+          : totalBonusClaimed // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      totalBonusAvailable: totalBonusAvailable == freezed
+          ? _value.totalBonusAvailable
+          : totalBonusAvailable // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      canClaimBonus: canClaimBonus == freezed
+          ? _value.canClaimBonus
+          : canClaimBonus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bonusPerExtraDelivery: bonusPerExtraDelivery == freezed
+          ? _value.bonusPerExtraDelivery
+          : bonusPerExtraDelivery // ignore: cast_nullable_to_non_nullable
+              as AmountField<double?>,
+      totalExtraDeliveries: totalExtraDeliveries == freezed
+          ? _value.totalExtraDeliveries
+          : totalExtraDeliveries // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<int?>,
+      completedExtraDeliveries: completedExtraDeliveries == freezed
+          ? _value.completedExtraDeliveries
+          : completedExtraDeliveries // ignore: cast_nullable_to_non_nullable
               as BasicTextField<int?>,
       activities: activities == freezed
           ? _value.activities
           : activities // ignore: cast_nullable_to_non_nullable
-              as DispatchActivity,
+              as DispatchActivity?,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
       planStarted: planStarted == freezed
           ? _value.planStarted
           : planStarted // ignore: cast_nullable_to_non_nullable
@@ -252,9 +351,15 @@ class _$_Insight extends _Insight {
       required this.progress,
       required this.daysLeft,
       required this.cashAtHand,
-      required this.bonus,
-      required this.extraDelivery,
+      required this.currentBonus,
+      required this.totalBonusClaimed,
+      required this.totalBonusAvailable,
+      this.canClaimBonus = false,
+      required this.bonusPerExtraDelivery,
+      required this.totalExtraDeliveries,
+      required this.completedExtraDeliveries,
       required this.activities,
+      required this.avgRating,
       this.planStarted,
       this.planEnded})
       : super._();
@@ -270,11 +375,24 @@ class _$_Insight extends _Insight {
   @override
   final AmountField<double?> cashAtHand;
   @override
-  final AmountField<double?> bonus;
+  final AmountField<double?> currentBonus;
   @override
-  final BasicTextField<int?> extraDelivery;
+  final AmountField<double?> totalBonusClaimed;
   @override
-  final DispatchActivity activities;
+  final AmountField<double?> totalBonusAvailable;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool canClaimBonus;
+  @override
+  final AmountField<double?> bonusPerExtraDelivery;
+  @override
+  final BasicTextField<int?> totalExtraDeliveries;
+  @override
+  final BasicTextField<int?> completedExtraDeliveries;
+  @override
+  final DispatchActivity? activities;
+  @override
+  final BasicTextField<double?> avgRating;
   @override
   final DateTime? planStarted;
   @override
@@ -282,7 +400,7 @@ class _$_Insight extends _Insight {
 
   @override
   String toString() {
-    return 'Insight(completed: $completed, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, bonus: $bonus, extraDelivery: $extraDelivery, activities: $activities, planStarted: $planStarted, planEnded: $planEnded)';
+    return 'Insight(completed: $completed, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, currentBonus: $currentBonus, totalBonusClaimed: $totalBonusClaimed, totalBonusAvailable: $totalBonusAvailable, canClaimBonus: $canClaimBonus, bonusPerExtraDelivery: $bonusPerExtraDelivery, totalExtraDeliveries: $totalExtraDeliveries, completedExtraDeliveries: $completedExtraDeliveries, activities: $activities, avgRating: $avgRating, planStarted: $planStarted, planEnded: $planEnded)';
   }
 
   @override
@@ -299,11 +417,25 @@ class _$_Insight extends _Insight {
                 other.daysLeft == daysLeft) &&
             (identical(other.cashAtHand, cashAtHand) ||
                 other.cashAtHand == cashAtHand) &&
-            (identical(other.bonus, bonus) || other.bonus == bonus) &&
-            (identical(other.extraDelivery, extraDelivery) ||
-                other.extraDelivery == extraDelivery) &&
+            (identical(other.currentBonus, currentBonus) ||
+                other.currentBonus == currentBonus) &&
+            (identical(other.totalBonusClaimed, totalBonusClaimed) ||
+                other.totalBonusClaimed == totalBonusClaimed) &&
+            (identical(other.totalBonusAvailable, totalBonusAvailable) ||
+                other.totalBonusAvailable == totalBonusAvailable) &&
+            (identical(other.canClaimBonus, canClaimBonus) ||
+                other.canClaimBonus == canClaimBonus) &&
+            (identical(other.bonusPerExtraDelivery, bonusPerExtraDelivery) ||
+                other.bonusPerExtraDelivery == bonusPerExtraDelivery) &&
+            (identical(other.totalExtraDeliveries, totalExtraDeliveries) ||
+                other.totalExtraDeliveries == totalExtraDeliveries) &&
+            (identical(
+                    other.completedExtraDeliveries, completedExtraDeliveries) ||
+                other.completedExtraDeliveries == completedExtraDeliveries) &&
             (identical(other.activities, activities) ||
                 other.activities == activities) &&
+            (identical(other.avgRating, avgRating) ||
+                other.avgRating == avgRating) &&
             (identical(other.planStarted, planStarted) ||
                 other.planStarted == planStarted) &&
             (identical(other.planEnded, planEnded) ||
@@ -318,9 +450,15 @@ class _$_Insight extends _Insight {
       progress,
       daysLeft,
       cashAtHand,
-      bonus,
-      extraDelivery,
+      currentBonus,
+      totalBonusClaimed,
+      totalBonusAvailable,
+      canClaimBonus,
+      bonusPerExtraDelivery,
+      totalExtraDeliveries,
+      completedExtraDeliveries,
       activities,
+      avgRating,
       planStarted,
       planEnded);
 
@@ -337,9 +475,15 @@ abstract class _Insight extends Insight {
       required BasicTextField<int?> progress,
       required BasicTextField<int?> daysLeft,
       required AmountField<double?> cashAtHand,
-      required AmountField<double?> bonus,
-      required BasicTextField<int?> extraDelivery,
-      required DispatchActivity activities,
+      required AmountField<double?> currentBonus,
+      required AmountField<double?> totalBonusClaimed,
+      required AmountField<double?> totalBonusAvailable,
+      bool canClaimBonus,
+      required AmountField<double?> bonusPerExtraDelivery,
+      required BasicTextField<int?> totalExtraDeliveries,
+      required BasicTextField<int?> completedExtraDeliveries,
+      required DispatchActivity? activities,
+      required BasicTextField<double?> avgRating,
       DateTime? planStarted,
       DateTime? planEnded}) = _$_Insight;
   const _Insight._() : super._();
@@ -355,11 +499,23 @@ abstract class _Insight extends Insight {
   @override
   AmountField<double?> get cashAtHand;
   @override
-  AmountField<double?> get bonus;
+  AmountField<double?> get currentBonus;
   @override
-  BasicTextField<int?> get extraDelivery;
+  AmountField<double?> get totalBonusClaimed;
   @override
-  DispatchActivity get activities;
+  AmountField<double?> get totalBonusAvailable;
+  @override
+  bool get canClaimBonus;
+  @override
+  AmountField<double?> get bonusPerExtraDelivery;
+  @override
+  BasicTextField<int?> get totalExtraDeliveries;
+  @override
+  BasicTextField<int?> get completedExtraDeliveries;
+  @override
+  DispatchActivity? get activities;
+  @override
+  BasicTextField<double?> get avgRating;
   @override
   DateTime? get planStarted;
   @override

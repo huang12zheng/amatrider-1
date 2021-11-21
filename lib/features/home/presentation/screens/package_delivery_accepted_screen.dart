@@ -1,5 +1,6 @@
 library package_delivery_accepted_screen.dart;
 
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
@@ -17,17 +18,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 part '../widgets/package_delivery/_issue_bottom_sheet.dart';
 part '../widgets/package_delivery/_package_delivery_widgets.dart';
+part '../widgets/package_delivery/_additional_notes_dialog.dart';
 
 /// A stateless widget to render PackageDeliveryAcceptedScreen.
 class PackageDeliveryAcceptedScreen extends StatefulWidget
     with AutoRouteWrapper {
   static final double _fabHeightClosed = _panelHeightClosed + 0.03.h;
   static final double _fabHeightOpened = _panelHeightOpened + 0.03.h;
-  static final double _panelHeightClosed = 0.39.h;
-  static final double _panelHeightOpened = 0.5.h;
+  static final double _panelHeightClosed = 0.4.h;
+  static final double _panelHeightOpened = 0.52.h;
   static final double _trafficHeightClosed = _fabHeightClosed + 0.09.h;
   static final double _trafficHeightOpened = _fabHeightOpened + 0.09.h;
-  static final double _buttonBottom = 0.029.h;
+  static final double _buttonBottom = 0.03.h;
   static final double _buttonHeight = 0.06.h;
   static final double _totalBottom = _buttonHeight + 0.026.h;
 
@@ -49,35 +51,50 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
           create: (_) => getIt<SendPackageCubit>()..init(sendPackage),
         ),
       ],
-      child: BlocListener<SendPackageCubit, SendPackageState>(
-        listenWhen: (p, c) =>
-            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
-            (c.status.getOrElse(() => null) != null &&
-                (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
-                      orElse: () => false,
-                    ))),
-        listener: (c, s) => s.status.fold(
-          () => null,
-          (it) => it?.response.map(
-            error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (res) => PopupDialog.success(
-              duration: const Duration(seconds: 2),
-              message: res.message,
-              listener: (val) => val?.fold(dismissed: () async {
-                if (s.package.status == SendPackageStatus.DELIVERED) {
-                  // c.read<SendPackageCubit>().closeWebsocket();
-
-                  await Future.delayed(const Duration(milliseconds: 600), () {
-                    navigator.popUntil(
-                      (route) => route.settings.name == DashboardRoute.name,
-                    );
-                  });
-                }
-              }),
-            ).render(c),
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<SendPackageCubit, SendPackageState>(
+            listenWhen: (p, c) => p.package.status != c.package.status,
+            listener: (c, s) => s.package.status.maybeWhen(
+              enrouteToSender: () {},
+              enrouteToReceiver: () {},
+              orElse: () => null,
+            ),
           ),
-        ),
+          //
+          BlocListener<SendPackageCubit, SendPackageState>(
+            listenWhen: (p, c) =>
+                p.status.getOrElse(() => null) !=
+                    c.status.getOrElse(() => null) ||
+                (c.status.getOrElse(() => null) != null &&
+                    (c.status.getOrElse(() => null)!.response.maybeMap(
+                          error: (f) => f.foldCode(orElse: () => false),
+                          orElse: () => false,
+                        ))),
+            listener: (c, s) => s.status.fold(
+              () => null,
+              (it) => it?.response.map(
+                error: (f) => PopupDialog.error(message: f.message).render(c),
+                success: (res) => PopupDialog.success(
+                  duration: const Duration(seconds: 2),
+                  message: res.message,
+                  listener: (val) => val?.fold(dismissed: () async {
+                    if (s.package.status == SendPackageStatus.DELIVERED) {
+                      // c.read<SendPackageCubit>().closeWebsocket();
+
+                      await Future.delayed(const Duration(milliseconds: 600),
+                          () {
+                        navigator.popUntil(
+                          (route) => route.settings.name == DashboardRoute.name,
+                        );
+                      });
+                    }
+                  }),
+                ).render(c),
+              ),
+            ),
+          ),
+        ],
         child: this,
       ),
     );
@@ -103,7 +120,7 @@ class _PackageDeliveryAcceptedScreenState
       top: false,
       left: false,
       right: false,
-      // bottom: false,
+      bottom: false,
       child: AdaptiveScaffold(
         body: Stack(
           children: [
@@ -159,6 +176,7 @@ class _PackageDeliveryAcceptedScreenState
                       start: () => AppButton(
                         text: 'Confirm Pickup',
                         isLoading: s.isLoading,
+                        loaderHeight: 0.06.h,
                         onPressed: () {
                           if (!s.isLoading)
                             App.showAlertDialog(
@@ -214,8 +232,9 @@ class _PackageDeliveryAcceptedScreenState
                         },
                       ),
                       end: () => AppButton(
-                        text: 'Package Delivered',
+                        text: 'Deliver Package',
                         isLoading: s.isLoading,
+                        loaderHeight: 0.06.h,
                         onPressed: () {
                           if (!s.isLoading)
                             App.showAlertDialog(
@@ -341,41 +360,29 @@ class _Body extends StatelessWidget {
       builder: (c, status) => status.between(
         start: () {
           final package = c.read<SendPackageCubit>().state.package;
+
           return MapWidget(
-            start: package.pickup,
-            end: package.destination,
-            endWidget: AppAssets.ellipse(const Size(23, 23)),
-            startPainter: MarkerPainter(
-              title: 'Sender',
-              subtitle: '${package.sender.fullName.getOrEmpty}',
-              leading: '${Utils.hoursAndMins(
-                package.durationToPickup,
-                casing: StringCase.upper,
-                days_: false,
-                hours_: false,
-                secs_: false,
-              )}',
-            ),
+            start: package.riderLocation,
+            end: package.pickup,
+            customStartWidget: false,
           );
         },
         end: () {
           final package = c.read<SendPackageCubit>().state.package;
+
+          context
+              .read<MapCubit>()
+              .drawPolyline(package.riderLocation, package.destination);
+
+          context
+              .read<MapCubit>()
+              .adjustMapBounds(package.riderLocation, package.destination);
+
           return MapWidget(
-            start: package.pickup,
+            start: package.riderLocation,
             end: package.destination,
             refresh: status == SendPackageStatus.ENROUTE_TO_RECEIVER,
-            startWidget: AppAssets.ellipse(const Size(23, 23)),
-            endPainter: MarkerPainter(
-              title: 'Receiver',
-              subtitle: '${package.receiverFullName.getOrEmpty}',
-              leading: '${Utils.hoursAndMins(
-                package.durationToPickup,
-                casing: StringCase.upper,
-                days_: false,
-                hours_: false,
-                secs_: false,
-              )}',
-            ),
+            customStartWidget: false,
           );
         },
       ),

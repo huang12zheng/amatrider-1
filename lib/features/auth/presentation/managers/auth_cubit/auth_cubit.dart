@@ -61,6 +61,34 @@ class AuthCubit extends Cubit<AuthState>
     if (loader) toggleLoading();
   }
 
+  void initSocials() async {
+    toggleLoading(true, none());
+
+    final _value = await _auth.rider;
+
+    _value.fold(
+      () => null,
+      (rider) {
+        // full name
+        final fullName = rider?.firstName.getOrNull?.split(' ');
+        // first name
+        final firstName = fullName != null && fullName.isNotEmpty
+            ? DisplayName(fullName[0])
+            : rider?.firstName;
+        final lastName = fullName != null && fullName.length > 1
+            ? DisplayName(fullName[1])
+            : rider?.lastName;
+
+        emit(state.copyWith(
+          rider: rider?.copyWith(firstName: firstName!, lastName: lastName!) ??
+              state.rider,
+        ));
+      },
+    );
+
+    toggleLoading(false);
+  }
+
   void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
       emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
@@ -184,6 +212,18 @@ class AuthCubit extends Cubit<AuthState>
     toggleLoading(true, none());
 
     AppHttpResponse result;
+
+    // var unique = UniqueId<int>.int(58938706, 300000000).value;
+
+    // emit(state.copyWith(
+    //   rider: Rider.blank(
+    //     firstName: DisplayName('Brendan'),
+    //     lastName: DisplayName('Ejike'),
+    //     email: EmailAddress('${UniqueId.v4().value}@mail.com'),
+    //     phone: Phone('$unique', country: _mapCountry()),
+    //     password: Password('password'),
+    //   ),
+    // ));
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -477,6 +517,45 @@ class AuthCubit extends Cubit<AuthState>
     await _auth.sleep();
 
     toggleLoading();
+  }
+
+  Future<void> googleAuth([bool notify = false]) async {
+    emit(state.copyWith(isGoogleAuthLoading: true, status: none()));
+
+    var result = await _auth.googleAuthentication(notify);
+
+    emit(state.copyWith(status: result));
+    emit(state.copyWith(isGoogleAuthLoading: false));
+  }
+
+  Future<void> appleAuth([bool notify = false]) async {
+    emit(state.copyWith(isAppleAuthLoading: true, status: none()));
+
+    var result = await _auth.appleAuthentication(notify);
+
+    emit(state.copyWith(status: result));
+    emit(state.copyWith(isAppleAuthLoading: false));
+  }
+
+  void updateSocialsProfile() async {
+    toggleLoading(true, none());
+
+    AppHttpResponse result;
+
+    // Enable form validation
+    emit(state.copyWith(validate: true, status: none()));
+
+    if (state.rider.socials.isNone()) {
+      result = await _auth.updateSocialsProfile(
+        firstName: state.rider.firstName,
+        lastName: state.rider.lastName,
+        phone: state.rider.phone.formatted,
+      );
+
+      emit(state.copyWith(status: optionOf(result)));
+    }
+
+    toggleLoading(false);
   }
 
   void updatePassword() async {

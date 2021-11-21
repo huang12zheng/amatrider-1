@@ -50,6 +50,9 @@ class SendPackageDTO with _$SendPackageDTO {
     @JsonKey(name: 'order_active_at')
     @TimestampConverter()
         DateTime? orderActiveAt,
+    @JsonKey(name: 'order_cancelled_at')
+    @TimestampConverter()
+        DateTime? orderCancelledAt,
     @JsonKey(name: 'rider_accepted_at')
     @TimestampConverter()
         DateTime? riderAcceptedAt,
@@ -59,8 +62,16 @@ class SendPackageDTO with _$SendPackageDTO {
     @JsonKey(name: 'rider_delivered_package_at')
     @TimestampConverter()
         DateTime? riderDeliveredAt,
+    @JsonKey(name: 'payment_deposited_at')
+    @TimestampConverter()
+        DateTime? paymentDepositedAt,
+    @JsonKey(name: 'payment_deposited_confirmed_at')
+    @TimestampConverter()
+        DateTime? paymentDepositConfirmedAt,
+    //
     @SecondsToDurationConverter() Duration? time,
     @DoubleSerializer() double? distance,
+    //
     @JsonKey(name: 'journeyDetails') JourneyDetailDTO? journey,
     @JsonKey(name: 'package') SendPackageDTO? packageData,
     @JsonKey(name: 'user') SenderDTO? sender,
@@ -117,6 +128,7 @@ class SendPackageDTO with _$SendPackageDTO {
         createdAt: createdAt,
         updatedAt: updatedAt,
         orderActiveAt: orderActiveAt,
+        orderCancelledAt: orderCancelledAt,
         riderId: UniqueId.fromExternal(riderId),
         riderLocation: RiderLocation(
           lat: BasicTextField(riderLat),
@@ -126,6 +138,8 @@ class SendPackageDTO with _$SendPackageDTO {
         riderAcceptedAt: riderAcceptedAt,
         riderDeliveredAt: riderDeliveredAt,
         riderReceivedAt: riderReceivedAt,
+        paymentDepositedAt: paymentDepositedAt,
+        paymentDepositConfirmedAt: paymentDepositConfirmedAt,
         sender: Sender.blank().merge(sender?.domain),
         durationToPickup: time ?? Duration.zero,
         distanceToPickup: BasicTextField(distance),

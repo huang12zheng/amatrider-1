@@ -1,5 +1,8 @@
 library insights_page.dart;
 
+import 'dart:async';
+
+import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
@@ -259,12 +262,60 @@ class _InsightsPageState extends State<InsightsPage> {
                         ),
                       ),
                     //
-                    if (s.insight.bonus.isValid &&
-                        s.insight.bonus.getOrNull != 0)
+                    if (s.insight.progress.getOrNull == 100) ...[
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
                         ).copyWith(top: 0.04.sw),
+                        sliver: SliverToBoxAdapter(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Palette.pastelYellow,
+                              borderRadius: BorderRadius.circular(
+                                Utils.inputBorderRadius,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 0.035.sw,
+                                vertical: 0.03.sw,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.info,
+                                    color: Palette.accentYellow,
+                                  ),
+                                  //
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 0.03.sw),
+                                      child: AdaptiveText(
+                                        'Congratulations, '
+                                        'you are eligible for ${s.insight.totalExtraDeliveries.getOrNull ?? 0} '
+                                        'extra deliveries at '
+                                        '${'${s.insight.bonusPerExtraDelivery.getOrNull ?? 0}'.asCurrency()} '
+                                        'per delivery.',
+                                        fontSize: 17.sp,
+                                        textColor: Palette.text100,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.6,
+                                        letterSpacing: Utils.letterSpacing,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: App.sidePadding,
+                        ).copyWith(top: 0.01.sw),
                         sliver: SliverToBoxAdapter(
                           child: DecoratedBox(
                             decoration: BoxDecoration(
@@ -293,7 +344,9 @@ class _InsightsPageState extends State<InsightsPage> {
                                             '${context.tr.insightExtraDeliveries}',
                                         titleFontSize: 19.0.sp,
                                         subtitle:
-                                            '${s.insight.extraDelivery.getOrEmpty}',
+                                            '${s.insight.completedExtraDeliveries.getOrNull ?? 0}'
+                                            ' / '
+                                            '${s.insight.totalExtraDeliveries.getOrNull ?? 0}',
                                         color: Palette.accent20,
                                         icon: AmatNow.gift_box,
                                         icon2: DecoratedBox(
@@ -305,18 +358,21 @@ class _InsightsPageState extends State<InsightsPage> {
                                             borderRadius: BorderRadius.circular(
                                                 Utils.inputBorderRadius),
                                           ),
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 0.03.sw,
-                                              vertical: 0.02.sw,
-                                            ),
-                                            child: Headline(
-                                              '${s.insight.bonus.getOrEmpty}'
-                                                  .asCurrency(),
-                                              fontSize: 15.sp,
-                                              textColor: Palette.neutralLabel,
-                                              textColorDark:
-                                                  Palette.neutralLabel,
+                                          child: WidgetVisibility(
+                                            visible: s.insight.canClaimBonus,
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 0.03.sw,
+                                                vertical: 0.02.sw,
+                                              ),
+                                              child: Headline(
+                                                '${s.insight.currentBonus.getOrEmpty}'
+                                                    .asCurrency(),
+                                                fontSize: 15.sp,
+                                                textColor: Palette.neutralLabel,
+                                                textColorDark:
+                                                    Palette.neutralLabel,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -327,29 +383,70 @@ class _InsightsPageState extends State<InsightsPage> {
                                       ),
                                     ),
                                     //
-                                    Flexible(
-                                      flex: 5,
-                                      child: AppOutlinedButton(
-                                        text: '${context.tr.insightClaimBonus}',
-                                        height: 0.09.sw,
-                                        cupertinoHeight: 0.028.sh,
-                                        width: 0.3.sw,
-                                        cupertinoWidth: 0.3.sw,
-                                        onPressed: () => App.showAlertDialog(
-                                          context: c,
-                                          barrierColor: App.resolveColor(
-                                            Colors.grey.shade800
-                                                .withOpacity(0.55),
-                                            dark: Colors.white54,
-                                          ),
-                                          builder: (_) =>
-                                              _ClaimBonusDialogBuilder(
-                                            cubit: c.read<InsightsCubit>(),
-                                            cash: s.insight.cashAtHand,
+                                    if (s.insight.canClaimBonus)
+                                      Flexible(
+                                        flex: 5,
+                                        child: BlocProvider(
+                                          create: (_) => getIt<AuthCubit>(),
+                                          child: RepositoryProvider(
+                                            create: (_) =>
+                                                getIt<UtilitiesRemote>(),
+                                            child: Builder(builder: (context) {
+                                              return AppOutlinedButton(
+                                                text:
+                                                    '${context.tr.insightClaimBonus}',
+                                                height: 0.09.sw,
+                                                cupertinoHeight: 0.028.sh,
+                                                width: 0.3.sw,
+                                                cupertinoWidth: 0.3.sw,
+                                                isLoading: s.claimBonusLoading,
+                                                onPressed: () async {
+                                                  context
+                                                      .read<InsightsCubit>()
+                                                      .claimBonusLoading(true);
+
+                                                  final account = await context
+                                                      .read<UtilitiesRemote>()
+                                                      .bankAccount();
+
+                                                  context
+                                                      .read<InsightsCubit>()
+                                                      .claimBonusLoading(false);
+
+                                                  if (account.data == null &&
+                                                      navigator.current.name !=
+                                                          EditBankDetailsRoute
+                                                              .name)
+                                                    unawaited(
+                                                        navigator.navigate(
+                                                      const EditBankDetailsRoute(),
+                                                    ));
+                                                  else {
+                                                    await App.showAlertDialog(
+                                                      context: c,
+                                                      barrierColor:
+                                                          App.resolveColor(
+                                                        Colors.grey.shade800
+                                                            .withOpacity(0.55),
+                                                        dark: Colors.white54,
+                                                      ),
+                                                      builder: (_) =>
+                                                          _ClaimBonusDialogBuilder(
+                                                        cubit: c.read<
+                                                            InsightsCubit>(),
+                                                        cash: s
+                                                            .insight.cashAtHand,
+                                                        account: account
+                                                            .data!.domain,
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              );
+                                            }),
                                           ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -357,6 +454,7 @@ class _InsightsPageState extends State<InsightsPage> {
                           ),
                         ),
                       ),
+                    ],
                     //
                     if (s.insight.cashAtHand.isValid &&
                         s.insight.cashAtHand.getOrNull != 0)
@@ -407,26 +505,55 @@ class _InsightsPageState extends State<InsightsPage> {
                                     //
                                     Flexible(
                                       flex: 5,
-                                      child: AdaptiveButton(
-                                        text:
-                                            '${context.tr.insightDepositCash}',
-                                        textColor: Colors.white,
-                                        splashColor: Colors.white24,
-                                        height: 0.09.sw,
-                                        cupertinoHeight: 0.05.h,
-                                        width: 0.3.sw,
-                                        backgroundColor: Palette.accentColor,
-                                        onPressed: () => App.showAlertDialog(
-                                          context: c,
-                                          barrierColor: App.resolveColor(
-                                            Colors.grey.shade800
-                                                .withOpacity(0.55),
-                                            dark: Colors.white54,
-                                          ),
-                                          builder: (_) =>
-                                              _DepositCashDialogBuilder(
-                                            cubit: c.read<InsightsCubit>(),
-                                            cash: s.insight.cashAtHand,
+                                      child: WidgetVisibility(
+                                        visible: false,
+                                        child: BlocConsumer<InsightsCubit,
+                                            InsightsState>(
+                                          listenWhen: (p, c) =>
+                                              p.depositCashLoading !=
+                                              c.depositCashLoading,
+                                          listener: (c, s) async {
+                                            if (!s.depositCashLoading &&
+                                                s.account != null) {
+                                              if (!s.depositDialogOpen) {
+                                                c
+                                                    .read<InsightsCubit>()
+                                                    .setCashDepositVisible(
+                                                        true);
+
+                                                App.showAlertDialog(
+                                                  context: c,
+                                                  barrierColor:
+                                                      App.resolveColor(
+                                                    Colors.grey.shade800
+                                                        .withOpacity(0.55),
+                                                    dark: Colors.white54,
+                                                  ),
+                                                  barrierDismissible: false,
+                                                  builder: (_) =>
+                                                      _DepositCashDialogBuilder(
+                                                    cubit:
+                                                        c.read<InsightsCubit>(),
+                                                    cash: s.insight.cashAtHand,
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          },
+                                          builder: (c, s) => AdaptiveButton(
+                                            text:
+                                                '${context.tr.insightDepositCash}',
+                                            isLoading: s.depositCashLoading,
+                                            textColor: Colors.white,
+                                            splashColor: Colors.white24,
+                                            height: 0.09.sw,
+                                            cupertinoHeight: 0.05.h,
+                                            width: 0.3.sw,
+                                            backgroundColor:
+                                                Palette.accentColor,
+                                            onPressed: c
+                                                .read<InsightsCubit>()
+                                                .depositCash,
                                           ),
                                         ),
                                       ),
@@ -439,7 +566,8 @@ class _InsightsPageState extends State<InsightsPage> {
                         ),
                       ),
 
-                    if (s.insight.activities.isValid)
+                    if (s.insight.activities != null &&
+                        s.insight.activities!.isValid)
                       SliverPadding(
                         padding: EdgeInsets.all(App.sidePadding),
                         sliver: const SliverToBoxAdapter(

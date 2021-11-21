@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.amatnow.amatrider">
+    package="com.amatnow.app.amatrider">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -32,11 +32,14 @@
     </queries>
 
    <application
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:extractNativeLibs="true"
-        android:requestLegacyExternalStorage="true"
-        tools:replace="android:extractNativeLibs">
+       android:label="@string/app_name"
+       android:icon="@mipmap/ic_launcher"
+       android:allowBackup="true"
+       android:fullBackupOnly="true"
+       android:extractNativeLibs="true"
+       android:requestLegacyExternalStorage="true"
+       tools:replace="android:extractNativeLibs"
+       tools:targetApi="m">
 
         <activity
             android:name=".MainActivity"
@@ -44,6 +47,7 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -63,9 +67,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
+        <meta-data
+            android:name="firebase_performance_collection_enabled"
+            android:value="true" />
 
-	<meta-data
-            android:name="io.flutter.embedded_views_preview"
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
             android:value="true" />
 
         <meta-data android:name="com.google.android.geo.API_KEY"

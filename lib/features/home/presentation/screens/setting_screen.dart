@@ -106,26 +106,6 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                           ),
                         ),
                         //
-                        Visibility(
-                          visible: s.isAuthenticated,
-                          child: AdaptiveListTile.adaptiveSwitch(
-                            title: AdaptiveText(
-                              'Subscribe to Newsletter',
-                              style: listTileTextStyle,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: App.sidePadding),
-                            value: false,
-                            inactiveThumbColor: Palette.text40,
-                            inactiveTrackColor: Utils.foldTheme(
-                              light: () => Colors.black12,
-                              dark: () => Palette.secondaryColor.shade300,
-                            ),
-                            secondary: const Icon(AmatNow.alert),
-                            onChanged: (value) {},
-                          ),
-                        ),
-                        //
                         AdaptiveListTile.adaptiveSwitch(
                           title: AdaptiveText(
                             context.watch<ThemeCubit>().isDarkMode

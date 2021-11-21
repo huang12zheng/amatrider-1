@@ -12,3 +12,5 @@ export 'history/index.dart';
 export 'review/review_dto.dart';
 export 'generic/generic_object.dart';
 export 'generic/generic_list_object.dart';
+export 'generic/generic_paginated_list.dart';
+export 'notification/in_app_notification_dto.dart';

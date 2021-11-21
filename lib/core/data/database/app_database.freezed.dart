@@ -53,9 +53,14 @@ class _$RiderDTOTearOff {
       @JsonKey(name: 'average_rating')
       @DoubleSerializer()
           double? avgRating,
+      @JsonKey(name: 'is_verified')
+      @IntegerSerializer()
+          int isVerified = 0,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
+      @AuthProviderSerializer()
+          AuthProvider? provider,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -81,7 +86,9 @@ class _$RiderDTOTearOff {
       lng: lng,
       phoneVerifiedAt: phoneVerifiedAt,
       avgRating: avgRating,
+      isVerified: isVerified,
       verificationStatus: verificationStatus,
+      provider: provider,
       createdAt: createdAt,
       updatedAt: updatedAt,
       deletedAt: deletedAt,
@@ -129,10 +136,15 @@ mixin _$RiderDTO {
   @JsonKey(name: 'average_rating')
   @DoubleSerializer()
   double? get avgRating => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_verified')
+  @IntegerSerializer()
+  int get isVerified => throw _privateConstructorUsedError;
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()
   ProfileVerificationStatus? get verificationStatus =>
       throw _privateConstructorUsedError;
+  @AuthProviderSerializer()
+  AuthProvider? get provider => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -185,9 +197,14 @@ abstract class $RiderDTOCopyWith<$Res> {
       @JsonKey(name: 'average_rating')
       @DoubleSerializer()
           double? avgRating,
+      @JsonKey(name: 'is_verified')
+      @IntegerSerializer()
+          int isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
+      @AuthProviderSerializer()
+          AuthProvider? provider,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -224,7 +241,9 @@ class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
     Object? lng = freezed,
     Object? phoneVerifiedAt = freezed,
     Object? avgRating = freezed,
+    Object? isVerified = freezed,
     Object? verificationStatus = freezed,
+    Object? provider = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -290,10 +309,18 @@ class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
               as double?,
+      isVerified: isVerified == freezed
+          ? _value.isVerified
+          : isVerified // ignore: cast_nullable_to_non_nullable
+              as int,
       verificationStatus: verificationStatus == freezed
           ? _value.verificationStatus
           : verificationStatus // ignore: cast_nullable_to_non_nullable
               as ProfileVerificationStatus?,
+      provider: provider == freezed
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as AuthProvider?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -347,9 +374,14 @@ abstract class _$RiderDTOCopyWith<$Res> implements $RiderDTOCopyWith<$Res> {
       @JsonKey(name: 'average_rating')
       @DoubleSerializer()
           double? avgRating,
+      @JsonKey(name: 'is_verified')
+      @IntegerSerializer()
+          int isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
+      @AuthProviderSerializer()
+          AuthProvider? provider,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -387,7 +419,9 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
     Object? lng = freezed,
     Object? phoneVerifiedAt = freezed,
     Object? avgRating = freezed,
+    Object? isVerified = freezed,
     Object? verificationStatus = freezed,
+    Object? provider = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -453,10 +487,18 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
               as double?,
+      isVerified: isVerified == freezed
+          ? _value.isVerified
+          : isVerified // ignore: cast_nullable_to_non_nullable
+              as int,
       verificationStatus: verificationStatus == freezed
           ? _value.verificationStatus
           : verificationStatus // ignore: cast_nullable_to_non_nullable
               as ProfileVerificationStatus?,
+      provider: provider == freezed
+          ? _value.provider
+          : provider // ignore: cast_nullable_to_non_nullable
+              as AuthProvider?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -509,9 +551,14 @@ class _$_RiderDTO extends _RiderDTO {
       @JsonKey(name: 'average_rating')
       @DoubleSerializer()
           this.avgRating,
+      @JsonKey(name: 'is_verified')
+      @IntegerSerializer()
+          this.isVerified = 0,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           this.verificationStatus,
+      @AuthProviderSerializer()
+          this.provider,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           this.createdAt,
@@ -573,9 +620,16 @@ class _$_RiderDTO extends _RiderDTO {
   @DoubleSerializer()
   final double? avgRating;
   @override
+  @JsonKey(name: 'is_verified')
+  @IntegerSerializer()
+  final int isVerified;
+  @override
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()
   final ProfileVerificationStatus? verificationStatus;
+  @override
+  @AuthProviderSerializer()
+  final AuthProvider? provider;
   @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()
@@ -591,7 +645,7 @@ class _$_RiderDTO extends _RiderDTO {
 
   @override
   String toString() {
-    return 'RiderDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, availability: $availability, lat: $lat, lng: $lng, phoneVerifiedAt: $phoneVerifiedAt, avgRating: $avgRating, verificationStatus: $verificationStatus, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'RiderDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, availability: $availability, lat: $lat, lng: $lng, phoneVerifiedAt: $phoneVerifiedAt, avgRating: $avgRating, isVerified: $isVerified, verificationStatus: $verificationStatus, provider: $provider, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -622,8 +676,12 @@ class _$_RiderDTO extends _RiderDTO {
                 other.phoneVerifiedAt == phoneVerifiedAt) &&
             (identical(other.avgRating, avgRating) ||
                 other.avgRating == avgRating) &&
+            (identical(other.isVerified, isVerified) ||
+                other.isVerified == isVerified) &&
             (identical(other.verificationStatus, verificationStatus) ||
                 other.verificationStatus == verificationStatus) &&
+            (identical(other.provider, provider) ||
+                other.provider == provider) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -650,7 +708,9 @@ class _$_RiderDTO extends _RiderDTO {
         lng,
         phoneVerifiedAt,
         avgRating,
+        isVerified,
         verificationStatus,
+        provider,
         createdAt,
         updatedAt,
         deletedAt
@@ -700,9 +760,14 @@ abstract class _RiderDTO extends RiderDTO {
       @JsonKey(name: 'average_rating')
       @DoubleSerializer()
           double? avgRating,
+      @JsonKey(name: 'is_verified')
+      @IntegerSerializer()
+          int isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
+      @AuthProviderSerializer()
+          AuthProvider? provider,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -763,9 +828,16 @@ abstract class _RiderDTO extends RiderDTO {
   @DoubleSerializer()
   double? get avgRating;
   @override
+  @JsonKey(name: 'is_verified')
+  @IntegerSerializer()
+  int get isVerified;
+  @override
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()
   ProfileVerificationStatus? get verificationStatus;
+  @override
+  @AuthProviderSerializer()
+  AuthProvider? get provider;
   @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()

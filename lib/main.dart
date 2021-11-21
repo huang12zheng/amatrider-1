@@ -3,6 +3,7 @@ import 'package:amatrider/config/env.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,8 @@ void main() async {
   FlutterError.onError = getIt<FirebaseCrashlytics>().recordFlutterError;
 
   await initializeDateFormatting();
+
+  // getIt<FirebasePerformance>.getInstance().newTrace(STARTUP_TRACE_NAME)
 
   runApp(const ProviderScope(child: AmatRider()));
 }

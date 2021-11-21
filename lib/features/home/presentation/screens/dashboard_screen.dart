@@ -178,6 +178,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                   final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
                   await cubit.subscribeUserChanges();
 
+                  // Start laravel echo (notifications) & Fetch latest notifications
+                  BlocProvider.of<NotificationCubit>(context)
+                    // ignore: unawaited_futures
+                    ..inAppNotifications()
+                    ..echo();
+
                   final locationCubit = BlocProvider.of<LocationCubit>(context);
 
                   final hasPermission = await locationCubit.hasPermission;

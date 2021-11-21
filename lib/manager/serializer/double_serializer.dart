@@ -11,7 +11,7 @@ class DoubleSerializer implements JsonConverter<double?, dynamic> {
             ? value
             : value is int
                 ? value.toDouble()
-                : double.tryParse(value as String);
+                : double.tryParse('$value');
   }
 
   @override

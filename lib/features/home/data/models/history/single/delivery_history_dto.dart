@@ -50,6 +50,9 @@ class DeliveryHistoryDTO with _$DeliveryHistoryDTO {
     @JsonKey(name: 'order_active_at')
     @TimestampConverter()
         DateTime? orderActiveAt,
+    @JsonKey(name: 'order_cancelled_at')
+    @TimestampConverter()
+        DateTime? orderCancelledAt,
     @JsonKey(name: 'rider_accepted_at')
     @TimestampConverter()
         DateTime? riderAcceptedAt,
@@ -109,11 +112,12 @@ class DeliveryHistoryDTO with _$DeliveryHistoryDTO {
         sender: Sender.blank().merge(sender?.domain),
         //
         orderActiveAt: orderActiveAt,
+        orderCancelledAt: orderCancelledAt,
         riderAcceptedAt: riderAcceptedAt,
         riderDeliveredAt: riderDeliveredAt,
         riderReceivedAt: riderReceivedAt,
-        depositedAt: depositedAt,
-        depositConfirmedAt: depositConfirmedAt,
+        paymentDepositedAt: depositedAt,
+        paymentDepositConfirmedAt: depositConfirmedAt,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );

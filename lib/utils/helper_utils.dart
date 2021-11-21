@@ -52,6 +52,21 @@ void throwIfNot(bool condition, Object error) {
   if (!condition) throw error;
 }
 
+void navigateToOTPVerification() {
+  if (navigator.current.name != OTPVerificationRoute.name &&
+      navigator.topRoute.name != DashboardRoute.name)
+    navigator.pushAndPopUntil(OTPVerificationRoute(),
+        predicate: (route) => false);
+}
+
+void navigateToSocials() {
+  if (navigator.current.name != SocialsSignupRoute.name &&
+      navigator.current.name != OTPVerificationRoute.name &&
+      navigator.current.name != DashboardRoute.name)
+    navigator.pushAndPopUntil(const SocialsSignupRoute(),
+        predicate: (route) => false);
+}
+
 class Utils {
   /// Create Singleton start ///
   static final Utils _singleton = Utils._();
@@ -178,6 +193,7 @@ class Utils {
           top: 0,
           left: 0,
           right: 0,
+          bottom: 0,
           child: secondChild,
         ),
         //

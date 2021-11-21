@@ -17,6 +17,8 @@ class EchoRepository {
 
   @factoryMethod
   factory EchoRepository.initialize(AccessTokenManager _manager) {
+    // log.wtf('Token ==> ${_manager.get().accessToken.getOrNull}');
+
     var _options = PusherOptions(
       cluster: env.pusherCluster,
       encrypted: false,
@@ -117,10 +119,11 @@ class EchoRepository {
 
   EchoRepository notification(
     String? channelName, {
+    void Function()? onInit,
     void Function(PusherEvent?)? onListen,
     required void Function(String, EchoRepository) onData,
   }) {
-    channel(channelName)._channel.notification((e) {
+    channel(channelName, onInit: onInit)._channel.notification((e) {
       // Started listening
       onListen?.call(e is PusherEvent ? e : null);
       // On data received
@@ -134,10 +137,14 @@ class EchoRepository {
     echo?.channel(channelName).stopListening(event);
   }
 
-  void leave(String? channelName, {String? event}) {
+  void leaveChannel(String? channelName, {String? event}) {
     if (event != null) channelName?.let((it) => stopListening(it, event));
     // Leave the given channel.
     channelName?.let((it) => echo?.leaveChannel(it));
+  }
+
+  void leave(String? channelName, {String? event}) {
+    leaveChannel(channelName, event: event);
     // Leave the given channel, as well as its private and presence variants.
     channelName?.let((it) => echo?.leave(it));
   }

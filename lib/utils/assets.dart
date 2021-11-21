@@ -19,6 +19,7 @@ mixin AppAssets {
   static const String ONBOARDING_SVG_DIR = '$SVG_DIR/onboarding';
   static const String DASHBOARD_SVG_DIR = '$SVG_DIR/dashboard';
   static const String INSIGHTS_SVG_DIR = '$DASHBOARD_SVG_DIR/insights';
+  static const String NOTIFICATION_SVG_DIR = '$DASHBOARD_SVG_DIR/notification';
   static const String AVATAR_IMAGES_DIR = '$DASHBOARD_IMAGES_DIR/avatars';
 
   /////////////////////////////////////////////////////
@@ -80,6 +81,9 @@ mixin AppAssets {
   static const String ellipseSVG = '$DASHBOARD_SVG_DIR/ellipse.svg';
   static const String dispatchRiderSVG =
       '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
+  static const String _warningFill = '$NOTIFICATION_SVG_DIR/warning_fill.svg';
+  static const String _packageOutlined = '$NOTIFICATION_SVG_DIR/package.svg';
+  static const String _dishOutlined = '$NOTIFICATION_SVG_DIR/dish.svg';
 
   static const String _pdf = '$DASHBOARD_SVG_DIR/pdf.svg';
   static const String _docs = '$DASHBOARD_SVG_DIR/docs.svg';
@@ -157,6 +161,9 @@ mixin AppAssets {
     _galleryColored,
     _thumbLove,
     _groupEllipse,
+    _warningFill,
+    _packageOutlined,
+    _dishOutlined,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -176,6 +183,14 @@ mixin AppAssets {
 
   static SvgPicture apple([Color? color]) => SvgPicture.asset(
         '$AUTH_SVG_DIR/apple.svg',
+        height: 22,
+        width: 22,
+        color: color,
+        fit: BoxFit.contain,
+      );
+
+  static SvgPicture emailTo([Color? color]) => SvgPicture.asset(
+        '$AUTH_SVG_DIR/mail_to.svg',
         height: 22,
         width: 22,
         color: color,
@@ -368,6 +383,27 @@ mixin AppAssets {
     _groupEllipse,
     height: 25,
     width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture warningFill = SvgPicture.asset(
+    _warningFill,
+    height: 23,
+    width: 23,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture dishOutlined = SvgPicture.asset(
+    _dishOutlined,
+    height: 23,
+    width: 23,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture packageOutlined = SvgPicture.asset(
+    _packageOutlined,
+    height: 23,
+    width: 23,
     fit: BoxFit.contain,
   );
 

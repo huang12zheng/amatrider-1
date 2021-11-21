@@ -205,18 +205,19 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<AppHttpResponse> depositCash(double? amount) async {
+  Future<Either<AppHttpResponse, BankAccount>> depositCash() async {
     final _conn = await checkConnectivity();
 
     return await _conn.fold(
-      (f) async => f,
+      (f) async => left(f),
       (r) async {
         try {
-          return await _insightRemote.deposit('$amount');
+          final _details = await _insightRemote.deposit();
+          return right(_details.domain);
         } on AppHttpResponse catch (e) {
-          return e;
+          return left(e);
         } on AppNetworkException catch (e) {
-          return e.asResponse();
+          return left(e.asResponse());
         }
       },
     );

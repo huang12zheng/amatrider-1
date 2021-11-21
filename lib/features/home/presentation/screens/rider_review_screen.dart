@@ -103,29 +103,32 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
                                 //
                                 VerticalSpace(height: 0.02.sw),
                                 //
-                                RatingBar(
-                                  glow: false,
-                                  allowHalfRating: true,
-                                  tapOnlyMode: true,
-                                  initialRating:
-                                      review.avgRating.getOrEmpty ?? 0.0,
-                                  minRating: 1,
-                                  maxRating: 5,
-                                  itemSize: 0.05.sw,
-                                  direction: Axis.horizontal,
-                                  itemPadding: EdgeInsets.symmetric(
-                                      horizontal: 0.005.sw),
-                                  ratingWidget: RatingWidget(
-                                    full: const Icon(Icons.star_sharp,
-                                        color: Colors.amber),
-                                    half: const Icon(Icons.star_half_sharp,
-                                        color: Colors.amber),
-                                    empty: const Icon(Icons.star_border_sharp,
-                                        color: Colors.amber),
+                                IgnorePointer(
+                                  ignoring: true,
+                                  child: RatingBar(
+                                    glow: false,
+                                    allowHalfRating: true,
+                                    tapOnlyMode: true,
+                                    initialRating:
+                                        review.avgRating.getOrEmpty ?? 0.0,
+                                    minRating: 1,
+                                    maxRating: 5,
+                                    itemSize: 0.05.sw,
+                                    direction: Axis.horizontal,
+                                    itemPadding: EdgeInsets.symmetric(
+                                        horizontal: 0.005.sw),
+                                    ratingWidget: RatingWidget(
+                                      full: const Icon(Icons.star_sharp,
+                                          color: Colors.amber),
+                                      half: const Icon(Icons.star_half_sharp,
+                                          color: Colors.amber),
+                                      empty: const Icon(Icons.star_border_sharp,
+                                          color: Colors.amber),
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
                                   ),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
                                 ),
                                 //
                                 VerticalSpace(height: 0.02.sw),
@@ -276,38 +279,43 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  AdaptiveText(
-                                    '${DateFormat.yMMMd().format(feedback!.createdAt!)}',
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400,
-                                    textColor: Palette.text40,
+                                  IgnorePointer(
+                                    ignoring: true,
+                                    child: RatingBar(
+                                      glow: false,
+                                      allowHalfRating: true,
+                                      tapOnlyMode: true,
+                                      initialRating: feedback?.rate.getOrNull
+                                              ?.toDouble() ??
+                                          0.0,
+                                      minRating: 1,
+                                      maxRating: 5,
+                                      itemSize: 0.05.sw,
+                                      direction: Axis.horizontal,
+                                      itemPadding: EdgeInsets.symmetric(
+                                          horizontal: 0.005.sw),
+                                      ratingWidget: RatingWidget(
+                                        full: const Icon(Icons.star_sharp,
+                                            color: Colors.amber),
+                                        half: const Icon(Icons.star_half_sharp,
+                                            color: Colors.amber),
+                                        empty: const Icon(
+                                            Icons.star_border_sharp,
+                                            color: Colors.amber),
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
+                                    ),
                                   ),
                                   //
-                                  RatingBar(
-                                    glow: false,
-                                    allowHalfRating: true,
-                                    tapOnlyMode: true,
-                                    initialRating:
-                                        feedback.rate.getOrNull?.toDouble() ??
-                                            0.0,
-                                    minRating: 1,
-                                    maxRating: 5,
-                                    itemSize: 0.05.sw,
-                                    direction: Axis.horizontal,
-                                    itemPadding: EdgeInsets.symmetric(
-                                        horizontal: 0.005.sw),
-                                    ratingWidget: RatingWidget(
-                                      full: const Icon(Icons.star_sharp,
-                                          color: Colors.amber),
-                                      half: const Icon(Icons.star_half_sharp,
-                                          color: Colors.amber),
-                                      empty: const Icon(Icons.star_border_sharp,
-                                          color: Colors.amber),
+                                  if (feedback?.createdAt != null)
+                                    AdaptiveText(
+                                      '${DateFormat.yMMMd().format(feedback!.createdAt!)}',
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      textColor: Palette.text40,
                                     ),
-                                    onRatingUpdate: (rating) {
-                                      print(rating);
-                                    },
-                                  ),
                                 ],
                               ),
                             ],

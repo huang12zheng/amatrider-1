@@ -72,7 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "A Good Day To Make Deliveries."),
-        "inActive": MessageLookupByLibrary.simpleMessage("In Active"),
+        "inActive": MessageLookupByLibrary.simpleMessage("Inactive"),
         "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
         "inTransit": MessageLookupByLibrary.simpleMessage("In Transit"),
         "insightBonusAlertConfirmBtn":

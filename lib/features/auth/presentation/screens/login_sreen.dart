@@ -26,17 +26,26 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<AuthCubit>()),
-        BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
-      ],
+    return BlocProvider(
+      create: (_) => getIt<AuthCubit>(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.foldCode(
+                        is4031: () {
+                          WidgetsBinding.instance?.addPostFrameCallback(
+                              (_) => navigateToOTPVerification());
+                          return false;
+                        },
+                        is41101: () {
+                          WidgetsBinding.instance?.addPostFrameCallback(
+                              (_) => navigateToSocials());
+                          return false;
+                        },
+                        orElse: () => false,
+                      ),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
@@ -44,8 +53,9 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
           (th) => th?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
-                    duration: env.greetingDuration, message: s.message)
-                .render(c),
+              duration: env.greetingDuration,
+              message: s.message,
+            ).render(c),
           ),
         ),
         child: this,
@@ -93,9 +103,12 @@ class _LoginScreenState extends State<LoginScreen>
         data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
         child: AdaptiveScaffold(
           body: CustomScrollView(
+            shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
             controller: ScrollController(),
             physics: Utils.physics,
+            scrollDirection: Axis.vertical,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               SliverPadding(
                 padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
@@ -154,13 +167,13 @@ class _LoginScreenState extends State<LoginScreen>
                       cupertino: () => VerticalSpace(height: 0.02.sw),
                     ),
                     //
-                    BlocBuilder<AuthCubit, AuthState>(
-                      buildWhen: (p, c) => p.isLoading != c.isLoading,
-                      builder: (c, s) => Hero(
+                    BlocSelector<AuthCubit, AuthState, bool>(
+                      selector: (s) => s.isLoading,
+                      builder: (c, isLoading) => Hero(
                         tag: Const.authButtonHeroTag,
                         child: AppButton(
                           text: 'Login',
-                          isLoading: s.isLoading,
+                          isLoading: isLoading,
                           onPressed: c.read<AuthCubit>().login,
                         ),
                       ),

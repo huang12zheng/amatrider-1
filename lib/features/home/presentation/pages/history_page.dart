@@ -1,10 +1,12 @@
 library history_page.dart;
 
+import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
+import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,46 +71,67 @@ class _HistoryPageState extends State<HistoryPage> {
             actions: [const AvailablilityWidget()],
           ),
           body: SafeArea(
-            child: BlocBuilder<HistoryCubit, HistoryState>(
-              builder: (c, s) => DragToRefresh(
+            child: Builder(
+              builder: (c) => DragToRefresh(
                 initialRefresh: true,
                 onRefresh: (controller) => onRefresh(c, controller),
-                child: CustomScrollView(
-                  shrinkWrap: true,
-                  physics: Utils.physics,
-                  scrollDirection: Axis.vertical,
-                  controller: ScrollController(),
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: <Widget>[
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: App.sidePadding,
-                      ).copyWith(top: 0.01.sw),
-                      sliver: SliverToBoxAdapter(
-                        child: AdaptiveText(
-                          '${tr.history}',
-                          softWrap: true,
-                          style: TextStyle(
-                            fontSize: 25.0.sp,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: Utils.letterSpacing,
+                child: BlocBuilder<HistoryCubit, HistoryState>(
+                  builder: (c, s) => WidgetVisibility(
+                    visible: !DragToRefresh.of(c).refreshController.isLoading &&
+                        !s.isLoading &&
+                        s.histories.isEmpty(),
+                    replacement: CustomScrollView(
+                      shrinkWrap: true,
+                      physics: Utils.physics,
+                      scrollDirection: Axis.vertical,
+                      controller: ScrollController(),
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      slivers: <Widget>[
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: App.sidePadding,
+                          ).copyWith(top: 0.01.sw),
+                          sliver: SliverToBoxAdapter(
+                            child: AdaptiveText(
+                              '${tr.history}',
+                              softWrap: true,
+                              style: TextStyle(
+                                fontSize: 25.0.sp,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: Utils.letterSpacing,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        //
+                        SliverList(
+                          delegate: SliverChildListDelegate.fixed([
+                            ...s.historyCollection
+                                .map((entry) => GroupedLayoutCard(
+                                      dateTime: entry.key,
+                                      count: entry.value.size,
+                                      layout: (i) => DeliveryHistoryCard(
+                                        history: entry.value[i],
+                                        initialExpanded:
+                                            entry.value.firstOrNull()?.id ==
+                                                entry.value.getOrNull(i)?.id,
+                                      ),
+                                    ))
+                                .iter,
+                          ]),
+                        ),
+                      ],
                     ),
-                    //
-                    SliverList(
-                      delegate: SliverChildListDelegate.fixed([
-                        ...s.historyCollection
-                            .map((entry) => GroupedHistoryCard(
-                                  dateTime: entry.key,
-                                  histories: entry.value,
-                                ))
-                            .iter,
-                      ]),
+                    child: StageOwnerWidget(
+                      asset: right(AppAssets.noHistory(
+                        const Size.fromHeight(80),
+                      )),
+                      useScaffold: false,
+                      title: 'No Delivery History Yet',
+                      description: 'Past delivery history would appear here.',
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

@@ -9,20 +9,28 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kt_dart/kt.dart';
 
-part './delivery_history_card.dart';
+part 'history_widgets/delivery_history_card.dart';
 
-/// A stateless widget to render GroupedHistoryCard.
-class GroupedHistoryCard extends StatelessWidget {
+/// A stateless widget to render GroupedLayoutCard.
+class GroupedLayoutCard extends StatelessWidget {
   final DateTime? dateTime;
-  final KtList<DeliveryHistory> histories;
+  final Widget Function(int) layout;
+  final int count;
+  final double? verticalGap;
 
-  const GroupedHistoryCard({
+  const GroupedLayoutCard({
     Key? key,
     required this.dateTime,
-    required this.histories,
+    required this.layout,
+    required this.count,
+    this.verticalGap,
   }) : super(key: key);
+
+  String get formattedDate {
+    final isToday = DateTime.now().difference(dateTime!).inDays == 0;
+    return isToday ? 'Today' : '${DateFormat.yMMMEd().format(dateTime!)}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +51,7 @@ class GroupedHistoryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Headline(
-                      '${DateFormat.yMMMEd().format(dateTime!)}',
+                      '$formattedDate',
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
                     ),
@@ -80,16 +88,12 @@ class GroupedHistoryCard extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (_, i) => Column(
                 children: [
-                  DeliveryHistoryCard(
-                    history: histories[i],
-                    initialExpanded: histories.firstOrNull()?.id ==
-                        histories.getOrNull(i)?.id,
-                  ),
+                  layout.call(i),
                   //
-                  VerticalSpace(height: 0.03.sw),
+                  VerticalSpace(height: verticalGap ?? 0.03.sw),
                 ],
               ),
-              childCount: histories.size,
+              childCount: count,
             ),
           ),
         ),

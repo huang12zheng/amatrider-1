@@ -54,6 +54,8 @@ class AdaptiveButton extends StatelessWidget {
   final double pressedOpacity;
   final ButtonType type;
   final bool isLoading;
+  final double? loaderHeight;
+  final double? loaderWidth;
 
   AdaptiveButton({
     Key? key,
@@ -98,6 +100,8 @@ class AdaptiveButton extends StatelessWidget {
     this.pressedOpacity = 0.4,
     this.onPressed,
     this.isLoading = false,
+    this.loaderHeight,
+    this.loaderWidth,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
@@ -163,6 +167,8 @@ class AdaptiveButton extends StatelessWidget {
     this.pressedOpacity = 0.4,
     this.onPressed,
     this.isLoading = false,
+    this.loaderHeight,
+    this.loaderWidth,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
@@ -187,7 +193,11 @@ class AdaptiveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetVisibility(
       visible: !isLoading,
-      replacement: App.loadingSpinningLines,
+      replacement: SizedBox(
+        height: loaderHeight,
+        width: loaderWidth,
+        child: App.loadingSpinningLines,
+      ),
       child: PlatformBuilder(
         cupertino: (context) => type.fold(
           elevated: () => SizedBox(

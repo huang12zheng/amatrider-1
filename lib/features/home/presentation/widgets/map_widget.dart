@@ -17,6 +17,8 @@ class MapWidget extends StatefulWidget {
   final MarkerPainter? startPainter;
   final MarkerPainter? endPainter;
   final bool refresh;
+  final bool? customStartWidget;
+  final bool? customEndWidget;
 
   const MapWidget({
     Key? key,
@@ -26,6 +28,8 @@ class MapWidget extends StatefulWidget {
     this.endWidget,
     this.startPainter,
     this.endPainter,
+    this.customStartWidget,
+    this.customEndWidget,
     this.refresh = false,
   })  : assert((startWidget == null && startPainter != null) ||
             (startWidget != null && startPainter == null) ||
@@ -64,6 +68,8 @@ class _MapWidgetState extends State<MapWidget>
                     endWidget: widget.endWidget,
                     startPainter: widget.startPainter,
                     endPainter: widget.endPainter,
+                    customStartWidget: widget.customStartWidget,
+                    customEndWidget: widget.customEndWidget,
                   );
               if (widget.start == null && widget.end == null)
                 c.read<MapCubit>().updateCurrentLocation();

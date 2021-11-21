@@ -105,14 +105,6 @@ class SideDrawerWidget extends ConsumerWidget {
             Column(
               children: [
                 DrawerListTile(
-                  title: '${tr.profile}',
-                  icon: AmatNow.drawer_profile,
-                  onPressed: () => context
-                      .read<TabNavigationCubit>()
-                      .setCurrentIndex(context, 3),
-                ),
-                //
-                DrawerListTile(
                   title: '${tr.notifications}',
                   icon: AmatNow.drawer_bell,
                   onPressed: () => navigator.push(const NotificationRoute()),
@@ -129,6 +121,12 @@ class SideDrawerWidget extends ConsumerWidget {
                   size: 18,
                   icon: AmatNow.drawer_add_people,
                   onPressed: () => navigator.push(const ReferralRoute()),
+                ),
+                //
+                DrawerListTile(
+                  title: 'Rate App',
+                  icon: AmatNow.star,
+                  onPressed: () {},
                 ),
                 //
                 DrawerListTile(

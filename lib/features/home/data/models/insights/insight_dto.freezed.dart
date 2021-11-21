@@ -24,7 +24,7 @@ class _$InsightDTOTearOff {
   _InsightDTO call(
       {@JsonKey(name: 'completed_orders')
       @IntegerSerializer()
-          int? completedOrder,
+          int? completedOrders,
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
@@ -36,11 +36,27 @@ class _$InsightDTOTearOff {
       @JsonKey(name: 'cash_at_hand')
       @DoubleSerializer()
           double? cashAtHand,
+      @JsonKey(name: 'total_bonus_claimable')
       @DoubleSerializer()
-          double? bonus,
-      @JsonKey(name: 'extra_delivery')
+          double? currentBonus,
+      @JsonKey(name: 'total_bonus_claimed')
+      @DoubleSerializer()
+          double? totalBonusClaimed,
+      @JsonKey(name: 'total_bonus_available')
+      @DoubleSerializer()
+          double? totalBonusAvailable,
+      @JsonKey(name: 'can_claim_bonus')
+      @BooleanSerializer()
+          bool canClaimBonus = false,
+      @JsonKey(name: 'bonus_per_extra_delivery')
+      @DoubleSerializer()
+          double? bonusPerExtraDelivery,
+      @JsonKey(name: 'completed_extra_delivery')
       @IntegerSerializer()
-          int? extraDelivery,
+          int? completedExtraDeliveries,
+      @JsonKey(name: 'available_extra_delivery')
+      @IntegerSerializer()
+          int? totalExtraDeliveries,
       @JsonKey(name: 'money_made_from_payment_methods')
           DispatchActivityDTO? activities,
       @JsonKey(name: 'current_plan_started')
@@ -49,19 +65,28 @@ class _$InsightDTOTearOff {
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
           DateTime? planEnded,
+      @JsonKey(name: 'average_rating')
+      @DoubleSerializer()
+          double? avgRating,
       @JsonKey(name: 'insight')
           InsightDTO? insightData}) {
     return _InsightDTO(
-      completedOrder: completedOrder,
+      completedOrders: completedOrders,
       target: target,
       progress: progress,
       daysLeft: daysLeft,
       cashAtHand: cashAtHand,
-      bonus: bonus,
-      extraDelivery: extraDelivery,
+      currentBonus: currentBonus,
+      totalBonusClaimed: totalBonusClaimed,
+      totalBonusAvailable: totalBonusAvailable,
+      canClaimBonus: canClaimBonus,
+      bonusPerExtraDelivery: bonusPerExtraDelivery,
+      completedExtraDeliveries: completedExtraDeliveries,
+      totalExtraDeliveries: totalExtraDeliveries,
       activities: activities,
       planStarted: planStarted,
       planEnded: planEnded,
+      avgRating: avgRating,
       insightData: insightData,
     );
   }
@@ -78,7 +103,7 @@ const $InsightDTO = _$InsightDTOTearOff();
 mixin _$InsightDTO {
   @JsonKey(name: 'completed_orders')
   @IntegerSerializer()
-  int? get completedOrder => throw _privateConstructorUsedError;
+  int? get completedOrders => throw _privateConstructorUsedError;
   @IntegerSerializer()
   int? get target => throw _privateConstructorUsedError;
   @JsonKey(name: 'percentage')
@@ -89,12 +114,28 @@ mixin _$InsightDTO {
   int? get daysLeft => throw _privateConstructorUsedError;
   @JsonKey(name: 'cash_at_hand')
   @DoubleSerializer()
-  double? get cashAtHand => throw _privateConstructorUsedError;
+  double? get cashAtHand => throw _privateConstructorUsedError; //
+  @JsonKey(name: 'total_bonus_claimable')
   @DoubleSerializer()
-  double? get bonus => throw _privateConstructorUsedError;
-  @JsonKey(name: 'extra_delivery')
+  double? get currentBonus => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_bonus_claimed')
+  @DoubleSerializer()
+  double? get totalBonusClaimed => throw _privateConstructorUsedError;
+  @JsonKey(name: 'total_bonus_available')
+  @DoubleSerializer()
+  double? get totalBonusAvailable => throw _privateConstructorUsedError;
+  @JsonKey(name: 'can_claim_bonus')
+  @BooleanSerializer()
+  bool get canClaimBonus => throw _privateConstructorUsedError; //
+  @JsonKey(name: 'bonus_per_extra_delivery')
+  @DoubleSerializer()
+  double? get bonusPerExtraDelivery => throw _privateConstructorUsedError;
+  @JsonKey(name: 'completed_extra_delivery')
   @IntegerSerializer()
-  int? get extraDelivery => throw _privateConstructorUsedError;
+  int? get completedExtraDeliveries => throw _privateConstructorUsedError;
+  @JsonKey(name: 'available_extra_delivery')
+  @IntegerSerializer()
+  int? get totalExtraDeliveries => throw _privateConstructorUsedError; //
   @JsonKey(name: 'money_made_from_payment_methods')
   DispatchActivityDTO? get activities => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_plan_started')
@@ -102,7 +143,10 @@ mixin _$InsightDTO {
   DateTime? get planStarted => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
-  DateTime? get planEnded => throw _privateConstructorUsedError; //
+  DateTime? get planEnded => throw _privateConstructorUsedError;
+  @JsonKey(name: 'average_rating')
+  @DoubleSerializer()
+  double? get avgRating => throw _privateConstructorUsedError; //
   @JsonKey(name: 'insight')
   InsightDTO? get insightData => throw _privateConstructorUsedError;
 
@@ -120,7 +164,7 @@ abstract class $InsightDTOCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'completed_orders')
       @IntegerSerializer()
-          int? completedOrder,
+          int? completedOrders,
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
@@ -132,11 +176,27 @@ abstract class $InsightDTOCopyWith<$Res> {
       @JsonKey(name: 'cash_at_hand')
       @DoubleSerializer()
           double? cashAtHand,
+      @JsonKey(name: 'total_bonus_claimable')
       @DoubleSerializer()
-          double? bonus,
-      @JsonKey(name: 'extra_delivery')
+          double? currentBonus,
+      @JsonKey(name: 'total_bonus_claimed')
+      @DoubleSerializer()
+          double? totalBonusClaimed,
+      @JsonKey(name: 'total_bonus_available')
+      @DoubleSerializer()
+          double? totalBonusAvailable,
+      @JsonKey(name: 'can_claim_bonus')
+      @BooleanSerializer()
+          bool canClaimBonus,
+      @JsonKey(name: 'bonus_per_extra_delivery')
+      @DoubleSerializer()
+          double? bonusPerExtraDelivery,
+      @JsonKey(name: 'completed_extra_delivery')
       @IntegerSerializer()
-          int? extraDelivery,
+          int? completedExtraDeliveries,
+      @JsonKey(name: 'available_extra_delivery')
+      @IntegerSerializer()
+          int? totalExtraDeliveries,
       @JsonKey(name: 'money_made_from_payment_methods')
           DispatchActivityDTO? activities,
       @JsonKey(name: 'current_plan_started')
@@ -145,6 +205,9 @@ abstract class $InsightDTOCopyWith<$Res> {
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
           DateTime? planEnded,
+      @JsonKey(name: 'average_rating')
+      @DoubleSerializer()
+          double? avgRating,
       @JsonKey(name: 'insight')
           InsightDTO? insightData});
 
@@ -162,22 +225,28 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? completedOrder = freezed,
+    Object? completedOrders = freezed,
     Object? target = freezed,
     Object? progress = freezed,
     Object? daysLeft = freezed,
     Object? cashAtHand = freezed,
-    Object? bonus = freezed,
-    Object? extraDelivery = freezed,
+    Object? currentBonus = freezed,
+    Object? totalBonusClaimed = freezed,
+    Object? totalBonusAvailable = freezed,
+    Object? canClaimBonus = freezed,
+    Object? bonusPerExtraDelivery = freezed,
+    Object? completedExtraDeliveries = freezed,
+    Object? totalExtraDeliveries = freezed,
     Object? activities = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
+    Object? avgRating = freezed,
     Object? insightData = freezed,
   }) {
     return _then(_value.copyWith(
-      completedOrder: completedOrder == freezed
-          ? _value.completedOrder
-          : completedOrder // ignore: cast_nullable_to_non_nullable
+      completedOrders: completedOrders == freezed
+          ? _value.completedOrders
+          : completedOrders // ignore: cast_nullable_to_non_nullable
               as int?,
       target: target == freezed
           ? _value.target
@@ -195,13 +264,33 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
           ? _value.cashAtHand
           : cashAtHand // ignore: cast_nullable_to_non_nullable
               as double?,
-      bonus: bonus == freezed
-          ? _value.bonus
-          : bonus // ignore: cast_nullable_to_non_nullable
+      currentBonus: currentBonus == freezed
+          ? _value.currentBonus
+          : currentBonus // ignore: cast_nullable_to_non_nullable
               as double?,
-      extraDelivery: extraDelivery == freezed
-          ? _value.extraDelivery
-          : extraDelivery // ignore: cast_nullable_to_non_nullable
+      totalBonusClaimed: totalBonusClaimed == freezed
+          ? _value.totalBonusClaimed
+          : totalBonusClaimed // ignore: cast_nullable_to_non_nullable
+              as double?,
+      totalBonusAvailable: totalBonusAvailable == freezed
+          ? _value.totalBonusAvailable
+          : totalBonusAvailable // ignore: cast_nullable_to_non_nullable
+              as double?,
+      canClaimBonus: canClaimBonus == freezed
+          ? _value.canClaimBonus
+          : canClaimBonus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bonusPerExtraDelivery: bonusPerExtraDelivery == freezed
+          ? _value.bonusPerExtraDelivery
+          : bonusPerExtraDelivery // ignore: cast_nullable_to_non_nullable
+              as double?,
+      completedExtraDeliveries: completedExtraDeliveries == freezed
+          ? _value.completedExtraDeliveries
+          : completedExtraDeliveries // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalExtraDeliveries: totalExtraDeliveries == freezed
+          ? _value.totalExtraDeliveries
+          : totalExtraDeliveries // ignore: cast_nullable_to_non_nullable
               as int?,
       activities: activities == freezed
           ? _value.activities
@@ -215,6 +304,10 @@ class _$InsightDTOCopyWithImpl<$Res> implements $InsightDTOCopyWith<$Res> {
           ? _value.planEnded
           : planEnded // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as double?,
       insightData: insightData == freezed
           ? _value.insightData
           : insightData // ignore: cast_nullable_to_non_nullable
@@ -254,7 +347,7 @@ abstract class _$InsightDTOCopyWith<$Res> implements $InsightDTOCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'completed_orders')
       @IntegerSerializer()
-          int? completedOrder,
+          int? completedOrders,
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
@@ -266,11 +359,27 @@ abstract class _$InsightDTOCopyWith<$Res> implements $InsightDTOCopyWith<$Res> {
       @JsonKey(name: 'cash_at_hand')
       @DoubleSerializer()
           double? cashAtHand,
+      @JsonKey(name: 'total_bonus_claimable')
       @DoubleSerializer()
-          double? bonus,
-      @JsonKey(name: 'extra_delivery')
+          double? currentBonus,
+      @JsonKey(name: 'total_bonus_claimed')
+      @DoubleSerializer()
+          double? totalBonusClaimed,
+      @JsonKey(name: 'total_bonus_available')
+      @DoubleSerializer()
+          double? totalBonusAvailable,
+      @JsonKey(name: 'can_claim_bonus')
+      @BooleanSerializer()
+          bool canClaimBonus,
+      @JsonKey(name: 'bonus_per_extra_delivery')
+      @DoubleSerializer()
+          double? bonusPerExtraDelivery,
+      @JsonKey(name: 'completed_extra_delivery')
       @IntegerSerializer()
-          int? extraDelivery,
+          int? completedExtraDeliveries,
+      @JsonKey(name: 'available_extra_delivery')
+      @IntegerSerializer()
+          int? totalExtraDeliveries,
       @JsonKey(name: 'money_made_from_payment_methods')
           DispatchActivityDTO? activities,
       @JsonKey(name: 'current_plan_started')
@@ -279,6 +388,9 @@ abstract class _$InsightDTOCopyWith<$Res> implements $InsightDTOCopyWith<$Res> {
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
           DateTime? planEnded,
+      @JsonKey(name: 'average_rating')
+      @DoubleSerializer()
+          double? avgRating,
       @JsonKey(name: 'insight')
           InsightDTO? insightData});
 
@@ -300,22 +412,28 @@ class __$InsightDTOCopyWithImpl<$Res> extends _$InsightDTOCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? completedOrder = freezed,
+    Object? completedOrders = freezed,
     Object? target = freezed,
     Object? progress = freezed,
     Object? daysLeft = freezed,
     Object? cashAtHand = freezed,
-    Object? bonus = freezed,
-    Object? extraDelivery = freezed,
+    Object? currentBonus = freezed,
+    Object? totalBonusClaimed = freezed,
+    Object? totalBonusAvailable = freezed,
+    Object? canClaimBonus = freezed,
+    Object? bonusPerExtraDelivery = freezed,
+    Object? completedExtraDeliveries = freezed,
+    Object? totalExtraDeliveries = freezed,
     Object? activities = freezed,
     Object? planStarted = freezed,
     Object? planEnded = freezed,
+    Object? avgRating = freezed,
     Object? insightData = freezed,
   }) {
     return _then(_InsightDTO(
-      completedOrder: completedOrder == freezed
-          ? _value.completedOrder
-          : completedOrder // ignore: cast_nullable_to_non_nullable
+      completedOrders: completedOrders == freezed
+          ? _value.completedOrders
+          : completedOrders // ignore: cast_nullable_to_non_nullable
               as int?,
       target: target == freezed
           ? _value.target
@@ -333,13 +451,33 @@ class __$InsightDTOCopyWithImpl<$Res> extends _$InsightDTOCopyWithImpl<$Res>
           ? _value.cashAtHand
           : cashAtHand // ignore: cast_nullable_to_non_nullable
               as double?,
-      bonus: bonus == freezed
-          ? _value.bonus
-          : bonus // ignore: cast_nullable_to_non_nullable
+      currentBonus: currentBonus == freezed
+          ? _value.currentBonus
+          : currentBonus // ignore: cast_nullable_to_non_nullable
               as double?,
-      extraDelivery: extraDelivery == freezed
-          ? _value.extraDelivery
-          : extraDelivery // ignore: cast_nullable_to_non_nullable
+      totalBonusClaimed: totalBonusClaimed == freezed
+          ? _value.totalBonusClaimed
+          : totalBonusClaimed // ignore: cast_nullable_to_non_nullable
+              as double?,
+      totalBonusAvailable: totalBonusAvailable == freezed
+          ? _value.totalBonusAvailable
+          : totalBonusAvailable // ignore: cast_nullable_to_non_nullable
+              as double?,
+      canClaimBonus: canClaimBonus == freezed
+          ? _value.canClaimBonus
+          : canClaimBonus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bonusPerExtraDelivery: bonusPerExtraDelivery == freezed
+          ? _value.bonusPerExtraDelivery
+          : bonusPerExtraDelivery // ignore: cast_nullable_to_non_nullable
+              as double?,
+      completedExtraDeliveries: completedExtraDeliveries == freezed
+          ? _value.completedExtraDeliveries
+          : completedExtraDeliveries // ignore: cast_nullable_to_non_nullable
+              as int?,
+      totalExtraDeliveries: totalExtraDeliveries == freezed
+          ? _value.totalExtraDeliveries
+          : totalExtraDeliveries // ignore: cast_nullable_to_non_nullable
               as int?,
       activities: activities == freezed
           ? _value.activities
@@ -353,6 +491,10 @@ class __$InsightDTOCopyWithImpl<$Res> extends _$InsightDTOCopyWithImpl<$Res>
           ? _value.planEnded
           : planEnded // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      avgRating: avgRating == freezed
+          ? _value.avgRating
+          : avgRating // ignore: cast_nullable_to_non_nullable
+              as double?,
       insightData: insightData == freezed
           ? _value.insightData
           : insightData // ignore: cast_nullable_to_non_nullable
@@ -367,7 +509,7 @@ class _$_InsightDTO extends _InsightDTO {
   const _$_InsightDTO(
       {@JsonKey(name: 'completed_orders')
       @IntegerSerializer()
-          this.completedOrder,
+          this.completedOrders,
       @IntegerSerializer()
           this.target,
       @JsonKey(name: 'percentage')
@@ -379,11 +521,27 @@ class _$_InsightDTO extends _InsightDTO {
       @JsonKey(name: 'cash_at_hand')
       @DoubleSerializer()
           this.cashAtHand,
+      @JsonKey(name: 'total_bonus_claimable')
       @DoubleSerializer()
-          this.bonus,
-      @JsonKey(name: 'extra_delivery')
+          this.currentBonus,
+      @JsonKey(name: 'total_bonus_claimed')
+      @DoubleSerializer()
+          this.totalBonusClaimed,
+      @JsonKey(name: 'total_bonus_available')
+      @DoubleSerializer()
+          this.totalBonusAvailable,
+      @JsonKey(name: 'can_claim_bonus')
+      @BooleanSerializer()
+          this.canClaimBonus = false,
+      @JsonKey(name: 'bonus_per_extra_delivery')
+      @DoubleSerializer()
+          this.bonusPerExtraDelivery,
+      @JsonKey(name: 'completed_extra_delivery')
       @IntegerSerializer()
-          this.extraDelivery,
+          this.completedExtraDeliveries,
+      @JsonKey(name: 'available_extra_delivery')
+      @IntegerSerializer()
+          this.totalExtraDeliveries,
       @JsonKey(name: 'money_made_from_payment_methods')
           this.activities,
       @JsonKey(name: 'current_plan_started')
@@ -392,6 +550,9 @@ class _$_InsightDTO extends _InsightDTO {
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
           this.planEnded,
+      @JsonKey(name: 'average_rating')
+      @DoubleSerializer()
+          this.avgRating,
       @JsonKey(name: 'insight')
           this.insightData})
       : super._();
@@ -402,7 +563,7 @@ class _$_InsightDTO extends _InsightDTO {
   @override
   @JsonKey(name: 'completed_orders')
   @IntegerSerializer()
-  final int? completedOrder;
+  final int? completedOrders;
   @override
   @IntegerSerializer()
   final int? target;
@@ -418,14 +579,35 @@ class _$_InsightDTO extends _InsightDTO {
   @JsonKey(name: 'cash_at_hand')
   @DoubleSerializer()
   final double? cashAtHand;
-  @override
+  @override //
+  @JsonKey(name: 'total_bonus_claimable')
   @DoubleSerializer()
-  final double? bonus;
+  final double? currentBonus;
   @override
-  @JsonKey(name: 'extra_delivery')
+  @JsonKey(name: 'total_bonus_claimed')
+  @DoubleSerializer()
+  final double? totalBonusClaimed;
+  @override
+  @JsonKey(name: 'total_bonus_available')
+  @DoubleSerializer()
+  final double? totalBonusAvailable;
+  @override
+  @JsonKey(name: 'can_claim_bonus')
+  @BooleanSerializer()
+  final bool canClaimBonus;
+  @override //
+  @JsonKey(name: 'bonus_per_extra_delivery')
+  @DoubleSerializer()
+  final double? bonusPerExtraDelivery;
+  @override
+  @JsonKey(name: 'completed_extra_delivery')
   @IntegerSerializer()
-  final int? extraDelivery;
+  final int? completedExtraDeliveries;
   @override
+  @JsonKey(name: 'available_extra_delivery')
+  @IntegerSerializer()
+  final int? totalExtraDeliveries;
+  @override //
   @JsonKey(name: 'money_made_from_payment_methods')
   final DispatchActivityDTO? activities;
   @override
@@ -436,13 +618,17 @@ class _$_InsightDTO extends _InsightDTO {
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
   final DateTime? planEnded;
+  @override
+  @JsonKey(name: 'average_rating')
+  @DoubleSerializer()
+  final double? avgRating;
   @override //
   @JsonKey(name: 'insight')
   final InsightDTO? insightData;
 
   @override
   String toString() {
-    return 'InsightDTO(completedOrder: $completedOrder, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, bonus: $bonus, extraDelivery: $extraDelivery, activities: $activities, planStarted: $planStarted, planEnded: $planEnded, insightData: $insightData)';
+    return 'InsightDTO(completedOrders: $completedOrders, target: $target, progress: $progress, daysLeft: $daysLeft, cashAtHand: $cashAtHand, currentBonus: $currentBonus, totalBonusClaimed: $totalBonusClaimed, totalBonusAvailable: $totalBonusAvailable, canClaimBonus: $canClaimBonus, bonusPerExtraDelivery: $bonusPerExtraDelivery, completedExtraDeliveries: $completedExtraDeliveries, totalExtraDeliveries: $totalExtraDeliveries, activities: $activities, planStarted: $planStarted, planEnded: $planEnded, avgRating: $avgRating, insightData: $insightData)';
   }
 
   @override
@@ -450,8 +636,8 @@ class _$_InsightDTO extends _InsightDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InsightDTO &&
-            (identical(other.completedOrder, completedOrder) ||
-                other.completedOrder == completedOrder) &&
+            (identical(other.completedOrders, completedOrders) ||
+                other.completedOrders == completedOrders) &&
             (identical(other.target, target) || other.target == target) &&
             (identical(other.progress, progress) ||
                 other.progress == progress) &&
@@ -459,15 +645,29 @@ class _$_InsightDTO extends _InsightDTO {
                 other.daysLeft == daysLeft) &&
             (identical(other.cashAtHand, cashAtHand) ||
                 other.cashAtHand == cashAtHand) &&
-            (identical(other.bonus, bonus) || other.bonus == bonus) &&
-            (identical(other.extraDelivery, extraDelivery) ||
-                other.extraDelivery == extraDelivery) &&
+            (identical(other.currentBonus, currentBonus) ||
+                other.currentBonus == currentBonus) &&
+            (identical(other.totalBonusClaimed, totalBonusClaimed) ||
+                other.totalBonusClaimed == totalBonusClaimed) &&
+            (identical(other.totalBonusAvailable, totalBonusAvailable) ||
+                other.totalBonusAvailable == totalBonusAvailable) &&
+            (identical(other.canClaimBonus, canClaimBonus) ||
+                other.canClaimBonus == canClaimBonus) &&
+            (identical(other.bonusPerExtraDelivery, bonusPerExtraDelivery) ||
+                other.bonusPerExtraDelivery == bonusPerExtraDelivery) &&
+            (identical(
+                    other.completedExtraDeliveries, completedExtraDeliveries) ||
+                other.completedExtraDeliveries == completedExtraDeliveries) &&
+            (identical(other.totalExtraDeliveries, totalExtraDeliveries) ||
+                other.totalExtraDeliveries == totalExtraDeliveries) &&
             (identical(other.activities, activities) ||
                 other.activities == activities) &&
             (identical(other.planStarted, planStarted) ||
                 other.planStarted == planStarted) &&
             (identical(other.planEnded, planEnded) ||
                 other.planEnded == planEnded) &&
+            (identical(other.avgRating, avgRating) ||
+                other.avgRating == avgRating) &&
             (identical(other.insightData, insightData) ||
                 other.insightData == insightData));
   }
@@ -475,16 +675,22 @@ class _$_InsightDTO extends _InsightDTO {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      completedOrder,
+      completedOrders,
       target,
       progress,
       daysLeft,
       cashAtHand,
-      bonus,
-      extraDelivery,
+      currentBonus,
+      totalBonusClaimed,
+      totalBonusAvailable,
+      canClaimBonus,
+      bonusPerExtraDelivery,
+      completedExtraDeliveries,
+      totalExtraDeliveries,
       activities,
       planStarted,
       planEnded,
+      avgRating,
       insightData);
 
   @JsonKey(ignore: true)
@@ -502,7 +708,7 @@ abstract class _InsightDTO extends InsightDTO {
   const factory _InsightDTO(
       {@JsonKey(name: 'completed_orders')
       @IntegerSerializer()
-          int? completedOrder,
+          int? completedOrders,
       @IntegerSerializer()
           int? target,
       @JsonKey(name: 'percentage')
@@ -514,11 +720,27 @@ abstract class _InsightDTO extends InsightDTO {
       @JsonKey(name: 'cash_at_hand')
       @DoubleSerializer()
           double? cashAtHand,
+      @JsonKey(name: 'total_bonus_claimable')
       @DoubleSerializer()
-          double? bonus,
-      @JsonKey(name: 'extra_delivery')
+          double? currentBonus,
+      @JsonKey(name: 'total_bonus_claimed')
+      @DoubleSerializer()
+          double? totalBonusClaimed,
+      @JsonKey(name: 'total_bonus_available')
+      @DoubleSerializer()
+          double? totalBonusAvailable,
+      @JsonKey(name: 'can_claim_bonus')
+      @BooleanSerializer()
+          bool canClaimBonus,
+      @JsonKey(name: 'bonus_per_extra_delivery')
+      @DoubleSerializer()
+          double? bonusPerExtraDelivery,
+      @JsonKey(name: 'completed_extra_delivery')
       @IntegerSerializer()
-          int? extraDelivery,
+          int? completedExtraDeliveries,
+      @JsonKey(name: 'available_extra_delivery')
+      @IntegerSerializer()
+          int? totalExtraDeliveries,
       @JsonKey(name: 'money_made_from_payment_methods')
           DispatchActivityDTO? activities,
       @JsonKey(name: 'current_plan_started')
@@ -527,6 +749,9 @@ abstract class _InsightDTO extends InsightDTO {
       @JsonKey(name: 'current_plan_ended')
       @TimestampConverter()
           DateTime? planEnded,
+      @JsonKey(name: 'average_rating')
+      @DoubleSerializer()
+          double? avgRating,
       @JsonKey(name: 'insight')
           InsightDTO? insightData}) = _$_InsightDTO;
   const _InsightDTO._() : super._();
@@ -537,7 +762,7 @@ abstract class _InsightDTO extends InsightDTO {
   @override
   @JsonKey(name: 'completed_orders')
   @IntegerSerializer()
-  int? get completedOrder;
+  int? get completedOrders;
   @override
   @IntegerSerializer()
   int? get target;
@@ -553,14 +778,35 @@ abstract class _InsightDTO extends InsightDTO {
   @JsonKey(name: 'cash_at_hand')
   @DoubleSerializer()
   double? get cashAtHand;
-  @override
+  @override //
+  @JsonKey(name: 'total_bonus_claimable')
   @DoubleSerializer()
-  double? get bonus;
+  double? get currentBonus;
   @override
-  @JsonKey(name: 'extra_delivery')
+  @JsonKey(name: 'total_bonus_claimed')
+  @DoubleSerializer()
+  double? get totalBonusClaimed;
+  @override
+  @JsonKey(name: 'total_bonus_available')
+  @DoubleSerializer()
+  double? get totalBonusAvailable;
+  @override
+  @JsonKey(name: 'can_claim_bonus')
+  @BooleanSerializer()
+  bool get canClaimBonus;
+  @override //
+  @JsonKey(name: 'bonus_per_extra_delivery')
+  @DoubleSerializer()
+  double? get bonusPerExtraDelivery;
+  @override
+  @JsonKey(name: 'completed_extra_delivery')
   @IntegerSerializer()
-  int? get extraDelivery;
+  int? get completedExtraDeliveries;
   @override
+  @JsonKey(name: 'available_extra_delivery')
+  @IntegerSerializer()
+  int? get totalExtraDeliveries;
+  @override //
   @JsonKey(name: 'money_made_from_payment_methods')
   DispatchActivityDTO? get activities;
   @override
@@ -571,6 +817,10 @@ abstract class _InsightDTO extends InsightDTO {
   @JsonKey(name: 'current_plan_ended')
   @TimestampConverter()
   DateTime? get planEnded;
+  @override
+  @JsonKey(name: 'average_rating')
+  @DoubleSerializer()
+  double? get avgRating;
   @override //
   @JsonKey(name: 'insight')
   InsightDTO? get insightData;

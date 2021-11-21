@@ -22,6 +22,7 @@ class _$AuthWatcherStateTearOff {
       bool isAuthenticated = false,
       bool isListeningForAuthChanges = false,
       bool isListeningForUserChanges = false,
+      bool subscribedToChannel = false,
       Rider? rider,
       Option<Rider?> option = const None()}) {
     return _AuthWatcherState(
@@ -29,6 +30,7 @@ class _$AuthWatcherStateTearOff {
       isAuthenticated: isAuthenticated,
       isListeningForAuthChanges: isListeningForAuthChanges,
       isListeningForUserChanges: isListeningForUserChanges,
+      subscribedToChannel: subscribedToChannel,
       rider: rider,
       option: option,
     );
@@ -44,6 +46,7 @@ mixin _$AuthWatcherState {
   bool get isAuthenticated => throw _privateConstructorUsedError;
   bool get isListeningForAuthChanges => throw _privateConstructorUsedError;
   bool get isListeningForUserChanges => throw _privateConstructorUsedError;
+  bool get subscribedToChannel => throw _privateConstructorUsedError;
   Rider? get rider => throw _privateConstructorUsedError;
   Option<Rider?> get option => throw _privateConstructorUsedError;
 
@@ -62,6 +65,7 @@ abstract class $AuthWatcherStateCopyWith<$Res> {
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
+      bool subscribedToChannel,
       Rider? rider,
       Option<Rider?> option});
 
@@ -83,6 +87,7 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
     Object? isAuthenticated = freezed,
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
+    Object? subscribedToChannel = freezed,
     Object? rider = freezed,
     Object? option = freezed,
   }) {
@@ -102,6 +107,10 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
       isListeningForUserChanges: isListeningForUserChanges == freezed
           ? _value.isListeningForUserChanges
           : isListeningForUserChanges // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedToChannel: subscribedToChannel == freezed
+          ? _value.subscribedToChannel
+          : subscribedToChannel // ignore: cast_nullable_to_non_nullable
               as bool,
       rider: rider == freezed
           ? _value.rider
@@ -138,6 +147,7 @@ abstract class _$AuthWatcherStateCopyWith<$Res>
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
+      bool subscribedToChannel,
       Rider? rider,
       Option<Rider?> option});
 
@@ -162,6 +172,7 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
     Object? isAuthenticated = freezed,
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
+    Object? subscribedToChannel = freezed,
     Object? rider = freezed,
     Object? option = freezed,
   }) {
@@ -181,6 +192,10 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
       isListeningForUserChanges: isListeningForUserChanges == freezed
           ? _value.isListeningForUserChanges
           : isListeningForUserChanges // ignore: cast_nullable_to_non_nullable
+              as bool,
+      subscribedToChannel: subscribedToChannel == freezed
+          ? _value.subscribedToChannel
+          : subscribedToChannel // ignore: cast_nullable_to_non_nullable
               as bool,
       rider: rider == freezed
           ? _value.rider
@@ -202,6 +217,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
       this.isAuthenticated = false,
       this.isListeningForAuthChanges = false,
       this.isListeningForUserChanges = false,
+      this.subscribedToChannel = false,
       this.rider,
       this.option = const None()})
       : super._();
@@ -218,6 +234,9 @@ class _$_AuthWatcherState extends _AuthWatcherState {
   @JsonKey(defaultValue: false)
   @override
   final bool isListeningForUserChanges;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool subscribedToChannel;
   @override
   final Rider? rider;
   @JsonKey(defaultValue: const None())
@@ -226,7 +245,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
 
   @override
   String toString() {
-    return 'AuthWatcherState(isLoading: $isLoading, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, rider: $rider, option: $option)';
+    return 'AuthWatcherState(isLoading: $isLoading, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, subscribedToChannel: $subscribedToChannel, rider: $rider, option: $option)';
   }
 
   @override
@@ -244,13 +263,22 @@ class _$_AuthWatcherState extends _AuthWatcherState {
             (identical(other.isListeningForUserChanges,
                     isListeningForUserChanges) ||
                 other.isListeningForUserChanges == isListeningForUserChanges) &&
+            (identical(other.subscribedToChannel, subscribedToChannel) ||
+                other.subscribedToChannel == subscribedToChannel) &&
             (identical(other.rider, rider) || other.rider == rider) &&
             (identical(other.option, option) || other.option == option));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isAuthenticated,
-      isListeningForAuthChanges, isListeningForUserChanges, rider, option);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isAuthenticated,
+      isListeningForAuthChanges,
+      isListeningForUserChanges,
+      subscribedToChannel,
+      rider,
+      option);
 
   @JsonKey(ignore: true)
   @override
@@ -264,6 +292,7 @@ abstract class _AuthWatcherState extends AuthWatcherState {
       bool isAuthenticated,
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
+      bool subscribedToChannel,
       Rider? rider,
       Option<Rider?> option}) = _$_AuthWatcherState;
   const _AuthWatcherState._() : super._();
@@ -276,6 +305,8 @@ abstract class _AuthWatcherState extends AuthWatcherState {
   bool get isListeningForAuthChanges;
   @override
   bool get isListeningForUserChanges;
+  @override
+  bool get subscribedToChannel;
   @override
   Rider? get rider;
   @override

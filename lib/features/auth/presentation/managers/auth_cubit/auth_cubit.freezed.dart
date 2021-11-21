@@ -27,6 +27,9 @@ class _$AuthStateTearOff {
       double passwordStrength = 0.0,
       bool isLoading = false,
       bool validate = false,
+      bool isEmailAuthLoading = false,
+      bool isGoogleAuthLoading = false,
+      bool isAppleAuthLoading = false,
       bool isOldPasswordHidden = true,
       bool isPasswordHidden = true,
       bool passwordMatches = false,
@@ -43,6 +46,9 @@ class _$AuthStateTearOff {
       passwordStrength: passwordStrength,
       isLoading: isLoading,
       validate: validate,
+      isEmailAuthLoading: isEmailAuthLoading,
+      isGoogleAuthLoading: isGoogleAuthLoading,
+      isAppleAuthLoading: isAppleAuthLoading,
       isOldPasswordHidden: isOldPasswordHidden,
       isPasswordHidden: isPasswordHidden,
       passwordMatches: passwordMatches,
@@ -68,6 +74,9 @@ mixin _$AuthState {
   double get passwordStrength => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
+  bool get isEmailAuthLoading => throw _privateConstructorUsedError;
+  bool get isGoogleAuthLoading => throw _privateConstructorUsedError;
+  bool get isAppleAuthLoading => throw _privateConstructorUsedError;
   bool get isOldPasswordHidden => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get passwordMatches => throw _privateConstructorUsedError;
@@ -94,6 +103,9 @@ abstract class $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
       bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
@@ -124,6 +136,9 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isEmailAuthLoading = freezed,
+    Object? isGoogleAuthLoading = freezed,
+    Object? isAppleAuthLoading = freezed,
     Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
@@ -167,6 +182,18 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       validate: validate == freezed
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isEmailAuthLoading: isEmailAuthLoading == freezed
+          ? _value.isEmailAuthLoading
+          : isEmailAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGoogleAuthLoading: isGoogleAuthLoading == freezed
+          ? _value.isGoogleAuthLoading
+          : isGoogleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAppleAuthLoading: isAppleAuthLoading == freezed
+          ? _value.isAppleAuthLoading
+          : isAppleAuthLoading // ignore: cast_nullable_to_non_nullable
               as bool,
       isOldPasswordHidden: isOldPasswordHidden == freezed
           ? _value.isOldPasswordHidden
@@ -226,6 +253,9 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
       bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
@@ -259,6 +289,9 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isEmailAuthLoading = freezed,
+    Object? isGoogleAuthLoading = freezed,
+    Object? isAppleAuthLoading = freezed,
     Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
@@ -303,6 +336,18 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isEmailAuthLoading: isEmailAuthLoading == freezed
+          ? _value.isEmailAuthLoading
+          : isEmailAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGoogleAuthLoading: isGoogleAuthLoading == freezed
+          ? _value.isGoogleAuthLoading
+          : isGoogleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAppleAuthLoading: isAppleAuthLoading == freezed
+          ? _value.isAppleAuthLoading
+          : isAppleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
       isOldPasswordHidden: isOldPasswordHidden == freezed
           ? _value.isOldPasswordHidden
           : isOldPasswordHidden // ignore: cast_nullable_to_non_nullable
@@ -344,6 +389,9 @@ class _$_AuthState extends _AuthState {
       this.passwordStrength = 0.0,
       this.isLoading = false,
       this.validate = false,
+      this.isEmailAuthLoading = false,
+      this.isGoogleAuthLoading = false,
+      this.isAppleAuthLoading = false,
       this.isOldPasswordHidden = true,
       this.isPasswordHidden = true,
       this.passwordMatches = false,
@@ -373,6 +421,15 @@ class _$_AuthState extends _AuthState {
   @JsonKey(defaultValue: false)
   @override
   final bool validate;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isEmailAuthLoading;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isGoogleAuthLoading;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isAppleAuthLoading;
   @JsonKey(defaultValue: true)
   @override
   final bool isOldPasswordHidden;
@@ -392,7 +449,7 @@ class _$_AuthState extends _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isOldPasswordHidden: $isOldPasswordHidden, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
+    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isEmailAuthLoading: $isEmailAuthLoading, isGoogleAuthLoading: $isGoogleAuthLoading, isAppleAuthLoading: $isAppleAuthLoading, isOldPasswordHidden: $isOldPasswordHidden, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
   }
 
   @override
@@ -416,6 +473,12 @@ class _$_AuthState extends _AuthState {
                 other.isLoading == isLoading) &&
             (identical(other.validate, validate) ||
                 other.validate == validate) &&
+            (identical(other.isEmailAuthLoading, isEmailAuthLoading) ||
+                other.isEmailAuthLoading == isEmailAuthLoading) &&
+            (identical(other.isGoogleAuthLoading, isGoogleAuthLoading) ||
+                other.isGoogleAuthLoading == isGoogleAuthLoading) &&
+            (identical(other.isAppleAuthLoading, isAppleAuthLoading) ||
+                other.isAppleAuthLoading == isAppleAuthLoading) &&
             (identical(other.isOldPasswordHidden, isOldPasswordHidden) ||
                 other.isOldPasswordHidden == isOldPasswordHidden) &&
             (identical(other.isPasswordHidden, isPasswordHidden) ||
@@ -441,6 +504,9 @@ class _$_AuthState extends _AuthState {
       passwordStrength,
       isLoading,
       validate,
+      isEmailAuthLoading,
+      isGoogleAuthLoading,
+      isAppleAuthLoading,
       isOldPasswordHidden,
       isPasswordHidden,
       passwordMatches,
@@ -465,6 +531,9 @@ abstract class _AuthState extends AuthState {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
       bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
@@ -491,6 +560,12 @@ abstract class _AuthState extends AuthState {
   bool get isLoading;
   @override
   bool get validate;
+  @override
+  bool get isEmailAuthLoading;
+  @override
+  bool get isGoogleAuthLoading;
+  @override
+  bool get isAppleAuthLoading;
   @override
   bool get isOldPasswordHidden;
   @override

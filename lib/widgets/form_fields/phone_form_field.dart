@@ -139,7 +139,20 @@ class PhoneFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
                 dark: () => Palette.cardColorDark,
               ),
               elevation: 0.0,
-              title: const Text('Choose a country'),
+              title: Text(
+                'Choose a country',
+                style: TextStyle(
+                  color: Utils.platform_(
+                    cupertino: Utils.foldTheme(
+                      light: () => Palette.text100,
+                      dark: () => Palette.text100Dark,
+                    ),
+                  ),
+                ),
+              ),
+              iconTheme: IconThemeData(
+                color: Utils.platform_(cupertino: Palette.accentColor),
+              ),
             ),
             pickerBuilder: (_, country) => Builder(builder: (_) {
               onPickerBuilder?.call(c.read<Reactive>(), country);

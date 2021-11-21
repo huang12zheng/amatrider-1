@@ -70,7 +70,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
           final dialCodeLength = s.selectedCountry?.dialCode?.length ?? 0;
           final count = it.length;
 
-          final prefix = it.substring(0, dialCodeLength + 2);
+          final prefix = it.substring(0, dialCodeLength + 3);
           final suffix = it.substring(count - 3);
           final maskCount = count - (prefix.length + suffix.length);
           return prefix + ('*' * maskCount) + suffix;

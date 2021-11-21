@@ -26,6 +26,8 @@ mixin EndPoints {
   static const String UPDATE_PHONE = '/rider/profile/phone'; // (POST)
   static const String CONFIRM_UPDATE_PHONE = '/rider/profile/phone'; // (PATCH)
   static const String UPDATE_RIDER_PROFILE = '/rider/profile'; // (POST)
+  static const String UPDATE_RIDER_PROFILE_SOCIALS =
+      '/rider/social/profile'; // (POST)
 
   /// .......///////...// SEND PACKAGE ENDPOINTS .......///////./....//
   static const String GET_ACTIVE_PACKAGES = '/rider/package'; // (GET)
@@ -44,9 +46,12 @@ mixin EndPoints {
   static const String GET_ALL_HISTORY = '/rider/history'; // (GET)
 
   /// .......///////...// NOTIFICATION ENDPOINTS .......///////./....//
+  static const String ALL_NOTIFICATIONS = '/rider/notifications'; // (GET)
 
   /// .......///////...// INSIGHTS ENDPOINTS .......///////./....//
   static const String GET_INSIGHT = '/rider/insight'; // (GET)
+  static const String INITIATE_CASH_DEPOSIT =
+      '/rider/deposit/initiate'; // (POST)
 
   //.....///.....// UTILITIES ENDPOINTS ....////././//...//
   static const String COUNTRIES = '/utilities/countries'; // (GET)
