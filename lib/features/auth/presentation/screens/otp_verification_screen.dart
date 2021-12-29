@@ -3,7 +3,6 @@ import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,8 +45,7 @@ class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
                 dismissed: () => s.pop
                     ? App.rootRoute == DashboardRoute.name
                         ? navigator.pop()
-                        : navigator.pushAndPopUntil(const DashboardRoute(),
-                            predicate: (_) => false)
+                        : navigator.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false)
                     : null,
               ),
             ).render(c),
@@ -62,8 +60,7 @@ class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   DateTime _timestampPressed = DateTime.now();
 
-  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()
-    ..onTap = (() => navigator.replace(const LoginRoute()));
+  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()..onTap = (() => navigator.replace(const LoginRoute()));
 
   String maskPhoneNumber(AuthState s) {
     return s.rider.phone.getOrNull?.let((it) {
@@ -102,16 +99,19 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-      child: AdaptiveScaffold(
-        body: SingleChildScrollView(
+    return AdaptiveScaffold(
+      body: Theme(
+        data: Theme.of(context).copyWith(
+          scaffoldBackgroundColor: App.resolveColor(
+            Palette.cardColorLight,
+            dark: Palette.cardColorDark,
+          ),
+        ),
+        child: SingleChildScrollView(
           clipBehavior: Clip.antiAlias,
           controller: ScrollController(),
           physics: Utils.physics,
-          padding: EdgeInsets.symmetric(
-            horizontal: App.sidePadding,
-          ).copyWith(top: App.longest * 0.02),
+          padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
           child: SizedBox(
             width: double.infinity,
             child: BlocBuilder<AuthCubit, AuthState>(
@@ -182,13 +182,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         onChanged: context.read<AuthCubit>().otpCodeChanged,
                         onCompleted: (_) => widget.type?.fold(
                           phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
+                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
                         ),
                         onSubmitted: (_) => widget.type?.fold(
                           phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
+                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
                         ),
                         listenWhen: (p, c) => p.isLoading != c.isLoading,
                         validator: (s) => s.code.value.fold(
@@ -218,8 +216,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         onTap: () async {
                           await widget.type?.fold(
                             phone: () => c.read<AuthCubit>().resendPhoneOTP(),
-                            newPhone: () =>
-                                c.read<AuthCubit>().sendPhoneUpdateOTP(false),
+                            newPhone: () => c.read<AuthCubit>().sendPhoneUpdateOTP(false),
                           );
                           callback();
                         },
@@ -245,8 +242,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                                 ),
                               ]),
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.w400),
+                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),
@@ -266,8 +262,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         fontWeight: FontWeight.w700,
                         onPressed: widget.type?.fold(
                           phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () =>
-                              c.read<AuthCubit>().confirmPhoneUpdate,
+                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
                         ),
                       ),
                     ),
@@ -317,8 +312,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                                 const TextSpan(text: 'Wrong mobile number? '),
                                 TextSpan(
                                   text: 'Try again',
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = navigator.pop,
+                                  recognizer: TapGestureRecognizer()..onTap = navigator.pop,
                                   style: TextStyle(
                                     color: Utils.foldTheme(
                                       context: context,

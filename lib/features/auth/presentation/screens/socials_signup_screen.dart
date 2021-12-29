@@ -29,15 +29,12 @@ class SocialsSignupScreen extends StatefulWidget with AutoRouteWrapper {
                 (c.status.getOrElse(() => null)!.response.maybeMap(
                       error: (f) => f.foldCode(
                         is4031: () {
-                          WidgetsBinding.instance?.addPostFrameCallback(
-                              (_) => navigateToOTPVerification());
+                          WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
                           return false;
                         },
                         is41101: () {
                           WidgetsBinding.instance?.addPostFrameCallback((_) {
-                            if (navigator.current.name !=
-                                    OTPVerificationRoute.name &&
-                                navigator.current.name != DashboardRoute.name)
+                            if (navigator.current.name != OTPVerificationRoute.name && navigator.current.name != DashboardRoute.name)
                               navigator.popAndPush(const SocialsSignupRoute());
                           });
                           return false;
@@ -50,9 +47,7 @@ class SocialsSignupScreen extends StatefulWidget with AutoRouteWrapper {
           () => null,
           (th) => th?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (s) => PopupDialog.success(
-                    duration: env.greetingDuration, message: s.message)
-                .render(c),
+            success: (s) => PopupDialog.success(duration: env.greetingDuration, message: s.message).render(c),
           ),
         ),
         child: this,
@@ -81,8 +76,7 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                .copyWith(top: 0.07.h),
+            padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.07.h),
             sliver: SliverList(
               delegate: SliverChildListDelegate.fixed([
                 AdaptiveText(
@@ -228,11 +222,9 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
                   controller: (s) => s.phoneTextController,
                   response: (s) => s.status,
                   onPickerBuilder: (cubit, country) {
-                    if (cubit.state.selectedCountry == null)
-                      cubit.countryChanged(country);
+                    if (cubit.state.selectedCountry == null) cubit.countryChanged(country);
                   },
-                  onCountryChanged: (cubit, country) =>
-                      cubit.countryChanged(country),
+                  onCountryChanged: (cubit, country) => cubit.countryChanged(country),
                   onChanged: (cubit, str) => cubit.phoneNumberChanged(str),
                 ),
               ]),
@@ -240,8 +232,7 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
           ),
           //
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                .copyWith(top: 0.06.h),
+            padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.06.h),
             sliver: SliverList(
               delegate: SliverChildListDelegate.fixed([
                 BlocBuilder<AuthCubit, AuthState>(
@@ -249,9 +240,7 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
                     tag: Const.authButtonHeroTag,
                     child: AppButton(
                       text: 'Continue',
-                      isLoading: s.isLoading &&
-                          s.rider.email
-                              .isNotNull((_) => true, orElse: (_) => false),
+                      isLoading: s.isLoading && s.rider.email.isNotNull((_) => true, orElse: (_) => false),
                       onPressed: c.read<AuthCubit>().updateSocialsProfile,
                     ),
                   ),
@@ -269,7 +258,7 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
                         //
                         VerticalSpace(height: 0.06.sw),
                         //
-                        const OAuthWidgets(google: false, email: true),
+                        OAuthWidgets(google: false, email: true, cubit: context.read<AuthCubit>()),
                         //
                         if (rider != null)
                           ...rider.provider.when(
@@ -277,20 +266,12 @@ class _SocialsSignupScreenState extends State<SocialsSignupScreen> {
                             google: () => [
                               VerticalSpace(height: 0.06.sw),
                               //
-                              if (Platform.isIOS) const OrWidget(),
-                              //
-                              VerticalSpace(height: 0.06.sw),
-                              //
-                              const OAuthWidgets(google: false),
+                              OAuthWidgets(google: false, apple: false, cubit: context.read<AuthCubit>()),
                             ],
                             apple: () => [
                               VerticalSpace(height: 0.06.sw),
                               //
-                              const OrWidget(),
-                              //
-                              VerticalSpace(height: 0.06.sw),
-                              //
-                              const OAuthWidgets(apple: false),
+                              OAuthWidgets(apple: false, cubit: context.read<AuthCubit>()),
                             ],
                           )
                       ],

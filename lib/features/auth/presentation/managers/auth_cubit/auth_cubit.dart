@@ -24,14 +24,12 @@ part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 @injectable
-class AuthCubit extends Cubit<AuthState>
-    with BaseCubit<AuthState>, _ImagePickerMixin {
+class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePickerMixin {
   final AuthFacade _auth;
   final UtilitiesRepository _utils;
   final PreferenceRepository _preferences;
 
-  AuthCubit(this._auth, this._preferences, this._utils)
-      : super(AuthState.initial());
+  AuthCubit(this._auth, this._preferences, this._utils) : super(AuthState.initial());
 
   @override
   Future<void> close() {
@@ -47,16 +45,14 @@ class AuthCubit extends Cubit<AuthState>
 
     final _phone = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
-    (_user.getOrElse(() => null) ?? state.rider)
-        .let((it) => emit(state.copyWith(
-              rider: it.copyWith(
-                phone: _phone?.let(
-                      (number) => Phone(number, country: _mapCountry()),
-                    ) ??
-                    it.phone.ensure((p0) => (p0 as Phone),
-                        orElse: (_) => state.rider.phone),
-              ),
-            )));
+    (_user.getOrElse(() => null) ?? state.rider).let((it) => emit(state.copyWith(
+          rider: it.copyWith(
+            phone: _phone?.let(
+                  (number) => Phone(number, country: _mapCountry()),
+                ) ??
+                it.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone),
+          ),
+        )));
 
     if (loader) toggleLoading();
   }
@@ -72,16 +68,11 @@ class AuthCubit extends Cubit<AuthState>
         // full name
         final fullName = rider?.firstName.getOrNull?.split(' ');
         // first name
-        final firstName = fullName != null && fullName.isNotEmpty
-            ? DisplayName(fullName[0])
-            : rider?.firstName;
-        final lastName = fullName != null && fullName.length > 1
-            ? DisplayName(fullName[1])
-            : rider?.lastName;
+        final firstName = fullName != null && fullName.isNotEmpty ? DisplayName(fullName[0]) : rider?.firstName;
+        final lastName = fullName != null && fullName.length > 1 ? DisplayName(fullName[1]) : rider?.lastName;
 
         emit(state.copyWith(
-          rider: rider?.copyWith(firstName: firstName!, lastName: lastName!) ??
-              state.rider,
+          rider: rider?.copyWith(firstName: firstName!, lastName: lastName!) ?? state.rider,
         ));
       },
     );
@@ -89,29 +80,22 @@ class AuthCubit extends Cubit<AuthState>
     toggleLoading(false);
   }
 
-  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
-      emit(state.copyWith(
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
 
-  void toggleOldPasswordVisibility() =>
-      emit(state.copyWith(isOldPasswordHidden: !state.isOldPasswordHidden));
+  void toggleOldPasswordVisibility() => emit(state.copyWith(isOldPasswordHidden: !state.isOldPasswordHidden));
 
-  void togglePasswordVisibility() =>
-      emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
+  void togglePasswordVisibility() => emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
 
-  void firstNameChanged(String value) =>
-      emit(state.copyWith.rider.call(firstName: DisplayName(value.trim())));
+  void firstNameChanged(String value) => emit(state.copyWith.rider.call(firstName: DisplayName(value.trim())));
 
-  void lastNameChanged(String value) =>
-      emit(state.copyWith.rider.call(lastName: DisplayName(value.trim())));
+  void lastNameChanged(String value) => emit(state.copyWith.rider.call(lastName: DisplayName(value.trim())));
 
-  void emailChanged(String value) =>
-      emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
+  void emailChanged(String value) => emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
 
-  void oldPasswordChanged(String value) =>
-      emit(state.copyWith(oldPassword: Password(value)));
+  void oldPasswordChanged(String value) => emit(state.copyWith(oldPassword: Password(value, false)));
 
   void passwordChanged(String value) {
     var strength = estimatePasswordStrength(value);
@@ -135,8 +119,7 @@ class AuthCubit extends Cubit<AuthState>
 
     try {
       if (value.length > 2) {
-        var number = await PhoneNumber.getRegionInfoFromPhoneNumber(
-            value, country?.code ?? '');
+        var number = await PhoneNumber.getRegionInfoFromPhoneNumber(value, country?.code ?? '');
 
         var _parsed = await PhoneNumber.getParsableNumber(number);
 
@@ -193,20 +176,15 @@ class AuthCubit extends Cubit<AuthState>
     ));
   }
 
-  void otpCodeChanged(String value) =>
-      emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
+  void otpCodeChanged(String value) => emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
 
-  void bankNameChanged(String value) =>
-      emit(state.copyWith.bankAccount.call(bank: BasicTextField(value.trim())));
+  void bankNameChanged(String value) => emit(state.copyWith.bankAccount.call(bank: BasicTextField(value.trim())));
 
-  void accountNameChanged(String value) => emit(state.copyWith.bankAccount
-      .call(accountName: BasicTextField(value.trim())));
+  void accountNameChanged(String value) => emit(state.copyWith.bankAccount.call(accountName: BasicTextField(value.trim())));
 
-  void accountNumberChanged(String value) => emit(state.copyWith.bankAccount
-      .call(accountNumber: BasicTextField(value.trim())));
+  void accountNumberChanged(String value) => emit(state.copyWith.bankAccount.call(accountNumber: BasicTextField(value.trim())));
 
-  void sortCodeChanged(String value) => emit(state.copyWith.bankAccount
-      .call(sortCode: BasicTextField(value.trim(), validate: false)));
+  void sortCodeChanged(String value) => emit(state.copyWith.bankAccount.call(sortCode: BasicTextField(value.trim(), validate: false)));
 
   void createAccount() async {
     toggleLoading(true, none());
@@ -341,9 +319,7 @@ class AuthCubit extends Cubit<AuthState>
     emit(state.copyWith(validate: true, status: none()));
 
     if (state.rider.phone.isValid) {
-      final phone = state.rider.phone.formatted?.getOrNull != null
-          ? state.rider.phone.formatted!
-          : state.rider.phone;
+      final phone = state.rider.phone.formatted?.getOrNull != null ? state.rider.phone.formatted! : state.rider.phone;
 
       result = await _auth.sendPasswordResetInstructions(phone);
 
@@ -398,8 +374,7 @@ class AuthCubit extends Cubit<AuthState>
 
       await result.response.maybeMap(
         orElse: () async => null,
-        success: (s) async =>
-            await _preferences.remove(Const.kPhoneNumberPrefKey),
+        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
       );
 
       emit(state.copyWith(
@@ -490,8 +465,7 @@ class AuthCubit extends Cubit<AuthState>
 
       await result.response.maybeMap(
         orElse: () async => null,
-        success: (s) async =>
-            await _preferences.remove(Const.kPhoneNumberPrefKey),
+        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
       );
 
       emit(state.copyWith(
@@ -566,10 +540,7 @@ class AuthCubit extends Cubit<AuthState>
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.oldPassword.isValid &&
-        state.rider.password.isValid &&
-        state.confirmPassword.isValid &&
-        state.passwordMatches) {
+    if (state.rider.password.isValid && state.confirmPassword.isValid && state.passwordMatches) {
       result = await _auth.updatePassword(
         current: state.oldPassword,
         newPassword: state.rider.password,
@@ -698,8 +669,7 @@ mixin _ImagePickerMixin on Cubit<AuthState> {
   Future<File?> _attemptFileRetrieval(ImagePicker? picker) async {
     if (picker == null) return null;
     final _response = await _picker.retrieveLostData();
-    if (!_response.isEmpty && _response.file != null)
-      return File(_response.file!.path);
+    if (!_response.isEmpty && _response.file != null) return File(_response.file!.path);
     return null;
   }
 }

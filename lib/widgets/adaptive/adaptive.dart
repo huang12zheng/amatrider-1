@@ -7,3 +7,5 @@ export 'adaptive_text.dart';
 export 'adaptive_scaffold_builder.dart';
 export 'adaptive_button.dart';
 export 'adaptive_alertdialog.dart';
+export 'adaptive_scaffold_body.dart';
+export 'adaptive_ink_well.dart';

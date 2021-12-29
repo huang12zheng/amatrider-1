@@ -33,8 +33,7 @@ class _ProfileCardWidget extends StatelessWidget {
             ),
           ),
         ),
-        child:
-            isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
+        child: isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
       ),
     );
   }
@@ -142,7 +141,7 @@ class _AuthenticatedCard extends StatelessWidget {
               Palette.primaryColor,
               dark: Palette.secondaryColor.shade300,
             ),
-            child: InkWell(
+            child: AdaptiveInkWell(
               onTap: () => App.showAdaptiveBottomSheet(
                 context,
                 elevation: 2.0,

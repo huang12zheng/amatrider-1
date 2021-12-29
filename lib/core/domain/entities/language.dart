@@ -12,8 +12,8 @@ class Language with _$Language {
   const factory Language({
     String? languageName,
     required String languageCode,
-    String? countryName,
     required String countryCode,
+    String? countryName,
   }) = _Language;
 
   Locale get locale => Locale(languageCode, countryCode);
@@ -23,20 +23,20 @@ class Language with _$Language {
   static List<Language> get languages => [
         Language(
           languageName: '${S.current.english}',
-          languageCode: 'en',
           countryName: 'United States',
+          languageCode: 'en',
           countryCode: 'US',
         ),
         Language(
           languageName: '${S.current.turkish}',
-          languageCode: 'tr',
           countryName: 'Turkey',
+          languageCode: 'tr',
           countryCode: 'TR',
         ),
         Language(
           languageName: '${S.current.french}',
-          languageCode: 'fr',
           countryName: 'France',
+          languageCode: 'fr',
           countryCode: 'FR',
         ),
       ];

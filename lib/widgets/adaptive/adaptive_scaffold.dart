@@ -1,6 +1,6 @@
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class AdaptiveScaffold extends StatelessWidget {
@@ -10,8 +10,7 @@ class AdaptiveScaffold extends StatelessWidget {
   final Color? backgroundColor;
   final PlatformNavBar? adaptiveBottomNav;
   final Widget Function(BuildContext, int)? cupertinoTabBuilder;
-  final CupertinoPageScaffoldData Function(BuildContext, PlatformTarget)?
-      cupertino;
+  final CupertinoPageScaffoldData Function(BuildContext, PlatformTarget)? cupertino;
   final MaterialScaffoldData Function(BuildContext, PlatformTarget)? material;
   final bool iosContentBottomPadding;
   final bool iosContentPadding;

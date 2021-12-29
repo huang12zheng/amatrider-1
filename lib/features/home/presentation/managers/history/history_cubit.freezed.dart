@@ -174,19 +174,19 @@ class _$_HistoryState extends _HistoryState {
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: const KtMap.empty())
+  @JsonKey()
   @override
   final KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<DeliveryHistory> histories;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -200,20 +200,22 @@ class _$_HistoryState extends _HistoryState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _HistoryState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.historyCollection, historyCollection) ||
-                other.historyCollection == historyCollection) &&
-            (identical(other.histories, histories) ||
-                other.histories == histories) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality()
+                .equals(other.historyCollection, historyCollection) &&
+            const DeepCollectionEquality().equals(other.histories, histories) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, isLoading, validate, historyCollection, histories, status);
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(historyCollection),
+      const DeepCollectionEquality().hash(histories),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

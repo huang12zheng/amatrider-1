@@ -32,8 +32,7 @@ class ProfilePage extends StatefulWidget with AutoRouteWrapper {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage>
-    with AutomaticKeepAliveClientMixin<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage> {
   @override
   bool get wantKeepAlive => true;
 
@@ -113,18 +112,17 @@ class _ProfilePageState extends State<ProfilePage>
                                         //
                                         HorizontalSpace(width: 0.04.sw),
                                         //
-                                        if (e.id == 'verification')
-                                          const VerificationStatusChip(),
+                                        if (e.id == 'verification') const VerificationStatusChip(),
                                       ],
                                     ),
                                     trailing: Icon(
-                                      Theme.of(context).platform.fold(
-                                            material: () =>
-                                                Icons.navigate_next_rounded,
-                                            cupertino: () =>
-                                                CupertinoIcons.chevron_right,
-                                          ),
+                                      Utils.platform_(
+                                        material: Icons.navigate_next_rounded,
+                                        cupertino: CupertinoIcons.chevron_right,
+                                      ),
+                                      size: 20,
                                       semanticLabel: e.title,
+                                      color: Palette.iconDark,
                                     ),
                                   ),
                                 ),

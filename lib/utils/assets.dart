@@ -47,10 +47,8 @@ mixin AppAssets {
   static const String female = '$IMAGES_DIR/female.png';
   static const String unnamed = '$IMAGES_DIR/unnamed.png';
   static const String avatarImg = '$IMAGES_DIR/avatar_png.png';
-  static const String businessManAvatar =
-      '$AVATAR_IMAGES_DIR/business_man_avatar.png';
-  static const String businessLadyAvatar =
-      '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
+  static const String businessManAvatar = '$AVATAR_IMAGES_DIR/business_man_avatar.png';
+  static const String businessLadyAvatar = '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
   static const String femaleAvatar = '$AVATAR_IMAGES_DIR/female_avatar.png';
   static const String dudeAvatar = '$AVATAR_IMAGES_DIR/dude_avatar.png';
   static const String blackAvatar = '$AVATAR_IMAGES_DIR/black-dude.png';
@@ -59,10 +57,8 @@ mixin AppAssets {
 
   /// DASHBOARD
   static const String bottomNavHome = '$DASHBOARD_SVG_DIR/dashboard_home.svg';
-  static const String bottomNavDocument =
-      '$DASHBOARD_SVG_DIR/dashboard_document.svg';
-  static const String bottomNavActivity =
-      '$DASHBOARD_SVG_DIR/dashboard_activity.svg';
+  static const String bottomNavDocument = '$DASHBOARD_SVG_DIR/dashboard_document.svg';
+  static const String bottomNavActivity = '$DASHBOARD_SVG_DIR/dashboard_activity.svg';
 
   static const String slider0 = '$DASHBOARD_IMAGES_DIR/first_home_slider.png';
   static const String slider1 = '$DASHBOARD_IMAGES_DIR/second_home_slider.png';
@@ -73,45 +69,38 @@ mixin AppAssets {
 
   static const String timelinePinAsset = '$DASHBOARD_SVG_DIR/timeline_pin.svg';
   static const String _friendship = '$DASHBOARD_SVG_DIR/friendship.svg';
-  static const String _contactSupport =
-      '$DASHBOARD_SVG_DIR/contact_support.svg';
+  static const String _contactSupport = '$DASHBOARD_SVG_DIR/contact_support.svg';
   static const String takeAway = '$DASHBOARD_SVG_DIR/take_away.svg';
   static const String _balloons = '$DASHBOARD_SVG_DIR/birthday_balloons.svg';
   static const String _promoDiscount = '$DASHBOARD_SVG_DIR/promo_discount.svg';
   static const String ellipseSVG = '$DASHBOARD_SVG_DIR/ellipse.svg';
-  static const String dispatchRiderSVG =
-      '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
+  static const String dispatchRiderSVG = '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
   static const String _warningFill = '$NOTIFICATION_SVG_DIR/warning_fill.svg';
   static const String _packageOutlined = '$NOTIFICATION_SVG_DIR/package.svg';
   static const String _dishOutlined = '$NOTIFICATION_SVG_DIR/dish.svg';
 
   static const String _pdf = '$DASHBOARD_SVG_DIR/pdf.svg';
   static const String _docs = '$DASHBOARD_SVG_DIR/docs.svg';
-  static const String _cameraOutlined =
-      '$DASHBOARD_SVG_DIR/camera_outlined.svg';
+  static const String _cameraOutlined = '$DASHBOARD_SVG_DIR/camera_outlined.svg';
   static const String _cameraColored = '$DASHBOARD_SVG_DIR/camera_colored.svg';
-  static const String _folderOutlined =
-      '$DASHBOARD_SVG_DIR/folder_outlined.svg';
+  static const String _folderOutlined = '$DASHBOARD_SVG_DIR/folder_outlined.svg';
   static const String _folderColored = '$DASHBOARD_SVG_DIR/folder_colored.svg';
-  static const String _galleryOutlined =
-      '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
-  static const String _galleryColored =
-      '$DASHBOARD_SVG_DIR/gallery_colored.svg';
+  static const String _galleryOutlined = '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
+  static const String _galleryColored = '$DASHBOARD_SVG_DIR/gallery_colored.svg';
 
   static const String _thumbLove = '$DASHBOARD_SVG_DIR/thumb_love.svg';
   static const String _groupEllipse = '$DASHBOARD_SVG_DIR/group_ellipse.svg';
 
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
-  static const String closeAccount =
-      '$DASHBOARD_IMAGES_DIR/kingdom-completed.jpg';
+  static const String closeAccount = '$DASHBOARD_IMAGES_DIR/kingdom-completed.png';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
-  static const String _noConnectivity =
-      '$DASHBOARD_SVG_DIR/no_connectivity.svg';
+  static const String _noConnectivity = '$DASHBOARD_SVG_DIR/no_connectivity.svg';
   static const String _noHistory = '$DASHBOARD_SVG_DIR/no_history.svg';
   static const String _noRequest = '$DASHBOARD_SVG_DIR/no_request.svg';
+  static const String _noReviews = '$DASHBOARD_SVG_DIR/no_reviews.svg';
   static const String _bigHeart = '$DASHBOARD_SVG_DIR/big_heart.svg';
 
   /////////////////////////////////////////////////////
@@ -145,6 +134,7 @@ mixin AppAssets {
     _noConnectivity,
     _noHistory,
     _noRequest,
+    _noReviews,
     timelinePinAsset,
     _friendship,
     _contactSupport,
@@ -254,8 +244,7 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  static SvgPicture featherSearch([Size size = const Size(40, 40)]) =>
-      SvgPicture.asset(
+  static SvgPicture featherSearch([Size size = const Size(40, 40)]) => SvgPicture.asset(
         _featherSearch,
         height: size.height,
         width: size.width,
@@ -266,8 +255,7 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
-  static SvgPicture noConnectivity([Size size = const Size(23, 23)]) =>
-      SvgPicture.asset(
+  static SvgPicture noConnectivity([Size size = const Size(23, 23)]) => SvgPicture.asset(
         _noConnectivity,
         height: size.height,
         width: size.width,
@@ -278,8 +266,7 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
-  static SvgPicture noHistory([Size size = const Size(23, 23)]) =>
-      SvgPicture.asset(
+  static SvgPicture noHistory([Size size = const Size(23, 23)]) => SvgPicture.asset(
         _noHistory,
         height: size.height,
         width: size.width,
@@ -287,6 +274,11 @@ mixin AppAssets {
           Palette.neutralC7,
           dark: Colors.white70,
         ),
+        fit: BoxFit.contain,
+      );
+
+  static SvgPicture get noReviews => SvgPicture.asset(
+        _noReviews,
         fit: BoxFit.contain,
       );
 

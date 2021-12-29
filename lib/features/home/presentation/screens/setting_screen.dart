@@ -1,5 +1,6 @@
 library setting_screen.dart;
 
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -49,8 +50,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                     delegate: SliverChildListDelegate.fixed(
                       [
                         Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: App.sidePadding),
+                          padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,8 +58,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                               Theme.of(context).platform.fold(
                                     material: () => Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         AdaptiveText(
                                           'Settings',
@@ -69,8 +68,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                         VerticalSpace(height: 0.07.sw),
                                       ],
                                     ),
-                                    cupertino: () =>
-                                        VerticalSpace(height: App.sidePadding),
+                                    cupertino: () => VerticalSpace(height: App.sidePadding),
                                   ),
                               //
                               Headline(
@@ -93,8 +91,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                 fontSize: 17.0.sp,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: App.sidePadding),
+                            contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                             value: true,
                             inactiveThumbColor: Palette.text40,
                             inactiveTrackColor: Utils.foldTheme(
@@ -108,13 +105,10 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                         //
                         AdaptiveListTile.adaptiveSwitch(
                           title: AdaptiveText(
-                            context.watch<ThemeCubit>().isDarkMode
-                                ? 'Light Mode'
-                                : 'Dark Mode',
+                            context.watch<ThemeCubit>().isDarkMode ? 'Light Mode' : 'Dark Mode',
                             style: listTileTextStyle,
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: App.sidePadding),
+                          contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                           value: context.watch<ThemeCubit>().isDarkMode,
                           inactiveThumbColor: Palette.text40,
                           inactiveTrackColor: Utils.foldTheme(
@@ -123,12 +117,11 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                           ),
                           secondary: Icon(Utils.foldTheme(
                               light: () => AmatNow.moon,
-                              dark: () => Theme.of(context).platform.fold(
-                                    material: () => Icons.light_mode_rounded,
-                                    cupertino: () => CupertinoIcons.light_max,
+                              dark: () => Utils.platform_(
+                                    material: Icons.light_mode_rounded,
+                                    cupertino: CupertinoIcons.light_max,
                                   ))),
-                          onChanged: (_) =>
-                              context.read<ThemeCubit>().toggleTheme(),
+                          onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
                         ),
                         //
                         VerticalSpace(height: 0.07.sw),
@@ -140,51 +133,44 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: App.sidePadding),
-                                child: Headline('Security',
-                                    fontWeight: FontWeight.w500),
+                                padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                                child: Headline('Security', fontWeight: FontWeight.w500),
                               ),
                               //
-                              VerticalSpace(height: 0.03.sw),
-                              //
-                              AdaptiveListTile(
-                                title: AdaptiveText(
-                                  'Manage Password',
-                                  style: listTileTextStyle,
+                              if (s.rider?.provider == AuthProvider.regular) ...[
+                                VerticalSpace(height: 0.03.sw),
+                                //
+                                AdaptiveListTile(
+                                  title: AdaptiveText(
+                                    'Manage Password',
+                                    style: listTileTextStyle,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                                  leading: const Icon(
+                                    AmatNow.key_password,
+                                    semanticLabel: 'Manage Password',
+                                  ),
+                                  onTap: () => App.showAdaptiveBottomSheet(
+                                    context,
+                                    elevation: 2.0,
+                                    builder: (_) => const _PasswordUpdateBottomSheet(),
+                                  ),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: App.sidePadding),
-                                leading: const Icon(
-                                  AmatNow.key_password,
-                                  semanticLabel: 'Manage Password',
-                                ),
-                                onTap: () => App.showAdaptiveBottomSheet(
-                                  context,
-                                  elevation: 2.0,
-                                  builder: (_) =>
-                                      const _PasswordUpdateBottomSheet(),
-                                ),
-                              ),
+                              ],
                               //
                               AdaptiveListTile(
                                 title: AdaptiveText(
                                   'Delete Account',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5!
-                                      .copyWith(
-                                        color: Palette.accentColor,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17.0.sp,
-                                      ),
+                                  textColor: Palette.accentColor,
+                                  textColorDark: Palette.accentDark,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 17.0.sp,
                                 ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: App.sidePadding),
-                                leading: const Icon(
+                                contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                                leading: Icon(
                                   AmatNow.recycle_bin,
                                   semanticLabel: 'Delete Account',
-                                  color: Palette.accentColor,
+                                  color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
                                 ),
                                 onTap: () {
                                   App.showAlertDialog(
@@ -193,8 +179,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                       Colors.grey.shade800.withOpacity(0.55),
                                       dark: Colors.white54,
                                     ),
-                                    builder: (_) =>
-                                        const DeleteAccountAlertdialog(),
+                                    builder: (_) => const DeleteAccountAlertdialog(),
                                   );
                                 },
                               ),

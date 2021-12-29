@@ -380,7 +380,7 @@ class _$_Insight extends _Insight {
   final AmountField<double?> totalBonusClaimed;
   @override
   final AmountField<double?> totalBonusAvailable;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool canClaimBonus;
   @override
@@ -408,59 +408,53 @@ class _$_Insight extends _Insight {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Insight &&
-            (identical(other.completed, completed) ||
-                other.completed == completed) &&
-            (identical(other.target, target) || other.target == target) &&
-            (identical(other.progress, progress) ||
-                other.progress == progress) &&
-            (identical(other.daysLeft, daysLeft) ||
-                other.daysLeft == daysLeft) &&
-            (identical(other.cashAtHand, cashAtHand) ||
-                other.cashAtHand == cashAtHand) &&
-            (identical(other.currentBonus, currentBonus) ||
-                other.currentBonus == currentBonus) &&
-            (identical(other.totalBonusClaimed, totalBonusClaimed) ||
-                other.totalBonusClaimed == totalBonusClaimed) &&
-            (identical(other.totalBonusAvailable, totalBonusAvailable) ||
-                other.totalBonusAvailable == totalBonusAvailable) &&
-            (identical(other.canClaimBonus, canClaimBonus) ||
-                other.canClaimBonus == canClaimBonus) &&
-            (identical(other.bonusPerExtraDelivery, bonusPerExtraDelivery) ||
-                other.bonusPerExtraDelivery == bonusPerExtraDelivery) &&
-            (identical(other.totalExtraDeliveries, totalExtraDeliveries) ||
-                other.totalExtraDeliveries == totalExtraDeliveries) &&
-            (identical(
-                    other.completedExtraDeliveries, completedExtraDeliveries) ||
-                other.completedExtraDeliveries == completedExtraDeliveries) &&
-            (identical(other.activities, activities) ||
-                other.activities == activities) &&
-            (identical(other.avgRating, avgRating) ||
-                other.avgRating == avgRating) &&
-            (identical(other.planStarted, planStarted) ||
-                other.planStarted == planStarted) &&
-            (identical(other.planEnded, planEnded) ||
-                other.planEnded == planEnded));
+            const DeepCollectionEquality().equals(other.completed, completed) &&
+            const DeepCollectionEquality().equals(other.target, target) &&
+            const DeepCollectionEquality().equals(other.progress, progress) &&
+            const DeepCollectionEquality().equals(other.daysLeft, daysLeft) &&
+            const DeepCollectionEquality()
+                .equals(other.cashAtHand, cashAtHand) &&
+            const DeepCollectionEquality()
+                .equals(other.currentBonus, currentBonus) &&
+            const DeepCollectionEquality()
+                .equals(other.totalBonusClaimed, totalBonusClaimed) &&
+            const DeepCollectionEquality()
+                .equals(other.totalBonusAvailable, totalBonusAvailable) &&
+            const DeepCollectionEquality()
+                .equals(other.canClaimBonus, canClaimBonus) &&
+            const DeepCollectionEquality()
+                .equals(other.bonusPerExtraDelivery, bonusPerExtraDelivery) &&
+            const DeepCollectionEquality()
+                .equals(other.totalExtraDeliveries, totalExtraDeliveries) &&
+            const DeepCollectionEquality().equals(
+                other.completedExtraDeliveries, completedExtraDeliveries) &&
+            const DeepCollectionEquality()
+                .equals(other.activities, activities) &&
+            const DeepCollectionEquality().equals(other.avgRating, avgRating) &&
+            const DeepCollectionEquality()
+                .equals(other.planStarted, planStarted) &&
+            const DeepCollectionEquality().equals(other.planEnded, planEnded));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      completed,
-      target,
-      progress,
-      daysLeft,
-      cashAtHand,
-      currentBonus,
-      totalBonusClaimed,
-      totalBonusAvailable,
-      canClaimBonus,
-      bonusPerExtraDelivery,
-      totalExtraDeliveries,
-      completedExtraDeliveries,
-      activities,
-      avgRating,
-      planStarted,
-      planEnded);
+      const DeepCollectionEquality().hash(completed),
+      const DeepCollectionEquality().hash(target),
+      const DeepCollectionEquality().hash(progress),
+      const DeepCollectionEquality().hash(daysLeft),
+      const DeepCollectionEquality().hash(cashAtHand),
+      const DeepCollectionEquality().hash(currentBonus),
+      const DeepCollectionEquality().hash(totalBonusClaimed),
+      const DeepCollectionEquality().hash(totalBonusAvailable),
+      const DeepCollectionEquality().hash(canClaimBonus),
+      const DeepCollectionEquality().hash(bonusPerExtraDelivery),
+      const DeepCollectionEquality().hash(totalExtraDeliveries),
+      const DeepCollectionEquality().hash(completedExtraDeliveries),
+      const DeepCollectionEquality().hash(activities),
+      const DeepCollectionEquality().hash(avgRating),
+      const DeepCollectionEquality().hash(planStarted),
+      const DeepCollectionEquality().hash(planEnded));
 
   @JsonKey(ignore: true)
   @override

@@ -309,23 +309,28 @@ class _$_DispatchActivity extends _DispatchActivity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DispatchActivity &&
-            (identical(other.card, card) || other.card == card) &&
-            (identical(other.deliveryWithCard, deliveryWithCard) ||
-                other.deliveryWithCard == deliveryWithCard) &&
-            (identical(other.deliveryWithCash, deliveryWithCash) ||
-                other.deliveryWithCash == deliveryWithCash) &&
-            (identical(other.transfer, transfer) ||
-                other.transfer == transfer) &&
-            (identical(other.flutterwave, flutterwave) ||
-                other.flutterwave == flutterwave) &&
-            (identical(other.stripe, stripe) || other.stripe == stripe) &&
-            (identical(other.paystack, paystack) ||
-                other.paystack == paystack));
+            const DeepCollectionEquality().equals(other.card, card) &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryWithCard, deliveryWithCard) &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryWithCash, deliveryWithCash) &&
+            const DeepCollectionEquality().equals(other.transfer, transfer) &&
+            const DeepCollectionEquality()
+                .equals(other.flutterwave, flutterwave) &&
+            const DeepCollectionEquality().equals(other.stripe, stripe) &&
+            const DeepCollectionEquality().equals(other.paystack, paystack));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, card, deliveryWithCard,
-      deliveryWithCash, transfer, flutterwave, stripe, paystack);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(card),
+      const DeepCollectionEquality().hash(deliveryWithCard),
+      const DeepCollectionEquality().hash(deliveryWithCash),
+      const DeepCollectionEquality().hash(transfer),
+      const DeepCollectionEquality().hash(flutterwave),
+      const DeepCollectionEquality().hash(stripe),
+      const DeepCollectionEquality().hash(paystack));
 
   @JsonKey(ignore: true)
   @override
@@ -488,12 +493,15 @@ class _$_DispatchActivityDecorator extends _DispatchActivityDecorator {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DispatchActivityDecorator &&
-            (identical(other.method, method) || other.method == method) &&
-            (identical(other.amount, amount) || other.amount == amount));
+            const DeepCollectionEquality().equals(other.method, method) &&
+            const DeepCollectionEquality().equals(other.amount, amount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, method, amount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(method),
+      const DeepCollectionEquality().hash(amount));
 
   @JsonKey(ignore: true)
   @override

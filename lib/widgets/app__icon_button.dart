@@ -49,9 +49,7 @@ class AppIconButton extends StatelessWidget {
     this.disabledColor = CupertinoColors.quaternarySystemFill,
     this.minSize = kMinInteractiveDimensionCupertino,
     this.pressedOpacity = 0.4,
-  })  : buttonType = disabled && (Platform.isIOS || Platform.isMacOS)
-            ? ButtonType.elevated
-            : ButtonType.flat,
+  })  : buttonType = disabled && (Platform.isIOS || Platform.isMacOS) ? ButtonType.elevated : ButtonType.flat,
         super(key: key);
 
   const AppIconButton.filled({
@@ -127,7 +125,7 @@ class AppIconButton extends StatelessWidget {
               borderRadius: type == MaterialType.circle ? null : borderRadius,
               shape: type == MaterialType.circle ? null : shape,
               type: type,
-              child: InkWell(
+              child: AdaptiveInkWell(
                 onTap: onPressed,
                 onLongPress: onLongPressed,
                 child: Padding(

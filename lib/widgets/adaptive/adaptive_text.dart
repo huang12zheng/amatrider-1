@@ -2,7 +2,6 @@ import 'package:amatrider/manager/theme/theme.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 enum _AutoSizeTextType { standard, rich }
 
@@ -76,7 +75,7 @@ class AdaptiveText extends StatelessWidget {
   })  : _type = _AutoSizeTextType.standard,
         textSpan = const TextSpan(),
         textColor = textColor ?? Palette.text100,
-        textColorDark = textColorDark ?? Palette.text100Dark,
+        textColorDark = textColorDark ?? (textColor != Palette.text100 ? textColor : null) ?? Palette.text100Dark,
         super(key: key);
 
   const AdaptiveText.rich(

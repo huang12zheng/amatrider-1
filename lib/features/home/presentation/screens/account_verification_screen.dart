@@ -4,7 +4,6 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/utils/palette.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
@@ -12,9 +11,6 @@ import 'package:country_list_pick/country_list_pick.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'account_verification_screen.part.dart';
@@ -48,8 +44,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                   await Future.delayed(
                     const Duration(seconds: 3),
                     () {
-                      if (navigator.current.name != DashboardRoute.name)
-                        navigator.pop();
+                      if (navigator.current.name != DashboardRoute.name) navigator.pop();
                     },
                   );
                 },
@@ -71,8 +66,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
         clipBehavior: Clip.antiAlias,
         controller: ScrollController(),
         physics: Utils.physics,
-        padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-            .copyWith(top: 0.02.sw),
+        padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.02.sw),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -104,10 +98,11 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             //
             DecoratedBox(
               decoration: BoxDecoration(
-                color: Palette.pastelYellow,
-                borderRadius: BorderRadius.circular(
-                  Utils.inputBorderRadius,
+                color: Utils.foldTheme(
+                  light: () => Palette.pastelYellow,
+                  dark: () => Palette.pastelYellow2,
                 ),
+                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
@@ -131,6 +126,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                           'Over exposure or reflection will also lead to failure.',
                           fontSize: 17.sp,
                           textColor: Palette.text100,
+                          textColorDark: Colors.black87,
                           fontWeight: FontWeight.w400,
                           height: 1.6,
                           letterSpacing: Utils.letterSpacing,
@@ -156,15 +152,17 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             DecoratedBox(
               decoration: BoxDecoration(
                 color: Palette.neutralF5,
-                borderRadius: BorderRadius.circular(
-                  Utils.inputBorderRadius,
-                ),
+                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
               ),
               child: AdaptiveListTile(
                 dense: true,
                 material: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                trailing: const Icon(Icons.arrow_drop_down),
+                trailing: Icon(Icons.arrow_drop_down,
+                    color: Utils.platform_(
+                      cupertino: App.resolveColor(Colors.black87, dark: Colors.white70),
+                    )),
+                tileColor: App.resolveColor(Palette.neutralF5, dark: Palette.secondaryColor.shade400),
                 title: BlocBuilder<VerificationCubit, VerificationState>(
                   builder: (c, s) => CountryListPick(
                     appBar: AppBar(
@@ -242,44 +240,43 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             BlocBuilder<VerificationCubit, VerificationState>(
               buildWhen: (p, c) => p.documentID != c.documentID,
               builder: (c, s) => IgnorePointer(
-                ignoring: c
-                        .read<AuthWatcherCubit>()
-                        .state
-                        .rider
-                        ?.verificationStatus ==
-                    ProfileVerificationStatus.verified,
+                ignoring: c.read<AuthWatcherCubit>().state.rider?.verificationStatus == ProfileVerificationStatus.verified,
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (_, i) => i != DocumentID.values.length
-                      ? VerticalSpace(height: 0.04.sw)
-                      : Utils.nothing,
+                  separatorBuilder: (_, i) => i != DocumentID.values.length ? VerticalSpace(height: 0.04.sw) : Utils.nothing,
                   itemBuilder: (_, i) => AdaptiveListTile(
-                    leading: Icon(DocumentID.values.elementAt(i).icon),
+                    material: true,
+                    leading: Icon(DocumentID.values.elementAt(i).icon,
+                        color: Utils.platform_(
+                          cupertino: s.documentID == DocumentID.values.elementAt(i)
+                              ? Palette.accentColor
+                              : CupertinoColors.systemGrey.resolveFrom(context),
+                        )),
                     title: AdaptiveText(
                       '${DocumentID.values.elementAt(i).name}',
                       textColor: s.documentID == DocumentID.values.elementAt(i)
                           ? Palette.accentColor
-                          : Palette.text100,
+                          : App.resolveColor(
+                              Palette.text100,
+                              dark: Utils.platform_(cupertino: Colors.white70),
+                            ),
                     ),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
-                        color: s.documentID == DocumentID.values.elementAt(i)
-                            ? Palette.accentColor
-                            : Palette.neutralF5,
+                        color: s.documentID == DocumentID.values.elementAt(i) ? Palette.accentColor : Palette.neutralF5,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(
-                        Utils.inputBorderRadius,
-                      ),
+                      borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                     ),
                     tileColor: s.documentID == DocumentID.values.elementAt(i)
                         ? Palette.accent20
-                        : Palette.neutralF5,
+                        : App.resolveColor(
+                            Palette.neutralF5,
+                            dark: Palette.secondaryColor.shade400,
+                          ),
                     horizontalTitleGap: 0.01.sw,
-                    onTap: () => c
-                        .read<VerificationCubit>()
-                        .documentTypeChanged(DocumentID.values.elementAt(i)),
+                    onTap: () => c.read<VerificationCubit>().documentTypeChanged(DocumentID.values.elementAt(i)),
                   ),
                   itemCount: DocumentID.values.length,
                 ),
@@ -289,22 +286,17 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             VerticalSpace(height: 0.03.h),
             //
             BlocBuilder<VerificationCubit, VerificationState>(
-              builder: (c, s) => BlocSelector<AuthWatcherCubit,
-                  AuthWatcherState, ProfileVerificationStatus?>(
+              builder: (c, s) => BlocSelector<AuthWatcherCubit, AuthWatcherState, ProfileVerificationStatus?>(
                 selector: (s) => s.rider?.verificationStatus,
-                builder: (c, status) =>
-                    status == ProfileVerificationStatus.in_review ||
-                            status == ProfileVerificationStatus.verified
-                        ? Utils.nothing
-                        : AppButton(
-                            text: 'Continue',
-                            disabled: s.isLoading ||
-                                s.documentID == null ||
-                                s.countries.isEmpty(),
-                            onPressed: () => navigator.push(DocumentUploadRoute(
-                              cubit: context.read<VerificationCubit>(),
-                            )),
-                          ),
+                builder: (c, status) => status == ProfileVerificationStatus.in_review || status == ProfileVerificationStatus.verified
+                    ? Utils.nothing
+                    : AppButton(
+                        text: 'Continue',
+                        disabled: s.isLoading || s.documentID == null || s.countries.isEmpty(),
+                        onPressed: () => navigator.push(DocumentUploadRoute(
+                          cubit: context.read<VerificationCubit>(),
+                        )),
+                      ),
               ),
             ),
             //

@@ -11,6 +11,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -35,13 +36,11 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
                   http?.response.maybeMap(
                     error: (f) => f.foldCode(
                       is4031: () {
-                        WidgetsBinding.instance?.addPostFrameCallback(
-                            (_) => navigateToOTPVerification());
+                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
                         return false;
                       },
                       is41101: () {
-                        WidgetsBinding.instance
-                            ?.addPostFrameCallback((_) => navigateToSocials());
+                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToSocials());
                         return false;
                       },
                       orElse: () => false,
@@ -66,12 +65,10 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
   }
 }
 
-class _SignupScreenState extends State<SignupScreen>
-    with AutomaticKeepAliveClientMixin<SignupScreen> {
+class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClientMixin<SignupScreen> {
   DateTime _timestampPressed = DateTime.now();
 
-  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()
-    ..onTap = (() => navigator.replace(const LoginRoute()));
+  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()..onTap = (() => navigator.replace(const LoginRoute()));
 
   @override
   bool get wantKeepAlive => true;
@@ -104,22 +101,27 @@ class _SignupScreenState extends State<SignupScreen>
 
     return WillPopScope(
       onWillPop: maybePop,
-      child: Theme(
-        data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-        child: AdaptiveScaffold(
-          adaptiveToolbar: AdaptiveToolbar(
-            title: 'Create Account',
-            implyLeading: App.platform.fold(
-              material: () => false,
-              cupertino: () => true,
-            ),
-            showCustomLeading: App.platform.fold(
-              material: () => null,
-              cupertino: () => true,
-            ),
-            leadingAction: navigator.pop,
+      child: AdaptiveScaffold(
+        adaptiveToolbar: AdaptiveToolbar(
+          title: 'Create Account',
+          implyLeading: App.platform.fold(
+            material: () => false,
+            cupertino: () => true,
           ),
-          body: CustomScrollView(
+          showCustomLeading: App.platform.fold(
+            material: () => null,
+            cupertino: () => true,
+          ),
+          leadingAction: navigator.pop,
+        ),
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            scaffoldBackgroundColor: App.resolveColor(
+              Palette.cardColorLight,
+              dark: Palette.cardColorDark,
+            ),
+          ),
+          child: CustomScrollView(
             shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
             controller: ScrollController(),
@@ -136,15 +138,11 @@ class _SignupScreenState extends State<SignupScreen>
                     [
                       Form(
                         key: AuthState.signupFormKey,
-                        onChanged: () =>
-                            Form.of(primaryFocus!.context!)?.save(),
-                        child: App.platform.fold(
-                          material: () => const _MaterialSignUp(),
-                          cupertino: () => const _CupertinoSignUp(),
-                        ),
+                        onChanged: () => Form.of(primaryFocus!.context!)?.save(),
+                        child: const SafeArea(child: AutofillGroup(child: _FormLayout())),
                       ),
                       //
-                      VerticalSpace(height: 0.1.sw),
+                      VerticalSpace(height: 0.04.sw),
                       //
                       BlocBuilder<AuthCubit, AuthState>(
                         builder: (c, s) => Hero(
@@ -152,7 +150,10 @@ class _SignupScreenState extends State<SignupScreen>
                           child: AppButton(
                             text: 'Create Account',
                             isLoading: s.isLoading,
-                            onPressed: c.read<AuthCubit>().createAccount,
+                            onPressed: () {
+                              TextInput.finishAutofillContext();
+                              c.read<AuthCubit>().createAccount();
+                            },
                           ),
                         ),
                       ),
@@ -163,11 +164,9 @@ class _SignupScreenState extends State<SignupScreen>
                       //
                       VerticalSpace(height: 0.06.sw),
                       //
-                      const Hero(
+                      Hero(
                         tag: Const.oauthBtnHeroTag,
-                        child: Center(
-                          child: OAuthWidgets(),
-                        ),
+                        child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
                       ),
                       //
                       VerticalSpace(height: 0.05.sw),
@@ -181,19 +180,15 @@ class _SignupScreenState extends State<SignupScreen>
                               padding: const EdgeInsets.all(12.0),
                               child: AdaptiveText.rich(
                                 TextSpan(children: [
-                                  const TextSpan(
-                                      text: 'Already have an account? '),
+                                  const TextSpan(text: 'Already have an account? '),
                                   TextSpan(
                                     text: 'Log In',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => navigator
-                                          .navigate(const LoginRoute()),
+                                    recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const LoginRoute()),
                                     style: TextStyle(
                                       color: Utils.foldTheme(
                                         context: context,
                                         light: () => Palette.accentColor,
-                                        dark: () =>
-                                            Palette.accentColor.shade100,
+                                        dark: () => Palette.accentColor.shade100,
                                       ),
                                       fontWeight: FontWeight.w600,
                                     ),

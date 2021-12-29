@@ -1,7 +1,6 @@
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 /// A stateless widget to render AppOutlinedButton.
 class AppOutlinedButton extends StatelessWidget {
@@ -78,7 +77,7 @@ class AppOutlinedButton extends StatelessWidget {
       side: BorderSide(
         color: App.resolveColor(
           borderColor ?? Palette.accentColor,
-          dark: borderColorDark ?? borderColor ?? Palette.accentColor,
+          dark: borderColorDark ?? borderColor ?? Palette.accentDark,
         )!,
       ),
       onPressed: onPressed,

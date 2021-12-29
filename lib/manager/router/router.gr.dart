@@ -8,14 +8,14 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-import 'dart:async' as _i15;
+import 'dart:async' as _i14;
 
 import 'package:amatrider/_404.dart' as _i7;
 import 'package:amatrider/core/presentation/index.dart' as _i6;
 import 'package:amatrider/features/auth/presentation/managers/managers.dart'
-    as _i13;
+    as _i12;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
-import 'package:amatrider/features/home/domain/entities/index.dart' as _i14;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i13;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i9;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -24,9 +24,8 @@ import 'package:amatrider/features/home/presentation/widgets/index.dart' as _i5;
 import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:amatrider/manager/router/guards/guards.dart' as _i11;
-import 'package:amatrider/widgets/widgets.dart' as _i16;
+import 'package:amatrider/widgets/widgets.dart' as _i15;
 import 'package:auto_route/auto_route.dart' as _i8;
-import 'package:flutter/cupertino.dart' as _i12;
 import 'package:flutter/material.dart' as _i10;
 
 class AppRouter extends _i8.RootStackRouter {
@@ -415,61 +414,73 @@ class AppRouter extends _i8.RootStackRouter {
       ];
 }
 
-/// generated route for [_i1.SplashScreen]
+/// generated route for
+/// [_i1.SplashScreen]
 class SplashRoute extends _i8.PageRouteInfo<void> {
-  const SplashRoute() : super(name, path: '/');
+  const SplashRoute() : super(SplashRoute.name, path: '/');
 
   static const String name = 'SplashRoute';
 }
 
-/// generated route for [_i1.OnboardingScreen]
+/// generated route for
+/// [_i1.OnboardingScreen]
 class OnboardingRoute extends _i8.PageRouteInfo<void> {
-  const OnboardingRoute() : super(name, path: '/onboarding-screen');
+  const OnboardingRoute()
+      : super(OnboardingRoute.name, path: '/onboarding-screen');
 
   static const String name = 'OnboardingRoute';
 }
 
-/// generated route for [_i1.GetStartedScreen]
+/// generated route for
+/// [_i1.GetStartedScreen]
 class GetStartedRoute extends _i8.PageRouteInfo<void> {
-  const GetStartedRoute() : super(name, path: 'get-started-screen');
+  const GetStartedRoute()
+      : super(GetStartedRoute.name, path: 'get-started-screen');
 
   static const String name = 'GetStartedRoute';
 }
 
-/// generated route for [_i2.LoginScreen]
+/// generated route for
+/// [_i2.LoginScreen]
 class LoginRoute extends _i8.PageRouteInfo<void> {
-  const LoginRoute() : super(name, path: 'login-screen');
+  const LoginRoute() : super(LoginRoute.name, path: 'login-screen');
 
   static const String name = 'LoginRoute';
 }
 
-/// generated route for [_i2.SignupScreen]
+/// generated route for
+/// [_i2.SignupScreen]
 class SignupRoute extends _i8.PageRouteInfo<void> {
-  const SignupRoute() : super(name, path: 'signup-screen');
+  const SignupRoute() : super(SignupRoute.name, path: 'signup-screen');
 
   static const String name = 'SignupRoute';
 }
 
-/// generated route for [_i2.SocialsSignupScreen]
+/// generated route for
+/// [_i2.SocialsSignupScreen]
 class SocialsSignupRoute extends _i8.PageRouteInfo<void> {
-  const SocialsSignupRoute() : super(name, path: 'socials-signup-screen');
+  const SocialsSignupRoute()
+      : super(SocialsSignupRoute.name, path: 'socials-signup-screen');
 
   static const String name = 'SocialsSignupRoute';
 }
 
-/// generated route for [_i2.ForgotPasswordScreen]
+/// generated route for
+/// [_i2.ForgotPasswordScreen]
 class ForgotPasswordRoute extends _i8.PageRouteInfo<void> {
-  const ForgotPasswordRoute() : super(name, path: 'forgot-password-screen');
+  const ForgotPasswordRoute()
+      : super(ForgotPasswordRoute.name, path: 'forgot-password-screen');
 
   static const String name = 'ForgotPasswordRoute';
 }
 
-/// generated route for [_i2.OTPVerificationScreen]
+/// generated route for
+/// [_i2.OTPVerificationScreen]
 class OTPVerificationRoute extends _i8.PageRouteInfo<OTPVerificationRouteArgs> {
   OTPVerificationRoute(
-      {_i12.Key? key,
+      {_i10.Key? key,
       _i2.OTPVerificationType? type = _i2.OTPVerificationType.phoneNumber})
-      : super(name,
+      : super(OTPVerificationRoute.name,
             path: 'otp-verification-screen',
             args: OTPVerificationRouteArgs(key: key, type: type));
 
@@ -480,31 +491,41 @@ class OTPVerificationRouteArgs {
   const OTPVerificationRouteArgs(
       {this.key, this.type = _i2.OTPVerificationType.phoneNumber});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
   final _i2.OTPVerificationType? type;
+
+  @override
+  String toString() {
+    return 'OTPVerificationRouteArgs{key: $key, type: $type}';
+  }
 }
 
-/// generated route for [_i3.DashboardScreen]
+/// generated route for
+/// [_i3.DashboardScreen]
 class DashboardRoute extends _i8.PageRouteInfo<void> {
   const DashboardRoute({List<_i8.PageRouteInfo>? children})
-      : super(name, path: 'bottom-navigation', initialChildren: children);
+      : super(DashboardRoute.name,
+            path: 'bottom-navigation', initialChildren: children);
 
   static const String name = 'DashboardRoute';
 }
 
-/// generated route for [_i3.AccountVerificationScreen]
+/// generated route for
+/// [_i3.AccountVerificationScreen]
 class AccountVerificationRoute extends _i8.PageRouteInfo<void> {
   const AccountVerificationRoute()
-      : super(name, path: 'account-verification-screen');
+      : super(AccountVerificationRoute.name,
+            path: 'account-verification-screen');
 
   static const String name = 'AccountVerificationRoute';
 }
 
-/// generated route for [_i3.DocumentUploadScreen]
+/// generated route for
+/// [_i3.DocumentUploadScreen]
 class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
-  DocumentUploadRoute({_i12.Key? key, required _i13.VerificationCubit cubit})
-      : super(name,
+  DocumentUploadRoute({_i10.Key? key, required _i12.VerificationCubit cubit})
+      : super(DocumentUploadRoute.name,
             path: 'document-upload-screen',
             args: DocumentUploadRouteArgs(key: key, cubit: cubit));
 
@@ -514,38 +535,48 @@ class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
 class DocumentUploadRouteArgs {
   const DocumentUploadRouteArgs({this.key, required this.cubit});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
-  final _i13.VerificationCubit cubit;
+  final _i12.VerificationCubit cubit;
+
+  @override
+  String toString() {
+    return 'DocumentUploadRouteArgs{key: $key, cubit: $cubit}';
+  }
 }
 
-/// generated route for [_i3.SettingScreen]
+/// generated route for
+/// [_i3.SettingScreen]
 class SettingRoute extends _i8.PageRouteInfo<void> {
-  const SettingRoute() : super(name, path: '/setting-screen');
+  const SettingRoute() : super(SettingRoute.name, path: '/setting-screen');
 
   static const String name = 'SettingRoute';
 }
 
-/// generated route for [_i3.LanguageScreen]
+/// generated route for
+/// [_i3.LanguageScreen]
 class LanguageRoute extends _i8.PageRouteInfo<void> {
-  const LanguageRoute() : super(name, path: '/language-screen');
+  const LanguageRoute() : super(LanguageRoute.name, path: '/language-screen');
 
   static const String name = 'LanguageRoute';
 }
 
-/// generated route for [_i4.EditBankDetailsScreen]
+/// generated route for
+/// [_i4.EditBankDetailsScreen]
 class EditBankDetailsRoute extends _i8.PageRouteInfo<void> {
-  const EditBankDetailsRoute() : super(name, path: 'edit-bank-details-screen');
+  const EditBankDetailsRoute()
+      : super(EditBankDetailsRoute.name, path: 'edit-bank-details-screen');
 
   static const String name = 'EditBankDetailsRoute';
 }
 
-/// generated route for [_i3.PackageDeliveryAcceptedScreen]
+/// generated route for
+/// [_i3.PackageDeliveryAcceptedScreen]
 class PackageDeliveryAcceptedRoute
     extends _i8.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
   PackageDeliveryAcceptedRoute(
-      {_i12.Key? key, required _i14.SendPackage sendPackage})
-      : super(name,
+      {_i10.Key? key, required _i13.SendPackage sendPackage})
+      : super(PackageDeliveryAcceptedRoute.name,
             path: 'package-delivery-accepted-screen',
             args: PackageDeliveryAcceptedRouteArgs(
                 key: key, sendPackage: sendPackage));
@@ -556,67 +587,84 @@ class PackageDeliveryAcceptedRoute
 class PackageDeliveryAcceptedRouteArgs {
   const PackageDeliveryAcceptedRouteArgs({this.key, required this.sendPackage});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
-  final _i14.SendPackage sendPackage;
+  final _i13.SendPackage sendPackage;
+
+  @override
+  String toString() {
+    return 'PackageDeliveryAcceptedRouteArgs{key: $key, sendPackage: $sendPackage}';
+  }
 }
 
-/// generated route for [_i3.OrderDeliveryAcceptedScreen]
+/// generated route for
+/// [_i3.OrderDeliveryAcceptedScreen]
 class OrderDeliveryAcceptedRoute extends _i8.PageRouteInfo<void> {
   const OrderDeliveryAcceptedRoute()
-      : super(name, path: 'order-delivery-accepted-screen');
+      : super(OrderDeliveryAcceptedRoute.name,
+            path: 'order-delivery-accepted-screen');
 
   static const String name = 'OrderDeliveryAcceptedRoute';
 }
 
-/// generated route for [_i3.RiderReviewScreen]
+/// generated route for
+/// [_i3.RiderReviewScreen]
 class RiderReviewRoute extends _i8.PageRouteInfo<void> {
-  const RiderReviewRoute() : super(name, path: '/rider-review-screen');
+  const RiderReviewRoute()
+      : super(RiderReviewRoute.name, path: '/rider-review-screen');
 
   static const String name = 'RiderReviewRoute';
 }
 
-/// generated route for [_i3.ReferralScreen]
+/// generated route for
+/// [_i3.ReferralScreen]
 class ReferralRoute extends _i8.PageRouteInfo<void> {
-  const ReferralRoute() : super(name, path: '/referral-screen');
+  const ReferralRoute() : super(ReferralRoute.name, path: '/referral-screen');
 
   static const String name = 'ReferralRoute';
 }
 
-/// generated route for [_i3.ContactSupportScreen]
+/// generated route for
+/// [_i3.ContactSupportScreen]
 class ContactSupportRoute extends _i8.PageRouteInfo<void> {
-  const ContactSupportRoute() : super(name, path: '/contact-support-screen');
+  const ContactSupportRoute()
+      : super(ContactSupportRoute.name, path: '/contact-support-screen');
 
   static const String name = 'ContactSupportRoute';
 }
 
-/// generated route for [_i3.PrivacyPolicyScreen]
+/// generated route for
+/// [_i3.PrivacyPolicyScreen]
 class PrivacyPolicyRoute extends _i8.PageRouteInfo<void> {
-  const PrivacyPolicyRoute() : super(name, path: '/privacy-policy-screen');
+  const PrivacyPolicyRoute()
+      : super(PrivacyPolicyRoute.name, path: '/privacy-policy-screen');
 
   static const String name = 'PrivacyPolicyRoute';
 }
 
-/// generated route for [_i3.PromotionsScreen]
+/// generated route for
+/// [_i3.PromotionsScreen]
 class PromotionsRoute extends _i8.PageRouteInfo<void> {
-  const PromotionsRoute() : super(name, path: '/promotions-screen');
+  const PromotionsRoute()
+      : super(PromotionsRoute.name, path: '/promotions-screen');
 
   static const String name = 'PromotionsRoute';
 }
 
-/// generated route for [_i5.AccessScreen]
+/// generated route for
+/// [_i5.AccessScreen]
 class AccessRoute extends _i8.PageRouteInfo<AccessRouteArgs> {
   AccessRoute(
-      {_i12.Key? key,
+      {_i10.Key? key,
       required String title,
       required String content,
       String firstButtonText = 'Grant Access',
       String? secondButtonText,
-      required _i15.Future<bool> Function() onAccept,
-      _i15.Future<bool> Function()? onWillPop,
-      _i15.Future<bool> Function()? onDecline,
-      _i16.AdaptiveText? additionalContent})
-      : super(name,
+      required _i14.Future<bool> Function() onAccept,
+      _i14.Future<bool> Function()? onWillPop,
+      _i14.Future<bool> Function()? onDecline,
+      _i15.AdaptiveText? additionalContent})
+      : super(AccessRoute.name,
             path: 'service-access-widget',
             args: AccessRouteArgs(
                 key: key,
@@ -644,7 +692,7 @@ class AccessRouteArgs {
       this.onDecline,
       this.additionalContent});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
   final String title;
 
@@ -654,33 +702,39 @@ class AccessRouteArgs {
 
   final String? secondButtonText;
 
-  final _i15.Future<bool> Function() onAccept;
+  final _i14.Future<bool> Function() onAccept;
 
-  final _i15.Future<bool> Function()? onWillPop;
+  final _i14.Future<bool> Function()? onWillPop;
 
-  final _i15.Future<bool> Function()? onDecline;
+  final _i14.Future<bool> Function()? onDecline;
 
-  final _i16.AdaptiveText? additionalContent;
+  final _i15.AdaptiveText? additionalContent;
+
+  @override
+  String toString() {
+    return 'AccessRouteArgs{key: $key, title: $title, content: $content, firstButtonText: $firstButtonText, secondButtonText: $secondButtonText, onAccept: $onAccept, onWillPop: $onWillPop, onDecline: $onDecline, additionalContent: $additionalContent}';
+  }
 }
 
-/// generated route for [_i6.SuccessScreen]
+/// generated route for
+/// [_i6.SuccessScreen]
 class SuccessRoute extends _i8.PageRouteInfo<SuccessRouteArgs> {
   SuccessRoute(
-      {_i12.Key? key,
-      _i12.Widget? svg,
-      _i12.Widget? image,
+      {_i10.Key? key,
+      _i10.Widget? svg,
+      _i10.Widget? image,
       String? lottieJson,
       required String title,
       String? description,
       String? buttonText,
       Duration animationDuration = const Duration(milliseconds: 1600),
-      _i12.BoxFit fit = _i12.BoxFit.cover,
+      _i10.BoxFit fit = _i10.BoxFit.cover,
       double? width,
       double? height,
       void Function()? onButtonPressed,
       void Function()? onBackPressed,
-      _i15.Future<void> Function()? onInitState})
-      : super(name,
+      _i14.Future<void> Function()? onInitState})
+      : super(SuccessRoute.name,
             path: 'success-screen',
             args: SuccessRouteArgs(
                 key: key,
@@ -711,18 +765,18 @@ class SuccessRouteArgs {
       this.description,
       this.buttonText,
       this.animationDuration = const Duration(milliseconds: 1600),
-      this.fit = _i12.BoxFit.cover,
+      this.fit = _i10.BoxFit.cover,
       this.width,
       this.height,
       this.onButtonPressed,
       this.onBackPressed,
       this.onInitState});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
-  final _i12.Widget? svg;
+  final _i10.Widget? svg;
 
-  final _i12.Widget? image;
+  final _i10.Widget? image;
 
   final String? lottieJson;
 
@@ -734,7 +788,7 @@ class SuccessRouteArgs {
 
   final Duration animationDuration;
 
-  final _i12.BoxFit fit;
+  final _i10.BoxFit fit;
 
   final double? width;
 
@@ -744,20 +798,28 @@ class SuccessRouteArgs {
 
   final void Function()? onBackPressed;
 
-  final _i15.Future<void> Function()? onInitState;
+  final _i14.Future<void> Function()? onInitState;
+
+  @override
+  String toString() {
+    return 'SuccessRouteArgs{key: $key, svg: $svg, image: $image, lottieJson: $lottieJson, title: $title, description: $description, buttonText: $buttonText, animationDuration: $animationDuration, fit: $fit, width: $width, height: $height, onButtonPressed: $onButtonPressed, onBackPressed: $onBackPressed, onInitState: $onInitState}';
+  }
 }
 
-/// generated route for [_i3.NotificationScreen]
+/// generated route for
+/// [_i3.NotificationScreen]
 class NotificationRoute extends _i8.PageRouteInfo<void> {
-  const NotificationRoute() : super(name, path: '/notification-screen');
+  const NotificationRoute()
+      : super(NotificationRoute.name, path: '/notification-screen');
 
   static const String name = 'NotificationRoute';
 }
 
-/// generated route for [_i6.NotConnectedScreen]
+/// generated route for
+/// [_i6.NotConnectedScreen]
 class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i12.Key? key, required _i15.Future<dynamic> future})
-      : super(name,
+  NotConnectedRoute({_i10.Key? key, required _i14.Future<dynamic> future})
+      : super(NotConnectedRoute.name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
 
@@ -767,81 +829,97 @@ class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i12.Key? key;
+  final _i10.Key? key;
 
-  final _i15.Future<dynamic> future;
+  final _i14.Future<dynamic> future;
+
+  @override
+  String toString() {
+    return 'NotConnectedRouteArgs{key: $key, future: $future}';
+  }
 }
 
-/// generated route for [_i6.NoHistoryScreen]
+/// generated route for
+/// [_i6.NoHistoryScreen]
 class NoHistoryRoute extends _i8.PageRouteInfo<void> {
-  const NoHistoryRoute() : super(name, path: 'no-history-screen');
+  const NoHistoryRoute()
+      : super(NoHistoryRoute.name, path: 'no-history-screen');
 
   static const String name = 'NoHistoryRoute';
 }
 
-/// generated route for [_i7.UnknownScreen]
+/// generated route for
+/// [_i7.UnknownScreen]
 class UnknownRoute extends _i8.PageRouteInfo<void> {
-  const UnknownRoute() : super(name, path: '*');
+  const UnknownRoute() : super(UnknownRoute.name, path: '*');
 
   static const String name = 'UnknownRoute';
 }
 
-/// generated route for [_i8.EmptyRouterPage]
+/// generated route for
+/// [_i8.EmptyRouterPage]
 class HomeRouter extends _i8.PageRouteInfo<void> {
   const HomeRouter({List<_i8.PageRouteInfo>? children})
-      : super(name, path: 'home', initialChildren: children);
+      : super(HomeRouter.name, path: 'home', initialChildren: children);
 
   static const String name = 'HomeRouter';
 }
 
-/// generated route for [_i8.EmptyRouterPage]
+/// generated route for
+/// [_i8.EmptyRouterPage]
 class HistoryRouter extends _i8.PageRouteInfo<void> {
   const HistoryRouter({List<_i8.PageRouteInfo>? children})
-      : super(name, path: 'history', initialChildren: children);
+      : super(HistoryRouter.name, path: 'history', initialChildren: children);
 
   static const String name = 'HistoryRouter';
 }
 
-/// generated route for [_i8.EmptyRouterPage]
+/// generated route for
+/// [_i8.EmptyRouterPage]
 class InsightRouter extends _i8.PageRouteInfo<void> {
   const InsightRouter({List<_i8.PageRouteInfo>? children})
-      : super(name, path: 'insights', initialChildren: children);
+      : super(InsightRouter.name, path: 'insights', initialChildren: children);
 
   static const String name = 'InsightRouter';
 }
 
-/// generated route for [_i8.EmptyRouterPage]
+/// generated route for
+/// [_i8.EmptyRouterPage]
 class ProfileRouter extends _i8.PageRouteInfo<void> {
   const ProfileRouter({List<_i8.PageRouteInfo>? children})
-      : super(name, path: 'account', initialChildren: children);
+      : super(ProfileRouter.name, path: 'account', initialChildren: children);
 
   static const String name = 'ProfileRouter';
 }
 
-/// generated route for [_i9.HomePage]
+/// generated route for
+/// [_i9.HomePage]
 class HomePage extends _i8.PageRouteInfo<void> {
-  const HomePage() : super(name, path: '');
+  const HomePage() : super(HomePage.name, path: '');
 
   static const String name = 'HomePage';
 }
 
-/// generated route for [_i9.HistoryPage]
+/// generated route for
+/// [_i9.HistoryPage]
 class HistoryPage extends _i8.PageRouteInfo<void> {
-  const HistoryPage() : super(name, path: '');
+  const HistoryPage() : super(HistoryPage.name, path: '');
 
   static const String name = 'HistoryPage';
 }
 
-/// generated route for [_i9.InsightsPage]
+/// generated route for
+/// [_i9.InsightsPage]
 class InsightsPage extends _i8.PageRouteInfo<void> {
-  const InsightsPage() : super(name, path: '');
+  const InsightsPage() : super(InsightsPage.name, path: '');
 
   static const String name = 'InsightsPage';
 }
 
-/// generated route for [_i9.ProfilePage]
+/// generated route for
+/// [_i9.ProfilePage]
 class ProfilePage extends _i8.PageRouteInfo<void> {
-  const ProfilePage() : super(name, path: '');
+  const ProfilePage() : super(ProfilePage.name, path: '');
 
   static const String name = 'ProfilePage';
 }

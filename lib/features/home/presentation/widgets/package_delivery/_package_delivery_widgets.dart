@@ -4,8 +4,7 @@ class _PanelBuilder extends StatefulWidget {
   final ScrollController controller;
   final PanelController? panelController;
 
-  const _PanelBuilder(this.controller, {Key? key, this.panelController})
-      : super(key: key);
+  const _PanelBuilder(this.controller, {Key? key, this.panelController}) : super(key: key);
 
   @override
   State<_PanelBuilder> createState() => _PanelBuilderState();
@@ -61,8 +60,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           Flexible(
                             flex: 4,
                             child: Center(
-                              child: BlocBuilder<SendPackageCubit,
-                                  SendPackageState>(
+                              child: BlocBuilder<SendPackageCubit, SendPackageState>(
                                 builder: (c, s) => Headline(
                                   formatJourneyInfo(s) ?? '',
                                   minFontSize: 16,
@@ -82,8 +80,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 8,
-                    child: BlocSelector<SendPackageCubit, SendPackageState,
-                        SendPackage>(
+                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
                       selector: (s) => s.package,
                       builder: (c, package) => TimelineStatusWidget(
                         padding: EdgeInsets.zero,
@@ -101,8 +98,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                               TimelineStatus(
                                 asset: AppAssets.timelinePinAsset,
                                 assetColor: Palette.accentGreen,
-                                subtitle:
-                                    '${package.pickup.address.getOrEmpty}',
+                                subtitle: '${package.pickup.address.getOrEmpty}',
                               ),
                             ],
                             end: () => [
@@ -116,8 +112,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                               TimelineStatus(
                                 asset: AppAssets.timelinePinAsset,
                                 assetColor: Palette.accentGreen,
-                                subtitle:
-                                    '${package.destination.address.getOrEmpty}',
+                                subtitle: '${package.destination.address.getOrEmpty}',
                               ),
                             ],
                           ),
@@ -128,8 +123,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 2,
-                    child: BlocSelector<SendPackageCubit, SendPackageState,
-                        SendPackage>(
+                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
                       selector: (s) => s.package,
                       builder: (c, package) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +137,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           //
                           Headline(
                             '${package.amount.getOrEmpty}'.asCurrency(),
-                            textColor: Palette.accentColor,
+                            textColor: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
                             fontWeight: FontWeight.w600,
                             fontSize: 20.sp,
                             maxFontSize: 20,
@@ -157,8 +151,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 3,
-                    child: BlocSelector<SendPackageCubit, SendPackageState,
-                        SendPackage>(
+                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
                       selector: (s) => s.package,
                       builder: (c, s) => UserContactDeliveryCard(
                         photo: s.status.maybeWhen(
@@ -175,20 +168,15 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                           orElse: () => 'Sender',
                         ),
                         subtitle: s.status.maybeWhen(
-                          riderAccepted: () =>
-                              '${s.sender.fullName.getOrEmpty}',
-                          enrouteToSender: () =>
-                              '${s.sender.fullName.getOrEmpty}',
-                          enrouteToReceiver: () =>
-                              '${s.receiverFullName.getOrEmpty}',
-                          riderReceived: () =>
-                              '${s.receiverFullName.getOrEmpty}',
+                          riderAccepted: () => '${s.sender.fullName.getOrEmpty}',
+                          enrouteToSender: () => '${s.sender.fullName.getOrEmpty}',
+                          enrouteToReceiver: () => '${s.receiverFullName.getOrEmpty}',
+                          riderReceived: () => '${s.receiverFullName.getOrEmpty}',
                           delivered: () => '${s.receiverFullName.getOrEmpty}',
                           orElse: () => '....',
                         ),
                         phone: s.status.maybeWhen(
-                          enrouteToReceiver: () =>
-                              '${s.receiverPhone.getOrEmpty}',
+                          enrouteToReceiver: () => '${s.receiverPhone.getOrEmpty}',
                           riderReceived: () => '${s.receiverPhone.getOrEmpty}',
                           delivered: () => '${s.receiverPhone.getOrEmpty}',
                           orElse: () => null,
@@ -203,8 +191,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                     flex: 4,
                     child: SizedBox(
                       width: double.infinity,
-                      child: BlocSelector<SendPackageCubit, SendPackageState,
-                          SendPackage>(
+                      child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
                         selector: (s) => s.package,
                         builder: (c, package) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,23 +205,17 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                                       child: DecoratedBox(
                                         decoration: BoxDecoration(
                                           color: e.bgColor,
-                                          borderRadius: BorderRadius.circular(
-                                            Utils.inputBorderRadius,
-                                          ),
+                                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                                         ),
                                         child: AppIconButton(
                                           tooltip: '${e.title}',
                                           elevation: 0,
                                           backgroundColor: e.bgColor,
                                           type: MaterialType.button,
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 0.03.sw,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                              Utils.buttonRadius),
+                                          padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
+                                          borderRadius: BorderRadius.circular(Utils.buttonRadius),
                                           onPressed: e.onPressed,
-                                          child:
-                                              Icon(e.icon, color: e.iconColor),
+                                          child: Icon(e.icon, color: e.iconColor),
                                         ),
                                       ),
                                     ),
@@ -301,26 +282,18 @@ class _BottomSheetItem {
   final String title;
   final VoidCallback? onPressed;
 
-  _BottomSheetItem(
-      {required this.title,
-      required this.icon,
-      this.bgColor = Palette.neutralF5,
-      this.iconColor,
-      this.onPressed});
+  _BottomSheetItem({required this.title, required this.icon, this.bgColor = Palette.neutralF5, this.iconColor, this.onPressed});
 
   static List<_BottomSheetItem> pickup(BuildContext c) => [
         _BottomSheetItem(
           title: 'Call Sender',
           icon: Icons.phone_sharp,
           onPressed: () async {
-            final senderPhone =
-                BlocProvider.of<SendPackageCubit>(c).state.package.sender.phone;
+            final senderPhone = BlocProvider.of<SendPackageCubit>(c).state.package.sender.phone;
 
-            final formattedPhone = 'tel:${senderPhone.getOrEmpty}';
+            final formattedPhone = 'tel:${senderPhone.getOrEmpty?.removeNewLines().trimWhiteSpaces()}';
 
-            await canLaunch(formattedPhone)
-                ? await launch(formattedPhone)
-                : print('could not launch phone');
+            await canLaunch(formattedPhone) ? await launch(formattedPhone) : print('could not launch phone');
           },
         ),
         if (BlocProvider.of<SendPackageCubit>(c).state.package.notes.isValid)

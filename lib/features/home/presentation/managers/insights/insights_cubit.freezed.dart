@@ -296,19 +296,19 @@ class _$_InsightsState extends _InsightsState {
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool claimBonusLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool depositCashLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: DateFilter.all_time)
+  @JsonKey()
   @override
   final DateFilter dateFilter;
   @override
@@ -317,13 +317,13 @@ class _$_InsightsState extends _InsightsState {
   final Insight insight;
   @override
   final BankAccount? account;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool depositConfirmed;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool depositDialogOpen;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -337,41 +337,39 @@ class _$_InsightsState extends _InsightsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InsightsState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.claimBonusLoading, claimBonusLoading) ||
-                other.claimBonusLoading == claimBonusLoading) &&
-            (identical(other.depositCashLoading, depositCashLoading) ||
-                other.depositCashLoading == depositCashLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.dateFilter, dateFilter) ||
-                other.dateFilter == dateFilter) &&
-            (identical(other.selectedDate, selectedDate) ||
-                other.selectedDate == selectedDate) &&
-            (identical(other.insight, insight) || other.insight == insight) &&
-            (identical(other.account, account) || other.account == account) &&
-            (identical(other.depositConfirmed, depositConfirmed) ||
-                other.depositConfirmed == depositConfirmed) &&
-            (identical(other.depositDialogOpen, depositDialogOpen) ||
-                other.depositDialogOpen == depositDialogOpen) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.claimBonusLoading, claimBonusLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.depositCashLoading, depositCashLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality()
+                .equals(other.dateFilter, dateFilter) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedDate, selectedDate) &&
+            const DeepCollectionEquality().equals(other.insight, insight) &&
+            const DeepCollectionEquality().equals(other.account, account) &&
+            const DeepCollectionEquality()
+                .equals(other.depositConfirmed, depositConfirmed) &&
+            const DeepCollectionEquality()
+                .equals(other.depositDialogOpen, depositDialogOpen) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLoading,
-      claimBonusLoading,
-      depositCashLoading,
-      validate,
-      dateFilter,
-      selectedDate,
-      insight,
-      account,
-      depositConfirmed,
-      depositDialogOpen,
-      status);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(claimBonusLoading),
+      const DeepCollectionEquality().hash(depositCashLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(dateFilter),
+      const DeepCollectionEquality().hash(selectedDate),
+      const DeepCollectionEquality().hash(insight),
+      const DeepCollectionEquality().hash(account),
+      const DeepCollectionEquality().hash(depositConfirmed),
+      const DeepCollectionEquality().hash(depositDialogOpen),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

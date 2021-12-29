@@ -36,9 +36,7 @@ class DragToRefresh extends StatefulWidget {
 }
 
 class DragToRefreshState extends State<DragToRefresh>
-    with
-        TickerProviderStateMixin<DragToRefresh>,
-        AutomaticKeepAliveClientMixin<DragToRefresh> {
+    with TickerProviderStateMixin<DragToRefresh>, AutomaticKeepAliveClientMixin<DragToRefresh> {
   late AnimationController _footerController;
   late RefreshController refreshController;
   late AnimationController _animationcontroller, _scaleController;
@@ -58,14 +56,11 @@ class DragToRefreshState extends State<DragToRefresh>
       initialRefresh: widget.initialRefresh,
     );
 
-    _animationcontroller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    _animationcontroller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
-    _scaleController =
-        AnimationController(value: 0.0, vsync: this, upperBound: 1.0);
+    _scaleController = AnimationController(value: 0.0, vsync: this, upperBound: 1.0);
 
-    _footerController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    _footerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
     refreshController.headerMode?.addListener(() {
       if (refreshController.headerStatus == RefreshStatus.idle) {
@@ -82,8 +77,7 @@ class DragToRefreshState extends State<DragToRefresh>
   @override
   bool get wantKeepAlive => true;
 
-  void updateController(RefreshController controller) =>
-      setState(() => refreshController = controller);
+  void updateController(RefreshController controller) => setState(() => refreshController = controller);
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +95,7 @@ class DragToRefreshState extends State<DragToRefresh>
         header: CustomHeader(
           refreshStyle: RefreshStyle.Follow,
           onOffsetChange: (offset) {
-            if (refreshController.headerMode?.value != RefreshStatus.refreshing)
-              _scaleController.value = offset / 80.0;
+            if (refreshController.headerMode?.value != RefreshStatus.refreshing) _scaleController.value = offset / 80.0;
           },
           builder: (c, m) => Center(
             child: FadeTransition(
@@ -112,7 +105,10 @@ class DragToRefreshState extends State<DragToRefresh>
                 child: SpinKitSpinningLines(
                   size: 34.0,
                   controller: _animationcontroller,
-                  color: Palette.accentColor,
+                  color: Utils.foldTheme(
+                    light: () => Palette.accentColor,
+                    dark: () => Palette.cardColorLight,
+                  ),
                 ),
               ),
             ),
@@ -170,8 +166,7 @@ class RefreshState extends InheritedWidget {
   }) : super(key: key, child: child);
 
   @override
-  bool updateShouldNotify(RefreshState oldWidget) =>
-      controller != oldWidget.controller;
+  bool updateShouldNotify(RefreshState oldWidget) => controller != oldWidget.controller;
 
   static RefreshState? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RefreshState>();

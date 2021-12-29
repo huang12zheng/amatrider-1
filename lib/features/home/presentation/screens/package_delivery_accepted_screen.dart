@@ -5,13 +5,11 @@ import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/utils/palette.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,8 +19,7 @@ part '../widgets/package_delivery/_package_delivery_widgets.dart';
 part '../widgets/package_delivery/_additional_notes_dialog.dart';
 
 /// A stateless widget to render PackageDeliveryAcceptedScreen.
-class PackageDeliveryAcceptedScreen extends StatefulWidget
-    with AutoRouteWrapper {
+class PackageDeliveryAcceptedScreen extends StatefulWidget with AutoRouteWrapper {
   static final double _fabHeightClosed = _panelHeightClosed + 0.03.h;
   static final double _fabHeightOpened = _panelHeightOpened + 0.03.h;
   static final double _panelHeightClosed = 0.4.h;
@@ -35,12 +32,10 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
 
   final SendPackage sendPackage;
 
-  const PackageDeliveryAcceptedScreen({Key? key, required this.sendPackage})
-      : super(key: key);
+  const PackageDeliveryAcceptedScreen({Key? key, required this.sendPackage}) : super(key: key);
 
   @override
-  State<PackageDeliveryAcceptedScreen> createState() =>
-      _PackageDeliveryAcceptedScreenState();
+  State<PackageDeliveryAcceptedScreen> createState() => _PackageDeliveryAcceptedScreenState();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -64,8 +59,7 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
           //
           BlocListener<SendPackageCubit, SendPackageState>(
             listenWhen: (p, c) =>
-                p.status.getOrElse(() => null) !=
-                    c.status.getOrElse(() => null) ||
+                p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
                 (c.status.getOrElse(() => null) != null &&
                     (c.status.getOrElse(() => null)!.response.maybeMap(
                           error: (f) => f.foldCode(orElse: () => false),
@@ -82,8 +76,7 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
                     if (s.package.status == SendPackageStatus.DELIVERED) {
                       // c.read<SendPackageCubit>().closeWebsocket();
 
-                      await Future.delayed(const Duration(milliseconds: 600),
-                          () {
+                      await Future.delayed(const Duration(milliseconds: 600), () {
                         navigator.popUntil(
                           (route) => route.settings.name == DashboardRoute.name,
                         );
@@ -101,8 +94,7 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget
   }
 }
 
-class _PackageDeliveryAcceptedScreenState
-    extends State<PackageDeliveryAcceptedScreen>
+class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedScreen>
     with AutomaticKeepAliveClientMixin<PackageDeliveryAcceptedScreen> {
   double _fabHeight = PackageDeliveryAcceptedScreen._fabHeightOpened;
   double _trafficHeight = PackageDeliveryAcceptedScreen._trafficHeightOpened;
@@ -128,26 +120,23 @@ class _PackageDeliveryAcceptedScreenState
               controller: panelController,
               maxHeight: PackageDeliveryAcceptedScreen._panelHeightOpened,
               minHeight: PackageDeliveryAcceptedScreen._panelHeightClosed,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               parallaxEnabled: true,
               parallaxOffset: 0.5,
               defaultPanelState: PanelState.OPEN,
               body: const _Body(),
+              color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
               panelBuilder: (controller) => _PanelBuilder(
                 controller,
                 panelController: panelController,
               ),
               onPanelSlide: (position) {
                 final panelMaxScrollExtent =
-                    PackageDeliveryAcceptedScreen._panelHeightOpened -
-                        PackageDeliveryAcceptedScreen._panelHeightClosed;
+                    PackageDeliveryAcceptedScreen._panelHeightOpened - PackageDeliveryAcceptedScreen._panelHeightClosed;
 
-                final newFabHeight = (position * panelMaxScrollExtent) +
-                    PackageDeliveryAcceptedScreen._fabHeightClosed;
+                final newFabHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._fabHeightClosed;
 
-                final newTrafficHeight = (position * panelMaxScrollExtent) +
-                    PackageDeliveryAcceptedScreen._trafficHeightClosed;
+                final newTrafficHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._trafficHeightClosed;
 
                 setState(() {
                   _fabHeight = newFabHeight;
@@ -162,15 +151,10 @@ class _PackageDeliveryAcceptedScreenState
               right: 0,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: App.resolveColor(
-                    Palette.cardColorLight,
-                    dark: Palette.cardColorDark,
-                  ),
+                  color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                      .copyWith(
-                          bottom: PackageDeliveryAcceptedScreen._buttonBottom),
+                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(bottom: PackageDeliveryAcceptedScreen._buttonBottom),
                   child: BlocBuilder<SendPackageCubit, SendPackageState>(
                     builder: (c, s) => s.package.status.between(
                       start: () => AppButton(
@@ -190,27 +174,22 @@ class _PackageDeliveryAcceptedScreenState
                                 content: 'Confirm that you have received '
                                     'the package from ${s.package.sender.fullName.getOrEmpty}?',
                                 buttonDirection: Axis.horizontal,
-                                cupertinoSecondButtonText: 'No, Go Back',
+                                cupertinoFirstButtonText: 'No, Go Back',
                                 isSecondDestructive: true,
                                 secondButtonText: 'Yes, Confirm',
                                 secondSplashColor: Colors.black12,
-                                secondTextStyle:
-                                    const TextStyle(color: Colors.white),
+                                secondTextStyle: const TextStyle(color: Colors.white),
                                 secondBgColor: Palette.accentColor,
                                 onSecondPressed: () {
-                                  Theme.of(context).platform.fold(
-                                      material: c
-                                          .read<SendPackageCubit>()
-                                          .confirmPackagePickup,
-                                      cupertino: navigator.pop);
+                                  Theme.of(context)
+                                      .platform
+                                      .fold(material: c.read<SendPackageCubit>().confirmPackagePickup, cupertino: navigator.pop);
                                 },
-                                cupertinoFirstButton: CupertinoDialogAction(
+                                cupertinoSecondButton: CupertinoDialogAction(
                                   isDefaultAction: true,
                                   isDestructiveAction: false,
                                   onPressed: () {
-                                    c
-                                        .read<SendPackageCubit>()
-                                        .confirmPackagePickup();
+                                    c.read<SendPackageCubit>().confirmPackagePickup();
                                     navigator.pop();
                                   },
                                   child: const Text('Yes, Confirm'),
@@ -239,36 +218,28 @@ class _PackageDeliveryAcceptedScreenState
                           if (!s.isLoading)
                             App.showAlertDialog(
                               context: context,
-                              barrierColor: App.resolveColor(
-                                Colors.grey.shade800.withOpacity(0.55),
-                                dark: Colors.white54,
-                              ),
+                              barrierColor: App.resolveColor(Colors.grey.shade800.withOpacity(0.55), dark: Colors.white54),
                               builder: (_) => AdaptiveAlertdialog(
                                 title: 'Confirm Delivery',
-                                content: 'Confirm that you have delivered '
-                                    'the package to ${s.package.receiverFullName.getOrEmpty}?',
+                                content: 'Confirm that you have delivered the package to '
+                                    '${s.package.receiverFullName.getOrEmpty}?',
                                 buttonDirection: Axis.horizontal,
-                                cupertinoSecondButtonText: 'No, Go Back',
+                                cupertinoFirstButtonText: 'No, Go Back',
                                 isSecondDestructive: true,
                                 secondButtonText: 'Yes, Confirm',
                                 secondSplashColor: Colors.black12,
-                                secondTextStyle:
-                                    const TextStyle(color: Colors.white),
+                                secondTextStyle: const TextStyle(color: Colors.white),
                                 secondBgColor: Palette.accentColor,
                                 onSecondPressed: () {
-                                  Theme.of(context).platform.fold(
-                                      material: c
-                                          .read<SendPackageCubit>()
-                                          .confirmPackageDelivery,
-                                      cupertino: navigator.pop);
+                                  Theme.of(context)
+                                      .platform
+                                      .fold(material: c.read<SendPackageCubit>().confirmPackageDelivery, cupertino: navigator.pop);
                                 },
-                                cupertinoFirstButton: CupertinoDialogAction(
+                                cupertinoSecondButton: CupertinoDialogAction(
                                   isDefaultAction: true,
                                   isDestructiveAction: false,
                                   onPressed: () {
-                                    c
-                                        .read<SendPackageCubit>()
-                                        .confirmPackageDelivery();
+                                    c.read<SendPackageCubit>().confirmPackageDelivery();
                                     navigator.pop();
                                   },
                                   child: const Text('Yes, Confirm'),
@@ -304,16 +275,11 @@ class _PackageDeliveryAcceptedScreenState
                 elevation: 1.0,
                 focusElevation: 1.8,
                 highlightElevation: 1.8,
-                backgroundColor: App.resolveColor(
-                  Palette.neutralF9,
-                  dark: Palette.secondaryColor,
-                )!,
+                backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
                 onPressed: context.read<MapCubit>().updateCurrentLocation,
                 child: Icon(
-                  Theme.of(context).platform.fold(
-                      material: () => Icons.gps_fixed_rounded,
-                      cupertino: () => CupertinoIcons.location_fill),
-                  color: Palette.accentColor,
+                  Utils.platform_(material: Icons.gps_fixed_rounded, cupertino: CupertinoIcons.location_fill),
+                  color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
                   size: 27,
                 ),
               ),
@@ -328,16 +294,13 @@ class _PackageDeliveryAcceptedScreenState
                 elevation: 1.0,
                 focusElevation: 1.8,
                 highlightElevation: 1.8,
-                backgroundColor: App.resolveColor(
-                  Palette.neutralF9,
-                  dark: Palette.secondaryColor,
-                )!,
+                backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
                 onPressed: context.read<MapCubit>().toogleTraffic,
                 child: BlocBuilder<MapCubit, MapState>(
                   buildWhen: (p, c) => p.trafficEnabled != c.trafficEnabled,
                   builder: (c, s) => Icon(
                     Icons.traffic_outlined,
-                    color: s.trafficEnabled ? Palette.accentGreen : Colors.grey,
+                    color: s.trafficEnabled ? App.resolveColor(Palette.accentGreen, dark: Palette.accentDarkGreen) : Colors.grey,
                     size: 27,
                   ),
                 ),
@@ -361,13 +324,9 @@ class _Body extends StatelessWidget {
         start: () {
           final package = c.read<SendPackageCubit>().state.package;
 
-          context
-              .read<MapCubit>()
-              .drawPolyline(package.riderLocation, package.pickup);
+          context.read<MapCubit>().drawPolyline(package.riderLocation, package.pickup);
 
-          context
-              .read<MapCubit>()
-              .adjustMapBounds(package.riderLocation, package.pickup);
+          context.read<MapCubit>().adjustMapBounds(package.riderLocation, package.pickup);
 
           return MapWidget(
             start: package.riderLocation,
@@ -378,13 +337,9 @@ class _Body extends StatelessWidget {
         end: () {
           final package = c.read<SendPackageCubit>().state.package;
 
-          context
-              .read<MapCubit>()
-              .drawPolyline(package.riderLocation, package.destination);
+          context.read<MapCubit>().drawPolyline(package.riderLocation, package.destination);
 
-          context
-              .read<MapCubit>()
-              .adjustMapBounds(package.riderLocation, package.destination);
+          context.read<MapCubit>().adjustMapBounds(package.riderLocation, package.destination);
 
           return MapWidget(
             start: package.riderLocation,

@@ -78,6 +78,30 @@ class _InsightsPageState extends State<InsightsPage> {
               ),
             ),
             actions: [
+              Center(
+                child: Consumer(
+                  builder: (_, ref, child) => AppIconButton(
+                    tooltip: 'Menu',
+                    backgroundColor: Colors.transparent,
+                    elevation: 0.0,
+                    onPressed: ref.read(scaffoldController.notifier).open,
+                    padding: EdgeInsets.zero,
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.bars,
+                        size: 30,
+                        color: Utils.foldTheme(
+                          light: () => Palette.cardColorDark,
+                          dark: () => Palette.cardColorLight,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //
+              const Spacer(),
+              //
               GestureDetector(
                 onTap: () => navigator.push(const RiderReviewRoute()),
                 child: Row(
@@ -90,8 +114,7 @@ class _InsightsPageState extends State<InsightsPage> {
                       fontWeight: FontWeight.w400,
                     ),
                     //
-                    BlocSelector<AuthWatcherCubit, AuthWatcherState,
-                        BasicTextField<double?>?>(
+                    BlocSelector<AuthWatcherCubit, AuthWatcherState, BasicTextField<double?>?>(
                       selector: (s) => s.rider?.avgRating,
                       builder: (_, rating) => Headline(
                         '${rating?.getOrNull ?? 0.0}',
@@ -129,8 +152,7 @@ class _InsightsPageState extends State<InsightsPage> {
                   physics: Utils.physics,
                   scrollDirection: Axis.vertical,
                   controller: ScrollController(),
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: <Widget>[
                     SliverPadding(
                       padding: EdgeInsets.symmetric(
@@ -172,8 +194,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                   ),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 4.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                                   child: AdaptiveText(
                                     '${context.tr.insightDaysLeft('${s.insight.daysLeft.getOrEmpty}')}',
                                     style: TextStyle(
@@ -188,9 +209,7 @@ class _InsightsPageState extends State<InsightsPage> {
                         ),
                       ),
                     //
-                    if (s.insight.completed.isValid &&
-                        s.insight.target.isValid &&
-                        s.insight.progress.isValid)
+                    if (s.insight.completed.isValid && s.insight.target.isValid && s.insight.progress.isValid)
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
@@ -198,13 +217,8 @@ class _InsightsPageState extends State<InsightsPage> {
                         sliver: SliverToBoxAdapter(
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: App.resolveColor(
-                                Colors.white,
-                                dark: Palette.secondaryColor.shade700,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                Utils.inputBorderRadius,
-                              ),
+                              color: App.resolveColor(Palette.cardColorLight, dark: Palette.secondaryColor.shade700),
+                              borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                             ),
                             child: SizedBox(
                               height: 0.17.sh,
@@ -215,27 +229,23 @@ class _InsightsPageState extends State<InsightsPage> {
                                   vertical: 0.03.sw,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Flexible(
                                       child: _InsightColumn(
                                         title: '${context.tr.completed}',
-                                        subtitle:
-                                            '${s.insight.completed.getOrEmpty}',
+                                        subtitle: '${s.insight.completed.getOrEmpty}',
                                         color: Palette.pastelGreen,
                                         icon: AmatNow.check_circle,
                                         iconColor: Palette.accentGreen,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                       ),
                                     ),
                                     //
                                     Flexible(
                                       child: _InsightColumn(
                                         title: '${context.tr.target}',
-                                        subtitle:
-                                            '${s.insight.target.getOrEmpty}',
+                                        subtitle: '${s.insight.target.getOrEmpty}',
                                         color: Palette.pastelBlue,
                                         icon: AmatNow.target_icon,
                                         iconColor: Palette.accentBlue,
@@ -245,13 +255,17 @@ class _InsightsPageState extends State<InsightsPage> {
                                     Flexible(
                                       child: _InsightColumn(
                                         title: '${context.tr.progress}',
-                                        subtitle:
-                                            '${s.insight.progress.getOrEmpty}%',
-                                        color: Palette.pastelYellow,
+                                        subtitle: '${s.insight.progress.getOrEmpty}%',
+                                        color: Utils.foldTheme(
+                                          light: () => Palette.pastelYellow,
+                                          dark: () => Palette.pastelYellow2,
+                                        ),
                                         icon: AmatNow.progress_icon,
-                                        iconColor: Palette.accentYellow,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        iconColor: Utils.foldTheme(
+                                          light: () => Palette.accentYellow,
+                                          dark: () => Palette.accentDarkYellow,
+                                        ),
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                       ),
                                     ),
                                   ],
@@ -293,8 +307,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                       child: Padding(
                                         padding: EdgeInsets.only(left: 0.03.sw),
                                         child: WidgetVisibility(
-                                          visible:
-                                              s.insight.extraDeliveries > 0,
+                                          visible: s.insight.extraDeliveries > 0,
                                           replacement: AdaptiveText(
                                             'You do not have any extra deliveries for this month.',
                                             fontSize: 17.sp,
@@ -332,8 +345,7 @@ class _InsightsPageState extends State<InsightsPage> {
                         sliver: SliverToBoxAdapter(
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: App.resolveColor(Colors.white,
-                                  dark: Palette.secondaryColor.shade700),
+                              color: App.resolveColor(Colors.white, dark: Palette.secondaryColor.shade700),
                               borderRadius: BorderRadius.circular(
                                 Utils.inputBorderRadius,
                               ),
@@ -347,17 +359,14 @@ class _InsightsPageState extends State<InsightsPage> {
                                   vertical: 0.03.sw,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       flex: 8,
                                       child: _InsightColumn(
-                                        title:
-                                            '${context.tr.insightExtraDeliveries}',
+                                        title: '${context.tr.insightExtraDeliveries}',
                                         titleFontSize: 19.0.sp,
-                                        subtitle:
-                                            '${s.insight.completedExtraDeliveries.getOrNull ?? 0}'
+                                        subtitle: '${s.insight.completedExtraDeliveries.getOrNull ?? 0}'
                                             ' / '
                                             '${s.insight.totalExtraDeliveries.getOrNull ?? 0}',
                                         color: Palette.accent20,
@@ -368,8 +377,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                               Palette.neutralF5,
                                               dark: Palette.neutralMoonDark,
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                                Utils.inputBorderRadius),
+                                            borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                                           ),
                                           child: WidgetVisibility(
                                             visible: s.insight.canClaimBonus,
@@ -379,20 +387,17 @@ class _InsightsPageState extends State<InsightsPage> {
                                                 vertical: 0.02.sw,
                                               ),
                                               child: Headline(
-                                                '${s.insight.currentBonus.getOrEmpty}'
-                                                    .asCurrency(),
+                                                '${s.insight.currentBonus.getOrEmpty}'.asCurrency(),
                                                 fontSize: 15.sp,
                                                 textColor: Palette.neutralLabel,
-                                                textColorDark:
-                                                    Palette.neutralLabel,
+                                                textColorDark: Palette.neutralLabel,
                                               ),
                                             ),
                                           ),
                                         ),
                                         iconColor: Palette.accentColor,
                                         padding: EdgeInsets.all(0.02.sw),
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                       ),
                                     ),
                                     //
@@ -402,55 +407,37 @@ class _InsightsPageState extends State<InsightsPage> {
                                         child: BlocProvider(
                                           create: (_) => getIt<AuthCubit>(),
                                           child: RepositoryProvider(
-                                            create: (_) =>
-                                                getIt<UtilitiesRemote>(),
+                                            create: (_) => getIt<UtilitiesRemote>(),
                                             child: Builder(builder: (context) {
                                               return AppOutlinedButton(
-                                                text:
-                                                    '${context.tr.insightClaimBonus}',
+                                                text: '${context.tr.insightClaimBonus}',
                                                 height: 0.09.sw,
                                                 cupertinoHeight: 0.028.sh,
                                                 width: 0.3.sw,
                                                 cupertinoWidth: 0.3.sw,
                                                 isLoading: s.claimBonusLoading,
                                                 onPressed: () async {
-                                                  context
-                                                      .read<InsightsCubit>()
-                                                      .claimBonusLoading(true);
+                                                  context.read<InsightsCubit>().claimBonusLoading(true);
 
-                                                  final account = await context
-                                                      .read<UtilitiesRemote>()
-                                                      .bankAccount();
+                                                  final account = await context.read<UtilitiesRemote>().bankAccount();
 
-                                                  context
-                                                      .read<InsightsCubit>()
-                                                      .claimBonusLoading(false);
+                                                  context.read<InsightsCubit>().claimBonusLoading(false);
 
-                                                  if (account.data == null &&
-                                                      navigator.current.name !=
-                                                          EditBankDetailsRoute
-                                                              .name)
-                                                    unawaited(
-                                                        navigator.navigate(
+                                                  if (account.data == null && navigator.current.name != EditBankDetailsRoute.name)
+                                                    unawaited(navigator.navigate(
                                                       const EditBankDetailsRoute(),
                                                     ));
                                                   else {
                                                     await App.showAlertDialog(
                                                       context: c,
-                                                      barrierColor:
-                                                          App.resolveColor(
-                                                        Colors.grey.shade800
-                                                            .withOpacity(0.55),
+                                                      barrierColor: App.resolveColor(
+                                                        Colors.grey.shade800.withOpacity(0.55),
                                                         dark: Colors.white54,
                                                       ),
-                                                      builder: (_) =>
-                                                          _ClaimBonusDialogBuilder(
-                                                        cubit: c.read<
-                                                            InsightsCubit>(),
-                                                        cash: s
-                                                            .insight.cashAtHand,
-                                                        account: account
-                                                            .data!.domain,
+                                                      builder: (_) => _ClaimBonusDialogBuilder(
+                                                        cubit: c.read<InsightsCubit>(),
+                                                        cash: s.insight.cashAtHand,
+                                                        account: account.data!.domain,
                                                       ),
                                                     );
                                                   }
@@ -469,8 +456,7 @@ class _InsightsPageState extends State<InsightsPage> {
                       ),
                     ],
                     //
-                    if (s.insight.cashAtHand.isValid &&
-                        s.insight.cashAtHand.getOrNull != 0)
+                    if (s.insight.cashAtHand.isValid && s.insight.cashAtHand.getOrNull != 0)
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
@@ -495,24 +481,19 @@ class _InsightsPageState extends State<InsightsPage> {
                                   vertical: 0.03.sw,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       flex: 8,
                                       child: _InsightColumn(
-                                        title:
-                                            '${context.tr.insightCashAtHand}',
+                                        title: '${context.tr.insightCashAtHand}',
                                         titleFontSize: 19.0.sp,
-                                        subtitle:
-                                            '${s.insight.cashAtHand.getOrEmpty}'
-                                                .asCurrency(),
+                                        subtitle: '${s.insight.cashAtHand.getOrEmpty}'.asCurrency(),
                                         color: Palette.pastelPurple,
                                         icon: AmatNow.cash_hand,
                                         iconColor: Palette.accentPurple,
                                         padding: EdgeInsets.all(0.02.sw),
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                       ),
                                     ),
                                     //
@@ -522,10 +503,8 @@ class _InsightsPageState extends State<InsightsPage> {
                                         height: double.infinity,
                                         child: DecoratedBox(
                                           decoration: BoxDecoration(
-                                            color: App.resolveColor(
-                                                Palette.pastelPurple),
-                                            borderRadius: BorderRadius.circular(
-                                                Utils.inputBorderRadius),
+                                            color: App.resolveColor(Palette.pastelPurple),
+                                            borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                                           ),
                                           child: Padding(
                                             padding: EdgeInsets.all(0.03.sw),
@@ -550,8 +529,7 @@ class _InsightsPageState extends State<InsightsPage> {
                         ),
                       ),
 
-                    if (s.insight.activities != null &&
-                        s.insight.activities!.isValid)
+                    if (s.insight.activities != null && s.insight.activities!.isValid)
                       SliverPadding(
                         padding: EdgeInsets.all(App.sidePadding),
                         sliver: const SliverToBoxAdapter(

@@ -371,20 +371,20 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
   final Password password;
   @override
   final PhotoField photo;
-  @JsonKey(defaultValue: RiderAvailability.unavailable)
+  @JsonKey()
   @override
   final RiderAvailability availability;
   @override
   final RiderLocation location;
-  @JsonKey(defaultValue: ProfileVerificationStatus.unverified)
+  @JsonKey()
   @override
   final ProfileVerificationStatus verificationStatus;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool phoneVerified;
   @override
   final BasicTextField<double?> avgRating;
-  @JsonKey(defaultValue: AuthProvider.regular)
+  @JsonKey()
   @override
   final AuthProvider provider;
   @override
@@ -427,55 +427,46 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Rider &&
-            (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
-            (identical(other.photo, photo) || other.photo == photo) &&
-            (identical(other.availability, availability) ||
-                other.availability == availability) &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.verificationStatus, verificationStatus) ||
-                other.verificationStatus == verificationStatus) &&
-            (identical(other.phoneVerified, phoneVerified) ||
-                other.phoneVerified == phoneVerified) &&
-            (identical(other.avgRating, avgRating) ||
-                other.avgRating == avgRating) &&
-            (identical(other.provider, provider) ||
-                other.provider == provider) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.deletedAt, deletedAt) ||
-                other.deletedAt == deletedAt));
+            const DeepCollectionEquality().equals(other.uid, uid) &&
+            const DeepCollectionEquality().equals(other.firstName, firstName) &&
+            const DeepCollectionEquality().equals(other.lastName, lastName) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.phone, phone) &&
+            const DeepCollectionEquality().equals(other.password, password) &&
+            const DeepCollectionEquality().equals(other.photo, photo) &&
+            const DeepCollectionEquality()
+                .equals(other.availability, availability) &&
+            const DeepCollectionEquality().equals(other.location, location) &&
+            const DeepCollectionEquality()
+                .equals(other.verificationStatus, verificationStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneVerified, phoneVerified) &&
+            const DeepCollectionEquality().equals(other.avgRating, avgRating) &&
+            const DeepCollectionEquality().equals(other.provider, provider) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.deletedAt, deletedAt));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      uid,
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      photo,
-      availability,
-      location,
-      verificationStatus,
-      phoneVerified,
-      avgRating,
-      provider,
-      createdAt,
-      updatedAt,
-      deletedAt);
+      const DeepCollectionEquality().hash(uid),
+      const DeepCollectionEquality().hash(firstName),
+      const DeepCollectionEquality().hash(lastName),
+      const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(phone),
+      const DeepCollectionEquality().hash(password),
+      const DeepCollectionEquality().hash(photo),
+      const DeepCollectionEquality().hash(availability),
+      const DeepCollectionEquality().hash(location),
+      const DeepCollectionEquality().hash(verificationStatus),
+      const DeepCollectionEquality().hash(phoneVerified),
+      const DeepCollectionEquality().hash(avgRating),
+      const DeepCollectionEquality().hash(provider),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(deletedAt));
 
   @JsonKey(ignore: true)
   @override

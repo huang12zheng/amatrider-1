@@ -14,8 +14,10 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
   bool get isDarkMode => state.id == DARK_THEME_ID ? true : false;
 
   /// Toggles Application theme from Light Mode to Dark Mode
-  void toggleTheme() =>
-      emit(state.id == LIGHT_THEME_ID ? AppTheme.dark() : AppTheme.light());
+  void toggleTheme() {
+    emit(state.id == LIGHT_THEME_ID ? AppTheme.dark() : AppTheme.light());
+    App.forceAppUpdate();
+  }
 
   void themeMode() {}
 
@@ -23,17 +25,14 @@ class ThemeCubit extends HydratedCubit<AppTheme> {
   AppTheme fromJson(Map<String, dynamic> json) {
     final type = json[_THEME_KEY] as String;
     final themeModeIndex = json[_THEME_MODE_KEY] as int;
-    
+
     switch (type) {
       case LIGHT_THEME_ID:
-        return AppTheme.light()
-            .copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
+        return AppTheme.light().copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
       case DARK_THEME_ID:
-        return AppTheme.dark()
-            .copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
+        return AppTheme.dark().copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
       default:
-        return AppTheme.light()
-            .copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
+        return AppTheme.light().copyWith(themeMode: ThemeMode.values.elementAt(themeModeIndex));
     }
   }
 

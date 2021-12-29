@@ -16,7 +16,7 @@ _$_ReviewDTO _$$_ReviewDTOFromJson(Map<String, dynamic> json) => _$_ReviewDTO(
       reviewGroups: (json['reviewGroups'] as List<dynamic>?)
               ?.map((e) => ReviewGroupDTO.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          [],
+          const [],
     );
 
 Map<String, dynamic> _$$_ReviewDTOToJson(_$_ReviewDTO instance) {

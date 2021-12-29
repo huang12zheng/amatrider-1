@@ -6,7 +6,6 @@ import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +65,7 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                 top: 0.02.h,
                 left: 0,
                 right: 0,
-                bottom: 0.83.h,
+                bottom: 0.82.h,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                   child: Column(
@@ -91,6 +90,7 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                         child: AdaptiveText(
                           '$content',
                           fontSize: 17.sp,
+                          minFontSize: 16,
                         ),
                       ),
                     ],
@@ -115,8 +115,7 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                 right: 0,
                 bottom: 0,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                      .copyWith(bottom: App.sidePadding),
+                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(bottom: App.sidePadding),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -155,33 +154,31 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                             ),
                             //
                             Flexible(
-                              child: AppOutlinedButton(
-                                text:
-                                    '${secondButtonText ?? 'Exit ${Const.appName}'}',
-                                textColor: Palette.text100,
-                                textColorDark: Palette.text100Dark,
-                                borderColor: Colors.transparent,
-                                borderColorDark: Colors.transparent,
-                                onPressed: () async {
-                                  if (onDecline != null) {
-                                    final _result = await onDecline!.call();
-                                    if (_result) await navigator.pop();
-                                    return;
-                                  }
+                              child: WidgetVisibility(
+                                visible: !Platform.isIOS,
+                                child: AppOutlinedButton(
+                                  text: '${secondButtonText ?? 'Exit ${Const.appName}'}',
+                                  textColor: Palette.text100,
+                                  textColorDark: Palette.text100Dark,
+                                  borderColor: Colors.transparent,
+                                  borderColorDark: Colors.transparent,
+                                  onPressed: () async {
+                                    if (onDecline != null) {
+                                      final _result = await onDecline!.call();
+                                      if (_result) await navigator.pop();
+                                      return;
+                                    }
 
-                                  // ignore: unawaited_futures
-                                  Theme.of(context).platform.fold(
-                                        material: () => SystemChannels.platform
-                                            .invokeMethod(
-                                                'SystemNavigator.pop'),
-                                        cupertino: () => exit(0),
-                                      );
-                                },
+                                    await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', true);
+                                  },
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
+                      //
+                      VerticalSpace(height: 0.015.h),
                     ],
                   ),
                 ),

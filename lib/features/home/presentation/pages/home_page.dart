@@ -5,7 +5,6 @@ import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
-import 'package:amatrider/features/home/presentation/widgets/horizontal_chip_widget.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
@@ -14,7 +13,6 @@ import 'package:dartz/dartz.dart' hide State;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,11 +39,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> onRefresh(BuildContext c, RefreshController controller) async {
-    _cubit.clearList();
-    await _cubit.allPackages(c);
-    await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
-    await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_RECEIVER);
-    controller.refreshCompleted();
+    await BlocProvider.of<LocationCubit>(c).showPermissionRationale(context, callback: () async {
+      _cubit.clearList();
+      await _cubit.allPackages(c);
+      await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
+      await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_RECEIVER);
+      controller.refreshCompleted();
+    });
   }
 
   @override
@@ -57,10 +57,8 @@ class _HomePageState extends State<HomePage> {
           BlocListener<RequestCubit, RequestState>(
             listenWhen: (p, c) => p.currentPackage != c.currentPackage,
             listener: (c, s) {
-              if (s.currentPackage != null &&
-                  navigator.current.name != PackageDeliveryAcceptedRoute.name)
-                navigator.navigate(PackageDeliveryAcceptedRoute(
-                    sendPackage: s.currentPackage!));
+              if (s.currentPackage != null && navigator.current.name != PackageDeliveryAcceptedRoute.name)
+                navigator.navigate(PackageDeliveryAcceptedRoute(sendPackage: s.currentPackage!));
 
               // Reset current package to null
               c.read<RequestCubit>().setCurrentPackage(null);
@@ -69,8 +67,7 @@ class _HomePageState extends State<HomePage> {
           //
           BlocListener<RequestCubit, RequestState>(
             listenWhen: (p, c) =>
-                p.status.getOrElse(() => null) !=
-                    c.status.getOrElse(() => null) ||
+                p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
                 (c.status.getOrElse(() => null) != null &&
                     (c.status.getOrElse(() => null)!.response.maybeMap(
                           error: (f) => f.foldCode(orElse: () => false),
@@ -100,7 +97,33 @@ class _HomePageState extends State<HomePage> {
                 onPressed: ref.read(scaffoldController.notifier).open,
               ),
             ),
-            actions: [const AvailablilityWidget()],
+            actions: [
+              Center(
+                child: Consumer(
+                  builder: (_, ref, child) => AppIconButton(
+                    tooltip: 'Menu',
+                    backgroundColor: Colors.transparent,
+                    elevation: 0.0,
+                    onPressed: ref.read(scaffoldController.notifier).open,
+                    padding: EdgeInsets.zero,
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.bars,
+                        size: 30,
+                        color: Utils.foldTheme(
+                          light: () => Palette.cardColorDark,
+                          dark: () => Palette.cardColorLight,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //
+              const Spacer(),
+              //
+              const AvailablilityWidget(),
+            ],
           ),
           body: SafeArea(
             child: DragToRefresh(
@@ -112,8 +135,7 @@ class _HomePageState extends State<HomePage> {
                   physics: Utils.physics,
                   scrollDirection: Axis.vertical,
                   controller: ScrollController(),
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   slivers: [
                     SliverPadding(
                       padding: EdgeInsets.symmetric(
@@ -121,8 +143,7 @@ class _HomePageState extends State<HomePage> {
                       ).copyWith(top: App.longest * 0.01),
                       sliver: SliverList(
                         delegate: SliverChildListDelegate.fixed([
-                          BlocSelector<AuthWatcherCubit, AuthWatcherState,
-                              Rider?>(
+                          BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
                             selector: (s) => s.rider,
                             builder: (c, rider) => AdaptiveText(
                               '${tr.greeting('${rider?.firstName.getOrEmpty}')}! 👋',
@@ -150,8 +171,7 @@ class _HomePageState extends State<HomePage> {
                         ]),
                       ),
                     ),
-                    if (s.isLoadingTransitPackages ||
-                        !s.packagesInTransit.isEmpty())
+                    if (s.isLoadingTransitPackages || !s.packagesInTransit.isEmpty())
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
@@ -183,14 +203,12 @@ class _HomePageState extends State<HomePage> {
                         horizontal: App.sidePadding,
                       ).copyWith(
                         top: s.packagesInTransit.isEmpty() ? 0 : 0.02.sw,
-                        bottom:
-                            s.packagesInTransit.isEmpty() ? 0 : App.sidePadding,
+                        bottom: s.packagesInTransit.isEmpty() ? 0 : App.sidePadding,
                       ),
                       sliver: SliverToBoxAdapter(
                         child: WidgetVisibility(
                           duration: const Duration(milliseconds: 700),
-                          visible: !(s.isLoadingTransitPackages &&
-                              s.packagesInTransit.isEmpty()),
+                          visible: !(s.isLoadingTransitPackages && s.packagesInTransit.isEmpty()),
                           replacement: WidgetVisibility(
                             duration: const Duration(milliseconds: 800),
                             visible: s.isLoadingTransitPackages,
@@ -210,36 +228,25 @@ class _HomePageState extends State<HomePage> {
                             clipBehavior: Clip.antiAlias,
                             childrenDelegate: SliverChildBuilderDelegate(
                               (_, i) => Column(
-                                key: ValueKey('in-transit-'
-                                    '${s.packagesInTransit.getOrNull(i)?.id.value}'),
+                                key: ValueKey('in-transit-${s.packagesInTransit.getOrNull(i)?.id.value}'),
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   if (s.packagesInTransit.getOrNull(i) != null)
                                     Flexible(
                                       child: _SendPackageCard(
-                                        package:
-                                            s.packagesInTransit.getOrNull(i)!,
-                                        initialExpanded: s.packagesInTransit
-                                                .firstOrNull()
-                                                ?.id ==
-                                            s.packagesInTransit
-                                                .getOrNull(i)
-                                                ?.id,
+                                        package: s.packagesInTransit.getOrNull(i)!,
+                                        initialExpanded: s.packagesInTransit.firstOrNull()?.id == s.packagesInTransit.getOrNull(i)?.id,
                                       ),
                                     ),
                                   //
                                   if (s.packagesInTransit.getOrNull(i) != null)
-                                    if (i != s.packagesInTransit.size - 1)
-                                      VerticalSpace(height: 0.03.sw)
+                                    if (i != s.packagesInTransit.size - 1) VerticalSpace(height: 0.03.sw)
                                 ],
                               ),
                               childCount: s.packagesInTransit.size,
                               findChildIndexCallback: (key) {
                                 final valueKey = key as ValueKey<String>;
-                                return s.packagesInTransit.dart.indexWhere(
-                                    (it) =>
-                                        'in-transit-${it.id.value}' ==
-                                        valueKey.value);
+                                return s.packagesInTransit.dart.indexWhere((it) => 'in-transit-${it.id.value}' == valueKey.value);
                               },
                             ),
                           ),
@@ -249,8 +256,7 @@ class _HomePageState extends State<HomePage> {
                     //
                     //
                     //
-                    if (s.isLoadingActivePackages ||
-                        !s.activePackages.isEmpty())
+                    if (s.isLoadingActivePackages || !s.activePackages.isEmpty())
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
@@ -261,12 +267,10 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(children: [
-                                    Headline('${tr.activeRequests}',
-                                        fontSize: 17.sp),
+                                    Headline('${tr.activeRequests}', fontSize: 17.sp),
                                     //
                                     if (!s.activePackages.isEmpty())
                                       Headline(
@@ -300,8 +304,7 @@ class _HomePageState extends State<HomePage> {
                       sliver: SliverToBoxAdapter(
                         child: WidgetVisibility(
                           duration: const Duration(milliseconds: 700),
-                          visible: !(s.isLoadingActivePackages &&
-                              s.activePackages.isEmpty()),
+                          visible: !(s.isLoadingActivePackages && s.activePackages.isEmpty()),
                           replacement: WidgetVisibility(
                             duration: const Duration(milliseconds: 800),
                             visible: s.isLoadingActivePackages,
@@ -320,31 +323,25 @@ class _HomePageState extends State<HomePage> {
                             clipBehavior: Clip.antiAlias,
                             childrenDelegate: SliverChildBuilderDelegate(
                               (_, i) => Column(
-                                key: ValueKey('active-'
-                                    '${s.activePackages.getOrNull(i)?.id.value}'),
+                                key: ValueKey('active-${s.activePackages.getOrNull(i)?.id.value}'),
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   if (s.activePackages.getOrNull(i) != null)
                                     Flexible(
                                       child: _SendPackageCard(
                                         package: s.activePackages.getOrNull(i)!,
-                                        initialExpanded: s.activePackages
-                                                .firstOrNull()
-                                                ?.id ==
-                                            s.activePackages.getOrNull(i)?.id,
+                                        initialExpanded: s.activePackages.firstOrNull()?.id == s.activePackages.getOrNull(i)?.id,
                                       ),
                                     ),
                                   //
                                   if (s.activePackages.getOrNull(i) != null)
-                                    if (i != s.activePackages.size - 1)
-                                      VerticalSpace(height: 0.03.sw)
+                                    if (i != s.activePackages.size - 1) VerticalSpace(height: 0.03.sw)
                                 ],
                               ),
                               childCount: s.activePackages.size,
                               findChildIndexCallback: (key) {
                                 final valueKey = key as ValueKey<String>;
-                                return s.activePackages.dart.indexWhere((it) =>
-                                    'active-${it.id.value}' == valueKey.value);
+                                return s.activePackages.dart.indexWhere((it) => 'active-${it.id.value}' == valueKey.value);
                               },
                             ),
                           ),
@@ -364,16 +361,12 @@ class _HomePageState extends State<HomePage> {
                     //     ),
                     //   ),
                     // ),
-                    if ((!s.isLoadingActivePackages &&
-                            !s.isLoadingTransitPackages &&
-                            !s.isLoadingTransitPackages) &&
-                        (s.activePackages.isEmpty() &&
-                            s.potentialPackages.isEmpty() &&
-                            s.potentialPackages.isEmpty()))
+                    if ((!s.isLoadingActivePackages && !s.isLoadingTransitPackages && !s.isLoadingTransitPackages) &&
+                        (s.activePackages.isEmpty() && s.potentialPackages.isEmpty()))
                       SliverToBoxAdapter(
                         child: StageOwnerWidget(
                           asset: right(AppAssets.noRequest),
-                          height: 0.7.h,
+                          height: 0.6.h,
                           useScaffold: false,
                           title: 'No Request Yet',
                           description: 'Please check back later.',

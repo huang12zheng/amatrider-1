@@ -2,12 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:amatrider/core/data/index.dart';
-import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/native_imp.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:flutter/services.dart';
 
 /// A callback that returns a Dio response, presumably from a Dio method
 /// it has called which performs an HTTP request, such as `dio.get()`,
@@ -17,8 +14,7 @@ typedef HttpLibraryMethod<T> = Future<Response<T>> Function();
 /// Function which takes a Dio response object and an exception and returns
 /// an optional [AppHttpClientException], optionally mapping the response
 /// to a custom exception.
-typedef ResponseExceptionMapper
-    = AppNetworkResponseException<DioError, dynamic>? Function<T>(Response<T>);
+typedef ResponseExceptionMapper = AppNetworkResponseException<DioError, dynamic>? Function<T>(Response<T>);
 
 /// A Http client which inmplements Dio.
 ///
@@ -219,8 +215,7 @@ class AppHttpClient extends DioForNative {
     );
   }
 
-  AppHttpClient copyWith(ResponseExceptionMapper? mapper) =>
-      AppHttpClient(client: _client, mapper: mapper);
+  AppHttpClient copyWith(ResponseExceptionMapper? mapper) => AppHttpClient(client: _client, mapper: mapper);
 
   Future<Response<T>> _map<T>(HttpLibraryMethod<T> method) async {
     return _mapResponse(method);
@@ -262,6 +257,7 @@ class AppHttpClient extends DioForNative {
           // For DioErrorType.response, we are guaranteed to have a
           // response object present on the exception.
           final response = e.response;
+          // ignore: unnecessary_type_check
           if (response == null || response is! Response) {
             // This should never happen, judging by the current source code
             // for Dio.
@@ -293,11 +289,9 @@ class AppHttpClient extends DioForNative {
 
       metric = _mapMetric(metric, _response);
 
-      if (_response.statusCode != null)
-        metric.httpResponseCode = _response.statusCode;
+      if (_response.statusCode != null) metric.httpResponseCode = _response.statusCode;
 
-      await metric.putAttribute(
-          'dio_response_data', jsonEncode('${_response.data}'));
+      metric.putAttribute('dio_response_data', jsonEncode('${_response.data}'));
 
       return _response;
     } on DioError catch (e) {
@@ -321,14 +315,12 @@ class AppHttpClient extends DioForNative {
           // response object present on the exception.
           final response = e.response;
 
-          if (e.response?.statusCode != null)
-            metric.httpResponseCode = response?.statusCode;
-          await metric.putAttribute(
-              'dio_response_data', jsonEncode('${e.response?.data}'));
-          await metric.putAttribute('dio_error', jsonEncode('$e'));
-          await metric.putAttribute('dio_failure_reason',
-              jsonEncode('${AppNetworkExceptionReason.responseError}'));
+          if (e.response?.statusCode != null) metric.httpResponseCode = response?.statusCode;
+          metric.putAttribute('dio_response_data', jsonEncode('${e.response?.data}'));
+          metric.putAttribute('dio_error', jsonEncode('$e'));
+          metric.putAttribute('dio_failure_reason', jsonEncode('${AppNetworkExceptionReason.responseError}'));
 
+          // ignore: unnecessary_type_check
           if (response == null || response is! Response) {
             // This should never happen, judging by the current source code
             // for Dio.
@@ -354,33 +346,26 @@ class AppHttpClient extends DioForNative {
   }
 
   HttpMetric _mapMetric<T>(HttpMetric instance, Response<T>? response) {
-    if (response != null &&
-        response.requestOptions.headers
-            .containsKey(Headers.contentLengthHeader)) {
+    if (response != null && response.requestOptions.headers.containsKey(Headers.contentLengthHeader)) {
       // log.w('Request payload size ==> '
       //     '${response.requestOptions.headers[Headers.contentLengthHeader]}');
 
-      instance.requestPayloadSize = int.tryParse(
-          '${response.requestOptions.headers[Headers.contentLengthHeader]}');
+      instance.requestPayloadSize = int.tryParse('${response.requestOptions.headers[Headers.contentLengthHeader]}');
     }
 
     // log.wtf('RESPONSE HEADERS ==> ${response?.headers}');
 
-    if (response != null &&
-        response.headers.value(Headers.contentLengthHeader) != null) {
+    if (response != null && response.headers.value(Headers.contentLengthHeader) != null) {
       // log.wtf('RESPONSE payload size ==> ${response.headers}');
 
-      instance.responsePayloadSize = int.tryParse(
-          '${response.headers.value(Headers.contentLengthHeader)}');
+      instance.responsePayloadSize = int.tryParse('${response.headers.value(Headers.contentLengthHeader)}');
     }
 
-    if (response != null &&
-        response.headers.value(Headers.contentTypeHeader) != null) {
+    if (response != null && response.headers.value(Headers.contentTypeHeader) != null) {
       // log.i('RESPONSE Content Type ==> '
       //     '${response.headers.value(Headers.contentTypeHeader)}');
 
-      instance.responseContentType =
-          response.headers.value(Headers.contentTypeHeader);
+      instance.responseContentType = response.headers.value(Headers.contentTypeHeader);
     }
 
     return instance;

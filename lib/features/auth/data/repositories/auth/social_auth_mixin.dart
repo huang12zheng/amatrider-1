@@ -17,8 +17,7 @@ mixin SocialAuthMixin on AuthFacade {
   GoogleSignIn get googleSignIn;
 
   @override
-  Future<Option<AppHttpResponse?>> googleAuthentication(
-      [bool notify = false]) async {
+  Future<Option<AppHttpResponse?>> googleAuthentication([bool notify = false]) async {
     // First we'll check for stable Internet connection
     final _conn = await checkInternetConnectivity();
 
@@ -27,8 +26,7 @@ mixin SocialAuthMixin on AuthFacade {
       (_) async {
         try {
           // Clear cached / authenticated user but do not notify UI
-          if (await googleSignIn.isSignedIn())
-            await signOut(notify, email: false, apple: false);
+          if (await googleSignIn.isSignedIn()) await signOut(notify, email: false, apple: false);
 
           // Attempt authenticating user with google credentials
           var account = await googleSignIn.signIn();
@@ -39,8 +37,7 @@ mixin SocialAuthMixin on AuthFacade {
           final authentication = await account.authentication;
 
           // Fetch AuthCredentials
-          final response =
-              await remote.signInWithGoogle(authentication.accessToken);
+          final response = await remote.signInWithGoogle(authentication.accessToken);
 
           // cache access token
           await local.cacheRiderAccessToken(response.data);
@@ -87,11 +84,10 @@ mixin SocialAuthMixin on AuthFacade {
   }
 
   @override
-  Future<Option<AppHttpResponse?>> appleAuthentication(
-      [bool notify = false]) async {
+  Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]) async {
     try {
       return some(AppHttpResponse(AnyResponse.fromFailure(
-        FailureResponse.unImplemented('Signin with Apple not implemented!'),
+        FailureResponse.unImplemented('Coming soon!'),
       )));
     } on AppHttpResponse catch (e) {
       log.e(e);

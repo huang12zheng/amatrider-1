@@ -34,16 +34,13 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                   child: Material(
                     color: Colors.white,
                     elevation: 0,
-                    borderRadius:
-                        BorderRadius.circular(Utils.inputBorderRadius),
-                    child: InkWell(
+                    borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                    child: AdaptiveInkWell(
                       onTap: navigator.pop,
-                      borderRadius:
-                          BorderRadius.circular(Utils.inputBorderRadius),
+                      borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                       child: const Padding(
                         padding: EdgeInsets.all(7.0),
-                        child: Icon(Icons.keyboard_backspace_rounded,
-                            color: Colors.black87),
+                        child: Icon(Icons.keyboard_backspace_rounded, color: Colors.black87),
                       ),
                     ),
                   ),
@@ -57,14 +54,12 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                       borderRadius: BorderRadius.circular(6.0),
                       child: Material(
                         color: Colors.white,
-                        child: InkWell(
+                        child: AdaptiveInkWell(
                           onTap: () {},
                           child: Padding(
                             padding: const EdgeInsets.all(7.0),
                             child: Icon(
-                              Theme.of(context).platform.fold(
-                                  material: () => Icons.print,
-                                  cupertino: () => CupertinoIcons.printer_fill),
+                              Theme.of(context).platform.fold(material: () => Icons.print, cupertino: () => CupertinoIcons.printer_fill),
                               color: Colors.black87,
                             ),
                           ),
@@ -77,8 +72,7 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
               flexibleSpace: Stack(
                 children: [
                   FlexibleSpaceBar(
-                    titlePadding:
-                        const EdgeInsetsDirectional.only(start: 72, bottom: 10),
+                    titlePadding: const EdgeInsetsDirectional.only(start: 72, bottom: 10),
                     stretchModes: [
                       StretchMode.zoomBackground,
                       StretchMode.blurBackground,
@@ -134,12 +128,15 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 0.03.sw),
-                    child: TextFormInputLabel(
-                      text: 'Which Data Do We Process?',
-                      fontSize: 17.5.sp,
-                      textColor: Palette.neutralLabel,
-                      textColorDark: Palette.neutralLabelDark,
-                      fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormInputLabel(
+                        text: 'Which Data Do We Process?',
+                        fontSize: 17.5.sp,
+                        textColor: Palette.neutralLabel,
+                        textColorDark: Palette.neutralLabelDark,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -159,8 +156,7 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
-                          text:
-                              'name, surname, phone, address, workplace information, e-mail address',
+                          text: 'name, surname, phone, address, workplace information, e-mail address',
                         ),
                         //
                         TextSpan(
@@ -187,8 +183,7 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
-                          text:
-                              'log in credential information, password information',
+                          text: 'log in credential information, password information',
                         ),
                         //
                         TextSpan(
@@ -196,12 +191,10 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
-                            text:
-                                'reports and evaluations showing your habits and tastes, targeting information, cookie records, etc'),
+                            text: 'reports and evaluations showing your habits and tastes, targeting information, cookie records, etc'),
                         //
                         TextSpan(
-                          text:
-                              '\n\nRequest / Complaint Management Information: ',
+                          text: '\n\nRequest / Complaint Management Information: ',
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
@@ -229,12 +222,15 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 0.03.sw),
-                    child: TextFormInputLabel(
-                      text: 'What is the Purpose of Use of Your Data?',
-                      fontSize: 17.5.sp,
-                      textColor: Palette.neutralLabel,
-                      textColorDark: Palette.neutralLabelDark,
-                      fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormInputLabel(
+                        text: 'What is the Purpose of Use of Your Data?',
+                        fontSize: 17.5.sp,
+                        textColor: Palette.neutralLabel,
+                        textColorDark: Palette.neutralLabelDark,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -264,12 +260,15 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 0.03.sw),
-                    child: TextFormInputLabel(
-                      text: 'Who Can Access Your Data?',
-                      fontSize: 17.5.sp,
-                      textColor: Palette.neutralLabel,
-                      textColorDark: Palette.neutralLabelDark,
-                      fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormInputLabel(
+                        text: 'Who Can Access Your Data?',
+                        fontSize: 17.5.sp,
+                        textColor: Palette.neutralLabel,
+                        textColorDark: Palette.neutralLabelDark,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -294,12 +293,15 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 0.03.sw),
-                    child: TextFormInputLabel(
-                      text: 'How Long Do We Keep Your Data?',
-                      fontSize: 17.5.sp,
-                      textColor: Palette.neutralLabel,
-                      textColorDark: Palette.neutralLabelDark,
-                      fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormInputLabel(
+                        text: 'How Long Do We Keep Your Data?',
+                        fontSize: 17.5.sp,
+                        textColor: Palette.neutralLabel,
+                        textColorDark: Palette.neutralLabelDark,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -320,12 +322,15 @@ class PrivacyPolicyScreen extends StatelessWidget with AutoRouteWrapper {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 0.03.sw),
-                    child: TextFormInputLabel(
-                      text: 'How Do We Ensure the Security of Your Data?',
-                      fontSize: 17.5.sp,
-                      textColor: Palette.neutralLabel,
-                      textColorDark: Palette.neutralLabelDark,
-                      fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextFormInputLabel(
+                        text: 'How Do We Ensure the Security of Your Data?',
+                        fontSize: 17.5.sp,
+                        textColor: Palette.neutralLabel,
+                        textColorDark: Palette.neutralLabelDark,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),

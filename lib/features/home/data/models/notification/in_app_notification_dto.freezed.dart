@@ -213,16 +213,19 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InAppNotificationDTO &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.meta, meta) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, type,
-      const DeepCollectionEquality().hash(meta), createdAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(meta),
+      const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override

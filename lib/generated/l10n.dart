@@ -331,7 +331,7 @@ class S {
   }
 
   /// `Hello {name}!`
-  String greeting(Object name) {
+  String greeting(String name) {
     return Intl.message(
       'Hello $name!',
       name: 'greeting',
@@ -401,7 +401,7 @@ class S {
   }
 
   /// `Bonus of {amount} would be deposited into your account.`
-  String insightBonusAlertContent(Object amount) {
+  String insightBonusAlertContent(String amount) {
     return Intl.message(
       'Bonus of $amount would be deposited into your account.',
       name: 'insightBonusAlertContent',

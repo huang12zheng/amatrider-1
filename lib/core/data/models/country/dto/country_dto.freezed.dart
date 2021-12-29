@@ -206,16 +206,21 @@ class _$_CountryDTO extends _CountryDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CountryDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.iso2, iso2) || other.iso2 == iso2) &&
-            (identical(other.iso3, iso3) || other.iso3 == iso3) &&
-            (identical(other.dialCode, dialCode) ||
-                other.dialCode == dialCode));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.iso2, iso2) &&
+            const DeepCollectionEquality().equals(other.iso3, iso3) &&
+            const DeepCollectionEquality().equals(other.dialCode, dialCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, iso2, iso3, dialCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(iso2),
+      const DeepCollectionEquality().hash(iso3),
+      const DeepCollectionEquality().hash(dialCode));
 
   @JsonKey(ignore: true)
   @override

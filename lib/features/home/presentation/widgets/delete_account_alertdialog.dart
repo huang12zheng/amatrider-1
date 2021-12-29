@@ -15,8 +15,7 @@ class DeleteAccountAlertdialog extends StatelessWidget {
 
   double get _width => 0.75.sw;
 
-  String get _content =>
-      'If you’d like to reduce email notifications, you can disable them instead.';
+  String get _content => 'If you’d like to reduce email notifications, you can disable them instead.';
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,7 @@ class DeleteAccountAlertdialog extends StatelessWidget {
             success: (s) => PopupDialog.success(
               duration: const Duration(seconds: 3),
               listener: (status) => status?.fold(
-                dismissed: () => navigator.pushAndPopUntil(
-                    const GetStartedRoute(),
-                    predicate: (_) => false),
+                dismissed: () => navigator.pushAndPopUntil(const GetStartedRoute(), predicate: (_) => false),
               ),
               message: s.message,
             ).render(c),
@@ -71,17 +68,23 @@ class DeleteAccountAlertdialog extends StatelessWidget {
             cupertino: (_, __) => CupertinoAlertDialogData(
               scrollController: ScrollController(),
               actions: [
-                CupertinoDialogAction(
-                  isDefaultAction: false,
-                  isDestructiveAction: true,
-                  onPressed: () {},
-                  child: const Text('Delete Account'),
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (c, s) => WidgetVisibility(
+                    visible: !s.isLoading,
+                    replacement: Center(child: App.loadingSpinningLines),
+                    child: CupertinoDialogAction(
+                      isDefaultAction: false,
+                      isDestructiveAction: true,
+                      onPressed: c.read<AuthCubit>().deleteAccount,
+                      child: const Text('Delete Account'),
+                    ),
+                  ),
                 ),
                 //
                 CupertinoDialogAction(
                   isDefaultAction: true,
                   isDestructiveAction: false,
-                  onPressed: () {},
+                  onPressed: navigator.pop,
                   child: const Text('Cancel'),
                 ),
               ],
@@ -108,8 +111,7 @@ class DeleteAccountAlertdialog extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
-                          color: App.resolveColor(Palette.text100,
-                              dark: Palette.text100Dark),
+                          color: App.resolveColor(Palette.text100, dark: Palette.text100Dark),
                         ),
                       ),
                     ),

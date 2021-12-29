@@ -79,7 +79,14 @@
   "insightBonusAlertConfirmBtn": "Claim Bonus",
   "@insightBonusAlertConfirmBtn": {},
   "insightBonusAlertContent": "Bonus of {amount} would be deposited into your account.",
-  "@insightBonusAlertContent": {},
+  "@insightBonusAlertContent": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "description": "Bonus amount"
+      }
+    }
+  },
   "insightCashAtHand": "Total Cash at Hand",
   "@insightCashAtHand": {},
   "insightClaimBonus": "Claim Bonus",

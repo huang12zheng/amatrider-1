@@ -146,10 +146,10 @@ class _$_PlaceOpeningHours
 
   @override
   final bool? openNow;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<PlaceOpeningPeriod> periods;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<BasicTextField<String?>?> weekdayText;
 
@@ -173,14 +173,18 @@ class _$_PlaceOpeningHours
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlaceOpeningHours &&
-            (identical(other.openNow, openNow) || other.openNow == openNow) &&
-            (identical(other.periods, periods) || other.periods == periods) &&
-            (identical(other.weekdayText, weekdayText) ||
-                other.weekdayText == weekdayText));
+            const DeepCollectionEquality().equals(other.openNow, openNow) &&
+            const DeepCollectionEquality().equals(other.periods, periods) &&
+            const DeepCollectionEquality()
+                .equals(other.weekdayText, weekdayText));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, openNow, periods, weekdayText);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(openNow),
+      const DeepCollectionEquality().hash(periods),
+      const DeepCollectionEquality().hash(weekdayText));
 
   @JsonKey(ignore: true)
   @override
@@ -366,12 +370,15 @@ class _$_PlaceOpeningPeriod
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlaceOpeningPeriod &&
-            (identical(other.close, close) || other.close == close) &&
-            (identical(other.open, open) || other.open == open));
+            const DeepCollectionEquality().equals(other.close, close) &&
+            const DeepCollectionEquality().equals(other.open, open));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, close, open);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(close),
+      const DeepCollectionEquality().hash(open));
 
   @JsonKey(ignore: true)
   @override
@@ -518,12 +525,15 @@ class _$_PlaceHours with DiagnosticableTreeMixin implements _PlaceHours {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlaceHours &&
-            (identical(other.day, day) || other.day == day) &&
-            (identical(other.time, time) || other.time == time));
+            const DeepCollectionEquality().equals(other.day, day) &&
+            const DeepCollectionEquality().equals(other.time, time));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, day, time);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(day),
+      const DeepCollectionEquality().hash(time));
 
   @JsonKey(ignore: true)
   @override

@@ -59,7 +59,7 @@ class GroupedLayoutCard extends StatelessWidget {
                     // Material(
                     //   color: App.resolveColor(Colors.transparent),
                     //   borderRadius: BorderRadius.circular(Utils.buttonRadius),
-                    //   child: InkWell(
+                    //   child: AdaptiveInkWell(
                     //     onTap: () {},
                     //     borderRadius: BorderRadius.circular(Utils.buttonRadius),
                     //     child: Padding(

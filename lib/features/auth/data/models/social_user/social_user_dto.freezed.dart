@@ -239,16 +239,21 @@ class _$_SocialUserDTO extends _SocialUserDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SocialUserDTO &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.user, user) || other.user == user));
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.code, code) &&
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, code, message, data, user);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(code),
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(user));
 
   @JsonKey(ignore: true)
   @override

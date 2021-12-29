@@ -222,24 +222,24 @@ class _$_AuthWatcherState extends _AuthWatcherState {
       this.option = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isAuthenticated;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isListeningForAuthChanges;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isListeningForUserChanges;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool subscribedToChannel;
   @override
   final Rider? rider;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<Rider?> option;
 
@@ -253,32 +253,29 @@ class _$_AuthWatcherState extends _AuthWatcherState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AuthWatcherState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isAuthenticated, isAuthenticated) ||
-                other.isAuthenticated == isAuthenticated) &&
-            (identical(other.isListeningForAuthChanges,
-                    isListeningForAuthChanges) ||
-                other.isListeningForAuthChanges == isListeningForAuthChanges) &&
-            (identical(other.isListeningForUserChanges,
-                    isListeningForUserChanges) ||
-                other.isListeningForUserChanges == isListeningForUserChanges) &&
-            (identical(other.subscribedToChannel, subscribedToChannel) ||
-                other.subscribedToChannel == subscribedToChannel) &&
-            (identical(other.rider, rider) || other.rider == rider) &&
-            (identical(other.option, option) || other.option == option));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isAuthenticated, isAuthenticated) &&
+            const DeepCollectionEquality().equals(
+                other.isListeningForAuthChanges, isListeningForAuthChanges) &&
+            const DeepCollectionEquality().equals(
+                other.isListeningForUserChanges, isListeningForUserChanges) &&
+            const DeepCollectionEquality()
+                .equals(other.subscribedToChannel, subscribedToChannel) &&
+            const DeepCollectionEquality().equals(other.rider, rider) &&
+            const DeepCollectionEquality().equals(other.option, option));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLoading,
-      isAuthenticated,
-      isListeningForAuthChanges,
-      isListeningForUserChanges,
-      subscribedToChannel,
-      rider,
-      option);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isAuthenticated),
+      const DeepCollectionEquality().hash(isListeningForAuthChanges),
+      const DeepCollectionEquality().hash(isListeningForUserChanges),
+      const DeepCollectionEquality().hash(subscribedToChannel),
+      const DeepCollectionEquality().hash(rider),
+      const DeepCollectionEquality().hash(option));
 
   @JsonKey(ignore: true)
   @override

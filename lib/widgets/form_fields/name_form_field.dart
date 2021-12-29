@@ -2,13 +2,11 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A stateless widget to render Form Fields for Name.
 // ignore: must_be_immutable
-class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
-    extends StatelessWidget {
+class NameFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> extends StatelessWidget {
   late ReactiveState _state;
 
   final String? prefix;
@@ -17,6 +15,7 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
   final String? Function(ReactiveState)? initial;
   final FieldObject<String?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
+  final void Function(ReactiveState)? onEditingComplete;
   final FocusNode? focus;
   final FocusNode? next;
   final String? heroTag;
@@ -38,6 +37,7 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
     this.cupertinoFormType,
     this.materialPadding,
     this.cupertinoPadding,
+    this.onEditingComplete,
   }) : super(key: key);
 
   ReactiveState get state => _state;
@@ -61,10 +61,8 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
           autoFillHints: [
             AutofillHints.name,
             AutofillHints.givenName,
-            AutofillHints.nickname,
             AutofillHints.familyName,
             AutofillHints.middleName,
-            AutofillHints.newUsername,
           ],
           focus: focus,
           next: next,
@@ -74,11 +72,10 @@ class NameFormField<Reactive extends Cubit<ReactiveState>, ReactiveState>
                 (f) => f.message,
                 (_) => null,
               ),
+          onEditingComplete: () => onEditingComplete?.call(s),
         );
 
-        return heroTag != null && !heroTag.isBlank
-            ? Hero(tag: heroTag!, child: _input)
-            : _input;
+        return heroTag != null && !heroTag.isBlank ? Hero(tag: heroTag!, child: _input) : _input;
       },
     );
   }

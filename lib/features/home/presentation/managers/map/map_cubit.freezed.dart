@@ -359,31 +359,31 @@ class _$_MapState implements _MapState {
       this.validate = false,
       this.status = const None()});
 
-  @JsonKey(defaultValue: double.maxFinite)
+  @JsonKey()
   @override
   final double maxZoom;
-  @JsonKey(defaultValue: MapState.minZoomLevel)
+  @JsonKey()
   @override
   final double minZoom;
-  @JsonKey(defaultValue: MapState.defaultZoomLevel)
+  @JsonKey()
   @override
   final double currentZoom;
-  @JsonKey(defaultValue: MapType.normal)
+  @JsonKey()
   @override
   final MapType mapType;
-  @JsonKey(defaultValue: MapState.mapTilt)
+  @JsonKey()
   @override
   final double tilt;
-  @JsonKey(defaultValue: MapState.mapBearing)
+  @JsonKey()
   @override
   final double bearing;
-  @JsonKey(defaultValue: MapState.istanbul)
+  @JsonKey()
   @override
   final LatLng cameraTarget;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool trafficEnabled;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool buildingsEnabled;
   @override
@@ -396,13 +396,13 @@ class _$_MapState implements _MapState {
   final Set<Circle> circles;
   @override
   final Set<Polyline> polylines;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override //
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -416,53 +416,51 @@ class _$_MapState implements _MapState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _MapState &&
-            (identical(other.maxZoom, maxZoom) || other.maxZoom == maxZoom) &&
-            (identical(other.minZoom, minZoom) || other.minZoom == minZoom) &&
-            (identical(other.currentZoom, currentZoom) ||
-                other.currentZoom == currentZoom) &&
-            (identical(other.mapType, mapType) || other.mapType == mapType) &&
-            (identical(other.tilt, tilt) || other.tilt == tilt) &&
-            (identical(other.bearing, bearing) || other.bearing == bearing) &&
-            (identical(other.cameraTarget, cameraTarget) ||
-                other.cameraTarget == cameraTarget) &&
-            (identical(other.trafficEnabled, trafficEnabled) ||
-                other.trafficEnabled == trafficEnabled) &&
-            (identical(other.buildingsEnabled, buildingsEnabled) ||
-                other.buildingsEnabled == buildingsEnabled) &&
-            (identical(other.initialPosition, initialPosition) ||
-                other.initialPosition == initialPosition) &&
-            (identical(other.mapController, mapController) ||
-                other.mapController == mapController) &&
+            const DeepCollectionEquality().equals(other.maxZoom, maxZoom) &&
+            const DeepCollectionEquality().equals(other.minZoom, minZoom) &&
+            const DeepCollectionEquality()
+                .equals(other.currentZoom, currentZoom) &&
+            const DeepCollectionEquality().equals(other.mapType, mapType) &&
+            const DeepCollectionEquality().equals(other.tilt, tilt) &&
+            const DeepCollectionEquality().equals(other.bearing, bearing) &&
+            const DeepCollectionEquality()
+                .equals(other.cameraTarget, cameraTarget) &&
+            const DeepCollectionEquality()
+                .equals(other.trafficEnabled, trafficEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.buildingsEnabled, buildingsEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.initialPosition, initialPosition) &&
+            const DeepCollectionEquality()
+                .equals(other.mapController, mapController) &&
             const DeepCollectionEquality().equals(other.markers, markers) &&
             const DeepCollectionEquality().equals(other.circles, circles) &&
             const DeepCollectionEquality().equals(other.polylines, polylines) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      maxZoom,
-      minZoom,
-      currentZoom,
-      mapType,
-      tilt,
-      bearing,
-      cameraTarget,
-      trafficEnabled,
-      buildingsEnabled,
-      initialPosition,
-      mapController,
+      const DeepCollectionEquality().hash(maxZoom),
+      const DeepCollectionEquality().hash(minZoom),
+      const DeepCollectionEquality().hash(currentZoom),
+      const DeepCollectionEquality().hash(mapType),
+      const DeepCollectionEquality().hash(tilt),
+      const DeepCollectionEquality().hash(bearing),
+      const DeepCollectionEquality().hash(cameraTarget),
+      const DeepCollectionEquality().hash(trafficEnabled),
+      const DeepCollectionEquality().hash(buildingsEnabled),
+      const DeepCollectionEquality().hash(initialPosition),
+      const DeepCollectionEquality().hash(mapController),
       const DeepCollectionEquality().hash(markers),
       const DeepCollectionEquality().hash(circles),
       const DeepCollectionEquality().hash(polylines),
-      isLoading,
-      validate,
-      status);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

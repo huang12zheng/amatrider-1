@@ -1,7 +1,6 @@
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 /// A stateless widget to render AppButton.
 class AppButton extends StatelessWidget {
@@ -55,13 +54,12 @@ class AppButton extends StatelessWidget {
       disabled: disabled,
       padding: App.platform.cupertino(EdgeInsets.zero),
       textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
-      backgroundColor: backgroundColor ??
-          App.resolveColor(Palette.accentColor, dark: Colors.transparent),
+      backgroundColor: backgroundColor ?? App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
       splashColor: App.resolveColor(Colors.white24, dark: Colors.grey.shade800),
-      side: Utils.foldTheme(
-        light: () => null,
-        dark: () => BorderSide(color: App.resolveColor(Colors.white70)!),
-      ),
+      // side: Utils.foldTheme(
+      //   light: () => null,
+      //   dark: () => BorderSide(color: App.resolveColor(Colors.white70)!),
+      // ),
       onPressed: onPressed,
       child: child,
     );

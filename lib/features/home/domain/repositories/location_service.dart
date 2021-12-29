@@ -15,16 +15,16 @@ enum PositionAccuracy { balanced, high, low, navigation, powerSave, reduced }
 class LocationService {
   final Location _location = Location();
 
-  Future<bool> get isServiceEnabled =>
-      Permission.locationAlways.serviceStatus.isEnabled;
+  Future<bool> get isServiceEnabled => Permission.locationAlways.serviceStatus.isEnabled;
 
-  Future<bool> get hasPermission => Permission.locationAlways.isGranted;
+  Future<bool> get hasPermission => Permission.locationWhenInUse.isGranted;
+
+  Future<bool> get hasAlwaysPermission => Permission.locationAlways.isGranted;
 
   Future<bool> get backgroundEnabled => _location.isBackgroundModeEnabled();
 
   Future<bool> requestService() async {
-    var _serviceEnabled =
-        await Permission.locationAlways.serviceStatus.isEnabled;
+    var _serviceEnabled = await Permission.locationAlways.serviceStatus.isEnabled;
 
     if (!_serviceEnabled) {
       await _location.requestService();
@@ -99,19 +99,29 @@ class LocationService {
     void Function(RiderLocation)? onData,
   }) async {
     try {
-      final _result = await Utils.platform_(
-        material: _location.getLocation(),
-        cupertino: null,
+      final _result = await env.flavor.fold(
+        prod: () => _location.getLocation(),
+        dev: () async => await Utils.platform_(
+          material: _location.getLocation(),
+          cupertino: null,
+        ),
       );
 
-      final location = Utils.platform_(
-        material: RiderLocation.fromLocation(_result!),
-        cupertino: RiderLocation(
-          lat: BasicTextField(41.038284),
-          lng: BasicTextField(28.970329),
-          address: BasicTextField('Istanbul, Turkey'),
-        ),
-      )!;
+      final location = env.flavor.fold(
+        dev: () {
+          final dummyLocation = RiderLocation(
+            lat: BasicTextField(41.038284),
+            lng: BasicTextField(28.970329),
+            address: BasicTextField('Istanbul, Turkey'),
+          );
+
+          return Utils.platform_(
+            material: _result == null ? dummyLocation : RiderLocation.fromLocation(_result),
+            cupertino: dummyLocation,
+          )!;
+        },
+        prod: () => RiderLocation.fromLocation(_result!),
+      );
 
       onData?.call(location);
 
@@ -124,8 +134,7 @@ class LocationService {
   Stream<Either<AnyResponse, RiderLocation?>> liveLocation() async* {
     yield* _location.onLocationChanged
         .transform(
-          StreamTransformer<LocationData,
-              Either<AnyResponse, RiderLocation?>>.fromHandlers(
+          StreamTransformer<LocationData, Either<AnyResponse, RiderLocation?>>.fromHandlers(
             handleData: (data, event) => event.add(
               right(RiderLocation.fromLocation(data)),
             ),

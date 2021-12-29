@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/utils/extensions/button_type_extension.dart';
 
 class AdaptiveButton extends StatelessWidget {
   final String? text;
@@ -105,16 +105,11 @@ class AdaptiveButton extends StatelessWidget {
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
-        cupertinoHeight = cupertinoHeight ?? 0.065.sh,
-        type = disabled && (Platform.isIOS || Platform.isMacOS)
-            ? ButtonType.elevated
-            : ButtonType.flat,
+        cupertinoHeight = cupertinoHeight ?? 0.06.h,
+        type = disabled && (Platform.isIOS || Platform.isMacOS) ? ButtonType.elevated : ButtonType.flat,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
-        borderRadius =
-            borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
-        disabledColor = disabled
-            ? CupertinoColors.inactiveGray
-            : CupertinoColors.quaternarySystemFill,
+        borderRadius = borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
+        disabledColor = disabled ? CupertinoColors.inactiveGray : CupertinoColors.quaternarySystemFill,
         backgroundColor = backgroundColor ??
             Utils.platform_(
               material: Palette.accentColor,
@@ -172,14 +167,11 @@ class AdaptiveButton extends StatelessWidget {
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
-        cupertinoHeight = cupertinoHeight ?? 0.065.sh,
+        cupertinoHeight = cupertinoHeight ?? 0.06.h,
         type = ButtonType.elevated,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
-        borderRadius =
-            borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
-        disabledColor = disabled
-            ? CupertinoColors.inactiveGray
-            : CupertinoColors.quaternarySystemFill,
+        borderRadius = borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
+        disabledColor = disabled ? CupertinoColors.inactiveGray : CupertinoColors.quaternarySystemFill,
         backgroundColor = backgroundColor ??
             Utils.platform_(
               material: Palette.accentColor,
@@ -259,8 +251,7 @@ class AdaptiveButton extends StatelessWidget {
                 side: side,
                 splashFactory: CustomSplashFactory(splashColor: splashColor),
                 padding: padding,
-                shape:
-                    shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
+                shape: shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
                 tapTargetSize: tapTargetSize,
                 textStyle: textStyle,
               ),
@@ -283,8 +274,7 @@ class AdaptiveButton extends StatelessWidget {
               elevation: elevation,
               padding: padding,
               splashFactory: CustomSplashFactory(splashColor: splashColor),
-              shape:
-                  shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
+              shape: shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
               tapTargetSize: tapTargetSize,
               textStyle: textStyle,
             ),
@@ -335,10 +325,9 @@ class AdaptiveButton extends StatelessWidget {
                 flex: 4,
                 child: Padding(
                   padding: childPadding ?? EdgeInsets.zero,
-                  child: Visibility(
+                  child: WidgetVisibility(
                     visible: leading != null || trailing != null,
-                    replacement:
-                        Align(alignment: Alignment.center, child: _text),
+                    replacement: Align(alignment: Alignment.center, child: _text),
                     child: _text,
                   ),
                 ),

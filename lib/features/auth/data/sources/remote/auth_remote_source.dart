@@ -125,7 +125,7 @@ class AuthRemoteDatasource {
       confirmation: confirmation,
     ).toJson();
     // Perform PUT request to update user's profile
-    return _dio.patch(EndPoints.UPDATE_PASSWORD, data: data);
+    return _dio.post(EndPoints.UPDATE_PASSWORD, data: data);
   }
 
   Future<Response<dynamic>> signInWithGoogle(String? token) async {
@@ -191,7 +191,7 @@ class AuthRemoteDatasource {
     StackTrace? trace,
   ]) async {
     // If callback is not-null, call the method
-    await callback?.call();
+    callback?.call();
 
     switch (e.reason) {
       case AppNetworkExceptionReason.timedOut:

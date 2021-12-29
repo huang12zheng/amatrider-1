@@ -194,22 +194,22 @@ class _$_NotificationState extends _NotificationState
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool subscribed;
-  @JsonKey(defaultValue: const KtMap.empty())
+  @JsonKey()
   @override
   final KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<InAppNotification> inAppNotifications;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -237,24 +237,27 @@ class _$_NotificationState extends _NotificationState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NotificationState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.subscribed, subscribed) ||
-                other.subscribed == subscribed) &&
-            (identical(other.inAppNotificationCollection,
-                    inAppNotificationCollection) ||
-                other.inAppNotificationCollection ==
-                    inAppNotificationCollection) &&
-            (identical(other.inAppNotifications, inAppNotifications) ||
-                other.inAppNotifications == inAppNotifications) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality()
+                .equals(other.subscribed, subscribed) &&
+            const DeepCollectionEquality().equals(
+                other.inAppNotificationCollection,
+                inAppNotificationCollection) &&
+            const DeepCollectionEquality()
+                .equals(other.inAppNotifications, inAppNotifications) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, validate, subscribed,
-      inAppNotificationCollection, inAppNotifications, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(subscribed),
+      const DeepCollectionEquality().hash(inAppNotificationCollection),
+      const DeepCollectionEquality().hash(inAppNotifications),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

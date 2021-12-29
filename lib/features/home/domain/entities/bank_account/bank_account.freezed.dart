@@ -303,40 +303,36 @@ class _$_BankAccount extends _BankAccount {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _BankAccount &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.bank, bank) || other.bank == bank) &&
-            (identical(other.accountName, accountName) ||
-                other.accountName == accountName) &&
-            (identical(other.accountNumber, accountNumber) ||
-                other.accountNumber == accountNumber) &&
-            (identical(other.sortCode, sortCode) ||
-                other.sortCode == sortCode) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.transferNote, transferNote) ||
-                other.transferNote == transferNote) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.bank, bank) &&
+            const DeepCollectionEquality()
+                .equals(other.accountName, accountName) &&
+            const DeepCollectionEquality()
+                .equals(other.accountNumber, accountNumber) &&
+            const DeepCollectionEquality().equals(other.sortCode, sortCode) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.transferNote, transferNote) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
-      riderId,
-      bank,
-      accountName,
-      accountNumber,
-      sortCode,
-      reference,
-      amount,
-      transferNote,
-      createdAt,
-      updatedAt);
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(riderId),
+      const DeepCollectionEquality().hash(bank),
+      const DeepCollectionEquality().hash(accountName),
+      const DeepCollectionEquality().hash(accountNumber),
+      const DeepCollectionEquality().hash(sortCode),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(transferNote),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override

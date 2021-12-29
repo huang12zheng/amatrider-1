@@ -198,10 +198,10 @@ class _$_NoInternetConnectivity extends _NoInternetConnectivity {
       {this.message = NetworkFailure._OFFLINE_MSG, this.show = true})
       : super._();
 
-  @JsonKey(defaultValue: NetworkFailure._OFFLINE_MSG)
+  @JsonKey()
   @override
   final String message;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool show;
 
@@ -215,12 +215,15 @@ class _$_NoInternetConnectivity extends _NoInternetConnectivity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NoInternetConnectivity &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.show, show) || other.show == show));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.show, show));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, show);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(show));
 
   @JsonKey(ignore: true)
   @override
@@ -365,10 +368,10 @@ class _$_PoorInternetConnection extends _PoorInternetConnection {
       {this.message = NetworkFailure._POOR_INTERNET_MSG, this.show = true})
       : super._();
 
-  @JsonKey(defaultValue: NetworkFailure._POOR_INTERNET_MSG)
+  @JsonKey()
   @override
   final String message;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool show;
 
@@ -382,12 +385,15 @@ class _$_PoorInternetConnection extends _PoorInternetConnection {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PoorInternetConnection &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.show, show) || other.show == show));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.show, show));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, show);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(show));
 
   @JsonKey(ignore: true)
   @override
@@ -535,10 +541,10 @@ class _$_NetworkFailureReceiveTimeout extends _NetworkFailureReceiveTimeout {
       {this.message = NetworkFailure._RECEIVE_TIMEOUT_MSG, this.show = true})
       : super._();
 
-  @JsonKey(defaultValue: NetworkFailure._RECEIVE_TIMEOUT_MSG)
+  @JsonKey()
   @override
   final String message;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool show;
 
@@ -552,12 +558,15 @@ class _$_NetworkFailureReceiveTimeout extends _NetworkFailureReceiveTimeout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NetworkFailureReceiveTimeout &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.show, show) || other.show == show));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.show, show));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, show);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(show));
 
   @JsonKey(ignore: true)
   @override
@@ -702,10 +711,10 @@ class _$_NetworkFailureTimeout extends _NetworkFailureTimeout {
       {this.message = NetworkFailure._CONNECT_TIMEOUT_MSG, this.show = true})
       : super._();
 
-  @JsonKey(defaultValue: NetworkFailure._CONNECT_TIMEOUT_MSG)
+  @JsonKey()
   @override
   final String message;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool show;
 
@@ -719,12 +728,15 @@ class _$_NetworkFailureTimeout extends _NetworkFailureTimeout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NetworkFailureTimeout &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.show, show) || other.show == show));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.show, show));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message, show);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(show));
 
   @JsonKey(ignore: true)
   @override

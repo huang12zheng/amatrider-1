@@ -173,18 +173,18 @@ class _$_OnboardingState implements _OnboardingState {
       required this.controller,
       this.currentIndex = OnboardingState.kInitialPage});
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isVideoPlaying;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool playbackEnded;
   @override
   final PageController controller;
-  @JsonKey(defaultValue: OnboardingState.kInitialPage)
+  @JsonKey()
   @override
   final int currentIndex;
 
@@ -198,21 +198,25 @@ class _$_OnboardingState implements _OnboardingState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _OnboardingState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isVideoPlaying, isVideoPlaying) ||
-                other.isVideoPlaying == isVideoPlaying) &&
-            (identical(other.playbackEnded, playbackEnded) ||
-                other.playbackEnded == playbackEnded) &&
-            (identical(other.controller, controller) ||
-                other.controller == controller) &&
-            (identical(other.currentIndex, currentIndex) ||
-                other.currentIndex == currentIndex));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isVideoPlaying, isVideoPlaying) &&
+            const DeepCollectionEquality()
+                .equals(other.playbackEnded, playbackEnded) &&
+            const DeepCollectionEquality()
+                .equals(other.controller, controller) &&
+            const DeepCollectionEquality()
+                .equals(other.currentIndex, currentIndex));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isVideoPlaying,
-      playbackEnded, controller, currentIndex);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isVideoPlaying),
+      const DeepCollectionEquality().hash(playbackEnded),
+      const DeepCollectionEquality().hash(controller),
+      const DeepCollectionEquality().hash(currentIndex));
 
   @JsonKey(ignore: true)
   @override

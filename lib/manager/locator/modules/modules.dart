@@ -33,7 +33,7 @@ abstract class Modules {
   Future<FirebaseApp> get firebaseApp => Firebase.initializeApp();
 
   @lazySingleton
-  FirebaseAnalytics get firebaseAnalytics => FirebaseAnalytics()..logAppOpen();
+  FirebaseAnalytics get firebaseAnalytics => FirebaseAnalytics.instance..logAppOpen();
 
   @lazySingleton
   FirebaseCrashlytics get firebaseCrashlytics => FirebaseCrashlytics.instance;
@@ -43,16 +43,11 @@ abstract class Modules {
 
   @lazySingleton
   GoogleSignIn get googleSignIn => GoogleSignIn(
-        scopes: [
-          'https://www.googleapis.com/auth/userinfo.email',
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'https://www.googleapis.com/auth/contacts.readonly',
-        ],
+        scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
       );
 
   @preResolve
-  Future<AppDatabase> get database async =>
-      await $FloorAppDatabase.databaseBuilder(Const.database).build();
+  Future<AppDatabase> get database async => await $FloorAppDatabase.databaseBuilder(Const.database).build();
   // await $FloorAppDatabase.inMemoryDatabaseBuilder().build();
 
   @preResolve
@@ -68,8 +63,7 @@ abstract class ServiceModules {
   Connectivity get connectionStatus => Connectivity();
 
   @lazySingleton
-  InternetConnectionChecker get connectionChecker =>
-      InternetConnectionChecker();
+  InternetConnectionChecker get connectionChecker => InternetConnectionChecker();
 
   @singleton
   Dio get dio => _HttpClients._clientv2();
@@ -78,8 +72,7 @@ abstract class ServiceModules {
   AppHttpClient get httpClient => _HttpClients._clientv2();
 
   @preResolve
-  Future<PaystackPlugin> get paystackInit async =>
-      PaystackPlugin()..initialize(publicKey: env.paystackKey);
+  Future<PaystackPlugin> get paystackInit async => PaystackPlugin()..initialize(publicKey: env.paystackKey);
 }
 
 @module

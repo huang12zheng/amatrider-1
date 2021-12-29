@@ -574,10 +574,10 @@ class _$_SendPackage extends _SendPackage {
   final RiderLocation pickup;
   @override
   final RiderLocation destination;
-  @JsonKey(defaultValue: PackageSize.small)
+  @JsonKey()
   @override
   final PackageSize packageSize;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isFragile;
   @override
@@ -592,7 +592,7 @@ class _$_SendPackage extends _SendPackage {
   final BasicTextField<String?> receiverPhoneAlt;
   @override
   final BasicTextField<String?> notes;
-  @JsonKey(defaultValue: SendPackageStatus.PENDING)
+  @JsonKey()
   @override
   final SendPackageStatus status;
   @override
@@ -601,7 +601,7 @@ class _$_SendPackage extends _SendPackage {
   final UniqueId<String?> riderId;
   @override
   final RiderLocation riderLocation;
-  @JsonKey(defaultValue: Duration.zero)
+  @JsonKey()
   @override
   final Duration durationToPickup;
   @override
@@ -637,86 +637,82 @@ class _$_SendPackage extends _SendPackage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SendPackage &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.pickup, pickup) || other.pickup == pickup) &&
-            (identical(other.destination, destination) ||
-                other.destination == destination) &&
-            (identical(other.packageSize, packageSize) ||
-                other.packageSize == packageSize) &&
-            (identical(other.isFragile, isFragile) ||
-                other.isFragile == isFragile) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.receiverFullName, receiverFullName) ||
-                other.receiverFullName == receiverFullName) &&
-            (identical(other.receiverPhone, receiverPhone) ||
-                other.receiverPhone == receiverPhone) &&
-            (identical(other.receiverEmailAddress, receiverEmailAddress) ||
-                other.receiverEmailAddress == receiverEmailAddress) &&
-            (identical(other.receiverPhoneAlt, receiverPhoneAlt) ||
-                other.receiverPhoneAlt == receiverPhoneAlt) &&
-            (identical(other.notes, notes) || other.notes == notes) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.riderLocation, riderLocation) ||
-                other.riderLocation == riderLocation) &&
-            (identical(other.durationToPickup, durationToPickup) ||
-                other.durationToPickup == durationToPickup) &&
-            (identical(other.distanceToPickup, distanceToPickup) ||
-                other.distanceToPickup == distanceToPickup) &&
-            (identical(other.orderActiveAt, orderActiveAt) ||
-                other.orderActiveAt == orderActiveAt) &&
-            (identical(other.orderCancelledAt, orderCancelledAt) ||
-                other.orderCancelledAt == orderCancelledAt) &&
-            (identical(other.riderAcceptedAt, riderAcceptedAt) ||
-                other.riderAcceptedAt == riderAcceptedAt) &&
-            (identical(other.riderReceivedAt, riderReceivedAt) ||
-                other.riderReceivedAt == riderReceivedAt) &&
-            (identical(other.riderDeliveredAt, riderDeliveredAt) ||
-                other.riderDeliveredAt == riderDeliveredAt) &&
-            (identical(other.paymentDepositedAt, paymentDepositedAt) ||
-                other.paymentDepositedAt == paymentDepositedAt) &&
-            (identical(other.paymentDepositConfirmedAt,
-                    paymentDepositConfirmedAt) ||
-                other.paymentDepositConfirmedAt == paymentDepositConfirmedAt) &&
-            (identical(other.sender, sender) || other.sender == sender) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.pickup, pickup) &&
+            const DeepCollectionEquality()
+                .equals(other.destination, destination) &&
+            const DeepCollectionEquality()
+                .equals(other.packageSize, packageSize) &&
+            const DeepCollectionEquality().equals(other.isFragile, isFragile) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverFullName, receiverFullName) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhone, receiverPhone) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverEmailAddress, receiverEmailAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhoneAlt, receiverPhoneAlt) &&
+            const DeepCollectionEquality().equals(other.notes, notes) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentMethod, paymentMethod) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality()
+                .equals(other.riderLocation, riderLocation) &&
+            const DeepCollectionEquality()
+                .equals(other.durationToPickup, durationToPickup) &&
+            const DeepCollectionEquality()
+                .equals(other.distanceToPickup, distanceToPickup) &&
+            const DeepCollectionEquality()
+                .equals(other.orderActiveAt, orderActiveAt) &&
+            const DeepCollectionEquality()
+                .equals(other.orderCancelledAt, orderCancelledAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderAcceptedAt, riderAcceptedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderReceivedAt, riderReceivedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderDeliveredAt, riderDeliveredAt) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentDepositedAt, paymentDepositedAt) &&
+            const DeepCollectionEquality().equals(
+                other.paymentDepositConfirmedAt, paymentDepositConfirmedAt) &&
+            const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        id,
-        pickup,
-        destination,
-        packageSize,
-        isFragile,
-        amount,
-        receiverFullName,
-        receiverPhone,
-        receiverEmailAddress,
-        receiverPhoneAlt,
-        notes,
-        status,
-        paymentMethod,
-        riderId,
-        riderLocation,
-        durationToPickup,
-        distanceToPickup,
-        orderActiveAt,
-        orderCancelledAt,
-        riderAcceptedAt,
-        riderReceivedAt,
-        riderDeliveredAt,
-        paymentDepositedAt,
-        paymentDepositConfirmedAt,
-        sender,
-        createdAt,
-        updatedAt
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(pickup),
+        const DeepCollectionEquality().hash(destination),
+        const DeepCollectionEquality().hash(packageSize),
+        const DeepCollectionEquality().hash(isFragile),
+        const DeepCollectionEquality().hash(amount),
+        const DeepCollectionEquality().hash(receiverFullName),
+        const DeepCollectionEquality().hash(receiverPhone),
+        const DeepCollectionEquality().hash(receiverEmailAddress),
+        const DeepCollectionEquality().hash(receiverPhoneAlt),
+        const DeepCollectionEquality().hash(notes),
+        const DeepCollectionEquality().hash(status),
+        const DeepCollectionEquality().hash(paymentMethod),
+        const DeepCollectionEquality().hash(riderId),
+        const DeepCollectionEquality().hash(riderLocation),
+        const DeepCollectionEquality().hash(durationToPickup),
+        const DeepCollectionEquality().hash(distanceToPickup),
+        const DeepCollectionEquality().hash(orderActiveAt),
+        const DeepCollectionEquality().hash(orderCancelledAt),
+        const DeepCollectionEquality().hash(riderAcceptedAt),
+        const DeepCollectionEquality().hash(riderReceivedAt),
+        const DeepCollectionEquality().hash(riderDeliveredAt),
+        const DeepCollectionEquality().hash(paymentDepositedAt),
+        const DeepCollectionEquality().hash(paymentDepositConfirmedAt),
+        const DeepCollectionEquality().hash(sender),
+        const DeepCollectionEquality().hash(createdAt),
+        const DeepCollectionEquality().hash(updatedAt)
       ]);
 
   @JsonKey(ignore: true)

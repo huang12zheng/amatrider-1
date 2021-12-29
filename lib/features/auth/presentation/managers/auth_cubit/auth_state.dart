@@ -48,7 +48,7 @@ class AuthState extends BaseState with _$AuthState {
   factory AuthState.initial() => AuthState(
         rider: Rider.blank(),
         code: OTPCode(null),
-        oldPassword: Password(null),
+        oldPassword: Password(null, false),
         confirmPassword: Password(null),
         phoneTextController: TextEditingController(),
         bankAccount: BankAccount.blank(),

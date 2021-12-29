@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -7,9 +5,7 @@ import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,10 +14,8 @@ class SideDrawerWidget extends ConsumerWidget {
   const SideDrawerWidget({Key? key}) : super(key: key);
 
   Widget get defaultImage => CircleAvatar(
-        backgroundImage:
-            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
-        foregroundImage:
-            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
+        backgroundImage: Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
+        foregroundImage: Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
         minRadius: 0.1.sw,
         backgroundColor: App.resolveColor(Palette.accentColor.shade600),
       );
@@ -29,6 +23,7 @@ class SideDrawerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
+      backgroundColor: Utils.platform_(cupertino: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: ScrollController(),
@@ -61,18 +56,15 @@ class SideDrawerWidget extends ConsumerWidget {
                                       backgroundImage: img,
                                       foregroundImage: img,
                                       minRadius: 0.1.sw,
-                                      backgroundColor: App.resolveColor(
-                                          Palette.accentColor.shade600),
+                                      backgroundColor: App.resolveColor(Palette.accentColor.shade600),
                                     ),
-                                    progressIndicatorBuilder:
-                                        (_, url, download) => Center(
+                                    progressIndicatorBuilder: (_, url, download) => Center(
                                       child: CircularProgressBar.adaptive(
                                         value: download.progress,
                                         strokeWidth: 2,
                                       ),
                                     ),
-                                    errorWidget: (_, url, error) =>
-                                        defaultImage,
+                                    errorWidget: (_, url, error) => defaultImage,
                                   ),
                                 ) ??
                                 defaultImage,
@@ -217,6 +209,7 @@ class DrawerListTile extends StatelessWidget {
           ref.read(scaffoldController.notifier).close();
           onPressed.call();
         },
+        material: true,
         horizontalTitleGap: 0.0,
         leading: Icon(icon, size: size ?? 23, color: Palette.text40),
         title: AdaptiveText(

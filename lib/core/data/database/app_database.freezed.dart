@@ -653,67 +653,59 @@ class _$_RiderDTO extends _RiderDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RiderDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.token, token) || other.token == token) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
-            (identical(other.oldPassword, oldPassword) ||
-                other.oldPassword == oldPassword) &&
-            (identical(other.confirmation, confirmation) ||
-                other.confirmation == confirmation) &&
-            (identical(other.image, image) || other.image == image) &&
-            (identical(other.availability, availability) ||
-                other.availability == availability) &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng) &&
-            (identical(other.phoneVerifiedAt, phoneVerifiedAt) ||
-                other.phoneVerifiedAt == phoneVerifiedAt) &&
-            (identical(other.avgRating, avgRating) ||
-                other.avgRating == avgRating) &&
-            (identical(other.isVerified, isVerified) ||
-                other.isVerified == isVerified) &&
-            (identical(other.verificationStatus, verificationStatus) ||
-                other.verificationStatus == verificationStatus) &&
-            (identical(other.provider, provider) ||
-                other.provider == provider) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.deletedAt, deletedAt) ||
-                other.deletedAt == deletedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.token, token) &&
+            const DeepCollectionEquality().equals(other.firstName, firstName) &&
+            const DeepCollectionEquality().equals(other.lastName, lastName) &&
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other.phone, phone) &&
+            const DeepCollectionEquality().equals(other.password, password) &&
+            const DeepCollectionEquality()
+                .equals(other.oldPassword, oldPassword) &&
+            const DeepCollectionEquality()
+                .equals(other.confirmation, confirmation) &&
+            const DeepCollectionEquality().equals(other.image, image) &&
+            const DeepCollectionEquality()
+                .equals(other.availability, availability) &&
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneVerifiedAt, phoneVerifiedAt) &&
+            const DeepCollectionEquality().equals(other.avgRating, avgRating) &&
+            const DeepCollectionEquality()
+                .equals(other.isVerified, isVerified) &&
+            const DeepCollectionEquality()
+                .equals(other.verificationStatus, verificationStatus) &&
+            const DeepCollectionEquality().equals(other.provider, provider) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.deletedAt, deletedAt));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        id,
-        token,
-        firstName,
-        lastName,
-        email,
-        phone,
-        password,
-        oldPassword,
-        confirmation,
-        image,
-        availability,
-        lat,
-        lng,
-        phoneVerifiedAt,
-        avgRating,
-        isVerified,
-        verificationStatus,
-        provider,
-        createdAt,
-        updatedAt,
-        deletedAt
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(token),
+        const DeepCollectionEquality().hash(firstName),
+        const DeepCollectionEquality().hash(lastName),
+        const DeepCollectionEquality().hash(email),
+        const DeepCollectionEquality().hash(phone),
+        const DeepCollectionEquality().hash(password),
+        const DeepCollectionEquality().hash(oldPassword),
+        const DeepCollectionEquality().hash(confirmation),
+        const DeepCollectionEquality().hash(image),
+        const DeepCollectionEquality().hash(availability),
+        const DeepCollectionEquality().hash(lat),
+        const DeepCollectionEquality().hash(lng),
+        const DeepCollectionEquality().hash(phoneVerifiedAt),
+        const DeepCollectionEquality().hash(avgRating),
+        const DeepCollectionEquality().hash(isVerified),
+        const DeepCollectionEquality().hash(verificationStatus),
+        const DeepCollectionEquality().hash(provider),
+        const DeepCollectionEquality().hash(createdAt),
+        const DeepCollectionEquality().hash(updatedAt),
+        const DeepCollectionEquality().hash(deletedAt)
       ]);
 
   @JsonKey(ignore: true)

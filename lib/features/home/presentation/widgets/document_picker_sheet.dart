@@ -1,17 +1,16 @@
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DocumentPickerSheet extends StatelessWidget {
   final List<DocumentPicker> pickers;
 
-  const DocumentPickerSheet({Key? key, this.pickers = const []})
-      : super(key: key);
+  const DocumentPickerSheet({Key? key, this.pickers = const []}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
       child: Container(
         height: 0.15.sh,
         child: LayoutBuilder(
@@ -21,7 +20,7 @@ class DocumentPickerSheet extends StatelessWidget {
               ...ListTile.divideTiles(
                 context: context,
                 tiles: pickers.map(
-                  (p) => InkWell(
+                  (p) => AdaptiveInkWell(
                     onTap: () {
                       p.onPressed.call();
                       navigator.pop();
@@ -39,9 +38,7 @@ class DocumentPickerSheet extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Flexible(
-                                    child: p.asset ?? const SizedBox.shrink(),
-                                  ),
+                                  Flexible(child: p.asset ?? Utils.nothing),
                                   //
                                   HorizontalSpace(width: 0.04.sw),
                                   //

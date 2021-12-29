@@ -19,8 +19,7 @@ class PlatformBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS || Platform.isMacOS)
-      return cupertino?.call(context) ?? nil;
-    return material?.call(context) ?? nil;
+    if (Platform.isIOS || Platform.isMacOS) return cupertino?.call(context) ?? Utils.nothing;
+    return material?.call(context) ?? Utils.nothing;
   }
 }

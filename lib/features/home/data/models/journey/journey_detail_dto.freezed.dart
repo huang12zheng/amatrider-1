@@ -203,15 +203,17 @@ class _$_JourneyDetailDTO extends _JourneyDetailDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyDetailDTO &&
-            (identical(other.distance, distance) ||
-                other.distance == distance) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.distance, distance) &&
+            const DeepCollectionEquality().equals(other.duration, duration) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, distance, duration, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(distance),
+      const DeepCollectionEquality().hash(duration),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -383,13 +385,15 @@ class _$_JourneyInfoDTO<B> extends _JourneyInfoDTO<B> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyInfoDTO<B> &&
-            (identical(other.text, text) || other.text == text) &&
+            const DeepCollectionEquality().equals(other.text, text) &&
             const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, text, const DeepCollectionEquality().hash(value));
+      runtimeType,
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override

@@ -172,7 +172,7 @@ class _$_InAppNotification extends _InAppNotification {
 
   @override
   final BasicTextField<String?> title;
-  @JsonKey(defaultValue: WebsocketResponseType.none)
+  @JsonKey()
   @override
   final WebsocketResponseType type;
   @override
@@ -190,15 +190,19 @@ class _$_InAppNotification extends _InAppNotification {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InAppNotification &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.meta, meta) || other.meta == meta) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.meta, meta) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, type, meta, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(meta),
+      const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override

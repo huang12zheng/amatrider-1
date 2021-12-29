@@ -230,22 +230,22 @@ class _$_SendPackageState extends _SendPackageState
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
   @override
   final JourneyDetail journey;
   @override
   final SendPackage package;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool isOtherReason;
   @override
   final BasicTextField<String?> cancelReason;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -273,22 +273,27 @@ class _$_SendPackageState extends _SendPackageState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SendPackageState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.journey, journey) || other.journey == journey) &&
-            (identical(other.package, package) || other.package == package) &&
-            (identical(other.isOtherReason, isOtherReason) ||
-                other.isOtherReason == isOtherReason) &&
-            (identical(other.cancelReason, cancelReason) ||
-                other.cancelReason == cancelReason) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality().equals(other.journey, journey) &&
+            const DeepCollectionEquality().equals(other.package, package) &&
+            const DeepCollectionEquality()
+                .equals(other.isOtherReason, isOtherReason) &&
+            const DeepCollectionEquality()
+                .equals(other.cancelReason, cancelReason) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, validate, journey,
-      package, isOtherReason, cancelReason, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(journey),
+      const DeepCollectionEquality().hash(package),
+      const DeepCollectionEquality().hash(isOtherReason),
+      const DeepCollectionEquality().hash(cancelReason),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

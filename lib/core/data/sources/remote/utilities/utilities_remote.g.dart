@@ -17,10 +17,11 @@ class _UtilitiesRemote implements UtilitiesRemote {
   Future<List<CountryDTO>> countries() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<CountryDTO>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/utilities/countries',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -34,10 +35,11 @@ class _UtilitiesRemote implements UtilitiesRemote {
   Future<GenericObjectDTO<BankAccountDTO?>> bankAccount() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GenericObjectDTO<BankAccountDTO>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/account-information',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -52,11 +54,12 @@ class _UtilitiesRemote implements UtilitiesRemote {
   Future<BankAccountDTO> storeBankAccount(dto) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(dto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<BankAccountDTO>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/account-information',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -75,6 +78,8 @@ class _UtilitiesRemote implements UtilitiesRemote {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'content-type': 'multipart/form-data'};
+    _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
     if (front != null) {
       _data.files.add(MapEntry(
@@ -93,9 +98,7 @@ class _UtilitiesRemote implements UtilitiesRemote {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(Options(
                 method: 'POST',
-                headers: <String, dynamic>{
-                  r'content-type': 'multipart/form-data'
-                },
+                headers: _headers,
                 extra: _extra,
                 contentType: 'multipart/form-data')
             .compose(_dio.options, '/rider/verification-document',
@@ -112,10 +115,11 @@ class _UtilitiesRemote implements UtilitiesRemote {
   Future<ReviewDTO> getReviews() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ReviewDTO>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/reviews',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -128,10 +132,11 @@ class _UtilitiesRemote implements UtilitiesRemote {
       inAppNotifications() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GenericPaginatedListDTO<InAppNotificationDTO>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/notifications',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -147,6 +152,7 @@ class _UtilitiesRemote implements UtilitiesRemote {
       {required type, required message, images = const []}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry('type', type));
     _data.fields.add(MapEntry('message', message));
@@ -157,7 +163,7 @@ class _UtilitiesRemote implements UtilitiesRemote {
           filename: i.path.split(Platform.pathSeparator).last,
         ))));
     await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+        Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/rider/contact-support',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));

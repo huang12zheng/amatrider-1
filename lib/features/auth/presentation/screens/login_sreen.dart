@@ -1,17 +1,12 @@
 library login_sreen.dart;
 
-import 'dart:ui';
-
 import 'package:amatrider/core/presentation/widgets/or_widget.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/oauth_widgets.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/widgets/text_form_input_label.dart';
-import 'package:amatrider/widgets/vertical_spacer.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,13 +30,11 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
                 (c.status.getOrElse(() => null)!.response.maybeMap(
                       error: (f) => f.foldCode(
                         is4031: () {
-                          WidgetsBinding.instance?.addPostFrameCallback(
-                              (_) => navigateToOTPVerification());
+                          WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
                           return false;
                         },
                         is41101: () {
-                          WidgetsBinding.instance?.addPostFrameCallback(
-                              (_) => navigateToSocials());
+                          WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToSocials());
                           return false;
                         },
                         orElse: () => false,
@@ -64,15 +57,14 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
   }
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with AutomaticKeepAliveClientMixin<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with AutomaticKeepAliveClientMixin<LoginScreen> {
   DateTime _timestampPressed = DateTime.now();
 
   @override
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (!navigator.isRoot) return true;
+    if (context.watchRouter.canPopSelfOrChildren && !context.watchRouter.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -99,10 +91,15 @@ class _LoginScreenState extends State<LoginScreen>
 
     return WillPopScope(
       onWillPop: maybePop,
-      child: Theme(
-        data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-        child: AdaptiveScaffold(
-          body: CustomScrollView(
+      child: AdaptiveScaffold(
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            scaffoldBackgroundColor: App.resolveColor(
+              Palette.cardColorLight,
+              dark: Palette.cardColorDark,
+            ),
+          ),
+          child: CustomScrollView(
             shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
             controller: ScrollController(),
@@ -111,8 +108,7 @@ class _LoginScreenState extends State<LoginScreen>
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                    .copyWith(top: App.longest * 0.02),
+                padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     SafeArea(
@@ -149,17 +145,13 @@ class _LoginScreenState extends State<LoginScreen>
                   Form(
                     key: AuthState.loginFormKey,
                     onChanged: () => Form.of(primaryFocus!.context!)?.save(),
-                    child: App.platform.fold(
-                      material: () => _MaterialFormLayout(),
-                      cupertino: () => _CupertinoFormLayout(),
-                    ),
+                    child: const AutofillGroup(child: _FormLayout()),
                   ),
                 ]),
               ),
               //
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                    .copyWith(top: App.longest * 0.02),
+                padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed([
                     App.platform.fold(
@@ -185,14 +177,12 @@ class _LoginScreenState extends State<LoginScreen>
                     //
                     VerticalSpace(height: 0.06.sw),
                     //
-                    const Hero(
+                    Hero(
                       tag: Const.oauthBtnHeroTag,
-                      child: Center(
-                        child: OAuthWidgets(),
-                      ),
+                      child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
                     ),
                     //
-                    VerticalSpace(height: 0.03.sw),
+                    VerticalSpace(height: 0.05.sw),
                     //
                     Hero(
                       tag: Const.loginAndSignupSwitchTag,
@@ -200,17 +190,13 @@ class _LoginScreenState extends State<LoginScreen>
                         type: MaterialType.transparency,
                         child: Center(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
                             child: AdaptiveText.rich(
                               TextSpan(children: [
-                                const TextSpan(
-                                    text: 'Don\'t have an account? '),
+                                const TextSpan(text: 'Don\'t have an account? '),
                                 TextSpan(
                                   text: 'Sign Up',
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () =>
-                                        navigator.navigate(const SignupRoute()),
+                                  recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const SignupRoute()),
                                   style: TextStyle(
                                     color: Utils.foldTheme(
                                       context: context,
@@ -243,9 +229,8 @@ class _LoginScreenState extends State<LoginScreen>
   }
 }
 
-class _MaterialFormLayout extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  _MaterialFormLayout({Key? key}) : super(key: key);
+class _FormLayout extends StatelessWidget {
+  const _FormLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -264,6 +249,7 @@ class _MaterialFormLayout extends StatelessWidget {
           ),
           //
           EmailFormField<AuthCubit, AuthState>(
+            useHero: true,
             disabled: (s) => s.isLoading,
             validate: (s) => s.validate,
             field: (s) => s.rider.email,
@@ -288,7 +274,7 @@ class _MaterialFormLayout extends StatelessWidget {
               //
               TextFormInputLabel(
                 text: 'Forgot Password?',
-                textColor: Palette.accentColor.shade400,
+                textColor: App.resolveColor(Palette.accentColor.shade400, dark: Palette.accentDark),
                 onPressed: () => navigator.push(const ForgotPasswordRoute()),
               ),
             ],
@@ -296,6 +282,7 @@ class _MaterialFormLayout extends StatelessWidget {
           //
           PasswordFormField<AuthCubit, AuthState>(
             isNew: false,
+            useHero: true,
             heroTag: Const.passwordFieldHeroTag,
             disabled: (s) => s.isLoading,
             validate: (s) => s.validate,
@@ -309,71 +296,6 @@ class _MaterialFormLayout extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _CupertinoFormLayout extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
-  _CupertinoFormLayout({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BlocBuilder<AuthCubit, AuthState>(
-          builder: (c, s) => CupertinoFormSection.insetGrouped(
-            margin: EdgeInsets.symmetric(horizontal: App.sidePadding),
-            backgroundColor: Colors.transparent,
-            children: [
-              EmailFormField<AuthCubit, AuthState>(
-                prefix: 'Email',
-                disabled: (s) => s.isLoading,
-                validate: (s) => s.validate,
-                field: (s) => s.rider.email,
-                focus: AuthState.emailFocus,
-                next: AuthState.passwordFocus,
-                response: (s) => s.status,
-                onChanged: (fn, str) => fn.emailChanged(str),
-              ),
-              //
-              PasswordFormField<AuthCubit, AuthState>(
-                prefix: 'Password',
-                heroTag: Const.passwordFieldHeroTag,
-                disabled: (s) => s.isLoading,
-                validate: (s) => s.validate,
-                isObscured: (s) => s.isPasswordHidden,
-                field: (s) => s.rider.password,
-                focus: AuthState.passwordFocus,
-                response: (s) => s.status,
-                errorField: (f) => f.errors?.password,
-                onChanged: (fn, str) => fn.passwordChanged(str),
-                cupertinoFormType: CupertinoFormType.textfield,
-                suffixMode: (s) => OverlayVisibilityMode.always,
-                onToggle: (it) => it.togglePasswordVisibility(),
-              ),
-            ],
-          ),
-        ),
-        //
-        VerticalSpace(height: 0.03.sw),
-        //
-        BlocBuilder<AuthCubit, AuthState>(
-          builder: (c, s) => Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-              child: TextFormInputLabel(
-                text: 'Forgot Password?',
-                textColor: Palette.accentColor.shade400,
-                onPressed: () => navigator.push(const ForgotPasswordRoute()),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

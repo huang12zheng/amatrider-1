@@ -68,7 +68,33 @@ class _HistoryPageState extends State<HistoryPage> {
                 onPressed: ref.read(scaffoldController.notifier).open,
               ),
             ),
-            actions: [const AvailablilityWidget()],
+            actions: [
+              Center(
+                child: Consumer(
+                  builder: (_, ref, child) => AppIconButton(
+                    tooltip: 'Menu',
+                    backgroundColor: Colors.transparent,
+                    elevation: 0.0,
+                    onPressed: ref.read(scaffoldController.notifier).open,
+                    padding: EdgeInsets.zero,
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.bars,
+                        size: 30,
+                        color: Utils.foldTheme(
+                          light: () => Palette.cardColorDark,
+                          dark: () => Palette.cardColorLight,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              //
+              const Spacer(),
+              //
+              const AvailablilityWidget(),
+            ],
           ),
           body: SafeArea(
             child: Builder(
@@ -77,16 +103,13 @@ class _HistoryPageState extends State<HistoryPage> {
                 onRefresh: (controller) => onRefresh(c, controller),
                 child: BlocBuilder<HistoryCubit, HistoryState>(
                   builder: (c, s) => WidgetVisibility(
-                    visible: !DragToRefresh.of(c).refreshController.isLoading &&
-                        !s.isLoading &&
-                        s.histories.isEmpty(),
+                    visible: !DragToRefresh.of(c).refreshController.isLoading && !s.isLoading && s.histories.isEmpty(),
                     replacement: CustomScrollView(
                       shrinkWrap: true,
                       physics: Utils.physics,
                       scrollDirection: Axis.vertical,
                       controller: ScrollController(),
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                       slivers: <Widget>[
                         SliverPadding(
                           padding: EdgeInsets.symmetric(
@@ -113,9 +136,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                       count: entry.value.size,
                                       layout: (i) => DeliveryHistoryCard(
                                         history: entry.value[i],
-                                        initialExpanded:
-                                            entry.value.firstOrNull()?.id ==
-                                                entry.value.getOrNull(i)?.id,
+                                        initialExpanded: entry.value.firstOrNull()?.id == entry.value.getOrNull(i)?.id,
                                       ),
                                     ))
                                 .iter,

@@ -4,7 +4,6 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// A stateless widget to render UserContactDeliveryCard.
@@ -62,7 +61,7 @@ class UserContactDeliveryCard extends StatelessWidget {
                       '$title',
                       fontSize: 16.sp,
                       textColor: Colors.grey.shade800,
-                      textColorDark: Colors.white24,
+                      textColorDark: Colors.white60,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -95,11 +94,9 @@ class UserContactDeliveryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(Utils.buttonRadius),
                   onPressed: onIconPressed ??
                       () async {
-                        final formattedPhone = 'tel:$phone';
+                        final formattedPhone = 'tel:${phone?.removeNewLines().trimWhiteSpaces()}';
 
-                        await canLaunch(formattedPhone)
-                            ? await launch(formattedPhone)
-                            : print('could not launch phone');
+                        await canLaunch(formattedPhone) ? await launch(formattedPhone) : print('could not launch phone');
                       },
                   child: Icon(
                     Utils.platform_(

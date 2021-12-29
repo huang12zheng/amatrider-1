@@ -32,6 +32,7 @@
 .pub/
 /build/
 codecov.yml
+lib/config/secrets.dart
 
 # Web related
 lib/generated_plugin_registrant.dart

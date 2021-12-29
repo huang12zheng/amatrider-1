@@ -18,13 +18,12 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
-          (th) => th?.response.map(
+          (it) => it?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(
-                dismissed: () =>
-                    s.pop ? navigator.popUntil((r) => r.isFirst) : null,
+                dismissed: () => s.pop ? navigator.popUntil((r) => r.isFirst) : null,
               ),
             ).render(c),
           ),
@@ -52,10 +51,7 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
               //
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                child: App.platform.fold(
-                  material: () => const _MaterialUpdateForm(),
-                  cupertino: () => const _CupertinoUpdateForm(),
-                ),
+                child: const AutofillGroup(child: Form(child: _FormLayout())),
               ),
               //
               VerticalSpace(height: 0.04.sw),
@@ -75,7 +71,7 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
                 ),
               ),
               //
-              VerticalSpace(height: App.sidePadding),
+              VerticalSpace(height: 0.03.h),
             ],
           ),
         ),
@@ -84,8 +80,8 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
   }
 }
 
-class _MaterialUpdateForm extends StatelessWidget {
-  const _MaterialUpdateForm({Key? key}) : super(key: key);
+class _FormLayout extends StatelessWidget {
+  const _FormLayout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +95,8 @@ class _MaterialUpdateForm extends StatelessWidget {
           isNew: false,
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
-          isObscured: (s) => s.isPasswordHidden,
+          validateFieldObject: (s) => false,
+          isObscured: (s) => s.isOldPasswordHidden,
           field: (s) => s.oldPassword,
           focus: AuthState.oldPasswordFocus,
           next: AuthState.passwordFocus,
@@ -140,83 +137,17 @@ class _MaterialUpdateForm extends StatelessWidget {
           focus: AuthState.passwordConfirmationFocus,
           response: (s) => s.status,
           onChanged: (fn, str) => fn.passwordConfirmationChanged(str),
+          suffixMode: (s) => OverlayVisibilityMode.always,
           suffixIcon: (s) => Visibility(
             visible: s.confirmPassword.isValid && s.isPasswordHidden,
-            child: Icon(
-              s.passwordMatches ? Icons.check_circle : Icons.cancel_rounded,
-              color:
-                  s.passwordMatches ? Palette.successGreen : Palette.errorRed,
-              size: 25,
+            child: Padding(
+              padding: Utils.platform_(material: EdgeInsets.zero, cupertino: const EdgeInsets.only(right: 12))!,
+              child: Icon(
+                s.passwordMatches ? Icons.check_circle : Icons.cancel_rounded,
+                color: s.passwordMatches ? Palette.successGreen : Palette.errorRed,
+                size: 25,
+              ),
             ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _CupertinoUpdateForm extends StatelessWidget {
-  const _CupertinoUpdateForm({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoFormSection.insetGrouped(
-      backgroundColor: Colors.transparent,
-      margin: EdgeInsets.zero,
-      children: [
-        PasswordFormField<AuthCubit, AuthState>(
-          prefix: 'Old Password',
-          isNew: false,
-          disabled: (s) => s.isLoading,
-          validate: (s) => s.validate,
-          isObscured: (s) => s.isPasswordHidden,
-          field: (s) => s.oldPassword,
-          focus: AuthState.oldPasswordFocus,
-          next: AuthState.passwordFocus,
-          response: (s) => s.status,
-          errorField: (f) => f.errors?.oldPassword,
-          onChanged: (fn, str) => fn.oldPasswordChanged(str),
-          cupertinoFormType: CupertinoFormType.textfield,
-          suffixMode: (s) => OverlayVisibilityMode.always,
-          onToggle: (it) => it.togglePasswordVisibility(),
-        ),
-        //
-        PasswordFormField<AuthCubit, AuthState>(
-          prefix: 'New Password',
-          isNew: true,
-          disabled: (s) => s.isLoading,
-          validate: (s) => s.validate,
-          isObscured: (s) => s.isPasswordHidden,
-          field: (s) => s.rider.password,
-          focus: AuthState.passwordFocus,
-          next: AuthState.passwordConfirmationFocus,
-          response: (s) => s.status,
-          errorField: (f) => f.errors?.password,
-          onChanged: (fn, str) => fn.passwordChanged(str),
-          cupertinoFormType: CupertinoFormType.textfield,
-          suffixMode: (s) => OverlayVisibilityMode.always,
-          onToggle: (it) => it.togglePasswordVisibility(),
-        ),
-        //
-        PasswordFormField<AuthCubit, AuthState>(
-          prefix: 'Confirm Password',
-          isNew: true,
-          disabled: (s) => s.isLoading,
-          validate: (s) => s.validate,
-          isObscured: (s) => s.isPasswordHidden,
-          field: (s) => s.confirmPassword,
-          focus: AuthState.passwordConfirmationFocus,
-          response: (s) => s.status,
-          cupertinoFormType: CupertinoFormType.textfield,
-          cupertinoPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
-          materialPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
-          onChanged: (fn, str) => fn.passwordConfirmationChanged(str),
-          suffixIcon: (s) => Icon(
-            s.passwordMatches ? Icons.check_circle : Icons.cancel_rounded,
-            color: s.passwordMatches ? Palette.successGreen : Palette.errorRed,
-            size: 25,
           ),
         ),
       ],

@@ -146,7 +146,7 @@ class _$_AddressComponent extends _AddressComponent {
   final BasicTextField<String?> longName;
   @override
   final BasicTextField<String?> shortName;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<AddressComponentType> types;
 
@@ -160,15 +160,17 @@ class _$_AddressComponent extends _AddressComponent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AddressComponent &&
-            (identical(other.longName, longName) ||
-                other.longName == longName) &&
-            (identical(other.shortName, shortName) ||
-                other.shortName == shortName) &&
-            (identical(other.types, types) || other.types == types));
+            const DeepCollectionEquality().equals(other.longName, longName) &&
+            const DeepCollectionEquality().equals(other.shortName, shortName) &&
+            const DeepCollectionEquality().equals(other.types, types));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, longName, shortName, types);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(longName),
+      const DeepCollectionEquality().hash(shortName),
+      const DeepCollectionEquality().hash(types));
 
   @JsonKey(ignore: true)
   @override

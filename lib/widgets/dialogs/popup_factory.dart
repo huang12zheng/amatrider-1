@@ -115,7 +115,10 @@ class PopupDialog extends _$PopupDialog {
               material: Icons.error,
               cupertino: CupertinoIcons.exclamationmark_triangle_fill,
             ),
-            color: Palette.errorRed,
+            color: App.resolveColor(
+              Palette.accentColor,
+              dark: Palette.accentDark,
+            ),
           ),
           duration: duration,
           isDismissible: isDismissible,
