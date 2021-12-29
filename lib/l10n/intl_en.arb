@@ -24,6 +24,8 @@
   "@bankAccountInformation": {},
   "bankName": "Bank Name",
   "@bankName": {},
+  "bankTransfer": "Bank Transfer",
+  "@bankTransfer": {},
   "cancel": "Cancel",
   "@cancel": {},
   "cardPOS": "Card (POS)",
@@ -70,14 +72,21 @@
   "@home": {},
   "homePageTxt2": "A Good Day To Make Deliveries.",
   "@homePageTxt2": {},
-  "inActive": "In Active",
+  "inActive": "Inactive",
   "@inActive": {},
   "inReview": "In Review",
   "@inReview": {},
   "insightBonusAlertConfirmBtn": "Claim Bonus",
   "@insightBonusAlertConfirmBtn": {},
   "insightBonusAlertContent": "Bonus of {amount} would be deposited into your account.",
-  "@insightBonusAlertContent": {},
+  "@insightBonusAlertContent": {
+    "placeholders": {
+      "amount": {
+        "type": "String",
+        "description": "Bonus amount"
+      }
+    }
+  },
   "insightCashAtHand": "Total Cash at Hand",
   "@insightCashAtHand": {},
   "insightClaimBonus": "Claim Bonus",

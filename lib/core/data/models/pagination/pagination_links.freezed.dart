@@ -245,18 +245,25 @@ class _$_PaginationLinks extends _PaginationLinks {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PaginationLinks &&
-            (identical(other.first, first) || other.first == first) &&
-            (identical(other.last, last) || other.last == last) &&
-            (identical(other.prev, prev) || other.prev == prev) &&
-            (identical(other.next, next) || other.next == next) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.label, label) || other.label == label) &&
-            (identical(other.active, active) || other.active == active));
+            const DeepCollectionEquality().equals(other.first, first) &&
+            const DeepCollectionEquality().equals(other.last, last) &&
+            const DeepCollectionEquality().equals(other.prev, prev) &&
+            const DeepCollectionEquality().equals(other.next, next) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.label, label) &&
+            const DeepCollectionEquality().equals(other.active, active));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, first, last, prev, next, url, label, active);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(first),
+      const DeepCollectionEquality().hash(last),
+      const DeepCollectionEquality().hash(prev),
+      const DeepCollectionEquality().hash(next),
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(label),
+      const DeepCollectionEquality().hash(active));
 
   @JsonKey(ignore: true)
   @override

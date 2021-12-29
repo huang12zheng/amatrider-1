@@ -22,7 +22,7 @@ class _$ReviewDTOTearOff {
   const _$ReviewDTOTearOff();
 
   _ReviewDTO call(
-      {required PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {required GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups = const []}) {
@@ -44,7 +44,7 @@ const $ReviewDTO = _$ReviewDTOTearOff();
 
 /// @nodoc
 mixin _$ReviewDTO {
-  PaginatedListWrapperDTO<CustomerFeedbackDTO> get data =>
+  GenericListDTO<CustomerFeedbackDTO> get data =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'totalReviews')
   int? get totalReviews => throw _privateConstructorUsedError;
@@ -63,12 +63,10 @@ abstract class $ReviewDTOCopyWith<$Res> {
   factory $ReviewDTOCopyWith(ReviewDTO value, $Res Function(ReviewDTO) then) =
       _$ReviewDTOCopyWithImpl<$Res>;
   $Res call(
-      {PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups});
-
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data;
 }
 
 /// @nodoc
@@ -90,7 +88,7 @@ class _$ReviewDTOCopyWithImpl<$Res> implements $ReviewDTOCopyWith<$Res> {
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as PaginatedListWrapperDTO<CustomerFeedbackDTO>,
+              as GenericListDTO<CustomerFeedbackDTO>,
       totalReviews: totalReviews == freezed
           ? _value.totalReviews
           : totalReviews // ignore: cast_nullable_to_non_nullable
@@ -105,14 +103,6 @@ class _$ReviewDTOCopyWithImpl<$Res> implements $ReviewDTOCopyWith<$Res> {
               as List<ReviewGroupDTO>,
     ));
   }
-
-  @override
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data {
-    return $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res>(
-        _value.data, (value) {
-      return _then(_value.copyWith(data: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -122,13 +112,10 @@ abstract class _$ReviewDTOCopyWith<$Res> implements $ReviewDTOCopyWith<$Res> {
       __$ReviewDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups});
-
-  @override
-  $PaginatedListWrapperDTOCopyWith<CustomerFeedbackDTO, $Res> get data;
 }
 
 /// @nodoc
@@ -151,7 +138,7 @@ class __$ReviewDTOCopyWithImpl<$Res> extends _$ReviewDTOCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as PaginatedListWrapperDTO<CustomerFeedbackDTO>,
+              as GenericListDTO<CustomerFeedbackDTO>,
       totalReviews: totalReviews == freezed
           ? _value.totalReviews
           : totalReviews // ignore: cast_nullable_to_non_nullable
@@ -182,14 +169,14 @@ class _$_ReviewDTO extends _ReviewDTO {
       _$$_ReviewDTOFromJson(json);
 
   @override
-  final PaginatedListWrapperDTO<CustomerFeedbackDTO> data;
+  final GenericListDTO<CustomerFeedbackDTO> data;
   @override
   @JsonKey(name: 'totalReviews')
   final int? totalReviews;
   @override
   @JsonKey(name: 'avgRating')
   final double? avgRating;
-  @JsonKey(defaultValue: const [])
+  @JsonKey()
   @override
   final List<ReviewGroupDTO> reviewGroups;
 
@@ -203,17 +190,20 @@ class _$_ReviewDTO extends _ReviewDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewDTO &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.totalReviews, totalReviews) ||
-                other.totalReviews == totalReviews) &&
-            (identical(other.avgRating, avgRating) ||
-                other.avgRating == avgRating) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality()
+                .equals(other.totalReviews, totalReviews) &&
+            const DeepCollectionEquality().equals(other.avgRating, avgRating) &&
             const DeepCollectionEquality()
                 .equals(other.reviewGroups, reviewGroups));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data, totalReviews, avgRating,
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(totalReviews),
+      const DeepCollectionEquality().hash(avgRating),
       const DeepCollectionEquality().hash(reviewGroups));
 
   @JsonKey(ignore: true)
@@ -229,7 +219,7 @@ class _$_ReviewDTO extends _ReviewDTO {
 
 abstract class _ReviewDTO extends ReviewDTO {
   const factory _ReviewDTO(
-      {required PaginatedListWrapperDTO<CustomerFeedbackDTO> data,
+      {required GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
       List<ReviewGroupDTO> reviewGroups}) = _$_ReviewDTO;
@@ -239,7 +229,7 @@ abstract class _ReviewDTO extends ReviewDTO {
       _$_ReviewDTO.fromJson;
 
   @override
-  PaginatedListWrapperDTO<CustomerFeedbackDTO> get data;
+  GenericListDTO<CustomerFeedbackDTO> get data;
   @override
   @JsonKey(name: 'totalReviews')
   int? get totalReviews;
@@ -516,21 +506,27 @@ class _$_CustomerFeedbackDTO extends _CustomerFeedbackDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CustomerFeedbackDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.rate, rate) || other.rate == rate) &&
-            (identical(other.review, review) || other.review == review) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.orderId, orderId) || other.orderId == orderId) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.rate, rate) &&
+            const DeepCollectionEquality().equals(other.review, review) &&
+            const DeepCollectionEquality().equals(other.userId, userId) &&
+            const DeepCollectionEquality().equals(other.orderId, orderId) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, rate, review, userId,
-      orderId, riderId, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(rate),
+      const DeepCollectionEquality().hash(review),
+      const DeepCollectionEquality().hash(userId),
+      const DeepCollectionEquality().hash(orderId),
+      const DeepCollectionEquality().hash(riderId),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -726,12 +722,15 @@ class _$_ReviewGroupDTO extends _ReviewGroupDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ReviewGroupDTO &&
-            (identical(other.group, group) || other.group == group) &&
-            (identical(other.count, count) || other.count == count));
+            const DeepCollectionEquality().equals(other.group, group) &&
+            const DeepCollectionEquality().equals(other.count, count));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, group, count);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(group),
+      const DeepCollectionEquality().hash(count));
 
   @JsonKey(ignore: true)
   @override

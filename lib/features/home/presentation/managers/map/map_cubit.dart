@@ -60,14 +60,12 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
     Widget? endWidget,
     MarkerPainter? startPainter,
     MarkerPainter? endPainter,
+    bool? customStartWidget,
+    bool? customEndWidget,
   }) async {
     toggleLoading(true);
 
     if (ctx != null && start != null && end != null) {
-      // Add a blank marker (for preloading sake)
-      final _emptyMarker = Marker(markerId: MarkerId('${UniqueId.v4()}'));
-      emit(state.copyWith(markers: {...state.markers, _emptyMarker}));
-
       if (startWidget != null) {
         MarkerGenerator.widget(
           id: '${start.lat},${start.lng}',
@@ -112,6 +110,32 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
           unsigned: endBytes!,
           onCreated: (markers) => emit(state.copyWith(markers: markers)),
         ).build();
+      }
+
+      final customStart = customStartWidget ?? true;
+      final customEnd = customEndWidget ?? true;
+
+      if ((startWidget == null && startPainter == null) && customStart) {
+        final _marker = Marker(
+          markerId: MarkerId('${start.lat},${start.lng}'),
+          position: LatLng(start.lat.getOrNull!, start.lng.getOrNull!),
+          icon: await customSVGMarker(ctx, color: Palette.accentBlue),
+        );
+
+        emit(state.copyWith(
+          markers: <Marker>{...state.markers.toList(), _marker},
+        ));
+      }
+      if ((endWidget == null && endPainter == null) && customEnd) {
+        final _marker = Marker(
+          markerId: MarkerId('${end.lat},${end.lng}'),
+          position: LatLng(end.lat.getOrNull!, end.lng.getOrNull!),
+          icon: await customSVGMarker(ctx, color: Palette.accentGreen),
+        );
+
+        emit(state.copyWith(
+          markers: <Marker>{...state.markers.toList(), _marker},
+        ));
       }
 
       await drawPolyline(start, end);

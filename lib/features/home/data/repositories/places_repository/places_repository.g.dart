@@ -35,10 +35,11 @@ class _PlacesRepository implements PlacesRepository {
       r'key': key
     };
     queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<PlacePredictionDTO>(Options(
-                method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                method: 'GET', headers: _headers, extra: _extra)
             .compose(_dio.options,
                 'https://maps.googleapis.com/maps/api/place/autocomplete/json',
                 queryParameters: queryParameters, data: _data)
@@ -63,10 +64,11 @@ class _PlacesRepository implements PlacesRepository {
       r'key': key
     };
     queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<PlaceDetailDTO>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options,
                     'https://maps.googleapis.com/maps/api/place/details/json',
                     queryParameters: queryParameters, data: _data)
@@ -84,10 +86,11 @@ class _PlacesRepository implements PlacesRepository {
       r'key': key
     };
     queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<PlaceDetailDTO>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options,
                     'https://maps.googleapis.com/maps/api/geocode/json',
                     queryParameters: queryParameters, data: _data)
@@ -107,10 +110,11 @@ class _PlacesRepository implements PlacesRepository {
       r'key': key
     };
     queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<PlaceDetailDTO>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options,
                     'https://maps.googleapis.com/maps/api/geocode/json',
                     queryParameters: queryParameters, data: _data)

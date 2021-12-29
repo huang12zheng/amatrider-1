@@ -22,10 +22,11 @@ class _LogisticsRemote implements LogisticsRemote {
       r'lat': lat,
       r'long': lng
     };
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<SendPackageListDTO>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/package',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -38,11 +39,12 @@ class _LogisticsRemote implements LogisticsRemote {
       {required lat, required lng}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'lat': lat, r'long': lng};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/package/$id/accept',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rider/package/${id}/accept',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);
@@ -54,11 +56,12 @@ class _LogisticsRemote implements LogisticsRemote {
       {required lat, required lng}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'lat': lat, r'long': lng};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/package/$id/decline',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rider/package/${id}/decline',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);
@@ -69,12 +72,13 @@ class _LogisticsRemote implements LogisticsRemote {
   Future<AppHttpResponse> updateLocation(id, {required location}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(location.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/package/$id/location',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rider/package/${id}/location',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);
@@ -86,11 +90,12 @@ class _LogisticsRemote implements LogisticsRemote {
       {required lat, required lng}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'lat': lat, r'long': lng};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/package/$id/confirm-pickup',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rider/package/${id}/confirm-pickup',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);
@@ -102,11 +107,12 @@ class _LogisticsRemote implements LogisticsRemote {
       {required lat, required lng}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'lat': lat, r'long': lng};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AppHttpResponse>(
-            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/rider/package/$id/delivered',
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/rider/package/${id}/delivered',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AppHttpResponse.fromJson(_result.data!);

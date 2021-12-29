@@ -73,6 +73,9 @@ class _$DeliveryHistoryDTOTearOff {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -93,7 +96,9 @@ class _$DeliveryHistoryDTOTearOff {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt}) {
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData}) {
     return _DeliveryHistoryDTO(
       id: id,
       pickupLat: pickupLat,
@@ -117,6 +122,7 @@ class _$DeliveryHistoryDTOTearOff {
       rider: rider,
       sender: sender,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
@@ -124,6 +130,7 @@ class _$DeliveryHistoryDTOTearOff {
       depositConfirmedAt: depositConfirmedAt,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      historyData: historyData,
     );
   }
 
@@ -188,6 +195,9 @@ mixin _$DeliveryHistoryDTO {
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
@@ -208,7 +218,9 @@ mixin _$DeliveryHistoryDTO {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError; //
+  @JsonKey(name: 'history')
+  DeliveryHistoryDTO? get historyData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -273,6 +285,9 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -293,10 +308,13 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt});
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData});
 
   $RiderDTOCopyWith<$Res>? get rider;
   $SenderDTOCopyWith<$Res>? get sender;
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
 
 /// @nodoc
@@ -332,6 +350,7 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
@@ -339,6 +358,7 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? depositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? historyData = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -429,6 +449,10 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -457,6 +481,10 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      historyData: historyData == freezed
+          ? _value.historyData
+          : historyData // ignore: cast_nullable_to_non_nullable
+              as DeliveryHistoryDTO?,
     ));
   }
 
@@ -479,6 +507,17 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
 
     return $SenderDTOCopyWith<$Res>(_value.sender!, (value) {
       return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  @override
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData {
+    if (_value.historyData == null) {
+      return null;
+    }
+
+    return $DeliveryHistoryDTOCopyWith<$Res>(_value.historyData!, (value) {
+      return _then(_value.copyWith(historyData: value));
     });
   }
 }
@@ -542,6 +581,9 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -562,12 +604,16 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt});
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData});
 
   @override
   $RiderDTOCopyWith<$Res>? get rider;
   @override
   $SenderDTOCopyWith<$Res>? get sender;
+  @override
+  $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
 
 /// @nodoc
@@ -605,6 +651,7 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? rider = freezed,
     Object? sender = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
@@ -612,6 +659,7 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? depositConfirmedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? historyData = freezed,
   }) {
     return _then(_DeliveryHistoryDTO(
       id: id == freezed
@@ -702,6 +750,10 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -730,6 +782,10 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      historyData: historyData == freezed
+          ? _value.historyData
+          : historyData // ignore: cast_nullable_to_non_nullable
+              as DeliveryHistoryDTO?,
     ));
   }
 }
@@ -789,6 +845,9 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           this.orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          this.orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           this.riderAcceptedAt,
@@ -809,7 +868,9 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
           this.createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          this.updatedAt})
+          this.updatedAt,
+      @JsonKey(name: 'history')
+          this.historyData})
       : super._();
 
   factory _$_DeliveryHistoryDTO.fromJson(Map<String, dynamic> json) =>
@@ -889,6 +950,10 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
   @TimestampConverter()
   final DateTime? orderActiveAt;
   @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  final DateTime? orderCancelledAt;
+  @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   final DateTime? riderAcceptedAt;
@@ -916,10 +981,13 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
   final DateTime? updatedAt;
+  @override //
+  @JsonKey(name: 'history')
+  final DeliveryHistoryDTO? historyData;
 
   @override
   String toString() {
-    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
   }
 
   @override
@@ -927,91 +995,90 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DeliveryHistoryDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.pickupLat, pickupLat) ||
-                other.pickupLat == pickupLat) &&
-            (identical(other.pickupLng, pickupLng) ||
-                other.pickupLng == pickupLng) &&
-            (identical(other.destinationLat, destinationLat) ||
-                other.destinationLat == destinationLat) &&
-            (identical(other.destinationLng, destinationLng) ||
-                other.destinationLng == destinationLng) &&
-            (identical(other.pickupAddress, pickupAddress) ||
-                other.pickupAddress == pickupAddress) &&
-            (identical(other.destinationAddress, destinationAddress) ||
-                other.destinationAddress == destinationAddress) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.receiverFullName, receiverFullName) ||
-                other.receiverFullName == receiverFullName) &&
-            (identical(other.receiverPhone, receiverPhone) ||
-                other.receiverPhone == receiverPhone) &&
-            (identical(other.receiverEmailAddress, receiverEmailAddress) ||
-                other.receiverEmailAddress == receiverEmailAddress) &&
-            (identical(other.receiverPhoneAlt, receiverPhoneAlt) ||
-                other.receiverPhoneAlt == receiverPhoneAlt) &&
-            (identical(other.notes, notes) || other.notes == notes) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.riderLat, riderLat) ||
-                other.riderLat == riderLat) &&
-            (identical(other.riderLng, riderLng) ||
-                other.riderLng == riderLng) &&
-            (identical(other.time, time) || other.time == time) &&
-            (identical(other.distance, distance) ||
-                other.distance == distance) &&
-            (identical(other.rider, rider) || other.rider == rider) &&
-            (identical(other.sender, sender) || other.sender == sender) &&
-            (identical(other.orderActiveAt, orderActiveAt) ||
-                other.orderActiveAt == orderActiveAt) &&
-            (identical(other.riderAcceptedAt, riderAcceptedAt) ||
-                other.riderAcceptedAt == riderAcceptedAt) &&
-            (identical(other.riderReceivedAt, riderReceivedAt) ||
-                other.riderReceivedAt == riderReceivedAt) &&
-            (identical(other.riderDeliveredAt, riderDeliveredAt) ||
-                other.riderDeliveredAt == riderDeliveredAt) &&
-            (identical(other.depositedAt, depositedAt) ||
-                other.depositedAt == depositedAt) &&
-            (identical(other.depositConfirmedAt, depositConfirmedAt) ||
-                other.depositConfirmedAt == depositConfirmedAt) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.pickupLat, pickupLat) &&
+            const DeepCollectionEquality().equals(other.pickupLng, pickupLng) &&
+            const DeepCollectionEquality()
+                .equals(other.destinationLat, destinationLat) &&
+            const DeepCollectionEquality()
+                .equals(other.destinationLng, destinationLng) &&
+            const DeepCollectionEquality()
+                .equals(other.pickupAddress, pickupAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.destinationAddress, destinationAddress) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverFullName, receiverFullName) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhone, receiverPhone) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverEmailAddress, receiverEmailAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhoneAlt, receiverPhoneAlt) &&
+            const DeepCollectionEquality().equals(other.notes, notes) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentMethod, paymentMethod) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.riderLat, riderLat) &&
+            const DeepCollectionEquality().equals(other.riderLng, riderLng) &&
+            const DeepCollectionEquality().equals(other.time, time) &&
+            const DeepCollectionEquality().equals(other.distance, distance) &&
+            const DeepCollectionEquality().equals(other.rider, rider) &&
+            const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality()
+                .equals(other.orderActiveAt, orderActiveAt) &&
+            const DeepCollectionEquality()
+                .equals(other.orderCancelledAt, orderCancelledAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderAcceptedAt, riderAcceptedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderReceivedAt, riderReceivedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderDeliveredAt, riderDeliveredAt) &&
+            const DeepCollectionEquality()
+                .equals(other.depositedAt, depositedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.depositConfirmedAt, depositConfirmedAt) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.historyData, historyData));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        id,
-        pickupLat,
-        pickupLng,
-        destinationLat,
-        destinationLng,
-        pickupAddress,
-        destinationAddress,
-        amount,
-        receiverFullName,
-        receiverPhone,
-        receiverEmailAddress,
-        receiverPhoneAlt,
-        notes,
-        paymentMethod,
-        riderId,
-        riderLat,
-        riderLng,
-        time,
-        distance,
-        rider,
-        sender,
-        orderActiveAt,
-        riderAcceptedAt,
-        riderReceivedAt,
-        riderDeliveredAt,
-        depositedAt,
-        depositConfirmedAt,
-        createdAt,
-        updatedAt
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(pickupLat),
+        const DeepCollectionEquality().hash(pickupLng),
+        const DeepCollectionEquality().hash(destinationLat),
+        const DeepCollectionEquality().hash(destinationLng),
+        const DeepCollectionEquality().hash(pickupAddress),
+        const DeepCollectionEquality().hash(destinationAddress),
+        const DeepCollectionEquality().hash(amount),
+        const DeepCollectionEquality().hash(receiverFullName),
+        const DeepCollectionEquality().hash(receiverPhone),
+        const DeepCollectionEquality().hash(receiverEmailAddress),
+        const DeepCollectionEquality().hash(receiverPhoneAlt),
+        const DeepCollectionEquality().hash(notes),
+        const DeepCollectionEquality().hash(paymentMethod),
+        const DeepCollectionEquality().hash(riderId),
+        const DeepCollectionEquality().hash(riderLat),
+        const DeepCollectionEquality().hash(riderLng),
+        const DeepCollectionEquality().hash(time),
+        const DeepCollectionEquality().hash(distance),
+        const DeepCollectionEquality().hash(rider),
+        const DeepCollectionEquality().hash(sender),
+        const DeepCollectionEquality().hash(orderActiveAt),
+        const DeepCollectionEquality().hash(orderCancelledAt),
+        const DeepCollectionEquality().hash(riderAcceptedAt),
+        const DeepCollectionEquality().hash(riderReceivedAt),
+        const DeepCollectionEquality().hash(riderDeliveredAt),
+        const DeepCollectionEquality().hash(depositedAt),
+        const DeepCollectionEquality().hash(depositConfirmedAt),
+        const DeepCollectionEquality().hash(createdAt),
+        const DeepCollectionEquality().hash(updatedAt),
+        const DeepCollectionEquality().hash(historyData)
       ]);
 
   @JsonKey(ignore: true)
@@ -1078,6 +1145,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
+      @JsonKey(name: 'order_cancelled_at')
+      @TimestampConverter()
+          DateTime? orderCancelledAt,
       @JsonKey(name: 'rider_accepted_at')
       @TimestampConverter()
           DateTime? riderAcceptedAt,
@@ -1098,7 +1168,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
           DateTime? createdAt,
       @JsonKey(name: 'updated_at')
       @TimestampConverter()
-          DateTime? updatedAt}) = _$_DeliveryHistoryDTO;
+          DateTime? updatedAt,
+      @JsonKey(name: 'history')
+          DeliveryHistoryDTO? historyData}) = _$_DeliveryHistoryDTO;
   const _DeliveryHistoryDTO._() : super._();
 
   factory _DeliveryHistoryDTO.fromJson(Map<String, dynamic> json) =
@@ -1178,6 +1250,10 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
   @TimestampConverter()
   DateTime? get orderActiveAt;
   @override
+  @JsonKey(name: 'order_cancelled_at')
+  @TimestampConverter()
+  DateTime? get orderCancelledAt;
+  @override
   @JsonKey(name: 'rider_accepted_at')
   @TimestampConverter()
   DateTime? get riderAcceptedAt;
@@ -1205,6 +1281,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
   @JsonKey(name: 'updated_at')
   @TimestampConverter()
   DateTime? get updatedAt;
+  @override //
+  @JsonKey(name: 'history')
+  DeliveryHistoryDTO? get historyData;
   @override
   @JsonKey(ignore: true)
   _$DeliveryHistoryDTOCopyWith<_DeliveryHistoryDTO> get copyWith =>

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/auth/data/models/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
@@ -124,7 +125,7 @@ class AuthRemoteDatasource {
       confirmation: confirmation,
     ).toJson();
     // Perform PUT request to update user's profile
-    return _dio.patch(EndPoints.UPDATE_PASSWORD, data: data);
+    return _dio.post(EndPoints.UPDATE_PASSWORD, data: data);
   }
 
   Future<Response<dynamic>> signInWithGoogle(String? token) async {
@@ -139,6 +140,13 @@ class AuthRemoteDatasource {
     return _dio.post(EndPoints.APPLE_SIGNIN, data: data);
   }
 
+  Future<Response<dynamic>> updateSocialsProfile(RiderDTO dto) async {
+    // Generate Form Data for request
+    final _data = FormData.fromMap(dto.toJson());
+    // Perform PUT request to update user's profile
+    return _dio.post(EndPoints.UPDATE_RIDER_PROFILE_SOCIALS, data: _data);
+  }
+
   Future<Response<dynamic>> toggleAvailability(RiderAvailability value) async {
     // Generate Form Data for request
     final data = {'availability': value.boolean};
@@ -146,29 +154,44 @@ class AuthRemoteDatasource {
     return _dio.patch(EndPoints.TOGGLE_RIDER_AVAILABILITY, data: data);
   }
 
+  Future<Response<dynamic>> deleteAccount() async {
+    // Perform request to reset user's password
+    return _dio.delete(EndPoints.DELETE_ACCOUNT);
+  }
+
   Future<Either<AppHttpResponse, RiderDTO?>> getRider([
     VoidCallback? callback,
   ]) async {
     try {
-      final _response = await _dio.get(EndPoints.GET_RIDER);
+      final _result = await _dio.get(EndPoints.GET_RIDER);
 
-      return right(RiderDTO.fromJson(
-        _response.data as Map<String, dynamic>,
-      ));
+      final _response = AppHttpResponse.fromJson(
+        _result.data as Map<String, dynamic>,
+      );
+
+      return _response.response.map(
+        error: (error) => left(_response.copyWith(
+          response: _response.response,
+          data: _result.data,
+        )),
+        success: (_) => right(RegisteredRiderDTO.fromJson(
+          _result.data as Map<String, dynamic>,
+        ).data),
+      );
     } on AppHttpResponse catch (e, trace) {
-      return _catchBlock(callback, e, trace);
+      return _catchBlock(e, callback, trace);
     } on AppNetworkException catch (e, trace) {
-      return _catchBlock(callback, e.asResponse(), trace);
+      return _catchBlock(e.asResponse(), callback, trace);
     }
   }
 
   Future<Either<AppHttpResponse, RiderDTO?>> _catchBlock(
+    AppHttpResponse e, [
     VoidCallback? callback,
-    AppHttpResponse e,
-    StackTrace trace,
-  ) async {
+    StackTrace? trace,
+  ]) async {
     // If callback is not-null, call the method
-    await callback?.call();
+    callback?.call();
 
     switch (e.reason) {
       case AppNetworkExceptionReason.timedOut:

@@ -16,12 +16,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class AuthFacade {
   Future<Either<AppHttpResponse, Option<Rider?>>> get currentRider;
-
-  Future<Option<Rider?>> get rider;
-
   Stream<Either<AppHttpResponse, Option<Rider?>>> get onAuthStateChanges;
-
   Stream<Option<Rider?>> get onRiderChanges;
+  Future<Option<Rider?>> get rider;
 
   Future<void> sink([Either<AppHttpResponse, Option<Rider?>> riderOrFailure]);
 
@@ -80,13 +77,34 @@ abstract class AuthFacade {
   Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
       RiderAvailability availability);
 
-  Future<AppHttpResponse> googleAuthentication();
+  Future<Option<AppHttpResponse?>> googleAuthentication([bool notify = false]);
 
-  Future<AppHttpResponse> appleAuthentication();
+  Future<AppHttpResponse> updateSocialsProfile({
+    DisplayName? firstName,
+    DisplayName? lastName,
+    Phone? phone,
+  });
 
-  Future<void> signOut([bool? notify]);
+  Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]);
+
+  Future<void> signOut(
+    bool? notify, {
+    bool email = true,
+    bool google = true,
+    bool facebook = true,
+    bool twitter = true,
+    bool apple = true,
+  });
+
+  Future<AppHttpResponse> deleteAccount();
 
   Future<void> sleep();
+
+  Future<Either<AppHttpResponse, Option<Rider?>>> retrieveAndCacheUpdatedRider({
+    RiderDTO? dto,
+    bool shouldThrow = false,
+    bool forceGetLocalCache = false,
+  });
 
   Future<Either<AppHttpResponse, bool>> checkInternetConnectivity() async {
     final isConnected = (await getIt<Connectivity>().checkConnectivity()) !=

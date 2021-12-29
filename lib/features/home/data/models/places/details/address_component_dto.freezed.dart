@@ -195,15 +195,16 @@ class _$_AddressComponentDTO extends _AddressComponentDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AddressComponentDTO &&
-            (identical(other.longName, longName) ||
-                other.longName == longName) &&
-            (identical(other.shortName, shortName) ||
-                other.shortName == shortName) &&
+            const DeepCollectionEquality().equals(other.longName, longName) &&
+            const DeepCollectionEquality().equals(other.shortName, shortName) &&
             const DeepCollectionEquality().equals(other.types, types));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, longName, shortName,
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(longName),
+      const DeepCollectionEquality().hash(shortName),
       const DeepCollectionEquality().hash(types));
 
   @JsonKey(ignore: true)

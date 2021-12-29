@@ -41,16 +41,13 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                 HorizontalSpace(width: 0.1.sw),
                 //
                 Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        flex: 7,
-                        child: BlocSelector<InsightsCubit, InsightsState,
-                            DateFilter>(
-                          selector: (s) => s.dateFilter,
-                          builder: (c, filter) =>
-                              DropdownFieldWidget<DateFilter>(
+                  child: BlocBuilder<InsightsCubit, InsightsState>(
+                    builder: (c, s) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          flex: s.dateFilter != DateFilter.all_time ? 7 : 11,
+                          child: DropdownFieldWidget<DateFilter>(
                             isDense: true,
                             items: [
                               DateFilter.all_time,
@@ -62,17 +59,15 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                                 dark: Palette.cardColorDark),
                             text: (it) => '${it?.label}',
                             minFontSize: 13,
-                            selected: filter,
+                            selected: s.dateFilter,
                             onChanged:
                                 c.read<InsightsCubit>().dateFilterChanged,
                           ),
                         ),
-                      ),
-                      //
-                      Flexible(
-                        flex: 8,
-                        child: BlocBuilder<InsightsCubit, InsightsState>(
-                          builder: (c, s) => WidgetVisibility(
+                        //
+                        Flexible(
+                          flex: 8,
+                          child: WidgetVisibility(
                             visible: s.dateFilter != DateFilter.all_time,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -144,8 +139,8 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -157,16 +152,21 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           VerticalSpace(height: 0.025.h),
           //
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 0.42.h),
+            constraints: BoxConstraints(maxHeight: 0.4.h),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child:
-                  BlocSelector<InsightsCubit, InsightsState, DispatchActivity>(
+                  BlocSelector<InsightsCubit, InsightsState, DispatchActivity?>(
                 selector: (s) => s.insight.activities,
-                builder: (_, activities) => BarChart(
-                  barData(activities),
-                  swapAnimationDuration: animDuration,
-                ),
+                builder: (_, activities) {
+                  if (activities != null)
+                    return BarChart(
+                      barData(activities),
+                      swapAnimationDuration: animDuration,
+                    );
+
+                  return Utils.nothing;
+                },
               ),
             ),
           ),
@@ -216,6 +216,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
         rightTitles: SideTitles(showTitles: false),
         leftTitles: SideTitles(
           showTitles: true,
+          reservedSize: 35,
           checkToShowTitle:
               (minValue, maxValue, sideTitles, appliedInterval, value) =>
                   value % 10 == 0,

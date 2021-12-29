@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:amatrider/core/data/response/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart' hide PermissionStatus;
@@ -11,18 +13,18 @@ import 'package:rxdart/rxdart.dart';
 enum PositionAccuracy { balanced, high, low, navigation, powerSave, reduced }
 
 class LocationService {
-  Location _location = Location();
+  final Location _location = Location();
 
-  Future<bool> get isServiceEnabled =>
-      Permission.locationAlways.serviceStatus.isEnabled;
+  Future<bool> get isServiceEnabled => Permission.locationAlways.serviceStatus.isEnabled;
 
-  Future<bool> get hasPermission => Permission.locationAlways.isGranted;
+  Future<bool> get hasPermission => Permission.locationWhenInUse.isGranted;
+
+  Future<bool> get hasAlwaysPermission => Permission.locationAlways.isGranted;
 
   Future<bool> get backgroundEnabled => _location.isBackgroundModeEnabled();
 
   Future<bool> requestService() async {
-    var _serviceEnabled =
-        await Permission.locationAlways.serviceStatus.isEnabled;
+    var _serviceEnabled = await Permission.locationAlways.serviceStatus.isEnabled;
 
     if (!_serviceEnabled) {
       await _location.requestService();
@@ -63,6 +65,8 @@ class LocationService {
   Future<bool> requestBackgroundMode([bool enable = true]) async {
     var _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
 
+    if (!enable) await _location.enableBackgroundMode(enable: enable);
+
     if (enable && !_isBackgroundModeEnabled) {
       await _location.enableBackgroundMode(enable: enable);
       _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
@@ -95,9 +99,29 @@ class LocationService {
     void Function(RiderLocation)? onData,
   }) async {
     try {
-      final _result = await _location.getLocation();
+      final _result = await env.flavor.fold(
+        prod: () => _location.getLocation(),
+        dev: () async => await Utils.platform_(
+          material: _location.getLocation(),
+          cupertino: null,
+        ),
+      );
 
-      final location = RiderLocation.fromLocation(_result);
+      final location = env.flavor.fold(
+        dev: () {
+          final dummyLocation = RiderLocation(
+            lat: BasicTextField(41.038284),
+            lng: BasicTextField(28.970329),
+            address: BasicTextField('Istanbul, Turkey'),
+          );
+
+          return Utils.platform_(
+            material: _result == null ? dummyLocation : RiderLocation.fromLocation(_result),
+            cupertino: dummyLocation,
+          )!;
+        },
+        prod: () => RiderLocation.fromLocation(_result!),
+      );
 
       onData?.call(location);
 
@@ -110,8 +134,7 @@ class LocationService {
   Stream<Either<AnyResponse, RiderLocation?>> liveLocation() async* {
     yield* _location.onLocationChanged
         .transform(
-          StreamTransformer<LocationData,
-              Either<AnyResponse, RiderLocation?>>.fromHandlers(
+          StreamTransformer<LocationData, Either<AnyResponse, RiderLocation?>>.fromHandlers(
             handleData: (data, event) => event.add(
               right(RiderLocation.fromLocation(data)),
             ),

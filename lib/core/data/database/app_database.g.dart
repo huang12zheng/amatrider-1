@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `riders` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `availability` TEXT, `lat` REAL, `lng` REAL, `phoneVerifiedAt` INTEGER, `avgRating` REAL, `verificationStatus` TEXT, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `riders` (`id` TEXT, `token` TEXT, `firstName` TEXT, `lastName` TEXT, `email` TEXT, `phone` TEXT, `password` TEXT, `oldPassword` TEXT, `confirmation` TEXT, `image` TEXT, `availability` TEXT, `lat` REAL, `lng` REAL, `phoneVerifiedAt` INTEGER, `avgRating` REAL, `isVerified` INTEGER NOT NULL, `verificationStatus` TEXT, `provider` TEXT, `createdAt` INTEGER, `updatedAt` INTEGER, `deletedAt` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -120,8 +120,10 @@ class _$RiderDAO extends RiderDAO {
                   'phoneVerifiedAt':
                       _timestampFloorConverter.encode(item.phoneVerifiedAt),
                   'avgRating': item.avgRating,
+                  'isVerified': item.isVerified,
                   'verificationStatus': _verificationStatusConverter
                       .encode(item.verificationStatus),
+                  'provider': _authProviderFloorConverter.encode(item.provider),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -149,8 +151,10 @@ class _$RiderDAO extends RiderDAO {
                   'phoneVerifiedAt':
                       _timestampFloorConverter.encode(item.phoneVerifiedAt),
                   'avgRating': item.avgRating,
+                  'isVerified': item.isVerified,
                   'verificationStatus': _verificationStatusConverter
                       .encode(item.verificationStatus),
+                  'provider': _authProviderFloorConverter.encode(item.provider),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -178,8 +182,10 @@ class _$RiderDAO extends RiderDAO {
                   'phoneVerifiedAt':
                       _timestampFloorConverter.encode(item.phoneVerifiedAt),
                   'avgRating': item.avgRating,
+                  'isVerified': item.isVerified,
                   'verificationStatus': _verificationStatusConverter
                       .encode(item.verificationStatus),
+                  'provider': _authProviderFloorConverter.encode(item.provider),
                   'createdAt': _timestampFloorConverter.encode(item.createdAt),
                   'updatedAt': _timestampFloorConverter.encode(item.updatedAt),
                   'deletedAt': _timestampFloorConverter.encode(item.deletedAt)
@@ -219,8 +225,11 @@ class _$RiderDAO extends RiderDAO {
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             avgRating: row['avgRating'] as double?,
+            isVerified: row['isVerified'] as int,
             verificationStatus: _verificationStatusConverter
-                .decode(row['verificationStatus'] as String),
+                .decode(row['verificationStatus'] as String?),
+            provider:
+                _authProviderFloorConverter.decode(row['provider'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -252,8 +261,11 @@ class _$RiderDAO extends RiderDAO {
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             avgRating: row['avgRating'] as double?,
+            isVerified: row['isVerified'] as int,
             verificationStatus: _verificationStatusConverter
-                .decode(row['verificationStatus'] as String),
+                .decode(row['verificationStatus'] as String?),
+            provider:
+                _authProviderFloorConverter.decode(row['provider'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -283,8 +295,11 @@ class _$RiderDAO extends RiderDAO {
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             avgRating: row['avgRating'] as double?,
+            isVerified: row['isVerified'] as int,
             verificationStatus: _verificationStatusConverter
-                .decode(row['verificationStatus'] as String),
+                .decode(row['verificationStatus'] as String?),
+            provider:
+                _authProviderFloorConverter.decode(row['provider'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -320,8 +335,11 @@ class _$RiderDAO extends RiderDAO {
             phoneVerifiedAt:
                 _timestampFloorConverter.decode(row['phoneVerifiedAt'] as int?),
             avgRating: row['avgRating'] as double?,
+            isVerified: row['isVerified'] as int,
             verificationStatus: _verificationStatusConverter
-                .decode(row['verificationStatus'] as String),
+                .decode(row['verificationStatus'] as String?),
+            provider:
+                _authProviderFloorConverter.decode(row['provider'] as String),
             createdAt:
                 _timestampFloorConverter.decode(row['createdAt'] as int?),
             updatedAt:
@@ -357,6 +375,7 @@ final _timestampFloorConverter = TimestampFloorConverter();
 final _countryDTOFloorConverter = CountryDTOFloorConverter();
 final _riderAvailabilityConverter = RiderAvailabilityConverter();
 final _verificationStatusConverter = VerificationStatusConverter();
+final _authProviderFloorConverter = AuthProviderFloorConverter();
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -377,17 +396,17 @@ _$_RiderDTO _$$_RiderDTOFromJson(Map<String, dynamic> json) => _$_RiderDTO(
           .fromJson(json['availability'] as int?),
       lat: const DoubleSerializer().fromJson(json['current_latitude']),
       lng: const DoubleSerializer().fromJson(json['current_longitude']),
-      phoneVerifiedAt: const TimestampConverter()
-          .fromJson(json['phone_verified_at'] as String?),
+      phoneVerifiedAt:
+          const TimestampConverter().fromJson(json['phone_verified_at']),
       avgRating: const DoubleSerializer().fromJson(json['average_rating']),
+      isVerified: json['is_verified'] as int? ?? 0,
       verificationStatus: const VerificationStatusSerializer()
           .fromJson(json['verification_state'] as String?),
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
-      deletedAt:
-          const TimestampConverter().fromJson(json['deleted_at'] as String?),
+      provider:
+          const AuthProviderSerializer().fromJson(json['provider'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
+      deletedAt: const TimestampConverter().fromJson(json['deleted_at']),
     );
 
 Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {
@@ -419,8 +438,11 @@ Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {
       const TimestampConverter().toJson(instance.phoneVerifiedAt));
   writeNotNull(
       'average_rating', const DoubleSerializer().toJson(instance.avgRating));
+  val['is_verified'] = instance.isVerified;
   writeNotNull('verification_state',
       const VerificationStatusSerializer().toJson(instance.verificationStatus));
+  writeNotNull(
+      'provider', const AuthProviderSerializer().toJson(instance.provider));
   writeNotNull(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(

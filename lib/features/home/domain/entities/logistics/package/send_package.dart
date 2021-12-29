@@ -32,9 +32,12 @@ class SendPackage with _$SendPackage {
     @Default(Duration.zero) Duration durationToPickup,
     required BasicTextField<double?> distanceToPickup,
     DateTime? orderActiveAt,
+    DateTime? orderCancelledAt,
     DateTime? riderAcceptedAt,
     DateTime? riderReceivedAt,
     DateTime? riderDeliveredAt,
+    DateTime? paymentDepositedAt,
+    DateTime? paymentDepositConfirmedAt,
     required Sender sender,
     //
     DateTime? createdAt,

@@ -35,9 +35,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           secondTextStyle: const TextStyle(color: Colors.white),
           secondBgColor: Palette.accentColor,
           onSecondPressed: () async {
-            await context
-                .read<RequestCubit>()
-                .acceptPackageDelivery(context, widget.package);
+            await context.read<RequestCubit>().acceptPackageDelivery(context, widget.package);
           },
           materialFirstButton: AppOutlinedButton(
             text: '${tr.noGoBack}',
@@ -69,9 +67,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
         secondTextStyle: const TextStyle(color: Colors.white),
         secondBgColor: Palette.accentColor,
         onSecondPressed: () async {
-          await context
-              .read<RequestCubit>()
-              .declinePackageDelivery(context, widget.package);
+          await context.read<RequestCubit>().declinePackageDelivery(context, widget.package);
         },
         materialFirstButton: AppOutlinedButton(
           text: '${tr.noGoBack}',
@@ -87,10 +83,8 @@ class __SendPackageCardState extends State<_SendPackageCard> {
   }
 
   void onContinue() {
-    context.read<RequestCubit>().setCurrentPackage(widget.package);
-    navigator.navigate(PackageDeliveryAcceptedRoute(
-      sendPackage: widget.package,
-    ));
+    final cubit = context.read<RequestCubit>();
+    if (cubit.state.currentPackage == null) cubit.setCurrentPackage(widget.package);
   }
 
   @override
@@ -118,8 +112,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
             tapHeaderToExpand: true,
             tapBodyToCollapse: false,
             iconColor: Palette.accentColor,
-            iconPadding:
-                const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
+            iconPadding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
             useInkWell: Utils.platform_(material: true, cupertino: false),
             headerAlignment: ExpandablePanelHeaderAlignment.center,
             inkWellBorderRadius: const BorderRadius.all(
@@ -146,13 +139,12 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                       ),
                       orElse: () => AdaptiveButton(
                         text: '${tr.continueTxt}',
-                        disabled: context
-                            .select((RequestCubit el) => el.state.isLoading),
+                        disabled: context.select((RequestCubit el) => el.state.isLoading),
                         textColor: Colors.white,
                         backgroundColor: Palette.accentColor,
                         splashColor: Colors.white24,
-                        height: 0.05.sh,
-                        cupertinoHeight: 0.09.sw,
+                        height: 0.05.h,
+                        cupertinoHeight: 0.05.h,
                         onPressed: onContinue,
                       ),
                     ),
@@ -173,16 +165,14 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
                             title: '${tr.pickupLocationText}',
-                            subtitle:
-                                '${widget.package.pickup.address.getOrEmpty}',
+                            subtitle: '${widget.package.pickup.address.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             title: '${tr.deliveryLocationText}',
-                            subtitle:
-                                '${widget.package.destination.address.getOrEmpty}',
+                            subtitle: '${widget.package.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -196,13 +186,12 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         ),
                         orElse: () => AdaptiveButton(
                           text: '${tr.continueTxt}',
-                          disabled: context
-                              .select((RequestCubit el) => el.state.isLoading),
+                          disabled: context.select((RequestCubit el) => el.state.isLoading),
                           textColor: Colors.white,
                           backgroundColor: Palette.accentColor,
                           splashColor: Colors.white24,
-                          height: 0.05.sh,
-                          cupertinoHeight: 0.09.sw,
+                          height: 0.05.h,
+                          cupertinoHeight: 0.05.h,
                           onPressed: onContinue,
                         ),
                       ),
@@ -227,28 +216,13 @@ class __SendPackageCardState extends State<_SendPackageCard> {
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
               child: widget.package.sender.photo.ensure(
-                (it) => CachedNetworkImage(
-                  imageUrl: '${it.getOrEmpty}',
+                (it) => ImageBox(
                   fit: BoxFit.cover,
                   width: 0.14.sw,
-                  height: double.infinity,
-                  progressIndicatorBuilder: (_, url, download) => Center(
-                    child: CircularProgressBar.adaptive(
-                      value: download.progress,
-                      strokeWidth: 1.5,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                  errorWidget: (_, __, ___) => Image.asset(
-                    AppAssets.slider1,
-                    width: 0.14.sw,
-                    height: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
+                  photo: '${it.getOrEmpty}',
+                  replacement: Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
                 ),
-                orElse: (_) => Image.asset(AppAssets.slider1,
-                    width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
               ),
             ),
             title: Center(
@@ -312,37 +286,18 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                       ),
                     ),
                     //
-                    widget.package.paymentMethod?.maybeWhen(
-                          deliveryWithCard: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          deliveryWithCash: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          orElse: () => const Icon(
-                            Icons.check_circle,
-                            color: Palette.accentGreen,
-                          ),
-                        ) ??
-                        Utils.nothing,
+                    Flexible(
+                      flex: 2,
+                      child: AdaptiveText(
+                        '${widget.package.paymentMethod?.formatted}',
+                        minFontSize: 12,
+                        maxLines: 1,
+                        softWrap: true,
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -374,28 +329,52 @@ class _ActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        AppOutlinedButton(
-          text: '${tr.decline}',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Palette.accentColor,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onDecline,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AppOutlinedButton(
+            text: '${tr.decline}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) || !isAvailable,
+            textColor: Palette.accentColor,
+            height: 0.05.h,
+            cupertinoHeight: 0.05.h,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: () {
+              final status = c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onDecline?.call();
+            },
+          ),
         ),
         //
-        AdaptiveButton(
-          text: '${tr.accept}',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Colors.white,
-          backgroundColor: Palette.accentColor,
-          splashColor: Colors.white24,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onAccept,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AdaptiveButton(
+            text: '${tr.accept}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) || !isAvailable,
+            textColor: Colors.white,
+            backgroundColor: Palette.accentColor,
+            splashColor: Colors.white24,
+            height: 0.05.h,
+            cupertinoHeight: 0.05.h,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: () {
+              final status = c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onAccept?.call();
+            },
+          ),
         ),
       ],
     );

@@ -4,7 +4,7 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// A stateless widget to render UserContactDeliveryCard.
 class UserContactDeliveryCard extends StatelessWidget {
@@ -13,6 +13,8 @@ class UserContactDeliveryCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String? phone;
+  final String? photo;
+  final VoidCallback? onIconPressed;
 
   const UserContactDeliveryCard({
     Key? key,
@@ -20,7 +22,9 @@ class UserContactDeliveryCard extends StatelessWidget {
     this.width,
     required this.title,
     required this.subtitle,
+    required this.photo,
     this.phone,
+    this.onIconPressed,
   }) : super(key: key);
 
   @override
@@ -34,7 +38,15 @@ class UserContactDeliveryCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-              child: Image.asset(AppAssets.blackAvatar, fit: BoxFit.contain),
+              child: LimitedBox(
+                maxWidth: 0.065.h,
+                child: ImageBox(
+                  photo: photo,
+                  replacement: Center(
+                    child: Image.asset(AppAssets.unnamed, fit: BoxFit.contain),
+                  ),
+                ),
+              ),
             ),
             //
             HorizontalSpace(width: 0.03.sw),
@@ -49,7 +61,7 @@ class UserContactDeliveryCard extends StatelessWidget {
                       '$title',
                       fontSize: 16.sp,
                       textColor: Colors.grey.shade800,
-                      textColorDark: Colors.white24,
+                      textColorDark: Colors.white60,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -80,7 +92,12 @@ class UserContactDeliveryCard extends StatelessWidget {
                     horizontal: 0.03.sw,
                   ),
                   borderRadius: BorderRadius.circular(Utils.buttonRadius),
-                  onPressed: () {},
+                  onPressed: onIconPressed ??
+                      () async {
+                        final formattedPhone = 'tel:${phone?.removeNewLines().trimWhiteSpaces()}';
+
+                        await canLaunch(formattedPhone) ? await launch(formattedPhone) : print('could not launch phone');
+                      },
                   child: Icon(
                     Utils.platform_(
                       material: Icons.phone_sharp,

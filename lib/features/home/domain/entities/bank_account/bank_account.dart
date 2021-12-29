@@ -19,6 +19,10 @@ class BankAccount with _$BankAccount {
     required BasicTextField<String?> accountName,
     required BasicTextField<String?> accountNumber,
     required BasicTextField<String?> sortCode,
+    //
+    required UniqueId<String?> reference,
+    required BasicTextField<double?> amount,
+    required BasicTextField<String?> transferNote,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _BankAccount;
@@ -35,5 +39,9 @@ class BankAccount with _$BankAccount {
         accountName: BasicTextField(null),
         accountNumber: BasicTextField(null),
         sortCode: BasicTextField(null, validate: false),
+        //
+        reference: UniqueId.fromExternal(null),
+        amount: BasicTextField(null),
+        transferNote: BasicTextField(null),
       );
 }

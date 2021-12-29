@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 
 /// A stateless widget to render OrWidget.
 class OrWidget extends StatelessWidget {
-  const OrWidget({Key? key}) : super(key: key);
+  final String text;
+
+  const OrWidget({Key? key, this.text = 'OR'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class OrWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                'OR',
+                '$text',
                 style: TextStyle(
                   fontSize: 15.0.sp,
                   fontWeight: FontWeight.w600,

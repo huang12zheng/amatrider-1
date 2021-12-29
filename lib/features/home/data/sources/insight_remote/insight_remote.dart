@@ -18,8 +18,8 @@ abstract class InsightRemote {
   @GET(EndPoints.GET_INSIGHT)
   Future<InsightDTO> insights();
 
-  @POST(EndPoints.DEPOSIT_CASH)
-  Future<AppHttpResponse> deposit(@Query('amount') String amount);
+  @POST(EndPoints.INITIATE_CASH_DEPOSIT)
+  Future<BankAccountDTO> deposit();
 
   @GET(EndPoints.CLAIM_BONUS)
   Future<AppHttpResponse> claimBonus();

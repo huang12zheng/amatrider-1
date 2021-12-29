@@ -62,6 +62,16 @@ import 'package:amatrider/_404.dart';
       fullMatch: true,
       maintainState: true,
       usesPathAsKey: true,
+      path: 'socials-signup-screen',
+      page: SocialsSignupScreen,
+      cupertinoPageTitle: 'Continue with Socials',
+      guards: [GuestGuard],
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      usesPathAsKey: true,
       fullscreenDialog: true,
       page: ForgotPasswordScreen,
       path: 'forgot-password-screen',
@@ -77,7 +87,7 @@ import 'package:amatrider/_404.dart';
       page: OTPVerificationScreen,
       path: 'otp-verification-screen',
       cupertinoPageTitle: 'OTP',
-      guards: [GuestGuard, AuthGuard],
+      // guards: [GuestGuard, AuthGuard],
     ),
     //
     dashboardRouter,

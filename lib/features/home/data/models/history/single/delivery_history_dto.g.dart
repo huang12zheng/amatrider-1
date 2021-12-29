@@ -37,22 +37,26 @@ _$_DeliveryHistoryDTO _$$_DeliveryHistoryDTOFromJson(
       sender: json['user'] == null
           ? null
           : SenderDTO.fromJson(json['user'] as Map<String, dynamic>),
-      orderActiveAt: const TimestampConverter()
-          .fromJson(json['order_active_at'] as String?),
-      riderAcceptedAt: const TimestampConverter()
-          .fromJson(json['rider_accepted_at'] as String?),
+      orderActiveAt:
+          const TimestampConverter().fromJson(json['order_active_at']),
+      orderCancelledAt:
+          const TimestampConverter().fromJson(json['order_cancelled_at']),
+      riderAcceptedAt:
+          const TimestampConverter().fromJson(json['rider_accepted_at']),
       riderReceivedAt: const TimestampConverter()
-          .fromJson(json['rider_received_package_at'] as String?),
+          .fromJson(json['rider_received_package_at']),
       riderDeliveredAt: const TimestampConverter()
-          .fromJson(json['rider_delivered_package_at'] as String?),
-      depositedAt: const TimestampConverter()
-          .fromJson(json['payment_deposited_at'] as String?),
+          .fromJson(json['rider_delivered_package_at']),
+      depositedAt:
+          const TimestampConverter().fromJson(json['payment_deposited_at']),
       depositConfirmedAt: const TimestampConverter()
-          .fromJson(json['payment_deposited_confirmed_at'] as String?),
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
-      updatedAt:
-          const TimestampConverter().fromJson(json['updated_at'] as String?),
+          .fromJson(json['payment_deposited_confirmed_at']),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
+      updatedAt: const TimestampConverter().fromJson(json['updated_at']),
+      historyData: json['history'] == null
+          ? null
+          : DeliveryHistoryDTO.fromJson(
+              json['history'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_DeliveryHistoryDTOToJson(
@@ -96,6 +100,8 @@ Map<String, dynamic> _$$_DeliveryHistoryDTOToJson(
   writeNotNull('user', instance.sender?.toJson());
   writeNotNull('order_active_at',
       const TimestampConverter().toJson(instance.orderActiveAt));
+  writeNotNull('order_cancelled_at',
+      const TimestampConverter().toJson(instance.orderCancelledAt));
   writeNotNull('rider_accepted_at',
       const TimestampConverter().toJson(instance.riderAcceptedAt));
   writeNotNull('rider_received_package_at',
@@ -110,5 +116,6 @@ Map<String, dynamic> _$$_DeliveryHistoryDTOToJson(
       'created_at', const TimestampConverter().toJson(instance.createdAt));
   writeNotNull(
       'updated_at', const TimestampConverter().toJson(instance.updatedAt));
+  writeNotNull('history', instance.historyData?.toJson());
   return val;
 }

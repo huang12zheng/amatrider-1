@@ -1,6 +1,8 @@
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -35,8 +37,7 @@ class AdaptiveToolbar {
   final bool transitionBetweenRoutes;
   // Adaptive
   final MaterialAppBarData Function(BuildContext, PlatformTarget)? material;
-  final CupertinoNavigationBarData Function(BuildContext, PlatformTarget)?
-      cupertino;
+  final CupertinoNavigationBarData Function(BuildContext, PlatformTarget)? cupertino;
 
   const AdaptiveToolbar({
     this.key,
@@ -95,8 +96,7 @@ class AdaptiveToolbar {
         ),
       );
 
-  Widget? get _materialLeading => showCustomLeading ??
-          navigator.canPopSelfOrChildren
+  Widget? get _materialLeading => showCustomLeading ?? getIt<AppRouter>().navigatorKey.currentContext!.watchRouter.canPopSelfOrChildren
       ? Semantics.fromProperties(
           properties: SemanticsProperties(
             label: tooltip,
@@ -132,8 +132,7 @@ class AdaptiveToolbar {
                   cupertinoLeading,
                   style: cupertinoLeadingStyle ??
                       TextStyle(
-                        color: Utils.computeLuminance(
-                            Theme.of(App.context).scaffoldBackgroundColor),
+                        color: Utils.computeLuminance(Theme.of(App.context).scaffoldBackgroundColor),
                       ),
                 ),
               ),
@@ -175,7 +174,7 @@ class AdaptiveToolbar {
                 ),
                 leading: cupertinoImplyLeading
                     ? null
-                    : showCustomLeading ?? navigator.canPopSelfOrChildren
+                    : showCustomLeading ?? getIt<AppRouter>().navigatorKey.currentContext!.watchRouter.canPopSelfOrChildren
                         ? _cupertinoLeading
                         : null,
               ),

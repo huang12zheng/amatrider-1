@@ -3,7 +3,6 @@ library insight.dart;
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:kt_dart/kt.dart';
 
 part 'insight.freezed.dart';
 
@@ -18,12 +17,22 @@ class Insight with _$Insight {
     required BasicTextField<int?> progress,
     required BasicTextField<int?> daysLeft,
     required AmountField<double?> cashAtHand,
-    required AmountField<double?> bonus,
-    required BasicTextField<int?> extraDelivery,
-    required DispatchActivity activities,
+    required AmountField<double?> currentBonus,
+    required AmountField<double?> totalBonusClaimed,
+    required AmountField<double?> totalBonusAvailable,
+    @Default(false) bool canClaimBonus,
+    required AmountField<double?> bonusPerExtraDelivery,
+    required BasicTextField<int?> totalExtraDeliveries,
+    required BasicTextField<int?> completedExtraDeliveries,
+    required DispatchActivity? activities,
+    required BasicTextField<double?> avgRating,
     DateTime? planStarted,
     DateTime? planEnded,
   }) = _Insight;
+
+  int get extraDeliveries =>
+      (totalExtraDeliveries.getOrNull ?? 0) -
+      (completedExtraDeliveries.getOrNull ?? 0);
 
   static Insight blank() => Insight(
         completed: BasicTextField(null),
@@ -31,8 +40,13 @@ class Insight with _$Insight {
         progress: BasicTextField(null),
         daysLeft: BasicTextField(null),
         cashAtHand: AmountField(null),
-        bonus: AmountField(null),
-        extraDelivery: BasicTextField(null),
+        currentBonus: AmountField(null),
+        totalBonusClaimed: AmountField(null),
+        totalBonusAvailable: AmountField(null),
+        bonusPerExtraDelivery: AmountField(null),
+        completedExtraDeliveries: BasicTextField(null),
+        totalExtraDeliveries: BasicTextField(null),
         activities: DispatchActivity.blank(),
+        avgRating: BasicTextField(null),
       );
 }

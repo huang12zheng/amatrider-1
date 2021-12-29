@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:amatrider/features/onborading/domain/onboarding.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
@@ -10,10 +7,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -80,6 +75,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
                   height: 0.09.sw,
                   width: 0.18.sw,
                   fontSize: 18.sp,
+                  cupertinoHeight: 0.05.h,
                   splashColor: Colors.black.withOpacity(0.09),
                   padding: EdgeInsets.all(0.007.sw),
                   onPressed: () => navigator.pushAndPopUntil(
@@ -188,6 +184,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                 VerticalSpace(height: 0.03.sw),
                                 //
                                 Flexible(
+                                  flex: 2,
                                   child: AdaptiveText(
                                     '${widget.item!.description}',
                                     textAlign: TextAlign.center,

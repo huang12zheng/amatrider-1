@@ -12,6 +12,7 @@ class LocationState extends BaseState with _$LocationState {
     @Default(false) bool isBackgroundEnabled,
     RiderLocation? position,
     @Default(KtList.empty()) KtList<Future<dynamic>> operations,
+    DateTime? lastUpdate,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _LocationState;
 

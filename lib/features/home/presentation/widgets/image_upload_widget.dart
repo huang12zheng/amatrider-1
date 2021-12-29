@@ -6,13 +6,11 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// A stateless widget to render ImageUploadWidget.
-class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
-    extends StatelessWidget {
+class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> extends StatelessWidget {
   final EdgeInsets? padding;
   final double radius;
   final BoxFit localFit;
@@ -50,10 +48,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
 
   @override
   Widget build(BuildContext context) {
-    return state != null
-        ? _widget(context, state!)
-        : BlocBuilder<Reactive, ReactiveState>(
-            builder: (c, s) => _widget(c, s));
+    return state != null ? _widget(context, state!) : BlocBuilder<Reactive, ReactiveState>(builder: (c, s) => _widget(c, s));
   }
 
   Widget _widget(BuildContext c, ReactiveState s) => Padding(
@@ -65,19 +60,13 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
               selected?.call(s)?.let((it) => App.getImageDimensions(
                     FileImage(it),
                   ).future) ??
-              App.getImageDimensions(const AssetImage(AppAssets.unnamed))
-                  .future,
+              App.getImageDimensions(const AssetImage(AppAssets.unnamed)).future,
           builder: (_, snapshot) {
-            if (!snapshot.hasData)
-              return const Center(child: CircularProgressBar.adaptive());
+            if (!snapshot.hasData) return const Center(child: CircularProgressBar.adaptive());
 
-            final _height = height?.call(s) ??
-                width?.call(s) ??
-                snapshot.data?.height.toDouble();
+            final _height = height?.call(s) ?? width?.call(s) ?? snapshot.data?.height.toDouble();
 
-            final _width = width?.call(s) ??
-                height?.call(s) ??
-                snapshot.data?.width.toDouble();
+            final _width = width?.call(s) ?? height?.call(s) ?? snapshot.data?.width.toDouble();
 
             return SizedBox(
               height: _height,
@@ -94,10 +83,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
                           children: [
                             if (selected?.call(s) != null)
                               Flexible(
-                                child: Image.file(selected!.call(s)!,
-                                    fit: localFit,
-                                    height: _height,
-                                    width: _width),
+                                child: Image.file(selected!.call(s)!, fit: localFit, height: _height, width: _width),
                               ),
                             //
                             if (selected?.call(s) == null)
@@ -108,26 +94,18 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
                                             fit: networkFit,
                                             height: _height,
                                             width: _width,
-                                            progressIndicatorBuilder:
-                                                (_, url, download) => Center(
-                                              child:
-                                                  CircularProgressBar.adaptive(
+                                            progressIndicatorBuilder: (_, url, download) => Center(
+                                              child: CircularProgressBar.adaptive(
                                                 value: download.progress,
                                                 strokeWidth: 2,
                                               ),
                                             ),
                                             errorWidget: (_, __, ___) =>
-                                                Image.asset(AppAssets.unnamed,
-                                                    fit: localFit,
-                                                    height: _height,
-                                                    width: _width),
+                                                Image.asset(AppAssets.unnamed, fit: localFit, height: _height, width: _width),
                                           ),
                                         ),
                                       ) ??
-                                  Image.asset(AppAssets.unnamed,
-                                      fit: localFit,
-                                      height: _height,
-                                      width: _width),
+                                  Image.asset(AppAssets.unnamed, fit: localFit, height: _height, width: _width),
                           ],
                         ),
                       ),
@@ -159,7 +137,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
                         borderRadius: BorderRadius.circular(radius),
                         color: App.resolveColor(Colors.transparent),
                         elevation: 0,
-                        child: InkWell(
+                        child: AdaptiveInkWell(
                           borderRadius: BorderRadius.circular(radius),
                           onTap: () async {
                             if (!isLoading.call(s))
@@ -174,18 +152,14 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
                                           light: () => AppAssets.cameraColored,
                                           dark: () => AppAssets.cameraOutlined,
                                         ),
-                                        onPressed: () => onCameraClicked?.call(
-                                            c.read<Reactive>(),
-                                            ImageSource.camera)),
+                                        onPressed: () => onCameraClicked?.call(c.read<Reactive>(), ImageSource.camera)),
                                     DocumentPicker(
                                         name: 'Gallery',
                                         asset: Utils.foldTheme(
                                           light: () => AppAssets.galleryColored,
                                           dark: () => AppAssets.galleryOutlined,
                                         ),
-                                        onPressed: () => onCameraClicked?.call(
-                                            c.read<Reactive>(),
-                                            ImageSource.gallery)),
+                                        onPressed: () => onCameraClicked?.call(c.read<Reactive>(), ImageSource.gallery)),
                                   ],
                                 ),
                               );
@@ -206,10 +180,9 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState>
                               dark: Palette.cardColorDark,
                             ),
                             borderRadius: BorderRadius.circular(radius),
-                            child: InkWell(
+                            child: AdaptiveInkWell(
                               borderRadius: BorderRadius.circular(radius),
-                              onTap: () =>
-                                  onClosePressed?.call(c.read<Reactive>()),
+                              onTap: () => onClosePressed?.call(c.read<Reactive>()),
                               child: Padding(
                                 padding: EdgeInsets.all(0.015.sw),
                                 child: const Icon(

@@ -17,18 +17,14 @@ class RiderDTO with _$RiderDTO {
     @JsonKey(name: 'current_password') String? oldPassword,
     @JsonKey(name: 'password_confirmation') String? confirmation,
     @JsonKey(name: 'image') String? image,
-    @JsonKey(name: 'availability')
-    @RiderAvailabilitySerializer()
-        RiderAvailability? availability,
+    @JsonKey(name: 'availability') @RiderAvailabilitySerializer() RiderAvailability? availability,
     @JsonKey(name: 'current_latitude') @DoubleSerializer() double? lat,
     @JsonKey(name: 'current_longitude') @DoubleSerializer() double? lng,
-    @JsonKey(name: 'phone_verified_at')
-    @TimestampConverter()
-        DateTime? phoneVerifiedAt,
+    @JsonKey(name: 'phone_verified_at') @TimestampConverter() DateTime? phoneVerifiedAt,
     @JsonKey(name: 'average_rating') @DoubleSerializer() double? avgRating,
-    @JsonKey(name: 'verification_state')
-    @VerificationStatusSerializer()
-        ProfileVerificationStatus? verificationStatus,
+    @Default(0) @JsonKey(name: 'is_verified') @IntegerSerializer() int isVerified,
+    @JsonKey(name: 'verification_state') @VerificationStatusSerializer() ProfileVerificationStatus? verificationStatus,
+    @AuthProviderSerializer() AuthProvider? provider,
     @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
     @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
     @JsonKey(name: 'deleted_at') @TimestampConverter() DateTime? deletedAt,
@@ -45,8 +41,7 @@ class RiderDTO with _$RiderDTO {
         availability: instance?.availability,
       );
 
-  factory RiderDTO.fromJson(Map<String, dynamic> json) =>
-      _$RiderDTOFromJson(json);
+  factory RiderDTO.fromJson(Map<String, dynamic> json) => _$RiderDTOFromJson(json);
 
   Rider get domain => Rider(
         uid: UniqueId.fromExternal(id),
@@ -64,7 +59,8 @@ class RiderDTO with _$RiderDTO {
         ),
         avgRating: BasicTextField(avgRating),
         phoneVerified: phoneVerifiedAt != null,
-        verificationStatus: verificationStatus!,
+        verificationStatus: verificationStatus != null ? verificationStatus! : ProfileVerificationStatus.fromInt(isVerified),
+        provider: provider!,
         createdAt: createdAt,
         updatedAt: updatedAt,
         deletedAt: deletedAt,
@@ -85,7 +81,10 @@ class RiderDTO with _$RiderDTO {
         lat: lat,
         lng: lng,
         phoneVerifiedAt: phoneVerifiedAt,
+        isVerified: isVerified,
         verificationStatus: verificationStatus,
+        provider: provider,
+        avgRating: avgRating,
         createdAt: createdAt,
         updatedAt: updatedAt,
         deletedAt: deletedAt,
@@ -110,8 +109,7 @@ abstract class RiderDAO extends BaseDAO<_$_RiderDTO> {
   Future<_$_RiderDTO?> lastRider();
 }
 
-class RiderAvailabilitySerializer
-    implements JsonConverter<RiderAvailability?, int?> {
+class RiderAvailabilitySerializer implements JsonConverter<RiderAvailability?, int?> {
   const RiderAvailabilitySerializer();
 
   @override
@@ -132,8 +130,7 @@ class RiderAvailabilitySerializer
   }
 }
 
-class RiderAvailabilityConverter
-    extends TypeConverter<RiderAvailability?, String> {
+class RiderAvailabilityConverter extends TypeConverter<RiderAvailability?, String> {
   @override
   RiderAvailability decode(String databaseValue) => valueOf(databaseValue);
 
@@ -152,24 +149,20 @@ class RiderAvailabilityConverter
   }
 }
 
-class VerificationStatusSerializer
-    implements JsonConverter<ProfileVerificationStatus?, String?> {
+class VerificationStatusSerializer implements JsonConverter<ProfileVerificationStatus?, String?> {
   const VerificationStatusSerializer();
 
   @override
-  ProfileVerificationStatus fromJson(String? value) =>
-      ProfileVerificationStatus.valueOf(value ?? '');
+  ProfileVerificationStatus? fromJson(String? value) => value?.let((it) => ProfileVerificationStatus.valueOf(it));
 
   @override
-  String? toJson(ProfileVerificationStatus? instance) => instance?.name;
+  String? toJson(ProfileVerificationStatus? it) => '${it?.name}';
 }
 
-class VerificationStatusConverter
-    extends TypeConverter<ProfileVerificationStatus?, String> {
+class VerificationStatusConverter extends TypeConverter<ProfileVerificationStatus?, String?> {
   @override
-  ProfileVerificationStatus decode(String databaseValue) =>
-      ProfileVerificationStatus.valueOf(databaseValue);
+  ProfileVerificationStatus? decode(String? databaseValue) => databaseValue?.let((it) => ProfileVerificationStatus.valueOf(it));
 
   @override
-  String encode(ProfileVerificationStatus? instance) => '${instance?.name}';
+  String encode(ProfileVerificationStatus? it) => '${it?.name}';
 }

@@ -18,21 +18,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:kt_dart/kt.dart' hide StandardKt;
 import 'package:password_strength/password_strength.dart';
 
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
 @injectable
-class AuthCubit extends Cubit<AuthState>
-    with BaseCubit<AuthState>, _ImagePickerMixin {
+class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePickerMixin {
   final AuthFacade _auth;
   final UtilitiesRepository _utils;
   final PreferenceRepository _preferences;
 
-  AuthCubit(this._auth, this._preferences, this._utils)
-      : super(AuthState.initial());
+  AuthCubit(this._auth, this._preferences, this._utils) : super(AuthState.initial());
 
   @override
   Future<void> close() {
@@ -48,37 +45,57 @@ class AuthCubit extends Cubit<AuthState>
 
     final _phone = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
-    (_user.getOrElse(() => null) ?? state.rider)
-        .let((it) => emit(state.copyWith(
-              rider: it.copyWith(
-                phone: _phone?.let(
-                      (number) => Phone(number, country: _mapCountry()),
-                    ) ??
-                    it.phone.ensure((p0) => (p0 as Phone),
-                        orElse: (_) => state.rider.phone),
-              ),
-            )));
+    (_user.getOrElse(() => null) ?? state.rider).let((it) => emit(state.copyWith(
+          rider: it.copyWith(
+            phone: _phone?.let(
+                  (number) => Phone(number, country: _mapCountry()),
+                ) ??
+                it.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone),
+          ),
+        )));
 
     if (loader) toggleLoading();
   }
 
-  void toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  void initSocials() async {
+    toggleLoading(true, none());
 
-  void togglePasswordVisibility() =>
-      emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
+    final _value = await _auth.rider;
 
-  void firstNameChanged(String value) =>
-      emit(state.copyWith.rider.call(firstName: DisplayName(value.trim())));
+    _value.fold(
+      () => null,
+      (rider) {
+        // full name
+        final fullName = rider?.firstName.getOrNull?.split(' ');
+        // first name
+        final firstName = fullName != null && fullName.isNotEmpty ? DisplayName(fullName[0]) : rider?.firstName;
+        final lastName = fullName != null && fullName.length > 1 ? DisplayName(fullName[1]) : rider?.lastName;
 
-  void lastNameChanged(String value) =>
-      emit(state.copyWith.rider.call(lastName: DisplayName(value.trim())));
+        emit(state.copyWith(
+          rider: rider?.copyWith(firstName: firstName!, lastName: lastName!) ?? state.rider,
+        ));
+      },
+    );
 
-  void emailChanged(String value) =>
-      emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
+    toggleLoading(false);
+  }
 
-  void oldPasswordChanged(String value) =>
-      emit(state.copyWith(oldPassword: Password(value)));
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
+        isLoading: isLoading ?? !state.isLoading,
+        status: status ?? state.status,
+      ));
+
+  void toggleOldPasswordVisibility() => emit(state.copyWith(isOldPasswordHidden: !state.isOldPasswordHidden));
+
+  void togglePasswordVisibility() => emit(state.copyWith(isPasswordHidden: !state.isPasswordHidden));
+
+  void firstNameChanged(String value) => emit(state.copyWith.rider.call(firstName: DisplayName(value.trim())));
+
+  void lastNameChanged(String value) => emit(state.copyWith.rider.call(lastName: DisplayName(value.trim())));
+
+  void emailChanged(String value) => emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
+
+  void oldPasswordChanged(String value) => emit(state.copyWith(oldPassword: Password(value, false)));
 
   void passwordChanged(String value) {
     var strength = estimatePasswordStrength(value);
@@ -102,8 +119,7 @@ class AuthCubit extends Cubit<AuthState>
 
     try {
       if (value.length > 2) {
-        var number = await PhoneNumber.getRegionInfoFromPhoneNumber(
-            value, country?.code ?? '');
+        var number = await PhoneNumber.getRegionInfoFromPhoneNumber(value, country?.code ?? '');
 
         var _parsed = await PhoneNumber.getParsableNumber(number);
 
@@ -160,25 +176,32 @@ class AuthCubit extends Cubit<AuthState>
     ));
   }
 
-  void otpCodeChanged(String value) =>
-      emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
+  void otpCodeChanged(String value) => emit(state.copyWith(code: OTPCode(value, AuthState.OTP_CODE_LENGTH)));
 
-  void bankNameChanged(String value) =>
-      emit(state.copyWith.bankAccount.call(bank: BasicTextField(value.trim())));
+  void bankNameChanged(String value) => emit(state.copyWith.bankAccount.call(bank: BasicTextField(value.trim())));
 
-  void accountNameChanged(String value) => emit(state.copyWith.bankAccount
-      .call(accountName: BasicTextField(value.trim())));
+  void accountNameChanged(String value) => emit(state.copyWith.bankAccount.call(accountName: BasicTextField(value.trim())));
 
-  void accountNumberChanged(String value) => emit(state.copyWith.bankAccount
-      .call(accountNumber: BasicTextField(value.trim())));
+  void accountNumberChanged(String value) => emit(state.copyWith.bankAccount.call(accountNumber: BasicTextField(value.trim())));
 
-  void sortCodeChanged(String value) => emit(state.copyWith.bankAccount
-      .call(sortCode: BasicTextField(value.trim(), validate: false)));
+  void sortCodeChanged(String value) => emit(state.copyWith.bankAccount.call(sortCode: BasicTextField(value.trim(), validate: false)));
 
   void createAccount() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
+
+    // var unique = UniqueId<int>.int(58938706, 300000000).value;
+
+    // emit(state.copyWith(
+    //   rider: Rider.blank(
+    //     firstName: DisplayName('Brendan'),
+    //     lastName: DisplayName('Ejike'),
+    //     email: EmailAddress('${UniqueId.v4().value}@mail.com'),
+    //     phone: Phone('$unique', country: _mapCountry()),
+    //     password: Password('password'),
+    //   ),
+    // ));
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -208,11 +231,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void login() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -238,11 +261,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> resendPhoneOTP() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -255,11 +278,11 @@ class AuthCubit extends Cubit<AuthState>
       emit(state.copyWith(status: optionOf(result)));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> verifyPhone() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -284,11 +307,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<bool> forgotPassword([bool pop = true]) async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse? result;
 
@@ -296,9 +319,7 @@ class AuthCubit extends Cubit<AuthState>
     emit(state.copyWith(validate: true, status: none()));
 
     if (state.rider.phone.isValid) {
-      final phone = state.rider.phone.formatted?.getOrNull != null
-          ? state.rider.phone.formatted!
-          : state.rider.phone;
+      final phone = state.rider.phone.formatted?.getOrNull != null ? state.rider.phone.formatted! : state.rider.phone;
 
       result = await _auth.sendPasswordResetInstructions(phone);
 
@@ -322,7 +343,7 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
 
     return result?.response.map(
           error: (_) => false,
@@ -332,7 +353,7 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void resetPassword() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -353,8 +374,7 @@ class AuthCubit extends Cubit<AuthState>
 
       await result.response.maybeMap(
         orElse: () async => null,
-        success: (s) async =>
-            await _preferences.remove(Const.kPhoneNumberPrefKey),
+        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
       );
 
       emit(state.copyWith(
@@ -369,11 +389,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void updateProfile() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -400,11 +420,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   Future<void> sendPhoneUpdateOTP([bool shouldPop = true]) async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -426,11 +446,11 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void confirmPhoneUpdate() async {
-    toggleLoading();
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
@@ -445,8 +465,7 @@ class AuthCubit extends Cubit<AuthState>
 
       await result.response.maybeMap(
         orElse: () async => null,
-        success: (s) async =>
-            await _preferences.remove(Const.kPhoneNumberPrefKey),
+        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
       );
 
       emit(state.copyWith(
@@ -461,7 +480,7 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void sleep() async {
@@ -474,18 +493,54 @@ class AuthCubit extends Cubit<AuthState>
     toggleLoading();
   }
 
-  void updatePassword() async {
-    toggleLoading();
+  Future<void> googleAuth([bool notify = false]) async {
+    emit(state.copyWith(isGoogleAuthLoading: true, status: none()));
+
+    var result = await _auth.googleAuthentication(notify);
+
+    emit(state.copyWith(status: result));
+    emit(state.copyWith(isGoogleAuthLoading: false));
+  }
+
+  Future<void> appleAuth([bool notify = false]) async {
+    emit(state.copyWith(isAppleAuthLoading: true, status: none()));
+
+    var result = await _auth.appleAuthentication(notify);
+
+    emit(state.copyWith(status: result));
+    emit(state.copyWith(isAppleAuthLoading: false));
+  }
+
+  void updateSocialsProfile() async {
+    toggleLoading(true, none());
 
     AppHttpResponse result;
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.oldPassword.isValid &&
-        state.rider.password.isValid &&
-        state.confirmPassword.isValid &&
-        state.passwordMatches) {
+    if (state.rider.socials.isNone()) {
+      result = await _auth.updateSocialsProfile(
+        firstName: state.rider.firstName,
+        lastName: state.rider.lastName,
+        phone: state.rider.phone.formatted,
+      );
+
+      emit(state.copyWith(status: optionOf(result)));
+    }
+
+    toggleLoading(false);
+  }
+
+  void updatePassword() async {
+    toggleLoading(true, none());
+
+    AppHttpResponse result;
+
+    // Enable form validation
+    emit(state.copyWith(validate: true, status: none()));
+
+    if (state.rider.password.isValid && state.confirmPassword.isValid && state.passwordMatches) {
       result = await _auth.updatePassword(
         current: state.oldPassword,
         newPassword: state.rider.password,
@@ -504,30 +559,34 @@ class AuthCubit extends Cubit<AuthState>
       ));
     }
 
-    toggleLoading();
+    toggleLoading(false);
   }
 
   void getBankAccount() async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     final result = await _utils.bankAccount();
 
     result.fold(
       (failure) => emit(state.copyWith(status: some(failure))),
-      (account) => emit(state.copyWith(bankAccount: account)),
+      (account) => emit(state.copyWith(
+        bankAccount: account ?? state.bankAccount,
+      )),
     );
 
     toggleLoading(false);
   }
 
   void addBankAccount() async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     // Enable form validation
-    emit(state.copyWith(validate: true, status: none()));
+    emit(state.copyWith(validate: true));
 
     if (state.bankAccount.failure.isNone()) {
       final result = await _utils.storeBankAccount(state.bankAccount);
+
+      emit(state.copyWith(validate: false));
 
       result.fold(
         (failure) => emit(state.copyWith(status: some(failure))),
@@ -544,15 +603,15 @@ class AuthCubit extends Cubit<AuthState>
   }
 
   void toggleAvailability(RiderAvailability availability) async {
-    toggleLoading(true);
+    toggleLoading(true, none());
 
     final result = await _auth.toggleRiderAvailability(availability);
 
     await result.fold(
       (f) async => emit(state.copyWith(status: some(f))),
       (rider) async {
-        await _auth.update(optionOf(rider));
         final value = rider.availability == RiderAvailability.available;
+
         emit(state.copyWith(
           status: some(AppHttpResponse.successful(
             'Toggled ${value ? 'On' : 'Off'}',
@@ -564,6 +623,16 @@ class AuthCubit extends Cubit<AuthState>
         ));
       },
     );
+
+    toggleLoading(false);
+  }
+
+  Future<void> deleteAccount() async {
+    toggleLoading(true, none());
+
+    final result = await _auth.deleteAccount();
+
+    emit(state.copyWith(status: some(result)));
 
     toggleLoading(false);
   }
@@ -600,8 +669,7 @@ mixin _ImagePickerMixin on Cubit<AuthState> {
   Future<File?> _attemptFileRetrieval(ImagePicker? picker) async {
     if (picker == null) return null;
     final _response = await _picker.retrieveLostData();
-    if (!_response.isEmpty && _response.file != null)
-      return File(_response.file!.path);
+    if (!_response.isEmpty && _response.file != null) return File(_response.file!.path);
     return null;
   }
 }

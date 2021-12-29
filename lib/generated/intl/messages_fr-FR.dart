@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -49,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation": MessageLookupByLibrary.simpleMessage(
             "Informations sur le compte bancaire"),
         "bankName": MessageLookupByLibrary.simpleMessage("Nom de la banque"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Virement"),
         "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Carte"),
         "cash": MessageLookupByLibrary.simpleMessage("Espèces"),
@@ -70,10 +72,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBack": MessageLookupByLibrary.simpleMessage("Revenir en arrière"),
         "greeting": m0,
         "history": MessageLookupByLibrary.simpleMessage("Histoire"),
-        "home": MessageLookupByLibrary.simpleMessage("Domicile"),
+        "home": MessageLookupByLibrary.simpleMessage("domicile"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "Une bonne journée pour faire des livraisons."),
-        "inActive": MessageLookupByLibrary.simpleMessage("En cours"),
+        "inActive": MessageLookupByLibrary.simpleMessage("Inactif"),
         "inReview": MessageLookupByLibrary.simpleMessage("En revue"),
         "inTransit": MessageLookupByLibrary.simpleMessage("En transit"),
         "insightBonusAlertConfirmBtn":

@@ -1,0 +1,33 @@
+{
+    "insight": {
+        "title": "Insight updated",
+        "insight": {
+            "completed_orders": 0,
+            "target": 3,
+            "percentage": 0,
+            "current_plan_started": "2021-11-19T00:00:00.000000Z",
+            "current_plan_ended": "2021-12-19T00:00:00.000000Z",
+            "days_left": 30,
+            "cash_at_hand": 0,
+            "money_made_from_payment_methods": {
+                "CARD": 0,
+                "PAY_ON_DELIVERY_WITH_CARD": 0,
+                "PAY_ON_DELIVERY_WITH_CASH": 0,
+                "FLUTTERWAVE": 0,
+                "STRIPE": 0,
+                "PAY_WITH_BANK_TRANSFER": 0
+            },
+            "bonus_per_extra_delivery": "4.00",
+            "available_extra_delivery": 0,
+            "completed_extra_delivery": null,
+            "total_bonus_earned": 0,
+            "total_bonus_claimed": 0,
+            "total_bonus_available": 0,
+            "total_bonus_claimable": 0,
+            "can_claim_bonus": false,
+            "average_rating": "0.0"
+        },
+        "meta": [],
+        "type": "insight.updated"
+    }
+}

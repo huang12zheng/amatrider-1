@@ -7,20 +7,16 @@ import 'package:amatrider/features/home/presentation/pages/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
-import 'package:amatrider/utils/utils.dart'
-    hide HomePage, HistoryPage, InsightsPage, ProfilePage;
-import 'package:amatrider/widgets/adaptive/adaptive.dart';
+import 'package:amatrider/utils/utils.dart' hide HomePage, HistoryPage, InsightsPage, ProfilePage;
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// A stateless widget to render DashboardScreen.
@@ -40,8 +36,7 @@ class DashboardScreen extends ConsumerStatefulWidget with AutoRouteWrapper {
   }
 }
 
-class _DashboardScreenState extends ConsumerState<DashboardScreen>
-    with AutomaticKeepAliveClientMixin<DashboardScreen> {
+class _DashboardScreenState extends ConsumerState<DashboardScreen> with AutomaticKeepAliveClientMixin<DashboardScreen> {
   static final _tabs = [
     const HomePage(),
     const HistoryPage(),
@@ -49,15 +44,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     const ProfilePage(),
   ];
 
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
+  final AsyncMemoizer<dynamic> _memoizer = AsyncMemoizer();
   DateTime _timestampPressed = DateTime.now();
 
   @override
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (ref.watch(scaffoldController.notifier).isOpen)
-      return Future.value(true);
+    if (ref.watch(scaffoldController.notifier).isOpen) return Future.value(true);
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -107,20 +101,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         (it) => CachedNetworkImage(
                           imageUrl: '${it.getOrEmpty}',
                           fit: BoxFit.contain,
-                          height: s.currentIndex == i.id ? 30 : 25,
+                          height: 24,
                           imageBuilder: (c, img) => CircleAvatar(
                             backgroundImage: img,
-                            maxRadius: s.currentIndex == i.id ? 16 : 15,
+                            maxRadius: s.currentIndex == i.id ? 16 : 14,
                             minRadius: 14,
                             backgroundColor: Colors.transparent,
                           ),
-                          progressIndicatorBuilder: (_, url, download) =>
-                              Center(
+                          progressIndicatorBuilder: (_, url, download) => Center(
                             child: CircularProgressBar.adaptive(
                               value: download.progress,
                               strokeWidth: 2,
-                              width: 25,
-                              height: 25,
+                              width: 24,
+                              height: 24,
                             ),
                           ),
                           errorWidget: (_, url, error) => defaultImage(s, i),
@@ -129,11 +122,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       );
                     },
                   )
-                : SvgPicture.asset(
+                : Icon(
                     i.icon,
-                    height: s.currentIndex == i.id ? 30 : 25,
-                    width: s.currentIndex == i.id ? 30 : 25,
-                    fit: BoxFit.contain,
                     color: s.currentIndex == i.id
                         ? Utils.foldTheme(
                             light: () => Palette.accentColor,
@@ -163,8 +153,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
         curve: Curves.easeInOutCubic,
         builder: (context, child, animation) {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-            if (context.read<TabNavigationCubit>().state.isInit)
-              context.read<TabNavigationCubit>().init(context);
+            if (context.read<TabNavigationCubit>().state.isInit) context.read<TabNavigationCubit>().init(context);
           });
 
           return BlocBuilder<TabNavigationCubit, TabNavigationState>(
@@ -182,79 +171,39 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                   final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
                   await cubit.subscribeUserChanges();
 
-                  final locationCubit = BlocProvider.of<LocationCubit>(context);
-
-                  final hasPermission = await locationCubit.hasPermission;
-                  if (!hasPermission) if (navigator.current.name !=
-                      AccessRoute.name)
-                    await navigator.push(AccessRoute(
-                      title: 'Kindly Grant Location Access',
-                      onWillPop: () => locationCubit.requestPermission(),
-                      content: 'Your location is needed in calculating '
-                          'accurate distance and delivery time.',
-                      additionalContent: AdaptiveText.rich(
-                        const TextSpan(children: [
-                          TextSpan(text: 'It’s safe to grant '),
-                          TextSpan(
-                            text: '${Const.appName}',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          TextSpan(text: ' location access. '),
-                          TextSpan(text: 'It makes the system work better. '),
-                          TextSpan(text: 'Thank you.'),
-                        ]),
-                        fontSize: 17.sp,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: Utils.letterSpacing,
-                        softWrap: true,
-                      ),
-                      onAccept: () async {
-                        final _granted =
-                            await locationCubit.requestPermission();
-                        return _granted;
-                      },
-                    ));
-
-                  return 0;
+                  // Start laravel echo (notifications) & Fetch latest notifications
+                  BlocProvider.of<NotificationCubit>(context)
+                    // ignore: unawaited_futures
+                    ..inAppNotifications()
+                    ..echo();
                 }),
-                builder: (_, snapshot) => snapshot.hasData
-                    ? AdaptiveScaffold(
-                        cupertinoTabBuilder: (_, i) => _tabs[i],
-                        body: FadeTransition(opacity: animation, child: child),
-                        adaptiveBottomNav: PlatformNavBar(
-                          items: navItems(s),
-                          currentIndex: s.currentIndex,
-                          material: (_, __) => MaterialNavBarData(
-                            elevation: 0.0,
-                            type: BottomNavigationBarType.fixed,
-                            unselectedItemColor: Colors.grey,
-                            selectedItemColor: Utils.foldTheme(
-                              light: () => Palette.accentColor,
-                              dark: () => Palette.accentColor.shade100,
-                            ),
-                          ),
-                          cupertino: (_, __) => CupertinoTabBarData(
-                            iconSize: 20,
-                            inactiveColor: Colors.grey,
-                            currentIndex: s.currentIndex,
-                            activeColor: Utils.foldTheme(
-                              light: () => Palette.accentColor,
-                              dark: () => Palette.accentColor.shade100,
-                            ),
-                          ),
-                          itemChanged: (i) => c
-                              .read<TabNavigationCubit>()
-                              .setCurrentIndex(c, i),
-                        ),
-                      )
-                    : Center(
-                        child: CircularProgressBar.adaptive(
-                          width: 0.03.h,
-                          height: 0.03.h,
-                          strokeWidth: 3,
-                          radius: 14,
-                        ),
+                builder: (_, snapshot) => AdaptiveScaffold(
+                  cupertinoTabBuilder: (_, i) => _tabs[i],
+                  body: FadeTransition(opacity: animation, child: child),
+                  adaptiveBottomNav: PlatformNavBar(
+                    items: navItems(s),
+                    currentIndex: s.currentIndex,
+                    material: (_, __) => MaterialNavBarData(
+                      elevation: 0.0,
+                      type: BottomNavigationBarType.fixed,
+                      unselectedItemColor: Colors.grey,
+                      selectedItemColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
                       ),
+                    ),
+                    cupertino: (_, __) => CupertinoTabBarData(
+                      iconSize: 20,
+                      inactiveColor: Colors.grey,
+                      currentIndex: s.currentIndex,
+                      activeColor: Utils.foldTheme(
+                        light: () => Palette.accentColor,
+                        dark: () => Palette.accentColor.shade100,
+                      ),
+                    ),
+                    itemChanged: (i) => c.read<TabNavigationCubit>().setCurrentIndex(c, i),
+                  ),
+                ),
               ),
             ),
           );

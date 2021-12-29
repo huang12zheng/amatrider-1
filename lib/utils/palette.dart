@@ -11,9 +11,7 @@ class Palette {
     return Color(int.parse(hex.substring(1, 7), radix: 16) + 0xFF000000);
   }
 
-  static Color get random =>
-      Color((math.Random().nextDouble() * 0xFFFFFF).toInt() << 0)
-          .withOpacity(1.0);
+  static Color get random => Color((math.Random().nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(1.0);
 
   static String stringHex(
     Color color, {
@@ -22,14 +20,12 @@ class Palette {
   }) {
     var value = color.toString().split('(0x')[1].split(')')[0];
 
-    if (!withAlpha)
-      value = value.length > 6 ? value.replaceRange(0, 2, '') : value;
+    if (!withAlpha) value = value.length > 6 ? value.replaceRange(0, 2, '') : value;
     if (appendHash) value = '#$value';
     return value;
   }
 
-  static MaterialColor material(Color color) =>
-      MaterialColor(color.value, swatch(color));
+  static MaterialColor material(Color color) => MaterialColor(color.value, swatch(color));
 
   static Map<int, Color> swatch(Color color) {
     var _color = color;
@@ -55,7 +51,7 @@ class Palette {
 
   // App Colors
   static const _primaryPrivate = 0xffF9F9F9;
-  static const _secondaryPrivate = 0xff070D15;
+  static const _secondaryPrivate = 0xff20252c;
   static const _accentPrivate = 0xffE93821;
 
   static const MaterialColor primaryColor = MaterialColor(
@@ -77,16 +73,16 @@ class Palette {
   static const MaterialColor secondaryColor = MaterialColor(
     _secondaryPrivate,
     <int, Color>{
-      50: Color(0xFF83868a),
-      100: Color(0xFF6a6e73),
-      200: Color(0xFF51565b),
-      300: Color(0xFF393d44),
-      400: cardColorDark,
+      50: Color(0xFF909296),
+      100: Color(0xFF797c80),
+      200: Color(0xFF63666b),
+      300: Color(0xFF4d5156),
+      400: Color(0xFF363b41),
       500: Color(_secondaryPrivate),
-      600: Color(0xFF060c13),
-      700: Color(0xFF060a11),
-      800: Color(0xFF05090f),
-      900: Color(0xFF04080d),
+      600: Color(0xFF1d2128),
+      700: Color(0xFF1a1e23),
+      800: Color(0xFF161a1f),
+      900: Color(0xFF13161a),
     },
   );
 
@@ -106,8 +102,7 @@ class Palette {
     },
   );
 
-  static const MaterialColor paletteAccent =
-      MaterialColor(0xFFFFD3D1, <int, Color>{
+  static const MaterialColor paletteAccent = MaterialColor(0xFFFFD3D1, <int, Color>{
     100: Color(0xFFFFFFFF),
     200: Color(0xFFFFD3D1),
     400: Color(0xFFFFA29E),
@@ -159,7 +154,7 @@ class Palette {
 
   // Dark Mode Colors
   static const Color accentDark = Color(0xFFD27D7D);
-  static const Color text100Dark = Color(0xFF8D8D93);
+  static const Color text100Dark = Color(0xFFC1c1c3);
   static const Color headingDark = Color(0xFFE2E2E2);
   static const Color inputTextDark = Color(0xFF212121);
   static const Color toggleDark = Color(0xFF393938);

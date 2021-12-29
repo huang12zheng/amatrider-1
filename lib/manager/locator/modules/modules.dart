@@ -10,7 +10,9 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -31,14 +33,21 @@ abstract class Modules {
   Future<FirebaseApp> get firebaseApp => Firebase.initializeApp();
 
   @lazySingleton
-  FirebaseAnalytics get firebaseAnalytics => FirebaseAnalytics()..logAppOpen();
+  FirebaseAnalytics get firebaseAnalytics => FirebaseAnalytics.instance..logAppOpen();
 
   @lazySingleton
   FirebaseCrashlytics get firebaseCrashlytics => FirebaseCrashlytics.instance;
 
+  @lazySingleton
+  FirebasePerformance get firebasePerformace => FirebasePerformance.instance;
+
+  @lazySingleton
+  GoogleSignIn get googleSignIn => GoogleSignIn(
+        scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+      );
+
   @preResolve
-  Future<AppDatabase> get database async =>
-      await $FloorAppDatabase.databaseBuilder(Const.database).build();
+  Future<AppDatabase> get database async => await $FloorAppDatabase.databaseBuilder(Const.database).build();
   // await $FloorAppDatabase.inMemoryDatabaseBuilder().build();
 
   @preResolve
@@ -54,8 +63,7 @@ abstract class ServiceModules {
   Connectivity get connectionStatus => Connectivity();
 
   @lazySingleton
-  InternetConnectionChecker get connectionChecker =>
-      InternetConnectionChecker();
+  InternetConnectionChecker get connectionChecker => InternetConnectionChecker();
 
   @singleton
   Dio get dio => _HttpClients._clientv2();
@@ -64,8 +72,7 @@ abstract class ServiceModules {
   AppHttpClient get httpClient => _HttpClients._clientv2();
 
   @preResolve
-  Future<PaystackPlugin> get paystackInit async =>
-      PaystackPlugin()..initialize(publicKey: env.paystackKey);
+  Future<PaystackPlugin> get paystackInit async => PaystackPlugin()..initialize(publicKey: env.paystackKey);
 }
 
 @module

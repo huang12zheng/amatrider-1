@@ -87,7 +87,7 @@ class EditBankDetailsScreen extends StatelessWidget with AutoRouteWrapper {
               initial: (s) => s.bankAccount.bank.getOrNull,
               disabled: (s) => s.isLoading,
               keyboardType: TextInputType.text,
-              capitalization: TextCapitalization.none,
+              capitalization: TextCapitalization.words,
               focus: AuthState.bankNameFocus,
               next: AuthState.accountNameFocus,
               field: (s) => s.bankAccount.bank,

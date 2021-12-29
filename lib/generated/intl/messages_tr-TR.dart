@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -45,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation":
             MessageLookupByLibrary.simpleMessage("Banka Hesap Bilgileri"),
         "bankName": MessageLookupByLibrary.simpleMessage("Banka Adı"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Banka transferi"),
         "cancel": MessageLookupByLibrary.simpleMessage("İptal"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Kart"),
         "cash": MessageLookupByLibrary.simpleMessage("Nakit"),
@@ -69,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Ana Sayfa"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "Teslimat yapmak için güzel bir gün."),
-        "inActive": MessageLookupByLibrary.simpleMessage("Aktif olarak"),
+        "inActive": MessageLookupByLibrary.simpleMessage("etkin değil"),
         "inReview": MessageLookupByLibrary.simpleMessage("İnceleme"),
         "inTransit": MessageLookupByLibrary.simpleMessage("Transit"),
         "insightBonusAlertConfirmBtn":

@@ -28,16 +28,25 @@ class AppHttpResponse extends AppNetworkResponseException<DioError, dynamic>
   factory AppHttpResponse.fromJson(Map<String, dynamic> json) =>
       _$AppHttpResponseFromJson(json);
 
-  factory AppHttpResponse.successful([String? message, bool pop = true]) =>
+  factory AppHttpResponse.successful(
+    String? message, {
+    bool pop = true,
+    String? uuid,
+  }) =>
       AppHttpResponse(
         AnyResponse.success(
-          messageTxt: message ?? 'Operation was successful.',
           pop: pop,
+          uuid: uuid,
+          messageTxt: message ?? 'Successful!',
         ),
       );
 
-  factory AppHttpResponse.failure([String? message]) => AppHttpResponse(
-        AnyResponse.error(messageTxt: message ?? 'Whoops! An error occurred.'),
+  factory AppHttpResponse.failure(String? message, {int? code}) =>
+      AppHttpResponse(
+        AnyResponse.error(
+          code: code,
+          messageTxt: message ?? 'Whoops! An error occurred.',
+        ),
       );
 
   @override

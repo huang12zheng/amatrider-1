@@ -8,6 +8,7 @@
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
 // ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -47,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankAccountInformation":
             MessageLookupByLibrary.simpleMessage("Bank Account Information"),
         "bankName": MessageLookupByLibrary.simpleMessage("Bank Name"),
+        "bankTransfer": MessageLookupByLibrary.simpleMessage("Bank Transfer"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cardPOS": MessageLookupByLibrary.simpleMessage("Card (POS)"),
         "cash": MessageLookupByLibrary.simpleMessage("Cash"),
@@ -71,7 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "homePageTxt2": MessageLookupByLibrary.simpleMessage(
             "A Good Day To Make Deliveries."),
-        "inActive": MessageLookupByLibrary.simpleMessage("In Active"),
+        "inActive": MessageLookupByLibrary.simpleMessage("Inactive"),
         "inReview": MessageLookupByLibrary.simpleMessage("In Review"),
         "inTransit": MessageLookupByLibrary.simpleMessage("In Transit"),
         "insightBonusAlertConfirmBtn":

@@ -10,9 +10,14 @@ class SendPackageState extends BaseState with _$SendPackageState {
     @Default(false) bool validate,
     required JourneyDetail journey,
     required SendPackage package,
+    @Default(true) bool isOtherReason,
+    required BasicTextField<String?> cancelReason,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _SendPackageState;
 
   factory SendPackageState.initial() => SendPackageState(
-      package: SendPackage.blank(), journey: JourneyDetail.blank());
+        package: SendPackage.blank(),
+        journey: JourneyDetail.blank(),
+        cancelReason: BasicTextField(null),
+      );
 }

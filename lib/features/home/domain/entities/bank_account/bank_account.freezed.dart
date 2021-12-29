@@ -24,6 +24,9 @@ class _$BankAccountTearOff {
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
       required BasicTextField<String?> sortCode,
+      required UniqueId<String?> reference,
+      required BasicTextField<double?> amount,
+      required BasicTextField<String?> transferNote,
       DateTime? createdAt,
       DateTime? updatedAt}) {
     return _BankAccount(
@@ -33,6 +36,9 @@ class _$BankAccountTearOff {
       accountName: accountName,
       accountNumber: accountNumber,
       sortCode: sortCode,
+      reference: reference,
+      amount: amount,
+      transferNote: transferNote,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -50,7 +56,11 @@ mixin _$BankAccount {
   BasicTextField<String?> get accountName => throw _privateConstructorUsedError;
   BasicTextField<String?> get accountNumber =>
       throw _privateConstructorUsedError;
-  BasicTextField<String?> get sortCode => throw _privateConstructorUsedError;
+  BasicTextField<String?> get sortCode => throw _privateConstructorUsedError; //
+  UniqueId<String?> get reference => throw _privateConstructorUsedError;
+  BasicTextField<double?> get amount => throw _privateConstructorUsedError;
+  BasicTextField<String?> get transferNote =>
+      throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -71,6 +81,9 @@ abstract class $BankAccountCopyWith<$Res> {
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
       BasicTextField<String?> sortCode,
+      UniqueId<String?> reference,
+      BasicTextField<double?> amount,
+      BasicTextField<String?> transferNote,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -91,6 +104,9 @@ class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
     Object? accountName = freezed,
     Object? accountNumber = freezed,
     Object? sortCode = freezed,
+    Object? reference = freezed,
+    Object? amount = freezed,
+    Object? transferNote = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -119,6 +135,18 @@ class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
           ? _value.sortCode
           : sortCode // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
+      reference: reference == freezed
+          ? _value.reference
+          : reference // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
+      transferNote: transferNote == freezed
+          ? _value.transferNote
+          : transferNote // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -145,6 +173,9 @@ abstract class _$BankAccountCopyWith<$Res>
       BasicTextField<String?> accountName,
       BasicTextField<String?> accountNumber,
       BasicTextField<String?> sortCode,
+      UniqueId<String?> reference,
+      BasicTextField<double?> amount,
+      BasicTextField<String?> transferNote,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -167,6 +198,9 @@ class __$BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
     Object? accountName = freezed,
     Object? accountNumber = freezed,
     Object? sortCode = freezed,
+    Object? reference = freezed,
+    Object? amount = freezed,
+    Object? transferNote = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -195,6 +229,18 @@ class __$BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
           ? _value.sortCode
           : sortCode // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
+      reference: reference == freezed
+          ? _value.reference
+          : reference // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<double?>,
+      transferNote: transferNote == freezed
+          ? _value.transferNote
+          : transferNote // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -217,6 +263,9 @@ class _$_BankAccount extends _BankAccount {
       required this.accountName,
       required this.accountNumber,
       required this.sortCode,
+      required this.reference,
+      required this.amount,
+      required this.transferNote,
       this.createdAt,
       this.updatedAt})
       : super._();
@@ -233,6 +282,12 @@ class _$_BankAccount extends _BankAccount {
   final BasicTextField<String?> accountNumber;
   @override
   final BasicTextField<String?> sortCode;
+  @override //
+  final UniqueId<String?> reference;
+  @override
+  final BasicTextField<double?> amount;
+  @override
+  final BasicTextField<String?> transferNote;
   @override
   final DateTime? createdAt;
   @override
@@ -240,7 +295,7 @@ class _$_BankAccount extends _BankAccount {
 
   @override
   String toString() {
-    return 'BankAccount(id: $id, riderId: $riderId, bank: $bank, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BankAccount(id: $id, riderId: $riderId, bank: $bank, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, reference: $reference, amount: $amount, transferNote: $transferNote, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -248,24 +303,36 @@ class _$_BankAccount extends _BankAccount {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _BankAccount &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.bank, bank) || other.bank == bank) &&
-            (identical(other.accountName, accountName) ||
-                other.accountName == accountName) &&
-            (identical(other.accountNumber, accountNumber) ||
-                other.accountNumber == accountNumber) &&
-            (identical(other.sortCode, sortCode) ||
-                other.sortCode == sortCode) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.bank, bank) &&
+            const DeepCollectionEquality()
+                .equals(other.accountName, accountName) &&
+            const DeepCollectionEquality()
+                .equals(other.accountNumber, accountNumber) &&
+            const DeepCollectionEquality().equals(other.sortCode, sortCode) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.transferNote, transferNote) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, riderId, bank, accountName,
-      accountNumber, sortCode, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(riderId),
+      const DeepCollectionEquality().hash(bank),
+      const DeepCollectionEquality().hash(accountName),
+      const DeepCollectionEquality().hash(accountNumber),
+      const DeepCollectionEquality().hash(sortCode),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(transferNote),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -281,6 +348,9 @@ abstract class _BankAccount extends BankAccount {
       required BasicTextField<String?> accountName,
       required BasicTextField<String?> accountNumber,
       required BasicTextField<String?> sortCode,
+      required UniqueId<String?> reference,
+      required BasicTextField<double?> amount,
+      required BasicTextField<String?> transferNote,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_BankAccount;
   const _BankAccount._() : super._();
@@ -297,6 +367,12 @@ abstract class _BankAccount extends BankAccount {
   BasicTextField<String?> get accountNumber;
   @override
   BasicTextField<String?> get sortCode;
+  @override //
+  UniqueId<String?> get reference;
+  @override
+  BasicTextField<double?> get amount;
+  @override
+  BasicTextField<String?> get transferNote;
   @override
   DateTime? get createdAt;
   @override

@@ -7,3 +7,4 @@ export 'send_package/send_package_cubit.dart';
 export 'history/history_cubit.dart';
 export 'insights/insights_cubit.dart';
 export 'review/reviews_cubit.dart';
+export 'notification/notification_cubit.dart';

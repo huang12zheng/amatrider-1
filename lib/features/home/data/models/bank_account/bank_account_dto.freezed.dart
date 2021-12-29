@@ -28,6 +28,8 @@ class _$BankAccountDTOTearOff {
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'sort_code') String? sortCode,
+      _CashDepositDTO? data,
+      _CashDepositDTO? deposit,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt}) {
     return _BankAccountDTO(
@@ -37,6 +39,8 @@ class _$BankAccountDTOTearOff {
       accountName: accountName,
       accountNumber: accountNumber,
       sortCode: sortCode,
+      data: data,
+      deposit: deposit,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -63,6 +67,8 @@ mixin _$BankAccountDTO {
   String? get accountNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'sort_code')
   String? get sortCode => throw _privateConstructorUsedError;
+  _CashDepositDTO? get data => throw _privateConstructorUsedError;
+  _CashDepositDTO? get deposit => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -88,8 +94,13 @@ abstract class $BankAccountDTOCopyWith<$Res> {
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'sort_code') String? sortCode,
+      _CashDepositDTO? data,
+      _CashDepositDTO? deposit,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
+
+  _$CashDepositDTOCopyWith<$Res>? get data;
+  _$CashDepositDTOCopyWith<$Res>? get deposit;
 }
 
 /// @nodoc
@@ -109,6 +120,8 @@ class _$BankAccountDTOCopyWithImpl<$Res>
     Object? accountName = freezed,
     Object? accountNumber = freezed,
     Object? sortCode = freezed,
+    Object? data = freezed,
+    Object? deposit = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -137,6 +150,14 @@ class _$BankAccountDTOCopyWithImpl<$Res>
           ? _value.sortCode
           : sortCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as _CashDepositDTO?,
+      deposit: deposit == freezed
+          ? _value.deposit
+          : deposit // ignore: cast_nullable_to_non_nullable
+              as _CashDepositDTO?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -146,6 +167,28 @@ class _$BankAccountDTOCopyWithImpl<$Res>
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ));
+  }
+
+  @override
+  _$CashDepositDTOCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return _$CashDepositDTOCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value));
+    });
+  }
+
+  @override
+  _$CashDepositDTOCopyWith<$Res>? get deposit {
+    if (_value.deposit == null) {
+      return null;
+    }
+
+    return _$CashDepositDTOCopyWith<$Res>(_value.deposit!, (value) {
+      return _then(_value.copyWith(deposit: value));
+    });
   }
 }
 
@@ -163,8 +206,15 @@ abstract class _$BankAccountDTOCopyWith<$Res>
       @JsonKey(name: 'account_name') String? accountName,
       @JsonKey(name: 'account_number') String? accountNumber,
       @JsonKey(name: 'sort_code') String? sortCode,
+      _CashDepositDTO? data,
+      _CashDepositDTO? deposit,
       @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
+
+  @override
+  _$CashDepositDTOCopyWith<$Res>? get data;
+  @override
+  _$CashDepositDTOCopyWith<$Res>? get deposit;
 }
 
 /// @nodoc
@@ -186,6 +236,8 @@ class __$BankAccountDTOCopyWithImpl<$Res>
     Object? accountName = freezed,
     Object? accountNumber = freezed,
     Object? sortCode = freezed,
+    Object? data = freezed,
+    Object? deposit = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -214,6 +266,14 @@ class __$BankAccountDTOCopyWithImpl<$Res>
           ? _value.sortCode
           : sortCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as _CashDepositDTO?,
+      deposit: deposit == freezed
+          ? _value.deposit
+          : deposit // ignore: cast_nullable_to_non_nullable
+              as _CashDepositDTO?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -236,6 +296,8 @@ class _$_BankAccountDTO extends _BankAccountDTO {
       @JsonKey(name: 'account_name') this.accountName,
       @JsonKey(name: 'account_number') this.accountNumber,
       @JsonKey(name: 'sort_code') this.sortCode,
+      this.data,
+      this.deposit,
       @JsonKey(name: 'created_at') @TimestampConverter() this.createdAt,
       @JsonKey(name: 'updated_at') @TimestampConverter() this.updatedAt})
       : super._();
@@ -261,6 +323,10 @@ class _$_BankAccountDTO extends _BankAccountDTO {
   @JsonKey(name: 'sort_code')
   final String? sortCode;
   @override
+  final _CashDepositDTO? data;
+  @override
+  final _CashDepositDTO? deposit;
+  @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   final DateTime? createdAt;
@@ -271,7 +337,7 @@ class _$_BankAccountDTO extends _BankAccountDTO {
 
   @override
   String toString() {
-    return 'BankAccountDTO(id: $id, riderId: $riderId, bankName: $bankName, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'BankAccountDTO(id: $id, riderId: $riderId, bankName: $bankName, accountName: $accountName, accountNumber: $accountNumber, sortCode: $sortCode, data: $data, deposit: $deposit, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -279,25 +345,33 @@ class _$_BankAccountDTO extends _BankAccountDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _BankAccountDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.bankName, bankName) ||
-                other.bankName == bankName) &&
-            (identical(other.accountName, accountName) ||
-                other.accountName == accountName) &&
-            (identical(other.accountNumber, accountNumber) ||
-                other.accountNumber == accountNumber) &&
-            (identical(other.sortCode, sortCode) ||
-                other.sortCode == sortCode) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.bankName, bankName) &&
+            const DeepCollectionEquality()
+                .equals(other.accountName, accountName) &&
+            const DeepCollectionEquality()
+                .equals(other.accountNumber, accountNumber) &&
+            const DeepCollectionEquality().equals(other.sortCode, sortCode) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality().equals(other.deposit, deposit) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, riderId, bankName,
-      accountName, accountNumber, sortCode, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(riderId),
+      const DeepCollectionEquality().hash(bankName),
+      const DeepCollectionEquality().hash(accountName),
+      const DeepCollectionEquality().hash(accountNumber),
+      const DeepCollectionEquality().hash(sortCode),
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(deposit),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -323,6 +397,8 @@ abstract class _BankAccountDTO extends BankAccountDTO {
           String? accountNumber,
       @JsonKey(name: 'sort_code')
           String? sortCode,
+      _CashDepositDTO? data,
+      _CashDepositDTO? deposit,
       @JsonKey(name: 'created_at')
       @TimestampConverter()
           DateTime? createdAt,
@@ -352,6 +428,10 @@ abstract class _BankAccountDTO extends BankAccountDTO {
   @JsonKey(name: 'sort_code')
   String? get sortCode;
   @override
+  _CashDepositDTO? get data;
+  @override
+  _CashDepositDTO? get deposit;
+  @override
   @JsonKey(name: 'created_at')
   @TimestampConverter()
   DateTime? get createdAt;
@@ -362,5 +442,384 @@ abstract class _BankAccountDTO extends BankAccountDTO {
   @override
   @JsonKey(ignore: true)
   _$BankAccountDTOCopyWith<_BankAccountDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+_CashDepositDTO _$_CashDepositDTOFromJson(Map<String, dynamic> json) {
+  return __CashDepositDTO.fromJson(json);
+}
+
+/// @nodoc
+class _$_CashDepositDTOTearOff {
+  const _$_CashDepositDTOTearOff();
+
+  __CashDepositDTO call(
+      {String? id,
+      String? reference,
+      @JsonKey(name: 'rider_id') String? riderId,
+      @JsonKey(name: 'bank') String? bank,
+      @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'transfer_note') String? transferNote,
+      @DoubleSerializer() double? amount,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
+      @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt}) {
+    return __CashDepositDTO(
+      id: id,
+      reference: reference,
+      riderId: riderId,
+      bank: bank,
+      accountNumber: accountNumber,
+      transferNote: transferNote,
+      amount: amount,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
+
+  _CashDepositDTO fromJson(Map<String, Object?> json) {
+    return _CashDepositDTO.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$CashDepositDTO = _$_CashDepositDTOTearOff();
+
+/// @nodoc
+mixin _$_CashDepositDTO {
+  String? get id => throw _privateConstructorUsedError;
+  String? get reference => throw _privateConstructorUsedError;
+  @JsonKey(name: 'rider_id')
+  String? get riderId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'bank')
+  String? get bank => throw _privateConstructorUsedError;
+  @JsonKey(name: 'account_number')
+  String? get accountNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'transfer_note')
+  String? get transferNote => throw _privateConstructorUsedError;
+  @DoubleSerializer()
+  double? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'created_at')
+  @TimestampConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'updated_at')
+  @TimestampConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$CashDepositDTOCopyWith<_CashDepositDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$CashDepositDTOCopyWith<$Res> {
+  factory _$CashDepositDTOCopyWith(
+          _CashDepositDTO value, $Res Function(_CashDepositDTO) then) =
+      __$CashDepositDTOCopyWithImpl<$Res>;
+  $Res call(
+      {String? id,
+      String? reference,
+      @JsonKey(name: 'rider_id') String? riderId,
+      @JsonKey(name: 'bank') String? bank,
+      @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'transfer_note') String? transferNote,
+      @DoubleSerializer() double? amount,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
+      @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
+}
+
+/// @nodoc
+class __$CashDepositDTOCopyWithImpl<$Res>
+    implements _$CashDepositDTOCopyWith<$Res> {
+  __$CashDepositDTOCopyWithImpl(this._value, this._then);
+
+  final _CashDepositDTO _value;
+  // ignore: unused_field
+  final $Res Function(_CashDepositDTO) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? reference = freezed,
+    Object? riderId = freezed,
+    Object? bank = freezed,
+    Object? accountNumber = freezed,
+    Object? transferNote = freezed,
+    Object? amount = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reference: reference == freezed
+          ? _value.reference
+          : reference // ignore: cast_nullable_to_non_nullable
+              as String?,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bank: bank == freezed
+          ? _value.bank
+          : bank // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accountNumber: accountNumber == freezed
+          ? _value.accountNumber
+          : accountNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      transferNote: transferNote == freezed
+          ? _value.transferNote
+          : transferNote // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_CashDepositDTOCopyWith<$Res>
+    implements _$CashDepositDTOCopyWith<$Res> {
+  factory _$_CashDepositDTOCopyWith(
+          __CashDepositDTO value, $Res Function(__CashDepositDTO) then) =
+      __$_CashDepositDTOCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String? id,
+      String? reference,
+      @JsonKey(name: 'rider_id') String? riderId,
+      @JsonKey(name: 'bank') String? bank,
+      @JsonKey(name: 'account_number') String? accountNumber,
+      @JsonKey(name: 'transfer_note') String? transferNote,
+      @DoubleSerializer() double? amount,
+      @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
+      @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt});
+}
+
+/// @nodoc
+class __$_CashDepositDTOCopyWithImpl<$Res>
+    extends __$CashDepositDTOCopyWithImpl<$Res>
+    implements _$_CashDepositDTOCopyWith<$Res> {
+  __$_CashDepositDTOCopyWithImpl(
+      __CashDepositDTO _value, $Res Function(__CashDepositDTO) _then)
+      : super(_value, (v) => _then(v as __CashDepositDTO));
+
+  @override
+  __CashDepositDTO get _value => super._value as __CashDepositDTO;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? reference = freezed,
+    Object? riderId = freezed,
+    Object? bank = freezed,
+    Object? accountNumber = freezed,
+    Object? transferNote = freezed,
+    Object? amount = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+  }) {
+    return _then(__CashDepositDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reference: reference == freezed
+          ? _value.reference
+          : reference // ignore: cast_nullable_to_non_nullable
+              as String?,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      bank: bank == freezed
+          ? _value.bank
+          : bank // ignore: cast_nullable_to_non_nullable
+              as String?,
+      accountNumber: accountNumber == freezed
+          ? _value.accountNumber
+          : accountNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      transferNote: transferNote == freezed
+          ? _value.transferNote
+          : transferNote // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$__CashDepositDTO extends __CashDepositDTO {
+  const _$__CashDepositDTO(
+      {this.id,
+      this.reference,
+      @JsonKey(name: 'rider_id') this.riderId,
+      @JsonKey(name: 'bank') this.bank,
+      @JsonKey(name: 'account_number') this.accountNumber,
+      @JsonKey(name: 'transfer_note') this.transferNote,
+      @DoubleSerializer() this.amount,
+      @JsonKey(name: 'created_at') @TimestampConverter() this.createdAt,
+      @JsonKey(name: 'updated_at') @TimestampConverter() this.updatedAt})
+      : super._();
+
+  factory _$__CashDepositDTO.fromJson(Map<String, dynamic> json) =>
+      _$$__CashDepositDTOFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String? reference;
+  @override
+  @JsonKey(name: 'rider_id')
+  final String? riderId;
+  @override
+  @JsonKey(name: 'bank')
+  final String? bank;
+  @override
+  @JsonKey(name: 'account_number')
+  final String? accountNumber;
+  @override
+  @JsonKey(name: 'transfer_note')
+  final String? transferNote;
+  @override
+  @DoubleSerializer()
+  final double? amount;
+  @override
+  @JsonKey(name: 'created_at')
+  @TimestampConverter()
+  final DateTime? createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  @TimestampConverter()
+  final DateTime? updatedAt;
+
+  @override
+  String toString() {
+    return '_CashDepositDTO(id: $id, reference: $reference, riderId: $riderId, bank: $bank, accountNumber: $accountNumber, transferNote: $transferNote, amount: $amount, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __CashDepositDTO &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality().equals(other.bank, bank) &&
+            const DeepCollectionEquality()
+                .equals(other.accountNumber, accountNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.transferNote, transferNote) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(riderId),
+      const DeepCollectionEquality().hash(bank),
+      const DeepCollectionEquality().hash(accountNumber),
+      const DeepCollectionEquality().hash(transferNote),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_CashDepositDTOCopyWith<__CashDepositDTO> get copyWith =>
+      __$_CashDepositDTOCopyWithImpl<__CashDepositDTO>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__CashDepositDTOToJson(this);
+  }
+}
+
+abstract class __CashDepositDTO extends _CashDepositDTO {
+  const factory __CashDepositDTO(
+      {String? id,
+      String? reference,
+      @JsonKey(name: 'rider_id')
+          String? riderId,
+      @JsonKey(name: 'bank')
+          String? bank,
+      @JsonKey(name: 'account_number')
+          String? accountNumber,
+      @JsonKey(name: 'transfer_note')
+          String? transferNote,
+      @DoubleSerializer()
+          double? amount,
+      @JsonKey(name: 'created_at')
+      @TimestampConverter()
+          DateTime? createdAt,
+      @JsonKey(name: 'updated_at')
+      @TimestampConverter()
+          DateTime? updatedAt}) = _$__CashDepositDTO;
+  const __CashDepositDTO._() : super._();
+
+  factory __CashDepositDTO.fromJson(Map<String, dynamic> json) =
+      _$__CashDepositDTO.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get reference;
+  @override
+  @JsonKey(name: 'rider_id')
+  String? get riderId;
+  @override
+  @JsonKey(name: 'bank')
+  String? get bank;
+  @override
+  @JsonKey(name: 'account_number')
+  String? get accountNumber;
+  @override
+  @JsonKey(name: 'transfer_note')
+  String? get transferNote;
+  @override
+  @DoubleSerializer()
+  double? get amount;
+  @override
+  @JsonKey(name: 'created_at')
+  @TimestampConverter()
+  DateTime? get createdAt;
+  @override
+  @JsonKey(name: 'updated_at')
+  @TimestampConverter()
+  DateTime? get updatedAt;
+  @override
+  @JsonKey(ignore: true)
+  _$_CashDepositDTOCopyWith<__CashDepositDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

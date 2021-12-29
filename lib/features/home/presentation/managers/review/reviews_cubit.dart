@@ -2,7 +2,6 @@ library reviews_cubit.dart;
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
-import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:bloc/bloc.dart';
@@ -16,11 +15,9 @@ part 'reviews_state.dart';
 
 @injectable
 class ReviewsCubit extends Cubit<ReviewsState> with BaseCubit<ReviewsState> {
-  final LaravelEchoRepository _echoRepository;
   final UtilitiesRepository _utils;
 
-  ReviewsCubit(this._utils, this._echoRepository)
-      : super(ReviewsState.initial());
+  ReviewsCubit(this._utils) : super(ReviewsState.initial());
 
   void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
       emit(state.copyWith(

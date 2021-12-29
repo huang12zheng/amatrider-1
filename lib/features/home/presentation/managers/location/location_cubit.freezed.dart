@@ -27,6 +27,7 @@ class _$LocationStateTearOff {
       bool isBackgroundEnabled = false,
       RiderLocation? position,
       KtList<Future<dynamic>> operations = const KtList.empty(),
+      DateTime? lastUpdate,
       Option<AppHttpResponse?> status = const None()}) {
     return _LocationState(
       isLoading: isLoading,
@@ -38,6 +39,7 @@ class _$LocationStateTearOff {
       isBackgroundEnabled: isBackgroundEnabled,
       position: position,
       operations: operations,
+      lastUpdate: lastUpdate,
       status: status,
     );
   }
@@ -57,6 +59,7 @@ mixin _$LocationState {
   bool get isBackgroundEnabled => throw _privateConstructorUsedError;
   RiderLocation? get position => throw _privateConstructorUsedError;
   KtList<Future<dynamic>> get operations => throw _privateConstructorUsedError;
+  DateTime? get lastUpdate => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -79,6 +82,7 @@ abstract class $LocationStateCopyWith<$Res> {
       bool isBackgroundEnabled,
       RiderLocation? position,
       KtList<Future<dynamic>> operations,
+      DateTime? lastUpdate,
       Option<AppHttpResponse?> status});
 
   $RiderLocationCopyWith<$Res>? get position;
@@ -104,6 +108,7 @@ class _$LocationStateCopyWithImpl<$Res>
     Object? isBackgroundEnabled = freezed,
     Object? position = freezed,
     Object? operations = freezed,
+    Object? lastUpdate = freezed,
     Object? status = freezed,
   }) {
     return _then(_value.copyWith(
@@ -143,6 +148,10 @@ class _$LocationStateCopyWithImpl<$Res>
           ? _value.operations
           : operations // ignore: cast_nullable_to_non_nullable
               as KtList<Future<dynamic>>,
+      lastUpdate: lastUpdate == freezed
+          ? _value.lastUpdate
+          : lastUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -179,6 +188,7 @@ abstract class _$LocationStateCopyWith<$Res>
       bool isBackgroundEnabled,
       RiderLocation? position,
       KtList<Future<dynamic>> operations,
+      DateTime? lastUpdate,
       Option<AppHttpResponse?> status});
 
   @override
@@ -207,6 +217,7 @@ class __$LocationStateCopyWithImpl<$Res>
     Object? isBackgroundEnabled = freezed,
     Object? position = freezed,
     Object? operations = freezed,
+    Object? lastUpdate = freezed,
     Object? status = freezed,
   }) {
     return _then(_LocationState(
@@ -246,6 +257,10 @@ class __$LocationStateCopyWithImpl<$Res>
           ? _value.operations
           : operations // ignore: cast_nullable_to_non_nullable
               as KtList<Future<dynamic>>,
+      lastUpdate: lastUpdate == freezed
+          ? _value.lastUpdate
+          : lastUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -267,42 +282,45 @@ class _$_LocationState extends _LocationState {
       this.isBackgroundEnabled = false,
       this.position,
       this.operations = const KtList.empty(),
+      this.lastUpdate,
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isRequestingPermissions;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isRequestingService;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool hasPermissions;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isServiceEnabled;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isBackgroundEnabled;
   @override
   final RiderLocation? position;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<Future<dynamic>> operations;
-  @JsonKey(defaultValue: const None())
+  @override
+  final DateTime? lastUpdate;
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
   @override
   String toString() {
-    return 'LocationState(isLoading: $isLoading, validate: $validate, isRequestingPermissions: $isRequestingPermissions, isRequestingService: $isRequestingService, hasPermissions: $hasPermissions, isServiceEnabled: $isServiceEnabled, isBackgroundEnabled: $isBackgroundEnabled, position: $position, operations: $operations, status: $status)';
+    return 'LocationState(isLoading: $isLoading, validate: $validate, isRequestingPermissions: $isRequestingPermissions, isRequestingService: $isRequestingService, hasPermissions: $hasPermissions, isServiceEnabled: $isServiceEnabled, isBackgroundEnabled: $isBackgroundEnabled, position: $position, operations: $operations, lastUpdate: $lastUpdate, status: $status)';
   }
 
   @override
@@ -310,41 +328,40 @@ class _$_LocationState extends _LocationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _LocationState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(
-                    other.isRequestingPermissions, isRequestingPermissions) ||
-                other.isRequestingPermissions == isRequestingPermissions) &&
-            (identical(other.isRequestingService, isRequestingService) ||
-                other.isRequestingService == isRequestingService) &&
-            (identical(other.hasPermissions, hasPermissions) ||
-                other.hasPermissions == hasPermissions) &&
-            (identical(other.isServiceEnabled, isServiceEnabled) ||
-                other.isServiceEnabled == isServiceEnabled) &&
-            (identical(other.isBackgroundEnabled, isBackgroundEnabled) ||
-                other.isBackgroundEnabled == isBackgroundEnabled) &&
-            (identical(other.position, position) ||
-                other.position == position) &&
-            (identical(other.operations, operations) ||
-                other.operations == operations) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality().equals(
+                other.isRequestingPermissions, isRequestingPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.isRequestingService, isRequestingService) &&
+            const DeepCollectionEquality()
+                .equals(other.hasPermissions, hasPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.isServiceEnabled, isServiceEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other.isBackgroundEnabled, isBackgroundEnabled) &&
+            const DeepCollectionEquality().equals(other.position, position) &&
+            const DeepCollectionEquality()
+                .equals(other.operations, operations) &&
+            const DeepCollectionEquality()
+                .equals(other.lastUpdate, lastUpdate) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLoading,
-      validate,
-      isRequestingPermissions,
-      isRequestingService,
-      hasPermissions,
-      isServiceEnabled,
-      isBackgroundEnabled,
-      position,
-      operations,
-      status);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(isRequestingPermissions),
+      const DeepCollectionEquality().hash(isRequestingService),
+      const DeepCollectionEquality().hash(hasPermissions),
+      const DeepCollectionEquality().hash(isServiceEnabled),
+      const DeepCollectionEquality().hash(isBackgroundEnabled),
+      const DeepCollectionEquality().hash(position),
+      const DeepCollectionEquality().hash(operations),
+      const DeepCollectionEquality().hash(lastUpdate),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -363,6 +380,7 @@ abstract class _LocationState extends LocationState {
       bool isBackgroundEnabled,
       RiderLocation? position,
       KtList<Future<dynamic>> operations,
+      DateTime? lastUpdate,
       Option<AppHttpResponse?> status}) = _$_LocationState;
   const _LocationState._() : super._();
 
@@ -384,6 +402,8 @@ abstract class _LocationState extends LocationState {
   RiderLocation? get position;
   @override
   KtList<Future<dynamic>> get operations;
+  @override
+  DateTime? get lastUpdate;
   @override
   Option<AppHttpResponse?> get status;
   @override

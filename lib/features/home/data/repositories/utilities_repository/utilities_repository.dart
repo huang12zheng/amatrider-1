@@ -6,12 +6,12 @@ import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/core/data/models/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.dart';
+import 'package:amatrider/core/data/websocket_response_type.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/index.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/settings/index.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
@@ -20,7 +20,7 @@ import 'package:kt_dart/kt.dart';
 class UtilitiesRepository extends BaseRepository {
   final UtilitiesRemote remote;
 
-  UtilitiesRepository({required this.remote});
+  UtilitiesRepository(this.remote);
 
   Future<Either<AppHttpResponse, KtList<Country>>> countries() async {
     final _conn = await checkConnectivity();
@@ -60,8 +60,8 @@ class UtilitiesRepository extends BaseRepository {
             type: type,
           );
 
-          return AppHttpResponse.successful(
-              'Your documents were submitted!', true);
+          return AppHttpResponse.successful('Your documents were submitted!',
+              pop: true);
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -71,7 +71,7 @@ class UtilitiesRepository extends BaseRepository {
     );
   }
 
-  Future<Either<AppHttpResponse, BankAccount>> bankAccount() async {
+  Future<Either<AppHttpResponse, BankAccount?>> bankAccount() async {
     final _conn = await checkConnectivity();
 
     return _conn.fold(
@@ -80,7 +80,7 @@ class UtilitiesRepository extends BaseRepository {
         try {
           final _result = await remote.bankAccount();
 
-          return right(_result.domain);
+          return right(_result.domain((e) => e?.domain));
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {
@@ -108,44 +108,6 @@ class UtilitiesRepository extends BaseRepository {
           return left(e);
         } on AppNetworkException catch (e) {
           return left(e.asResponse());
-        }
-      },
-    );
-  }
-
-  Future<AppHttpResponse> depositCash(String amount) async {
-    final _conn = await checkConnectivity();
-
-    return _conn.fold(
-      (f) async => f,
-      (_) async {
-        try {
-          final _result = await remote.depositCash(amount);
-
-          return _result;
-        } on AppHttpResponse catch (e) {
-          return e;
-        } on AppNetworkException catch (e) {
-          return e.asResponse();
-        }
-      },
-    );
-  }
-
-  Future<AppHttpResponse> claimBonus() async {
-    final _conn = await checkConnectivity();
-
-    return _conn.fold(
-      (f) async => f,
-      (_) async {
-        try {
-          final _result = await remote.claimBonus();
-
-          return _result;
-        } on AppHttpResponse catch (e) {
-          return e;
-        } on AppNetworkException catch (e) {
-          return e.asResponse();
         }
       },
     );
@@ -192,6 +154,43 @@ class UtilitiesRepository extends BaseRepository {
         } on AppNetworkException catch (e) {
           return e.asResponse();
         }
+      },
+    );
+  }
+
+  Future<Either<AppHttpResponse, KtList<InAppNotification>>>
+      inAppNotifications() async {
+    final _conn = await checkConnectivity();
+
+    return _conn.fold(
+      (f) async => left(f),
+      (_) async {
+        try {
+          final _result = await remote.inAppNotifications();
+          final _notifications = _result.domain(
+            (it) => it.map((e) => mapInAppNotification(e)).toImmutableList(),
+          );
+
+          return right(_notifications);
+        } on AppHttpResponse catch (e) {
+          return left(e);
+        } on AppNetworkException catch (e) {
+          return left(e.asResponse());
+        }
+      },
+    );
+  }
+
+  InAppNotification mapInAppNotification(InAppNotificationDTO dto) {
+    return dto.type!.when(
+      orElse: () => dto.domain,
+      packageDelivered: () {
+        final metaValue =
+            SendPackageDTO.fromJson(dto.meta as Map<String, dynamic>);
+
+        return dto
+            .copyWith(meta: NotificationMeta(metaValue.packageData?.domain))
+            .domain;
       },
     );
   }

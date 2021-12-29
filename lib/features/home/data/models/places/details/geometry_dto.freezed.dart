@@ -181,14 +181,15 @@ class _$_GeometryDTO extends _GeometryDTO with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _GeometryDTO &&
-            (identical(other.location, location) ||
-                other.location == location) &&
-            (identical(other.viewport, viewport) ||
-                other.viewport == viewport));
+            const DeepCollectionEquality().equals(other.location, location) &&
+            const DeepCollectionEquality().equals(other.viewport, viewport));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, location, viewport);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(location),
+      const DeepCollectionEquality().hash(viewport));
 
   @JsonKey(ignore: true)
   @override
@@ -387,14 +388,15 @@ class _$_ViewportDTO with DiagnosticableTreeMixin implements _ViewportDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ViewportDTO &&
-            (identical(other.northeast, northeast) ||
-                other.northeast == northeast) &&
-            (identical(other.southwest, southwest) ||
-                other.southwest == southwest));
+            const DeepCollectionEquality().equals(other.northeast, northeast) &&
+            const DeepCollectionEquality().equals(other.southwest, southwest));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, northeast, southwest);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(northeast),
+      const DeepCollectionEquality().hash(southwest));
 
   @JsonKey(ignore: true)
   @override
@@ -566,12 +568,15 @@ class _$_CoordintateDTO
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CoordintateDTO &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng));
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lat, lng);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(lng));
 
   @JsonKey(ignore: true)
   @override

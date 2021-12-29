@@ -54,8 +54,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                   borderType: BorderType.RRect,
                   padding: const EdgeInsets.all(5.0),
                   radius: const Radius.circular(Utils.buttonRadius),
-                  color: Utils.computeLuminance(
-                      Theme.of(context).scaffoldBackgroundColor),
+                  color: Utils.computeLuminance(Theme.of(context).scaffoldBackgroundColor),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: App.shortest * 0.5,
@@ -63,7 +62,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     ),
                     child: BlocBuilder<VerificationCubit, VerificationState>(
                       builder: (c, s) => Material(
-                        child: InkWell(
+                        child: AdaptiveInkWell(
                           onTap: () async {
                             if (!s.isLoading)
                               await App.showAdaptiveBottomSheet(
@@ -76,9 +75,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         light: () => AppAssets.cameraColored,
                                         dark: () => AppAssets.cameraOutlined,
                                       ),
-                                      onPressed: () => c
-                                          .read<VerificationCubit>()
-                                          .pickCamera(IdSection.front),
+                                      onPressed: () => c.read<VerificationCubit>().pickCamera(IdSection.front),
                                     ),
                                     DocumentPicker(
                                       name: 'File Explorer',
@@ -86,9 +83,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         light: () => AppAssets.folderColored,
                                         dark: () => AppAssets.folderOutlined,
                                       ),
-                                      onPressed: () => c
-                                          .read<VerificationCubit>()
-                                          .pickFileExplorer(IdSection.front),
+                                      onPressed: () => c.read<VerificationCubit>().pickFileExplorer(IdSection.front),
                                     ),
                                   ],
                                 ),
@@ -106,10 +101,8 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                       children: [
                                         Icon(
                                           Theme.of(context).platform.fold(
-                                                material: () =>
-                                                    Icons.photo_camera,
-                                                cupertino: () =>
-                                                    CupertinoIcons.camera,
+                                                material: () => Icons.photo_camera,
+                                                cupertino: () => CupertinoIcons.camera,
                                               ),
                                           color: Colors.grey,
                                           size: 30.0,
@@ -127,12 +120,9 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         fit: BoxFit.cover,
                                       ),
                                       doc: (a) => Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          a == DocumentMimeType.pdf
-                                              ? AppAssets.pdf
-                                              : AppAssets.docx,
+                                          a == DocumentMimeType.pdf ? AppAssets.pdf : AppAssets.docx,
                                           const VerticalSpace(height: 25),
                                           AdaptiveText(
                                             '${s.frontName.getOrEmpty}',
@@ -158,8 +148,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                   borderType: BorderType.RRect,
                   padding: const EdgeInsets.all(5.0),
                   radius: const Radius.circular(Utils.buttonRadius),
-                  color: Utils.computeLuminance(
-                      Theme.of(context).scaffoldBackgroundColor),
+                  color: Utils.computeLuminance(Theme.of(context).scaffoldBackgroundColor),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: App.shortest * 0.5,
@@ -167,7 +156,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     ),
                     child: BlocBuilder<VerificationCubit, VerificationState>(
                       builder: (c, s) => Material(
-                        child: InkWell(
+                        child: AdaptiveInkWell(
                           onTap: () async {
                             if (!s.isLoading)
                               await App.showAdaptiveBottomSheet(
@@ -180,9 +169,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         light: () => AppAssets.cameraColored,
                                         dark: () => AppAssets.cameraOutlined,
                                       ),
-                                      onPressed: () => c
-                                          .read<VerificationCubit>()
-                                          .pickCamera(IdSection.back),
+                                      onPressed: () => c.read<VerificationCubit>().pickCamera(IdSection.back),
                                     ),
                                     DocumentPicker(
                                       name: 'File Explorer',
@@ -190,9 +177,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         light: () => AppAssets.folderColored,
                                         dark: () => AppAssets.folderOutlined,
                                       ),
-                                      onPressed: () => c
-                                          .read<VerificationCubit>()
-                                          .pickFileExplorer(IdSection.back),
+                                      onPressed: () => c.read<VerificationCubit>().pickFileExplorer(IdSection.back),
                                     ),
                                   ],
                                 ),
@@ -210,10 +195,8 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                       children: [
                                         Icon(
                                           Theme.of(context).platform.fold(
-                                                material: () =>
-                                                    Icons.photo_camera,
-                                                cupertino: () =>
-                                                    CupertinoIcons.camera,
+                                                material: () => Icons.photo_camera,
+                                                cupertino: () => CupertinoIcons.camera,
                                               ),
                                           color: Colors.grey,
                                           size: 30.0,
@@ -231,12 +214,9 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                                         fit: BoxFit.cover,
                                       ),
                                       doc: (a) => Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          a == DocumentMimeType.pdf
-                                              ? AppAssets.pdf
-                                              : AppAssets.docx,
+                                          a == DocumentMimeType.pdf ? AppAssets.pdf : AppAssets.docx,
                                           const VerticalSpace(height: 25),
                                           AdaptiveText(
                                             '${s.backName.getOrEmpty}',
@@ -267,8 +247,7 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     AppButton(
                       text: 'Submit',
                       isLoading: isLoading,
-                      onPressed:
-                          context.read<VerificationCubit>().verifyDocuments,
+                      onPressed: context.read<VerificationCubit>().verifyDocuments,
                     ),
                     //
                     VerticalSpace(height: App.sidePadding),

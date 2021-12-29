@@ -181,16 +181,17 @@ class _$_AppHttpResponse extends _AppHttpResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AppHttpResponse &&
-            (identical(other.response, response) ||
-                other.response == response) &&
+            const DeepCollectionEquality().equals(other.response, response) &&
             const DeepCollectionEquality().equals(other.data, data) &&
-            (identical(other.exception, exception) ||
-                other.exception == exception));
+            const DeepCollectionEquality().equals(other.exception, exception));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, response,
-      const DeepCollectionEquality().hash(data), exception);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(response),
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(exception));
 
   @JsonKey(ignore: true)
   @override

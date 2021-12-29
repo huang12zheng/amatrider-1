@@ -177,17 +177,19 @@ class _$_TokenResponse extends _TokenResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _TokenResponse &&
-            (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken) &&
-            (identical(other.tokenType, tokenType) ||
-                other.tokenType == tokenType) &&
-            (identical(other.expiryDate, expiryDate) ||
-                other.expiryDate == expiryDate));
+            const DeepCollectionEquality()
+                .equals(other.accessToken, accessToken) &&
+            const DeepCollectionEquality().equals(other.tokenType, tokenType) &&
+            const DeepCollectionEquality()
+                .equals(other.expiryDate, expiryDate));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, accessToken, tokenType, expiryDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accessToken),
+      const DeepCollectionEquality().hash(tokenType),
+      const DeepCollectionEquality().hash(expiryDate));
 
   @JsonKey(ignore: true)
   @override

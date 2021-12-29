@@ -87,6 +87,7 @@ class _ContentBuilder extends StatelessWidget {
                   minFontSize: 13,
                   maxFontSize: 16,
                   maxLines: 1,
+                  fontSize: status.titleFontSize,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
                   style: DefaultTextStyle.of(context)
@@ -101,6 +102,7 @@ class _ContentBuilder extends StatelessWidget {
                     minFontSize: 13,
                     maxFontSize: 16,
                     maxLines: 2,
+                    fontSize: status.subtitleFontSize,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
                     style: DefaultTextStyle.of(context).style.copyWith(
@@ -122,13 +124,17 @@ class TimelineStatus {
   final Color? assetColor;
   final Widget? icon;
   final String? subtitle;
+  final double? subtitleFontSize;
   final String? title;
+  final double? titleFontSize;
 
   const TimelineStatus({
     this.icon,
     this.asset,
     this.assetColor,
     this.title,
+    this.titleFontSize,
     this.subtitle,
+    this.subtitleFontSize,
   });
 }

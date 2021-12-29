@@ -15,6 +15,7 @@ class TextFormInputLabel extends StatelessWidget {
   final int? maxLines;
   final TextAlign? textAlign;
   final VoidCallback? onPressed;
+  final bool useDefaultText;
 
   const TextFormInputLabel({
     Key? key,
@@ -29,6 +30,7 @@ class TextFormInputLabel extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.onPressed,
+    this.useDefaultText = false,
   }) : super(key: key);
 
   @override
@@ -39,17 +41,32 @@ class TextFormInputLabel extends StatelessWidget {
         onTap: onPressed,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0),
-          child: AdaptiveText(
-            text,
-            textColor: textColor,
-            textColorDark: textColorDark,
-            decoration: decoration,
-            fontSize: fontSize ?? 15.5.sp,
-            fontWeight: fontWeight ?? FontWeight.w500,
-            letterSpacing: letterSpacing ?? Utils.labelLetterSpacing,
-            style: style,
-            maxLines: maxLines,
-            textAlign: textAlign,
+          child: WidgetVisibility(
+            visible: !useDefaultText,
+            replacement: Text(
+              text,
+              style: TextStyle(
+                color: App.resolveColor(textColor, dark: textColorDark),
+                decoration: decoration,
+                fontSize: fontSize ?? 15.5.sp,
+                fontWeight: fontWeight ?? FontWeight.w500,
+                letterSpacing: letterSpacing ?? Utils.labelLetterSpacing,
+              ).merge(style),
+              maxLines: maxLines,
+              textAlign: textAlign,
+            ),
+            child: AdaptiveText(
+              text,
+              textColor: textColor,
+              textColorDark: textColorDark,
+              decoration: decoration,
+              fontSize: fontSize ?? 15.5.sp,
+              fontWeight: fontWeight ?? FontWeight.w500,
+              letterSpacing: letterSpacing ?? Utils.labelLetterSpacing,
+              style: style,
+              maxLines: maxLines,
+              textAlign: textAlign,
+            ),
           ),
         ),
       ),

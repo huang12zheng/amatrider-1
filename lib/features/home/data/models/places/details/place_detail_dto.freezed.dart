@@ -620,59 +620,55 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
             other is _PlaceDetailDTO &&
             const DeepCollectionEquality()
                 .equals(other.addressComponents, addressComponents) &&
-            (identical(other.formattedAddress, formattedAddress) ||
-                other.formattedAddress == formattedAddress) &&
-            (identical(other.formattedPhoneNumber, formattedPhoneNumber) ||
-                other.formattedPhoneNumber == formattedPhoneNumber) &&
-            (identical(other.icon, icon) || other.icon == icon) &&
-            (identical(other.iconBackgroundColor, iconBackgroundColor) ||
-                other.iconBackgroundColor == iconBackgroundColor) &&
-            (identical(other.iconMaskBaseUri, iconMaskBaseUri) ||
-                other.iconMaskBaseUri == iconMaskBaseUri) &&
-            (identical(
-                    other.internationalPhoneNumber, internationalPhoneNumber) ||
-                other.internationalPhoneNumber == internationalPhoneNumber) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.plusCode, plusCode) ||
-                other.plusCode == plusCode) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedAddress, formattedAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedPhoneNumber, formattedPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.icon, icon) &&
+            const DeepCollectionEquality()
+                .equals(other.iconBackgroundColor, iconBackgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.iconMaskBaseUri, iconMaskBaseUri) &&
+            const DeepCollectionEquality().equals(
+                other.internationalPhoneNumber, internationalPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.placeId, placeId) &&
+            const DeepCollectionEquality().equals(other.plusCode, plusCode) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
             const DeepCollectionEquality().equals(other.types, types) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.website, website) || other.website == website) &&
-            (identical(other.geometry, geometry) ||
-                other.geometry == geometry) &&
-            (identical(other.openingHours, openingHours) ||
-                other.openingHours == openingHours) &&
-            (identical(other.result, result) || other.result == result) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.website, website) &&
+            const DeepCollectionEquality().equals(other.geometry, geometry) &&
+            const DeepCollectionEquality()
+                .equals(other.openingHours, openingHours) &&
+            const DeepCollectionEquality().equals(other.result, result) &&
             const DeepCollectionEquality()
                 .equals(other.geocodingResults, geocodingResults) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
         const DeepCollectionEquality().hash(addressComponents),
-        formattedAddress,
-        formattedPhoneNumber,
-        icon,
-        iconBackgroundColor,
-        iconMaskBaseUri,
-        internationalPhoneNumber,
-        name,
-        placeId,
-        plusCode,
-        reference,
+        const DeepCollectionEquality().hash(formattedAddress),
+        const DeepCollectionEquality().hash(formattedPhoneNumber),
+        const DeepCollectionEquality().hash(icon),
+        const DeepCollectionEquality().hash(iconBackgroundColor),
+        const DeepCollectionEquality().hash(iconMaskBaseUri),
+        const DeepCollectionEquality().hash(internationalPhoneNumber),
+        const DeepCollectionEquality().hash(name),
+        const DeepCollectionEquality().hash(placeId),
+        const DeepCollectionEquality().hash(plusCode),
+        const DeepCollectionEquality().hash(reference),
         const DeepCollectionEquality().hash(types),
-        url,
-        website,
-        geometry,
-        openingHours,
-        result,
+        const DeepCollectionEquality().hash(url),
+        const DeepCollectionEquality().hash(website),
+        const DeepCollectionEquality().hash(geometry),
+        const DeepCollectionEquality().hash(openingHours),
+        const DeepCollectionEquality().hash(result),
         const DeepCollectionEquality().hash(geocodingResults),
-        status
+        const DeepCollectionEquality().hash(status)
       ]);
 
   @JsonKey(ignore: true)
@@ -931,14 +927,17 @@ class _$_PlusCodeDTO extends _PlusCodeDTO with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlusCodeDTO &&
-            (identical(other.compoundCode, compoundCode) ||
-                other.compoundCode == compoundCode) &&
-            (identical(other.globalCode, globalCode) ||
-                other.globalCode == globalCode));
+            const DeepCollectionEquality()
+                .equals(other.compoundCode, compoundCode) &&
+            const DeepCollectionEquality()
+                .equals(other.globalCode, globalCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, compoundCode, globalCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(compoundCode),
+      const DeepCollectionEquality().hash(globalCode));
 
   @JsonKey(ignore: true)
   @override

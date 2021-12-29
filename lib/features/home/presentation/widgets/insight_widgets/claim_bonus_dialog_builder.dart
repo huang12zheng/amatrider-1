@@ -3,11 +3,13 @@ part of insights_page.dart;
 class _ClaimBonusDialogBuilder extends StatelessWidget {
   final InsightsCubit cubit;
   final AmountField<double?> cash;
+  final BankAccount account;
 
   const _ClaimBonusDialogBuilder({
     Key? key,
     required this.cubit,
     required this.cash,
+    required this.account,
   }) : super(key: key);
 
   String mapIndexToTitle(int index) {
@@ -39,10 +41,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<AuthCubit>()..getBankAccount()),
-        BlocProvider.value(value: cubit),
-      ],
+      providers: [BlocProvider.value(value: cubit)],
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: App.sidePadding,
@@ -60,16 +59,8 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
                       '${cash.getOrEmpty}'.asCurrency(),
                     )}',
                   ),
-                  // TextSpan(
-                  //   text: '${cash.getOrEmpty}'.asCurrency(),
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
-                  // const TextSpan(
-                  //   text: ' would be deposited into your account.',
-                  // ),
                 ]),
+                isDefault: Utils.platform_(cupertino: true),
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w400,
                 letterSpacing: Utils.letterSpacing,
@@ -79,38 +70,65 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
               VerticalSpace(height: 0.04.sw),
               //
               ...List.generate(3, (i) {
-                return BlocSelector<AuthCubit, AuthState, BankAccount>(
-                  selector: (s) => s.bankAccount,
-                  builder: (_, account) => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextFormInputLabel(
-                        text: mapIndexToTitle(i),
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        textAlign: TextAlign.end,
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormInputLabel(
+                      text: mapIndexToTitle(i),
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      textAlign: TextAlign.end,
+                      useDefaultText: Utils.platform_(
+                        cupertino: true,
+                        material: false,
+                      )!,
+                    ),
+                    //
+                    HorizontalSpace(width: 0.03.sw),
+                    //
+                    Expanded(
+                      child: AdaptiveText(
+                        mapIndexToValue(i, account),
+                        fontSize: 18.sp,
+                        maxLines: 1,
+                        isDefault: Utils.platform_(cupertino: true),
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: Utils.letterSpacing,
+                        textAlign: TextAlign.start,
                       ),
-                      //
-                      HorizontalSpace(width: 0.03.sw),
-                      //
-                      Expanded(
-                        child: AdaptiveText(
-                          mapIndexToValue(i, account),
-                          fontSize: 18.sp,
-                          maxLines: 1,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: Utils.letterSpacing,
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               }).toList(),
             ],
           ),
+          isSecondDestructive: true,
+          isSecondDefaultAction: true,
+          cupertinoSecondButtonText: '${tr.cancel}',
+          cupertinoFirstButton:
+              BlocSelector<InsightsCubit, InsightsState, bool>(
+            selector: (s) => s.claimBonusLoading,
+            builder: (c, isLoading) => WidgetVisibility(
+              visible: !isLoading,
+              replacement: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: App.loadingSpinningLines,
+                ),
+              ),
+              child: CupertinoDialogAction(
+                isDefaultAction: true,
+                isDestructiveAction: false,
+                onPressed: () async {
+                  await c.read<InsightsCubit>().claimBonus();
+                  await navigator.pop();
+                },
+                child: Text('${tr.insightBonusAlertConfirmBtn}'),
+              ),
+            ),
+          ),
           materialFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
-            selector: (s) => s.isLoading,
+            selector: (s) => s.claimBonusLoading,
             builder: (c, isLoading) => AppButton(
               text: '${tr.insightBonusAlertConfirmBtn}',
               isLoading: isLoading,
@@ -118,7 +136,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
               cupertinoHeight: 0.028.sh,
               fontSize: 15.sp,
               onPressed: () async {
-                await c.read<InsightsCubit>().depositCash(cash.getOrNull);
+                await c.read<InsightsCubit>().claimBonus();
                 await navigator.pop();
               },
             ),

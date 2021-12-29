@@ -169,15 +169,19 @@ class _$_OnboardingItem<Pixel> extends _OnboardingItem<Pixel> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _OnboardingItem<Pixel> &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.bgColor, bgColor) || other.bgColor == bgColor) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.bgColor, bgColor) &&
             const DeepCollectionEquality().equals(other.image, image));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, title, description, bgColor,
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(bgColor),
       const DeepCollectionEquality().hash(image));
 
   @JsonKey(ignore: true)

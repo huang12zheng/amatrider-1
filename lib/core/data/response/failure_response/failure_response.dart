@@ -11,6 +11,7 @@ class FailureResponse with _$FailureResponse implements Failure {
   static const String _kAborted = 'Aborted!';
   static const String _kNotFound = 'Resource was not found on this server!';
 
+  @With<Failure>()
   const factory FailureResponse({
     int? code,
     @JsonKey(defaultValue: 'error') String? status,
@@ -25,7 +26,7 @@ class FailureResponse with _$FailureResponse implements Failure {
   const FailureResponse._();
 
   factory FailureResponse.aborted() =>
-      const FailureResponse(message: _kAborted);
+      const FailureResponse(code: Failure.UNAUTHENTICATED, message: _kAborted);
 
   factory FailureResponse.alreadyExists(String message) =>
       FailureResponse(message: message);

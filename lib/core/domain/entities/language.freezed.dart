@@ -20,13 +20,13 @@ class _$LanguageTearOff {
   _Language call(
       {String? languageName,
       required String languageCode,
-      String? countryName,
-      required String countryCode}) {
+      required String countryCode,
+      String? countryName}) {
     return _Language(
       languageName: languageName,
       languageCode: languageCode,
-      countryName: countryName,
       countryCode: countryCode,
+      countryName: countryName,
     );
   }
 }
@@ -38,8 +38,8 @@ const $Language = _$LanguageTearOff();
 mixin _$Language {
   String? get languageName => throw _privateConstructorUsedError;
   String get languageCode => throw _privateConstructorUsedError;
-  String? get countryName => throw _privateConstructorUsedError;
   String get countryCode => throw _privateConstructorUsedError;
+  String? get countryName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LanguageCopyWith<Language> get copyWith =>
@@ -53,8 +53,8 @@ abstract class $LanguageCopyWith<$Res> {
   $Res call(
       {String? languageName,
       String languageCode,
-      String? countryName,
-      String countryCode});
+      String countryCode,
+      String? countryName});
 }
 
 /// @nodoc
@@ -69,8 +69,8 @@ class _$LanguageCopyWithImpl<$Res> implements $LanguageCopyWith<$Res> {
   $Res call({
     Object? languageName = freezed,
     Object? languageCode = freezed,
-    Object? countryName = freezed,
     Object? countryCode = freezed,
+    Object? countryName = freezed,
   }) {
     return _then(_value.copyWith(
       languageName: languageName == freezed
@@ -81,14 +81,14 @@ class _$LanguageCopyWithImpl<$Res> implements $LanguageCopyWith<$Res> {
           ? _value.languageCode
           : languageCode // ignore: cast_nullable_to_non_nullable
               as String,
-      countryName: countryName == freezed
-          ? _value.countryName
-          : countryName // ignore: cast_nullable_to_non_nullable
-              as String?,
       countryCode: countryCode == freezed
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
+      countryName: countryName == freezed
+          ? _value.countryName
+          : countryName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -101,8 +101,8 @@ abstract class _$LanguageCopyWith<$Res> implements $LanguageCopyWith<$Res> {
   $Res call(
       {String? languageName,
       String languageCode,
-      String? countryName,
-      String countryCode});
+      String countryCode,
+      String? countryName});
 }
 
 /// @nodoc
@@ -118,8 +118,8 @@ class __$LanguageCopyWithImpl<$Res> extends _$LanguageCopyWithImpl<$Res>
   $Res call({
     Object? languageName = freezed,
     Object? languageCode = freezed,
-    Object? countryName = freezed,
     Object? countryCode = freezed,
+    Object? countryName = freezed,
   }) {
     return _then(_Language(
       languageName: languageName == freezed
@@ -130,14 +130,14 @@ class __$LanguageCopyWithImpl<$Res> extends _$LanguageCopyWithImpl<$Res>
           ? _value.languageCode
           : languageCode // ignore: cast_nullable_to_non_nullable
               as String,
-      countryName: countryName == freezed
-          ? _value.countryName
-          : countryName // ignore: cast_nullable_to_non_nullable
-              as String?,
       countryCode: countryCode == freezed
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
+      countryName: countryName == freezed
+          ? _value.countryName
+          : countryName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -148,8 +148,8 @@ class _$_Language extends _Language {
   const _$_Language(
       {this.languageName,
       required this.languageCode,
-      this.countryName,
-      required this.countryCode})
+      required this.countryCode,
+      this.countryName})
       : super._();
 
   @override
@@ -157,13 +157,13 @@ class _$_Language extends _Language {
   @override
   final String languageCode;
   @override
-  final String? countryName;
-  @override
   final String countryCode;
+  @override
+  final String? countryName;
 
   @override
   String toString() {
-    return 'Language(languageName: $languageName, languageCode: $languageCode, countryName: $countryName, countryCode: $countryCode)';
+    return 'Language(languageName: $languageName, languageCode: $languageCode, countryCode: $countryCode, countryName: $countryName)';
   }
 
   @override
@@ -171,19 +171,23 @@ class _$_Language extends _Language {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Language &&
-            (identical(other.languageName, languageName) ||
-                other.languageName == languageName) &&
-            (identical(other.languageCode, languageCode) ||
-                other.languageCode == languageCode) &&
-            (identical(other.countryName, countryName) ||
-                other.countryName == countryName) &&
-            (identical(other.countryCode, countryCode) ||
-                other.countryCode == countryCode));
+            const DeepCollectionEquality()
+                .equals(other.languageName, languageName) &&
+            const DeepCollectionEquality()
+                .equals(other.languageCode, languageCode) &&
+            const DeepCollectionEquality()
+                .equals(other.countryCode, countryCode) &&
+            const DeepCollectionEquality()
+                .equals(other.countryName, countryName));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, languageName, languageCode, countryName, countryCode);
+      runtimeType,
+      const DeepCollectionEquality().hash(languageName),
+      const DeepCollectionEquality().hash(languageCode),
+      const DeepCollectionEquality().hash(countryCode),
+      const DeepCollectionEquality().hash(countryName));
 
   @JsonKey(ignore: true)
   @override
@@ -195,8 +199,8 @@ abstract class _Language extends Language {
   const factory _Language(
       {String? languageName,
       required String languageCode,
-      String? countryName,
-      required String countryCode}) = _$_Language;
+      required String countryCode,
+      String? countryName}) = _$_Language;
   const _Language._() : super._();
 
   @override
@@ -204,9 +208,9 @@ abstract class _Language extends Language {
   @override
   String get languageCode;
   @override
-  String? get countryName;
-  @override
   String get countryCode;
+  @override
+  String? get countryName;
   @override
   @JsonKey(ignore: true)
   _$LanguageCopyWith<_Language> get copyWith =>

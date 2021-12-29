@@ -188,13 +188,17 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RegisteredRiderDTO &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.user, user) || other.user == user));
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, data, user);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(user));
 
   @JsonKey(ignore: true)
   @override

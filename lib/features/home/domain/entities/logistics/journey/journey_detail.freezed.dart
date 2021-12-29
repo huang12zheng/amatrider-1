@@ -176,7 +176,7 @@ class _$_JourneyDetail extends _JourneyDetail with DiagnosticableTreeMixin {
   final JourneyInfo<int?>? distance;
   @override
   final JourneyInfo<int?>? duration;
-  @JsonKey(defaultValue: PlaceStatus.UNKNOWN_ERROR)
+  @JsonKey()
   @override
   final PlaceStatus status;
 
@@ -200,15 +200,17 @@ class _$_JourneyDetail extends _JourneyDetail with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyDetail &&
-            (identical(other.distance, distance) ||
-                other.distance == distance) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.distance, distance) &&
+            const DeepCollectionEquality().equals(other.duration, duration) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, distance, duration, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(distance),
+      const DeepCollectionEquality().hash(duration),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -366,12 +368,15 @@ class _$_JourneyInfo<B> extends _JourneyInfo<B> with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyInfo<B> &&
-            (identical(other.convert, convert) || other.convert == convert) &&
-            (identical(other.value, value) || other.value == value));
+            const DeepCollectionEquality().equals(other.convert, convert) &&
+            const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, convert, value);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(convert),
+      const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override

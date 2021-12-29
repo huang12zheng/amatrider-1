@@ -14,9 +14,8 @@ class AuthGuard extends AutoRouteGuard {
     if (authenticated) {
       resolver.next(true);
     } else {
-      await router.pushAndPopUntil(
-        const LoginRoute(),
-        predicate: (_) => false,
+      await router.replaceAll(
+        [const LoginRoute()],
       );
     }
   }

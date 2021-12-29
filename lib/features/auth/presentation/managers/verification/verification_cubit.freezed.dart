@@ -334,10 +334,10 @@ class _$_VerificationState extends _VerificationState {
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
   @override
@@ -348,10 +348,10 @@ class _$_VerificationState extends _VerificationState {
   final DocumentMimeType? frontMimeType;
   @override
   final DocumentMimeType? backMimeType;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool frontIsImage;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool backIsImage;
   @override
@@ -362,10 +362,10 @@ class _$_VerificationState extends _VerificationState {
   final DocumentID? documentID;
   @override
   final Country? selectedCountry;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<Country> countries;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -379,50 +379,45 @@ class _$_VerificationState extends _VerificationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _VerificationState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.frontID, frontID) || other.frontID == frontID) &&
-            (identical(other.backID, backID) || other.backID == backID) &&
-            (identical(other.frontMimeType, frontMimeType) ||
-                other.frontMimeType == frontMimeType) &&
-            (identical(other.backMimeType, backMimeType) ||
-                other.backMimeType == backMimeType) &&
-            (identical(other.frontIsImage, frontIsImage) ||
-                other.frontIsImage == frontIsImage) &&
-            (identical(other.backIsImage, backIsImage) ||
-                other.backIsImage == backIsImage) &&
-            (identical(other.frontName, frontName) ||
-                other.frontName == frontName) &&
-            (identical(other.backName, backName) ||
-                other.backName == backName) &&
-            (identical(other.documentID, documentID) ||
-                other.documentID == documentID) &&
-            (identical(other.selectedCountry, selectedCountry) ||
-                other.selectedCountry == selectedCountry) &&
-            (identical(other.countries, countries) ||
-                other.countries == countries) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality().equals(other.frontID, frontID) &&
+            const DeepCollectionEquality().equals(other.backID, backID) &&
+            const DeepCollectionEquality()
+                .equals(other.frontMimeType, frontMimeType) &&
+            const DeepCollectionEquality()
+                .equals(other.backMimeType, backMimeType) &&
+            const DeepCollectionEquality()
+                .equals(other.frontIsImage, frontIsImage) &&
+            const DeepCollectionEquality()
+                .equals(other.backIsImage, backIsImage) &&
+            const DeepCollectionEquality().equals(other.frontName, frontName) &&
+            const DeepCollectionEquality().equals(other.backName, backName) &&
+            const DeepCollectionEquality()
+                .equals(other.documentID, documentID) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedCountry, selectedCountry) &&
+            const DeepCollectionEquality().equals(other.countries, countries) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLoading,
-      validate,
-      frontID,
-      backID,
-      frontMimeType,
-      backMimeType,
-      frontIsImage,
-      backIsImage,
-      frontName,
-      backName,
-      documentID,
-      selectedCountry,
-      countries,
-      status);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(frontID),
+      const DeepCollectionEquality().hash(backID),
+      const DeepCollectionEquality().hash(frontMimeType),
+      const DeepCollectionEquality().hash(backMimeType),
+      const DeepCollectionEquality().hash(frontIsImage),
+      const DeepCollectionEquality().hash(backIsImage),
+      const DeepCollectionEquality().hash(frontName),
+      const DeepCollectionEquality().hash(backName),
+      const DeepCollectionEquality().hash(documentID),
+      const DeepCollectionEquality().hash(selectedCountry),
+      const DeepCollectionEquality().hash(countries),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

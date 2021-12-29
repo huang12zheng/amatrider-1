@@ -36,16 +36,14 @@ class DragToRefresh extends StatefulWidget {
 }
 
 class DragToRefreshState extends State<DragToRefresh>
-    with
-        TickerProviderStateMixin<DragToRefresh>,
-        AutomaticKeepAliveClientMixin<DragToRefresh> {
+    with TickerProviderStateMixin<DragToRefresh>, AutomaticKeepAliveClientMixin<DragToRefresh> {
   late AnimationController _footerController;
-  late RefreshController _refreshController;
+  late RefreshController refreshController;
   late AnimationController _animationcontroller, _scaleController;
 
   @override
   void dispose() {
-    _refreshController.dispose();
+    refreshController.dispose();
     _scaleController.dispose();
     _footerController.dispose();
     _animationcontroller.dispose();
@@ -54,24 +52,21 @@ class DragToRefreshState extends State<DragToRefresh>
 
   @override
   void initState() {
-    _refreshController = RefreshController(
+    refreshController = RefreshController(
       initialRefresh: widget.initialRefresh,
     );
 
-    _animationcontroller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    _animationcontroller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
-    _scaleController =
-        AnimationController(value: 0.0, vsync: this, upperBound: 1.0);
+    _scaleController = AnimationController(value: 0.0, vsync: this, upperBound: 1.0);
 
-    _footerController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+    _footerController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
-    _refreshController.headerMode?.addListener(() {
-      if (_refreshController.headerStatus == RefreshStatus.idle) {
+    refreshController.headerMode?.addListener(() {
+      if (refreshController.headerStatus == RefreshStatus.idle) {
         _scaleController.value = 0.0;
         _animationcontroller.reset();
-      } else if (_refreshController.headerStatus == RefreshStatus.refreshing) {
+      } else if (refreshController.headerStatus == RefreshStatus.refreshing) {
         _animationcontroller.repeat();
       }
     });
@@ -82,8 +77,7 @@ class DragToRefreshState extends State<DragToRefresh>
   @override
   bool get wantKeepAlive => true;
 
-  void updateController(RefreshController controller) =>
-      setState(() => _refreshController = controller);
+  void updateController(RefreshController controller) => setState(() => refreshController = controller);
 
   @override
   Widget build(BuildContext context) {
@@ -91,19 +85,17 @@ class DragToRefreshState extends State<DragToRefresh>
 
     return RefreshState(
       refresher: this,
-      controller: _refreshController,
+      controller: refreshController,
       child: SmartRefresher(
-        controller: _refreshController,
+        controller: refreshController,
         enablePullDown: widget.enablePullDown,
         enablePullUp: widget.enablePullUp,
-        onRefresh: () => widget.onRefresh?.call(_refreshController),
-        onLoading: () => widget.onLoading?.call(_refreshController),
+        onRefresh: () => widget.onRefresh?.call(refreshController),
+        onLoading: () => widget.onLoading?.call(refreshController),
         header: CustomHeader(
           refreshStyle: RefreshStyle.Follow,
           onOffsetChange: (offset) {
-            if (_refreshController.headerMode?.value !=
-                RefreshStatus.refreshing)
-              _scaleController.value = offset / 80.0;
+            if (refreshController.headerMode?.value != RefreshStatus.refreshing) _scaleController.value = offset / 80.0;
           },
           builder: (c, m) => Center(
             child: FadeTransition(
@@ -113,7 +105,10 @@ class DragToRefreshState extends State<DragToRefresh>
                 child: SpinKitSpinningLines(
                   size: 34.0,
                   controller: _animationcontroller,
-                  color: Palette.accentColor,
+                  color: Utils.foldTheme(
+                    light: () => Palette.accentColor,
+                    dark: () => Palette.cardColorLight,
+                  ),
                 ),
               ),
             ),
@@ -171,8 +166,7 @@ class RefreshState extends InheritedWidget {
   }) : super(key: key, child: child);
 
   @override
-  bool updateShouldNotify(RefreshState oldWidget) =>
-      controller != oldWidget.controller;
+  bool updateShouldNotify(RefreshState oldWidget) => controller != oldWidget.controller;
 
   static RefreshState? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<RefreshState>();

@@ -27,6 +27,10 @@ class _$AuthStateTearOff {
       double passwordStrength = 0.0,
       bool isLoading = false,
       bool validate = false,
+      bool isEmailAuthLoading = false,
+      bool isGoogleAuthLoading = false,
+      bool isAppleAuthLoading = false,
+      bool isOldPasswordHidden = true,
       bool isPasswordHidden = true,
       bool passwordMatches = false,
       CountryCode? selectedCountry,
@@ -42,6 +46,10 @@ class _$AuthStateTearOff {
       passwordStrength: passwordStrength,
       isLoading: isLoading,
       validate: validate,
+      isEmailAuthLoading: isEmailAuthLoading,
+      isGoogleAuthLoading: isGoogleAuthLoading,
+      isAppleAuthLoading: isAppleAuthLoading,
+      isOldPasswordHidden: isOldPasswordHidden,
       isPasswordHidden: isPasswordHidden,
       passwordMatches: passwordMatches,
       selectedCountry: selectedCountry,
@@ -66,6 +74,10 @@ mixin _$AuthState {
   double get passwordStrength => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
+  bool get isEmailAuthLoading => throw _privateConstructorUsedError;
+  bool get isGoogleAuthLoading => throw _privateConstructorUsedError;
+  bool get isAppleAuthLoading => throw _privateConstructorUsedError;
+  bool get isOldPasswordHidden => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get passwordMatches => throw _privateConstructorUsedError;
   CountryCode? get selectedCountry => throw _privateConstructorUsedError;
@@ -91,6 +103,10 @@ abstract class $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -120,6 +136,10 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isEmailAuthLoading = freezed,
+    Object? isGoogleAuthLoading = freezed,
+    Object? isAppleAuthLoading = freezed,
+    Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
@@ -162,6 +182,22 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       validate: validate == freezed
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isEmailAuthLoading: isEmailAuthLoading == freezed
+          ? _value.isEmailAuthLoading
+          : isEmailAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGoogleAuthLoading: isGoogleAuthLoading == freezed
+          ? _value.isGoogleAuthLoading
+          : isGoogleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAppleAuthLoading: isAppleAuthLoading == freezed
+          ? _value.isAppleAuthLoading
+          : isAppleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOldPasswordHidden: isOldPasswordHidden == freezed
+          ? _value.isOldPasswordHidden
+          : isOldPasswordHidden // ignore: cast_nullable_to_non_nullable
               as bool,
       isPasswordHidden: isPasswordHidden == freezed
           ? _value.isPasswordHidden
@@ -217,6 +253,10 @@ abstract class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -249,6 +289,10 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
     Object? passwordStrength = freezed,
     Object? isLoading = freezed,
     Object? validate = freezed,
+    Object? isEmailAuthLoading = freezed,
+    Object? isGoogleAuthLoading = freezed,
+    Object? isAppleAuthLoading = freezed,
+    Object? isOldPasswordHidden = freezed,
     Object? isPasswordHidden = freezed,
     Object? passwordMatches = freezed,
     Object? selectedCountry = freezed,
@@ -292,6 +336,22 @@ class __$AuthStateCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
+      isEmailAuthLoading: isEmailAuthLoading == freezed
+          ? _value.isEmailAuthLoading
+          : isEmailAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isGoogleAuthLoading: isGoogleAuthLoading == freezed
+          ? _value.isGoogleAuthLoading
+          : isGoogleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAppleAuthLoading: isAppleAuthLoading == freezed
+          ? _value.isAppleAuthLoading
+          : isAppleAuthLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOldPasswordHidden: isOldPasswordHidden == freezed
+          ? _value.isOldPasswordHidden
+          : isOldPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isPasswordHidden: isPasswordHidden == freezed
           ? _value.isPasswordHidden
           : isPasswordHidden // ignore: cast_nullable_to_non_nullable
@@ -329,6 +389,10 @@ class _$_AuthState extends _AuthState {
       this.passwordStrength = 0.0,
       this.isLoading = false,
       this.validate = false,
+      this.isEmailAuthLoading = false,
+      this.isGoogleAuthLoading = false,
+      this.isAppleAuthLoading = false,
+      this.isOldPasswordHidden = true,
       this.isPasswordHidden = true,
       this.passwordMatches = false,
       this.selectedCountry,
@@ -348,32 +412,44 @@ class _$_AuthState extends _AuthState {
   final File? selectedPhoto;
   @override
   final TextEditingController phoneTextController;
-  @JsonKey(defaultValue: 0.0)
+  @JsonKey()
   @override
   final double passwordStrength;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
+  @override
+  final bool isEmailAuthLoading;
+  @JsonKey()
+  @override
+  final bool isGoogleAuthLoading;
+  @JsonKey()
+  @override
+  final bool isAppleAuthLoading;
+  @JsonKey()
+  @override
+  final bool isOldPasswordHidden;
+  @JsonKey()
   @override
   final bool isPasswordHidden;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool passwordMatches;
   @override
   final CountryCode? selectedCountry;
   @override
   final BankAccount bankAccount;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
   @override
   String toString() {
-    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
+    return 'AuthState(oldPassword: $oldPassword, confirmPassword: $confirmPassword, code: $code, rider: $rider, selectedPhoto: $selectedPhoto, phoneTextController: $phoneTextController, passwordStrength: $passwordStrength, isLoading: $isLoading, validate: $validate, isEmailAuthLoading: $isEmailAuthLoading, isGoogleAuthLoading: $isGoogleAuthLoading, isAppleAuthLoading: $isAppleAuthLoading, isOldPasswordHidden: $isOldPasswordHidden, isPasswordHidden: $isPasswordHidden, passwordMatches: $passwordMatches, selectedCountry: $selectedCountry, bankAccount: $bankAccount, status: $status)';
   }
 
   @override
@@ -381,50 +457,60 @@ class _$_AuthState extends _AuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AuthState &&
-            (identical(other.oldPassword, oldPassword) ||
-                other.oldPassword == oldPassword) &&
-            (identical(other.confirmPassword, confirmPassword) ||
-                other.confirmPassword == confirmPassword) &&
-            (identical(other.code, code) || other.code == code) &&
-            (identical(other.rider, rider) || other.rider == rider) &&
-            (identical(other.selectedPhoto, selectedPhoto) ||
-                other.selectedPhoto == selectedPhoto) &&
-            (identical(other.phoneTextController, phoneTextController) ||
-                other.phoneTextController == phoneTextController) &&
-            (identical(other.passwordStrength, passwordStrength) ||
-                other.passwordStrength == passwordStrength) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.isPasswordHidden, isPasswordHidden) ||
-                other.isPasswordHidden == isPasswordHidden) &&
-            (identical(other.passwordMatches, passwordMatches) ||
-                other.passwordMatches == passwordMatches) &&
-            (identical(other.selectedCountry, selectedCountry) ||
-                other.selectedCountry == selectedCountry) &&
-            (identical(other.bankAccount, bankAccount) ||
-                other.bankAccount == bankAccount) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality()
+                .equals(other.oldPassword, oldPassword) &&
+            const DeepCollectionEquality()
+                .equals(other.confirmPassword, confirmPassword) &&
+            const DeepCollectionEquality().equals(other.code, code) &&
+            const DeepCollectionEquality().equals(other.rider, rider) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedPhoto, selectedPhoto) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneTextController, phoneTextController) &&
+            const DeepCollectionEquality()
+                .equals(other.passwordStrength, passwordStrength) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality()
+                .equals(other.isEmailAuthLoading, isEmailAuthLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isGoogleAuthLoading, isGoogleAuthLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isAppleAuthLoading, isAppleAuthLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isOldPasswordHidden, isOldPasswordHidden) &&
+            const DeepCollectionEquality()
+                .equals(other.isPasswordHidden, isPasswordHidden) &&
+            const DeepCollectionEquality()
+                .equals(other.passwordMatches, passwordMatches) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedCountry, selectedCountry) &&
+            const DeepCollectionEquality()
+                .equals(other.bankAccount, bankAccount) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      oldPassword,
-      confirmPassword,
-      code,
-      rider,
-      selectedPhoto,
-      phoneTextController,
-      passwordStrength,
-      isLoading,
-      validate,
-      isPasswordHidden,
-      passwordMatches,
-      selectedCountry,
-      bankAccount,
-      status);
+      const DeepCollectionEquality().hash(oldPassword),
+      const DeepCollectionEquality().hash(confirmPassword),
+      const DeepCollectionEquality().hash(code),
+      const DeepCollectionEquality().hash(rider),
+      const DeepCollectionEquality().hash(selectedPhoto),
+      const DeepCollectionEquality().hash(phoneTextController),
+      const DeepCollectionEquality().hash(passwordStrength),
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(isEmailAuthLoading),
+      const DeepCollectionEquality().hash(isGoogleAuthLoading),
+      const DeepCollectionEquality().hash(isAppleAuthLoading),
+      const DeepCollectionEquality().hash(isOldPasswordHidden),
+      const DeepCollectionEquality().hash(isPasswordHidden),
+      const DeepCollectionEquality().hash(passwordMatches),
+      const DeepCollectionEquality().hash(selectedCountry),
+      const DeepCollectionEquality().hash(bankAccount),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -443,6 +529,10 @@ abstract class _AuthState extends AuthState {
       double passwordStrength,
       bool isLoading,
       bool validate,
+      bool isEmailAuthLoading,
+      bool isGoogleAuthLoading,
+      bool isAppleAuthLoading,
+      bool isOldPasswordHidden,
       bool isPasswordHidden,
       bool passwordMatches,
       CountryCode? selectedCountry,
@@ -468,6 +558,14 @@ abstract class _AuthState extends AuthState {
   bool get isLoading;
   @override
   bool get validate;
+  @override
+  bool get isEmailAuthLoading;
+  @override
+  bool get isGoogleAuthLoading;
+  @override
+  bool get isAppleAuthLoading;
+  @override
+  bool get isOldPasswordHidden;
   @override
   bool get isPasswordHidden;
   @override

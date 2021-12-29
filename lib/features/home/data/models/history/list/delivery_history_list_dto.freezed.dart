@@ -203,13 +203,16 @@ class _$_DeliveryHistoryListDTO extends _DeliveryHistoryListDTO {
         (other.runtimeType == runtimeType &&
             other is _DeliveryHistoryListDTO &&
             const DeepCollectionEquality().equals(other.data, data) &&
-            (identical(other.links, links) || other.links == links) &&
-            (identical(other.meta, meta) || other.meta == meta));
+            const DeepCollectionEquality().equals(other.links, links) &&
+            const DeepCollectionEquality().equals(other.meta, meta));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(data), links, meta);
+      runtimeType,
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(links),
+      const DeepCollectionEquality().hash(meta));
 
   @JsonKey(ignore: true)
   @override

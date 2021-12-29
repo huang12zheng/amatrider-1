@@ -31,6 +31,7 @@ class Rider with _$Rider {
         ProfileVerificationStatus verificationStatus,
     @Default(false) bool phoneVerified,
     required BasicTextField<double?> avgRating,
+    @Default(AuthProvider.regular) AuthProvider provider,
     DateTime? createdAt,
     DateTime? updatedAt,
     DateTime? deletedAt,
@@ -66,18 +67,34 @@ class Rider with _$Rider {
       );
 
   Rider merge(Rider? value) => copyWith(
-        uid: value?.uid ?? uid,
-        firstName: value?.firstName ?? firstName,
-        lastName: value?.lastName ?? lastName,
-        email: value?.email ?? email,
-        password: value?.password ?? password,
-        phone: value?.phone ?? phone,
-        photo: value?.photo ?? photo,
+        uid: value != null && value.uid.value != null ? value.uid : uid,
+        firstName: value?.firstName.isNotNull((it) => it as DisplayName,
+                orElse: (_) => firstName) ??
+            firstName,
+        lastName: value?.lastName.isNotNull((it) => it as DisplayName,
+                orElse: (_) => lastName) ??
+            lastName,
+        email: value?.email
+                .isNotNull((it) => it as EmailAddress, orElse: (_) => email) ??
+            email,
+        password: value?.password
+                .isNotNull((it) => it as Password, orElse: (_) => password) ??
+            password,
+        phone:
+            value?.phone.isNotNull((it) => it as Phone, orElse: (_) => phone) ??
+                phone,
+        photo: value?.photo
+                .isNotNull((it) => it as PhotoField, orElse: (_) => photo) ??
+            photo,
         location: value?.location ?? location,
         availability: value?.availability ?? availability,
         verificationStatus: value?.verificationStatus ?? verificationStatus,
         phoneVerified: value?.phoneVerified ?? phoneVerified,
-        avgRating: value?.avgRating ?? avgRating,
+        avgRating: value?.avgRating.isNotNull(
+                (it) => it as BasicTextField<double?>,
+                orElse: (_) => avgRating) ??
+            avgRating,
+        provider: value?.provider ?? provider,
         createdAt: value?.createdAt ?? createdAt,
         updatedAt: value?.updatedAt ?? updatedAt,
         deletedAt: value?.deletedAt ?? deletedAt,
@@ -99,6 +116,11 @@ class Rider with _$Rider {
   Option<FieldObjectException<dynamic>> get profile => firstName.mapped
       .andThen(lastName.mapped)
       .andThen(email.mapped)
+      .fold((f) => some(f), (_) => none());
+
+  Option<FieldObjectException<dynamic>> get socials => firstName.mapped
+      .andThen(lastName.mapped)
+      .andThen(phone.mapped)
       .fold((f) => some(f), (_) => none());
 }
 

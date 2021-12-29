@@ -288,21 +288,26 @@ class _$_RiderLocationDTO extends _RiderLocationDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RiderLocationDTO &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.accuracy, accuracy) ||
-                other.accuracy == accuracy) &&
-            (identical(other.altitude, altitude) ||
-                other.altitude == altitude) &&
-            (identical(other.speed, speed) || other.speed == speed) &&
-            (identical(other.speedAccuracy, speedAccuracy) ||
-                other.speedAccuracy == speedAccuracy));
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng) &&
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality().equals(other.accuracy, accuracy) &&
+            const DeepCollectionEquality().equals(other.altitude, altitude) &&
+            const DeepCollectionEquality().equals(other.speed, speed) &&
+            const DeepCollectionEquality()
+                .equals(other.speedAccuracy, speedAccuracy));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, lat, lng, address, accuracy, altitude, speed, speedAccuracy);
+      runtimeType,
+      const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(lng),
+      const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(accuracy),
+      const DeepCollectionEquality().hash(altitude),
+      const DeepCollectionEquality().hash(speed),
+      const DeepCollectionEquality().hash(speedAccuracy));
 
   @JsonKey(ignore: true)
   @override
