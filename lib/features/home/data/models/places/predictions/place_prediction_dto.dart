@@ -22,7 +22,9 @@ class PlacePredictionDTO with _$PlacePredictionDTO {
     @JsonKey(name: 'matched_substrings')
         List<MatchedStringsDTO?> matchedSubstrings,
     //
-    @JsonKey(defaultValue: []) required List<PlacePredictionDTO?> predictions,
+    @JsonKey(defaultValue: [])
+    @Default([])
+        List<PlacePredictionDTO?> predictions,
     @PlaceStatusSerializer() required PlaceStatus status,
     String? error,
   }) = _PlacePredictionDTO;

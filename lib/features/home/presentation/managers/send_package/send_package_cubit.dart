@@ -4,8 +4,9 @@ import 'dart:async' show StreamSubscription;
 import 'dart:convert' show jsonDecode;
 
 import 'package:amatrider/core/data/http_client/index.dart';
+import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
-import 'package:amatrider/core/data/websocket_events.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
@@ -26,7 +27,7 @@ part 'send_package_state.dart';
 @injectable
 class SendPackageCubit extends Cubit<SendPackageState>
     with BaseCubit<SendPackageState> {
-  final LaravelEchoRepository _echoRepository;
+  final EchoRepository _echoRepository;
   final LocationService _locationService;
   bool isFirstLocationUpdate = true;
   StreamSubscription<Either<AnyResponse, RiderLocation?>>?
@@ -48,22 +49,7 @@ class SendPackageCubit extends Cubit<SendPackageState>
 
   @override
   Future<void> close() async {
-    _echoRepository.stopListening(
-      SendPackageSocket.channel(state.package.id.value!),
-      SendPackageSocket.location,
-    );
-    _echoRepository.stopListening(
-      SendPackageSocket.channel(state.package.id.value!),
-      SendPackageSocket.received,
-    );
-    _echoRepository.stopListening(
-      SendPackageSocket.channel(state.package.id.value!),
-      SendPackageSocket.delivered,
-    );
-    _echoRepository.close(
-      SendPackageSocket.channel(state.package.id.value!),
-      nullify: true,
-    );
+    closeWebsocket();
     await _locationSubscription?.cancel();
     _locationSubscription = null;
     return super.close();
@@ -71,7 +57,39 @@ class SendPackageCubit extends Cubit<SendPackageState>
 
   void init(SendPackage package) => emit(state.copyWith(package: package));
 
-  void startTracker(BuildContext c) async {
+  void cancelReasonChanged(String? reason, [bool isOther = false]) => emit(state
+      .copyWith(cancelReason: BasicTextField(reason), isOtherReason: isOther));
+
+  void resetIssueSheet() {
+    emit(state.copyWith(
+      isOtherReason: true,
+      cancelReason: BasicTextField(null),
+    ));
+  }
+
+  void closeWebsocket() {
+    if (state.package.id.value != null) {
+      _echoRepository.stopListening(
+        SendPackageEvents.channel('${state.package.id.value}'),
+        SendPackageEvents.location,
+      );
+      _echoRepository.stopListening(
+        SendPackageEvents.channel('${state.package.id.value}'),
+        SendPackageEvents.received,
+      );
+      _echoRepository.stopListening(
+        SendPackageEvents.channel('${state.package.id.value}'),
+        SendPackageEvents.delivered,
+      );
+
+      // _echoRepository.close(
+      //   SendPackageEvents.channel('${state.package.id.value}'),
+      //   nullify: true,
+      // );
+    }
+  }
+
+  void track(BuildContext c) async {
     final _locationCubit = BlocProvider.of<LocationCubit>(c);
     await _locationCubit.request(c, background: true);
 
@@ -115,34 +133,22 @@ class SendPackageCubit extends Cubit<SendPackageState>
     );
   }
 
-  void startWebsocket() async {
-    _echoRepository.channel(SendPackageSocket.channel(state.package.id.value!));
+  void echo() async {
+    _echoRepository.channel(SendPackageEvents.channel(state.package.id.value!));
 
     _echoRepository.listen(
-      SendPackageSocket.location,
-      onData: (data, _this) {
-        mapDataToState(data);
-      },
+      SendPackageEvents.location,
+      onData: (data, _this) => mapDataToState(data),
     );
 
     _echoRepository.listen(
-      SendPackageSocket.received,
-      onData: (data, _this) {
-        mapDataToState(data);
-
-        _this.stopListening(SendPackageSocket.channel(state.package.id.value!),
-            SendPackageSocket.received);
-      },
+      SendPackageEvents.received,
+      onData: (data, _this) => mapDataToState(data),
     );
 
     _echoRepository.listen(
-      SendPackageSocket.delivered,
-      onData: (data, _this) {
-        mapDataToState(data);
-
-        _this.stopListening(SendPackageSocket.channel(state.package.id.value!),
-            SendPackageSocket.delivered);
-      },
+      SendPackageEvents.delivered,
+      onData: (data, _this) => mapDataToState(data),
     );
   }
 
@@ -214,9 +220,40 @@ class SendPackageCubit extends Cubit<SendPackageState>
                 lng: '${location?.lng.getOrNull}',
               );
 
-              emit(state.copyWith(status: some(_result)));
+              _result.response.mapOrNull(
+                success: (_) {
+                  emit(state.copyWith.package.call(
+                    status: SendPackageStatus.DELIVERED,
+                  ));
+                },
+              );
+
+              emit(state.copyWith(
+                status: some(_result.copyWith.response.call(pop: true)),
+              ));
             },
           );
+        },
+        (e) async => emit(state.copyWith(status: optionOf(e))),
+      );
+    } on AppNetworkException catch (e) {
+      emit(state.copyWith(status: some(e.asResponse())));
+    }
+
+    toggleLoading(false);
+  }
+
+  void cancelDelivery() async {
+    toggleLoading(true, none());
+
+    try {
+      final _conn = await connection();
+
+      await _conn.fold(
+        () async {
+          emit(state.copyWith(
+            status: some(AppHttpResponse.successful('Delivery cancelled!')),
+          ));
         },
         (e) async => emit(state.copyWith(status: optionOf(e))),
       );

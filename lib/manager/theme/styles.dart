@@ -353,8 +353,7 @@ class AppTheme extends HiveObject {
       primaryColorDark: primaryColorDark ?? _primaryColorDark,
       primaryColorLight: primaryColorLight ?? _primaryColorLight,
       inputTheme: textFieldTheme ?? _textFieldTheme,
-      scaffoldBackgroundColor:
-          scaffoldBackgroundColor ?? _scaffoldBackgroundColor,
+      scaffoldBackgroundColor: scaffoldBackgroundColor ?? _scaffoldBackgroundColor,
       toggleableActiveColor: toggleableActiveColor ?? _toggleableActiveColor,
       accentColor: accentColor ?? _accentColor,
       splashColor: splashColor ?? _splashColor,
@@ -363,8 +362,7 @@ class AppTheme extends HiveObject {
       visualDensity: visualDensity ?? _visualDensity,
       textTheme: textTheme ?? _textTheme,
       bottomSheetThemeData: bottomSheetThemeData ?? _bottomSheetThemeData,
-      bottomNavigationBarTheme:
-          bottomNavigationBarTheme ?? _bottomNavigationBarTheme,
+      bottomNavigationBarTheme: bottomNavigationBarTheme ?? _bottomNavigationBarTheme,
       buttonThemeData: buttonThemeData ?? _buttonThemeData,
       radioThemeData: radioThemeData ?? _radioThemeData,
       switchThemeData: switchThemeData ?? _switchThemeData,

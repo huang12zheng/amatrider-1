@@ -15,7 +15,7 @@ part 'place_detail_dto.g.dart';
 @immutable
 class PlaceDetailDTO with _$PlaceDetailDTO {
   const factory PlaceDetailDTO({
-    @JsonKey(name: 'address_components')
+    @JsonKey(name: 'address_components', defaultValue: [])
     @Default([])
         List<AddressComponentDTO> addressComponents,
     @JsonKey(name: 'formatted_address') String? formattedAddress,
@@ -29,7 +29,7 @@ class PlaceDetailDTO with _$PlaceDetailDTO {
     @JsonKey(name: 'place_id') String? placeId,
     @JsonKey(name: 'plus_code') PlusCodeDTO? plusCode,
     String? reference,
-    @Default([]) List<String> types,
+    @JsonKey(defaultValue: []) @Default([]) List<String> types,
     String? url,
     String? website,
     GeometryDTO? geometry,

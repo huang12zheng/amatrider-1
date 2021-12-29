@@ -1,3 +1,5 @@
+import 'package:amatrider/utils/utils.dart';
+
 extension DynamicX on dynamic {
   bool get isNull => this == null;
 
@@ -20,6 +22,8 @@ extension DynamicX on dynamic {
 
     return isBlank;
   }
+
+  S get tr => S.current;
 }
 
 extension ObjectExt<T> on T {

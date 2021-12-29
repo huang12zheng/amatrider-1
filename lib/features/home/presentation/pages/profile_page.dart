@@ -1,7 +1,6 @@
 library profile_page.dart;
 
 import 'package:amatrider/core/domain/entities/entities.dart';
-import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -11,15 +10,14 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-part '../widgets/profile_page_widgets.dart';
 part '../widgets/edit_profile_bottom_sheet.dart';
 part '../widgets/phone_update_bottom_sheet.dart';
+part '../widgets/profile_page_widgets.dart';
 
 /// A stateless widget to render ProfilePage.
 class ProfilePage extends StatefulWidget with AutoRouteWrapper {
@@ -34,8 +32,7 @@ class ProfilePage extends StatefulWidget with AutoRouteWrapper {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage>
-    with AutomaticKeepAliveClientMixin<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage> {
   @override
   bool get wantKeepAlive => true;
 
@@ -46,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage>
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
         showCustomLeading: false,
-        title: 'Profile',
+        title: '${tr.profile}',
         centerTitle: false,
         elevation: 0.0,
         titleStyle: App.titleStyle,
@@ -87,38 +84,45 @@ class _ProfilePageState extends State<ProfilePage>
                                     material: () => 2.0,
                                     cupertino: () => 0.0,
                                   ),
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: Utils.platform_(
-                                        cupertino: App.resolveColor(
-                                          Colors.white,
-                                          dark: Palette.secondaryColor.shade400,
-                                        ),
-                                      ),
+                                  color: Utils.platform_(
+                                    cupertino: App.resolveColor(
+                                      Colors.white,
+                                      dark: Palette.secondaryColor.shade400,
                                     ),
-                                    child: AdaptiveListTile(
-                                      focusColor: Colors.black,
-                                      hoverColor: Colors.black,
-                                      selectedTileColor: Colors.black,
-                                      onTap: e.onPressed,
-                                      tileColor: App.resolveColor(
-                                        Colors.white,
-                                        dark: Palette.secondaryColor.shade600,
+                                  ),
+                                  child: AdaptiveListTile(
+                                    focusColor: Colors.black,
+                                    hoverColor: Colors.black,
+                                    selectedTileColor: Colors.black,
+                                    onTap: e.onPressed,
+                                    tileColor: App.resolveColor(
+                                      Colors.white,
+                                      dark: Palette.secondaryColor.shade600,
+                                    ),
+                                    title: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Flexible(
+                                          child: AdaptiveText(
+                                            e.title,
+                                            fontSize: 17.0.sp,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                        //
+                                        HorizontalSpace(width: 0.04.sw),
+                                        //
+                                        if (e.id == 'verification') const VerificationStatusChip(),
+                                      ],
+                                    ),
+                                    trailing: Icon(
+                                      Utils.platform_(
+                                        material: Icons.navigate_next_rounded,
+                                        cupertino: CupertinoIcons.chevron_right,
                                       ),
-                                      title: AdaptiveText(
-                                        e.title,
-                                        fontSize: 17.0.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      trailing: Icon(
-                                        Theme.of(context).platform.fold(
-                                              material: () =>
-                                                  Icons.navigate_next_rounded,
-                                              cupertino: () =>
-                                                  CupertinoIcons.chevron_right,
-                                            ),
-                                        semanticLabel: e.title,
-                                      ),
+                                      size: 20,
+                                      semanticLabel: e.title,
+                                      color: Palette.iconDark,
                                     ),
                                   ),
                                 ),
@@ -134,9 +138,12 @@ class _ProfilePageState extends State<ProfilePage>
                         child: Hero(
                           tag: Const.profileLogoutBtnHerotag,
                           child: AppButton(
-                            text: 'Logout',
+                            text: '${tr.logout}',
                             isLoading: s.isLoading,
                             onPressed: () async {
+                              // Cleanup
+                              c.read<NotificationCubit>().reset();
+                              // Signout the authenticated rider
                               await c.read<AuthWatcherCubit>().signOut();
                               // Reset current Index to 0
                               c.read<TabNavigationCubit>().reset();
@@ -160,29 +167,40 @@ class _ProfilePageState extends State<ProfilePage>
 
 class _ProfileItem {
   final VoidCallback onPressed;
+  final String id;
   final String title;
 
   const _ProfileItem({
+    required this.id,
     required this.title,
     required this.onPressed,
   });
 
   static List<_ProfileItem> get items => [
         _ProfileItem(
-          title: 'Verification',
+          id: 'verification',
+          title: '${S.current.verification}',
           onPressed: () => navigator.push(const AccountVerificationRoute()),
         ),
         _ProfileItem(
-          title: 'Bank Account Information',
+          id: 'reviews',
+          title: '${S.current.reviews}',
+          onPressed: () => navigator.push(const RiderReviewRoute()),
+        ),
+        _ProfileItem(
+          id: 'account-info',
+          title: '${S.current.bankAccountInformation}',
           onPressed: () => navigator.push(const EditBankDetailsRoute()),
         ),
         _ProfileItem(
-          title: 'Language',
-          onPressed: () {},
+          id: 'language',
+          title: '${S.current.language}',
+          onPressed: () => navigator.push(const LanguageRoute()),
         ),
         _ProfileItem(
-          title: 'Settings',
-          onPressed: () {},
+          id: 'settings',
+          title: '${S.current.settings}',
+          onPressed: () => navigator.push(const SettingRoute()),
         ),
       ];
 }

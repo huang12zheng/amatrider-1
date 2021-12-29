@@ -47,9 +47,11 @@ extension StringX on String {
     return lowA.contains('$lowB') || (lowB != null && lowB.contains(lowA));
   }
 
-  bool equals(String? other) =>
-      identical(this, other) ||
-      const DeepCollectionEquality().equals(this, other);
+  bool equals(String? other, {bool lowercase = true}) {
+    final _this = lowercase ? toLowerCase() : this;
+    return identical(_this, other?.toLowerCase()) ||
+        const DeepCollectionEquality().equals(_this, other?.toLowerCase());
+  }
 
   /// Erase occurrence of strings matching Patterns
   String erase(List<Pattern> patterns,

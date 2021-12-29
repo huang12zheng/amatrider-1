@@ -11,9 +11,9 @@ part 'registered_rider_dto.freezed.dart';
 @immutable
 class RegisteredRiderDTO with _$RegisteredRiderDTO {
   const factory RegisteredRiderDTO({
-    @JsonKey(includeIfNull: false) String? status,
-    @JsonKey(includeIfNull: false) RiderDTO? data,
-    @JsonKey(includeIfNull: false) RiderDTO? user,
+    String? status,
+    RiderDTO? data,
+    RiderDTO? user,
   }) = _RegisteredRiderDTO;
 
   const RegisteredRiderDTO._();

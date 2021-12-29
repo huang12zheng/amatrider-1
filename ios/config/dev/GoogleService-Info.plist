@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>838162874368-cgopp0k1euqe841fat1742n2mhlrkqud.apps.googleusercontent.com</string>
+	<string>838162874368-cs77ec84piln8cqg9tbi610d8l6glltf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.838162874368-cgopp0k1euqe841fat1742n2mhlrkqud</string>
+	<string>com.googleusercontent.apps.838162874368-cs77ec84piln8cqg9tbi610d8l6glltf</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>838162874368-aatmr5bji80hg91jb41pm01554pccdo1.apps.googleusercontent.com</string>
+	<string>838162874368-3vri5ns978sftno6hvcv6jo2qklnq6r5.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBvRTH6X6ayFtek0Yf4jV5uYVKO-ZbBbZ4</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.amatnow.amatrider.dev</string>
+	<string>com.amatnow.app.amatrider.dev</string>
 	<key>PROJECT_ID</key>
 	<string>project-amatnow</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:838162874368:ios:9b0d436b8a6dd9ddf2d8e5</string>
+	<string>1:838162874368:ios:dd115899450faf2df2d8e5</string>
 </dict>
 </plist>

@@ -7,12 +7,11 @@ import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/router/export.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -26,38 +25,37 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => getIt<AuthCubit>()..fetchCountries()),
-        BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
-      ],
+    return BlocProvider(
+      create: (_) => getIt<AuthCubit>(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
-            (c.status.getOrElse(() => null) != null &&
-                (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+            c.status.fold(
+              () => false,
+              (http) =>
+                  http?.response.maybeMap(
+                    error: (f) => f.foldCode(
+                      is4031: () {
+                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
+                        return false;
+                      },
+                      is41101: () {
+                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToSocials());
+                        return false;
+                      },
                       orElse: () => false,
-                    ))),
+                    ),
+                    orElse: () => false,
+                  ) ??
+                  false,
+            ),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
-              duration: const Duration(seconds: 1),
+              duration: env.greetingDuration,
               message: s.message,
-              listener: (_) => _?.fold(
-                dismissed: () {
-                  final isAuthenticated =
-                      BlocProvider.of<AuthWatcherCubit>(context)
-                          .state
-                          .isAuthenticated;
-
-                  if (isAuthenticated)
-                    navigator.pushAndPopUntil(const DashboardRoute(),
-                        predicate: (_) => false);
-                },
-              ),
             ).render(c),
           ),
         ),
@@ -67,19 +65,16 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
   }
 }
 
-class _SignupScreenState extends State<SignupScreen>
-    with AutomaticKeepAliveClientMixin<SignupScreen> {
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
+class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClientMixin<SignupScreen> {
   DateTime _timestampPressed = DateTime.now();
 
-  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()
-    ..onTap = (() => navigator.replace(const LoginRoute()));
+  final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()..onTap = (() => navigator.replace(const LoginRoute()));
 
   @override
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (navigator.canPopSelfOrChildren) return true;
+    if (!navigator.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -106,25 +101,33 @@ class _SignupScreenState extends State<SignupScreen>
 
     return WillPopScope(
       onWillPop: maybePop,
-      child: Theme(
-        data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-        child: AdaptiveScaffold(
-          adaptiveToolbar: AdaptiveToolbar(
-            title: 'Create Account',
-            implyLeading: App.platform.fold(
-              material: () => false,
-              cupertino: () => true,
-            ),
-            showCustomLeading: App.platform.fold(
-              material: () => null,
-              cupertino: () => true,
-            ),
-            leadingAction: navigator.pop,
+      child: AdaptiveScaffold(
+        adaptiveToolbar: AdaptiveToolbar(
+          title: 'Create Account',
+          implyLeading: App.platform.fold(
+            material: () => false,
+            cupertino: () => true,
           ),
-          body: CustomScrollView(
+          showCustomLeading: App.platform.fold(
+            material: () => null,
+            cupertino: () => true,
+          ),
+          leadingAction: navigator.pop,
+        ),
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            scaffoldBackgroundColor: App.resolveColor(
+              Palette.cardColorLight,
+              dark: Palette.cardColorDark,
+            ),
+          ),
+          child: CustomScrollView(
+            shrinkWrap: true,
             clipBehavior: Clip.antiAlias,
             controller: ScrollController(),
             physics: Utils.physics,
+            scrollDirection: Axis.vertical,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               SliverPadding(
                 padding: EdgeInsets.symmetric(
@@ -135,23 +138,22 @@ class _SignupScreenState extends State<SignupScreen>
                     [
                       Form(
                         key: AuthState.signupFormKey,
-                        onChanged: () =>
-                            Form.of(primaryFocus!.context!)?.save(),
-                        child: App.platform.fold(
-                          material: () => const _MaterialSignUp(),
-                          cupertino: () => const _CupertinoSignUp(),
-                        ),
+                        onChanged: () => Form.of(primaryFocus!.context!)?.save(),
+                        child: const SafeArea(child: AutofillGroup(child: _FormLayout())),
                       ),
                       //
-                      VerticalSpace(height: 0.1.sw),
+                      VerticalSpace(height: 0.04.sw),
                       //
                       BlocBuilder<AuthCubit, AuthState>(
                         builder: (c, s) => Hero(
                           tag: Const.authButtonHeroTag,
                           child: AppButton(
                             text: 'Create Account',
-                            isLoading: s.isLoading && !s.countries.isEmpty(),
-                            onPressed: c.read<AuthCubit>().createAccount,
+                            isLoading: s.isLoading,
+                            onPressed: () {
+                              TextInput.finishAutofillContext();
+                              c.read<AuthCubit>().createAccount();
+                            },
                           ),
                         ),
                       ),
@@ -162,11 +164,9 @@ class _SignupScreenState extends State<SignupScreen>
                       //
                       VerticalSpace(height: 0.06.sw),
                       //
-                      const Hero(
+                      Hero(
                         tag: Const.oauthBtnHeroTag,
-                        child: Center(
-                          child: OAuthWidgets(),
-                        ),
+                        child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
                       ),
                       //
                       VerticalSpace(height: 0.05.sw),
@@ -180,19 +180,15 @@ class _SignupScreenState extends State<SignupScreen>
                               padding: const EdgeInsets.all(12.0),
                               child: AdaptiveText.rich(
                                 TextSpan(children: [
-                                  const TextSpan(
-                                      text: 'Already have an account? '),
+                                  const TextSpan(text: 'Already have an account? '),
                                   TextSpan(
                                     text: 'Log In',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => navigator
-                                          .navigate(const LoginRoute()),
+                                    recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const LoginRoute()),
                                     style: TextStyle(
                                       color: Utils.foldTheme(
                                         context: context,
                                         light: () => Palette.accentColor,
-                                        dark: () =>
-                                            Palette.accentColor.shade100,
+                                        dark: () => Palette.accentColor.shade100,
                                       ),
                                       fontWeight: FontWeight.w600,
                                     ),

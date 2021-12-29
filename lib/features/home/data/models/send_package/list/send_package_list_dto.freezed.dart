@@ -22,9 +22,9 @@ class _$SendPackageListDTOTearOff {
   const _$SendPackageListDTOTearOff();
 
   _SendPackageListDTO call(
-      {@JsonKey(includeIfNull: false) List<SendPackageDTO> data = const [],
-      @JsonKey(includeIfNull: false) PaginationLinks? links,
-      @JsonKey(includeIfNull: false) MetaField? meta}) {
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data = const [],
+      PaginationLinks? links,
+      MetaField? meta}) {
     return _SendPackageListDTO(
       data: data,
       links: links,
@@ -42,11 +42,9 @@ const $SendPackageListDTO = _$SendPackageListDTOTearOff();
 
 /// @nodoc
 mixin _$SendPackageListDTO {
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<SendPackageDTO> get data => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   PaginationLinks? get links => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   MetaField? get meta => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,9 +59,9 @@ abstract class $SendPackageListDTOCopyWith<$Res> {
           SendPackageListDTO value, $Res Function(SendPackageListDTO) then) =
       _$SendPackageListDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false) List<SendPackageDTO> data,
-      @JsonKey(includeIfNull: false) PaginationLinks? links,
-      @JsonKey(includeIfNull: false) MetaField? meta});
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data,
+      PaginationLinks? links,
+      MetaField? meta});
 
   $PaginationLinksCopyWith<$Res>? get links;
   $MetaFieldCopyWith<$Res>? get meta;
@@ -131,9 +129,9 @@ abstract class _$SendPackageListDTOCopyWith<$Res>
       __$SendPackageListDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false) List<SendPackageDTO> data,
-      @JsonKey(includeIfNull: false) PaginationLinks? links,
-      @JsonKey(includeIfNull: false) MetaField? meta});
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data,
+      PaginationLinks? links,
+      MetaField? meta});
 
   @override
   $PaginationLinksCopyWith<$Res>? get links;
@@ -179,22 +177,18 @@ class __$SendPackageListDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_SendPackageListDTO extends _SendPackageListDTO {
   const _$_SendPackageListDTO(
-      {@JsonKey(includeIfNull: false) this.data = const [],
-      @JsonKey(includeIfNull: false) this.links,
-      @JsonKey(includeIfNull: false) this.meta})
+      {@JsonKey(defaultValue: []) this.data = const [], this.links, this.meta})
       : super._();
 
   factory _$_SendPackageListDTO.fromJson(Map<String, dynamic> json) =>
       _$$_SendPackageListDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   final List<SendPackageDTO> data;
   @override
-  @JsonKey(includeIfNull: false)
   final PaginationLinks? links;
   @override
-  @JsonKey(includeIfNull: false)
   final MetaField? meta;
 
   @override
@@ -208,13 +202,16 @@ class _$_SendPackageListDTO extends _SendPackageListDTO {
         (other.runtimeType == runtimeType &&
             other is _SendPackageListDTO &&
             const DeepCollectionEquality().equals(other.data, data) &&
-            (identical(other.links, links) || other.links == links) &&
-            (identical(other.meta, meta) || other.meta == meta));
+            const DeepCollectionEquality().equals(other.links, links) &&
+            const DeepCollectionEquality().equals(other.meta, meta));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(data), links, meta);
+      runtimeType,
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(links),
+      const DeepCollectionEquality().hash(meta));
 
   @JsonKey(ignore: true)
   @override
@@ -229,22 +226,20 @@ class _$_SendPackageListDTO extends _SendPackageListDTO {
 
 abstract class _SendPackageListDTO extends SendPackageListDTO {
   const factory _SendPackageListDTO(
-      {@JsonKey(includeIfNull: false) List<SendPackageDTO> data,
-      @JsonKey(includeIfNull: false) PaginationLinks? links,
-      @JsonKey(includeIfNull: false) MetaField? meta}) = _$_SendPackageListDTO;
+      {@JsonKey(defaultValue: []) List<SendPackageDTO> data,
+      PaginationLinks? links,
+      MetaField? meta}) = _$_SendPackageListDTO;
   const _SendPackageListDTO._() : super._();
 
   factory _SendPackageListDTO.fromJson(Map<String, dynamic> json) =
       _$_SendPackageListDTO.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: [])
   List<SendPackageDTO> get data;
   @override
-  @JsonKey(includeIfNull: false)
   PaginationLinks? get links;
   @override
-  @JsonKey(includeIfNull: false)
   MetaField? get meta;
   @override
   @JsonKey(ignore: true)

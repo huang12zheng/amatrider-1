@@ -15,16 +15,16 @@ class SendPackageListDTO with _$SendPackageListDTO {
   const SendPackageListDTO._();
 
   const factory SendPackageListDTO({
-    @JsonKey(includeIfNull: false) @Default([]) List<SendPackageDTO> data,
-    @JsonKey(includeIfNull: false) PaginationLinks? links,
-    @JsonKey(includeIfNull: false) MetaField? meta,
+    @JsonKey(defaultValue: []) @Default([]) List<SendPackageDTO> data,
+    PaginationLinks? links,
+    MetaField? meta,
   }) = _SendPackageListDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
   factory SendPackageListDTO.fromJson(Map<String, dynamic> json) =>
       _$SendPackageListDTOFromJson(json);
 
-  /// Maps the Data Transfer Object to a KtList<UserAddress> Object.
+  /// Maps the Data Transfer Object to a KtList<SendPackage> Object.
   KtList<SendPackage> get domain =>
       KtList.from(data.map((e) => e.domain).toList());
 }

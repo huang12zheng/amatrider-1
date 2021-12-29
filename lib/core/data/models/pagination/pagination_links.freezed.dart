@@ -22,13 +22,13 @@ class _$PaginationLinksTearOff {
   const _$PaginationLinksTearOff();
 
   _PaginationLinks call(
-      {@JsonKey(includeIfNull: false) String? first,
-      @JsonKey(includeIfNull: false) String? last,
-      @JsonKey(includeIfNull: false) String? prev,
-      @JsonKey(includeIfNull: false) String? next,
-      @JsonKey(includeIfNull: false) String? url,
-      @JsonKey(includeIfNull: false) String? label,
-      @JsonKey(includeIfNull: false) bool active = false}) {
+      {String? first,
+      String? last,
+      String? prev,
+      String? next,
+      String? url,
+      String? label,
+      @JsonKey(defaultValue: false) required bool active}) {
     return _PaginationLinks(
       first: first,
       last: last,
@@ -50,19 +50,13 @@ const $PaginationLinks = _$PaginationLinksTearOff();
 
 /// @nodoc
 mixin _$PaginationLinks {
-  @JsonKey(includeIfNull: false)
   String? get first => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get last => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get prev => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get next => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get url => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get label => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: false)
   bool get active => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -77,13 +71,13 @@ abstract class $PaginationLinksCopyWith<$Res> {
           PaginationLinks value, $Res Function(PaginationLinks) then) =
       _$PaginationLinksCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false) String? first,
-      @JsonKey(includeIfNull: false) String? last,
-      @JsonKey(includeIfNull: false) String? prev,
-      @JsonKey(includeIfNull: false) String? next,
-      @JsonKey(includeIfNull: false) String? url,
-      @JsonKey(includeIfNull: false) String? label,
-      @JsonKey(includeIfNull: false) bool active});
+      {String? first,
+      String? last,
+      String? prev,
+      String? next,
+      String? url,
+      String? label,
+      @JsonKey(defaultValue: false) bool active});
 }
 
 /// @nodoc
@@ -146,13 +140,13 @@ abstract class _$PaginationLinksCopyWith<$Res>
       __$PaginationLinksCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false) String? first,
-      @JsonKey(includeIfNull: false) String? last,
-      @JsonKey(includeIfNull: false) String? prev,
-      @JsonKey(includeIfNull: false) String? next,
-      @JsonKey(includeIfNull: false) String? url,
-      @JsonKey(includeIfNull: false) String? label,
-      @JsonKey(includeIfNull: false) bool active});
+      {String? first,
+      String? last,
+      String? prev,
+      String? next,
+      String? url,
+      String? label,
+      @JsonKey(defaultValue: false) bool active});
 }
 
 /// @nodoc
@@ -213,38 +207,32 @@ class __$PaginationLinksCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PaginationLinks extends _PaginationLinks {
   const _$_PaginationLinks(
-      {@JsonKey(includeIfNull: false) this.first,
-      @JsonKey(includeIfNull: false) this.last,
-      @JsonKey(includeIfNull: false) this.prev,
-      @JsonKey(includeIfNull: false) this.next,
-      @JsonKey(includeIfNull: false) this.url,
-      @JsonKey(includeIfNull: false) this.label,
-      @JsonKey(includeIfNull: false) this.active = false})
+      {this.first,
+      this.last,
+      this.prev,
+      this.next,
+      this.url,
+      this.label,
+      @JsonKey(defaultValue: false) required this.active})
       : super._();
 
   factory _$_PaginationLinks.fromJson(Map<String, dynamic> json) =>
       _$$_PaginationLinksFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final String? first;
   @override
-  @JsonKey(includeIfNull: false)
   final String? last;
   @override
-  @JsonKey(includeIfNull: false)
   final String? prev;
   @override
-  @JsonKey(includeIfNull: false)
   final String? next;
   @override
-  @JsonKey(includeIfNull: false)
   final String? url;
   @override
-  @JsonKey(includeIfNull: false)
   final String? label;
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: false)
   final bool active;
 
   @override
@@ -257,18 +245,25 @@ class _$_PaginationLinks extends _PaginationLinks {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PaginationLinks &&
-            (identical(other.first, first) || other.first == first) &&
-            (identical(other.last, last) || other.last == last) &&
-            (identical(other.prev, prev) || other.prev == prev) &&
-            (identical(other.next, next) || other.next == next) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.label, label) || other.label == label) &&
-            (identical(other.active, active) || other.active == active));
+            const DeepCollectionEquality().equals(other.first, first) &&
+            const DeepCollectionEquality().equals(other.last, last) &&
+            const DeepCollectionEquality().equals(other.prev, prev) &&
+            const DeepCollectionEquality().equals(other.next, next) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.label, label) &&
+            const DeepCollectionEquality().equals(other.active, active));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, first, last, prev, next, url, label, active);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(first),
+      const DeepCollectionEquality().hash(last),
+      const DeepCollectionEquality().hash(prev),
+      const DeepCollectionEquality().hash(next),
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(label),
+      const DeepCollectionEquality().hash(active));
 
   @JsonKey(ignore: true)
   @override
@@ -283,38 +278,32 @@ class _$_PaginationLinks extends _PaginationLinks {
 
 abstract class _PaginationLinks extends PaginationLinks {
   const factory _PaginationLinks(
-      {@JsonKey(includeIfNull: false) String? first,
-      @JsonKey(includeIfNull: false) String? last,
-      @JsonKey(includeIfNull: false) String? prev,
-      @JsonKey(includeIfNull: false) String? next,
-      @JsonKey(includeIfNull: false) String? url,
-      @JsonKey(includeIfNull: false) String? label,
-      @JsonKey(includeIfNull: false) bool active}) = _$_PaginationLinks;
+      {String? first,
+      String? last,
+      String? prev,
+      String? next,
+      String? url,
+      String? label,
+      @JsonKey(defaultValue: false) required bool active}) = _$_PaginationLinks;
   const _PaginationLinks._() : super._();
 
   factory _PaginationLinks.fromJson(Map<String, dynamic> json) =
       _$_PaginationLinks.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   String? get first;
   @override
-  @JsonKey(includeIfNull: false)
   String? get last;
   @override
-  @JsonKey(includeIfNull: false)
   String? get prev;
   @override
-  @JsonKey(includeIfNull: false)
   String? get next;
   @override
-  @JsonKey(includeIfNull: false)
   String? get url;
   @override
-  @JsonKey(includeIfNull: false)
   String? get label;
   @override
-  @JsonKey(includeIfNull: false)
+  @JsonKey(defaultValue: false)
   bool get active;
   @override
   @JsonKey(ignore: true)

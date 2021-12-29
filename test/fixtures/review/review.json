@@ -1,0 +1,92 @@
+{
+    "status": "success",
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": "94cdf48f-80aa-48ff-bb7a-332d9514b3dc",
+                "rate": 4,
+                "review": "Speedy delivery! I love it.",
+                "order_type": "App\\Models\\Logistics\\SendPackage",
+                "user_id": "94cd7fee-c7d6-44e7-9c63-9353adf1b687",
+                "order_id": "94cdf409-aad3-4364-9672-3d0756d59fef",
+                "rider_id": "94cd8037-8254-4d49-9470-a01e67724c50",
+                "created_at": "2021-11-05T14:35:22.000000Z",
+                "updated_at": "2021-11-05T14:35:22.000000Z"
+            },
+            {
+                "id": "94ce033f-44d4-4bdd-b130-ad418a63bfae",
+                "rate": 1,
+                "review": "The product wsa all broken when it arrived! I hate this.",
+                "order_type": "App\\Models\\Logistics\\SendPackage",
+                "user_id": "94cd7fee-c7d6-44e7-9c63-9353adf1b687",
+                "order_id": "94ce0213-4def-4b53-bac1-41dca17fc258",
+                "rider_id": "94cd8037-8254-4d49-9470-a01e67724c50",
+                "created_at": "2021-11-05T15:16:26.000000Z",
+                "updated_at": "2021-11-05T15:16:26.000000Z"
+            },
+            {
+                "id": "94ce03b6-c923-430e-8354-8dd24cfb5733",
+                "rate": 3,
+                "review": "He was late and started arguing with me.",
+                "order_type": "App\\Models\\Logistics\\SendPackage",
+                "user_id": "94cd7fee-c7d6-44e7-9c63-9353adf1b687",
+                "order_id": "94cdfd3d-d502-4b37-875a-477aca5fb27e",
+                "rider_id": "94cd8037-8254-4d49-9470-a01e67724c50",
+                "created_at": "2021-11-05T15:17:44.000000Z",
+                "updated_at": "2021-11-05T15:17:44.000000Z"
+            }
+        ],
+        "first_page_url": "https://api.manuelsnr.design/api/v1/rider/reviews?page=1",
+        "from": 1,
+        "last_page": 1,
+        "last_page_url": "https://api.manuelsnr.design/api/v1/rider/reviews?page=1",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "https://api.manuelsnr.design/api/v1/rider/reviews?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": null,
+        "path": "https://api.manuelsnr.design/api/v1/rider/reviews",
+        "per_page": 15,
+        "prev_page_url": null,
+        "to": 3,
+        "total": 3
+    },
+    "totalReviews": 3,
+    "avgRating": 2.6666666666666665,
+    "reviewGroups": [
+        {
+            "group": 1,
+            "count": 1
+        },
+        {
+            "group": 2,
+            "count": 0
+        },
+        {
+            "group": 3,
+            "count": 1
+        },
+        {
+            "group": 4,
+            "count": 1
+        },
+        {
+            "group": 5,
+            "count": 0
+        }
+    ]
+}

@@ -27,6 +27,7 @@ class _$AddressComponentDTOTearOff {
       @JsonKey(name: 'short_name')
           String? shortName,
       @AddressComponentTypeSerializer()
+      @JsonKey(defaultValue: [])
           List<AddressComponentType> types = const []}) {
     return _AddressComponentDTO(
       longName: longName,
@@ -50,6 +51,7 @@ mixin _$AddressComponentDTO {
   @JsonKey(name: 'short_name')
   String? get shortName => throw _privateConstructorUsedError;
   @AddressComponentTypeSerializer()
+  @JsonKey(defaultValue: [])
   List<AddressComponentType> get types => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -64,9 +66,13 @@ abstract class $AddressComponentDTOCopyWith<$Res> {
           AddressComponentDTO value, $Res Function(AddressComponentDTO) then) =
       _$AddressComponentDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'long_name') String? longName,
-      @JsonKey(name: 'short_name') String? shortName,
-      @AddressComponentTypeSerializer() List<AddressComponentType> types});
+      {@JsonKey(name: 'long_name')
+          String? longName,
+      @JsonKey(name: 'short_name')
+          String? shortName,
+      @AddressComponentTypeSerializer()
+      @JsonKey(defaultValue: [])
+          List<AddressComponentType> types});
 }
 
 /// @nodoc
@@ -109,9 +115,13 @@ abstract class _$AddressComponentDTOCopyWith<$Res>
       __$AddressComponentDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'long_name') String? longName,
-      @JsonKey(name: 'short_name') String? shortName,
-      @AddressComponentTypeSerializer() List<AddressComponentType> types});
+      {@JsonKey(name: 'long_name')
+          String? longName,
+      @JsonKey(name: 'short_name')
+          String? shortName,
+      @AddressComponentTypeSerializer()
+      @JsonKey(defaultValue: [])
+          List<AddressComponentType> types});
 }
 
 /// @nodoc
@@ -152,9 +162,13 @@ class __$AddressComponentDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AddressComponentDTO extends _AddressComponentDTO {
   const _$_AddressComponentDTO(
-      {@JsonKey(name: 'long_name') this.longName,
-      @JsonKey(name: 'short_name') this.shortName,
-      @AddressComponentTypeSerializer() this.types = const []})
+      {@JsonKey(name: 'long_name')
+          this.longName,
+      @JsonKey(name: 'short_name')
+          this.shortName,
+      @AddressComponentTypeSerializer()
+      @JsonKey(defaultValue: [])
+          this.types = const []})
       : super._();
 
   factory _$_AddressComponentDTO.fromJson(Map<String, dynamic> json) =>
@@ -166,9 +180,9 @@ class _$_AddressComponentDTO extends _AddressComponentDTO {
   @override
   @JsonKey(name: 'short_name')
   final String? shortName;
-  @JsonKey(defaultValue: const [])
   @override
   @AddressComponentTypeSerializer()
+  @JsonKey(defaultValue: [])
   final List<AddressComponentType> types;
 
   @override
@@ -181,15 +195,16 @@ class _$_AddressComponentDTO extends _AddressComponentDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AddressComponentDTO &&
-            (identical(other.longName, longName) ||
-                other.longName == longName) &&
-            (identical(other.shortName, shortName) ||
-                other.shortName == shortName) &&
+            const DeepCollectionEquality().equals(other.longName, longName) &&
+            const DeepCollectionEquality().equals(other.shortName, shortName) &&
             const DeepCollectionEquality().equals(other.types, types));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, longName, shortName,
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(longName),
+      const DeepCollectionEquality().hash(shortName),
       const DeepCollectionEquality().hash(types));
 
   @JsonKey(ignore: true)
@@ -206,10 +221,13 @@ class _$_AddressComponentDTO extends _AddressComponentDTO {
 
 abstract class _AddressComponentDTO extends AddressComponentDTO {
   const factory _AddressComponentDTO(
-          {@JsonKey(name: 'long_name') String? longName,
-          @JsonKey(name: 'short_name') String? shortName,
-          @AddressComponentTypeSerializer() List<AddressComponentType> types}) =
-      _$_AddressComponentDTO;
+      {@JsonKey(name: 'long_name')
+          String? longName,
+      @JsonKey(name: 'short_name')
+          String? shortName,
+      @AddressComponentTypeSerializer()
+      @JsonKey(defaultValue: [])
+          List<AddressComponentType> types}) = _$_AddressComponentDTO;
   const _AddressComponentDTO._() : super._();
 
   factory _AddressComponentDTO.fromJson(Map<String, dynamic> json) =
@@ -223,6 +241,7 @@ abstract class _AddressComponentDTO extends AddressComponentDTO {
   String? get shortName;
   @override
   @AddressComponentTypeSerializer()
+  @JsonKey(defaultValue: [])
   List<AddressComponentType> get types;
   @override
   @JsonKey(ignore: true)

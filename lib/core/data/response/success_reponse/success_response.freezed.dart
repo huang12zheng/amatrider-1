@@ -23,8 +23,8 @@ class _$SuccessResponseTearOff {
 
   _SuccessResponse call(
       {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(includeIfNull: false, defaultValue: 'success') String? status,
-      @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+      @JsonKey(defaultValue: 'success') String? status,
+      @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop = false,
       @JsonKey(ignore: true) bool show = true}) {
@@ -50,9 +50,9 @@ const $SuccessResponse = _$SuccessResponseTearOff();
 mixin _$SuccessResponse {
   @JsonKey(ignore: true)
   String? get uuid => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, defaultValue: 'success')
+  @JsonKey(defaultValue: 'success')
   String? get status => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   String? get details => throw _privateConstructorUsedError;
@@ -74,8 +74,8 @@ abstract class $SuccessResponseCopyWith<$Res> {
       _$SuccessResponseCopyWithImpl<$Res>;
   $Res call(
       {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(includeIfNull: false, defaultValue: 'success') String? status,
-      @JsonKey(includeIfNull: false, defaultValue: '') String message,
+      @JsonKey(defaultValue: 'success') String? status,
+      @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show});
@@ -137,8 +137,8 @@ abstract class _$SuccessResponseCopyWith<$Res>
   @override
   $Res call(
       {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(includeIfNull: false, defaultValue: 'success') String? status,
-      @JsonKey(includeIfNull: false, defaultValue: '') String message,
+      @JsonKey(defaultValue: 'success') String? status,
+      @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show});
@@ -198,8 +198,8 @@ class __$SuccessResponseCopyWithImpl<$Res>
 class _$_SuccessResponse extends _SuccessResponse {
   const _$_SuccessResponse(
       {@JsonKey(ignore: true) this.uuid,
-      @JsonKey(includeIfNull: false, defaultValue: 'success') this.status,
-      @JsonKey(includeIfNull: false, defaultValue: '') required this.message,
+      @JsonKey(defaultValue: 'success') this.status,
+      @JsonKey(defaultValue: '') required this.message,
       @JsonKey(ignore: true) this.details,
       @JsonKey(ignore: true) this.pop = false,
       @JsonKey(ignore: true) this.show = true})
@@ -212,10 +212,10 @@ class _$_SuccessResponse extends _SuccessResponse {
   @JsonKey(ignore: true)
   final String? uuid;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: 'success')
+  @JsonKey(defaultValue: 'success')
   final String? status;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   final String message;
   @override
   @JsonKey(ignore: true)
@@ -237,17 +237,23 @@ class _$_SuccessResponse extends _SuccessResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SuccessResponse &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.message, message) || other.message == message) &&
-            (identical(other.details, details) || other.details == details) &&
-            (identical(other.pop, pop) || other.pop == pop) &&
-            (identical(other.show, show) || other.show == show));
+            const DeepCollectionEquality().equals(other.uuid, uuid) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.details, details) &&
+            const DeepCollectionEquality().equals(other.pop, pop) &&
+            const DeepCollectionEquality().equals(other.show, show));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, uuid, status, message, details, pop, show);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(uuid),
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(details),
+      const DeepCollectionEquality().hash(pop),
+      const DeepCollectionEquality().hash(show));
 
   @JsonKey(ignore: true)
   @override
@@ -263,8 +269,8 @@ class _$_SuccessResponse extends _SuccessResponse {
 abstract class _SuccessResponse extends SuccessResponse {
   const factory _SuccessResponse(
       {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(includeIfNull: false, defaultValue: 'success') String? status,
-      @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+      @JsonKey(defaultValue: 'success') String? status,
+      @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
       @JsonKey(ignore: true) bool pop,
       @JsonKey(ignore: true) bool show}) = _$_SuccessResponse;
@@ -277,10 +283,10 @@ abstract class _SuccessResponse extends SuccessResponse {
   @JsonKey(ignore: true)
   String? get uuid;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: 'success')
+  @JsonKey(defaultValue: 'success')
   String? get status;
   @override
-  @JsonKey(includeIfNull: false, defaultValue: '')
+  @JsonKey(defaultValue: '')
   String get message;
   @override
   @JsonKey(ignore: true)

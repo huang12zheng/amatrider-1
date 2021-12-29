@@ -13,8 +13,7 @@ _$_SenderDTO _$$_SenderDTOFromJson(Map<String, dynamic> json) => _$_SenderDTO(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       image: json['image'] as String?,
-      createdAt:
-          const TimestampConverter().fromJson(json['created_at'] as String?),
+      createdAt: const TimestampConverter().fromJson(json['created_at']),
     );
 
 Map<String, dynamic> _$$_SenderDTOToJson(_$_SenderDTO instance) {

@@ -16,12 +16,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:path_provider/path_provider.dart';
 
 typedef _PlatformDynamicColor = Tuple2<Color?, Color?>? Function();
@@ -52,6 +50,17 @@ void throwIfNot(bool condition, Object error) {
   if (!condition) throw error;
 }
 
+void navigateToOTPVerification() {
+  if (navigator.current.name != OTPVerificationRoute.name && navigator.topRoute.name != DashboardRoute.name)
+    navigator.pushAndPopUntil(OTPVerificationRoute(), predicate: (route) => false);
+}
+
+void navigateToSocials() {
+  if (navigator.current.name != SocialsSignupRoute.name &&
+      navigator.current.name != OTPVerificationRoute.name &&
+      navigator.current.name != DashboardRoute.name) navigator.pushAndPopUntil(const SocialsSignupRoute(), predicate: (route) => false);
+}
+
 class Utils {
   /// Create Singleton start ///
   static final Utils _singleton = Utils._();
@@ -63,8 +72,7 @@ class Utils {
   static const Duration autoRetrievalTimeout = Duration(seconds: 40);
   static const double buttonRadius = 8.0;
   static const double cardRadius = 12.0;
-  static const BorderRadius cardBorderRadius =
-      BorderRadius.all(Radius.circular(cardRadius));
+  static const BorderRadius cardBorderRadius = BorderRadius.all(Radius.circular(cardRadius));
   static const String currency = '₺';
   // static const String NGN = 'NGN';
   static const double inputBorderRadius = 8.0;
@@ -76,9 +84,7 @@ class Utils {
     horizontal: 12.0,
   );
   static Logger logger = Logger(
-    filter: env.flavor == BuildFlavor.dev
-        ? DevelopmentFilter()
-        : ProductionFilter(),
+    filter: env.flavor == BuildFlavor.dev ? DevelopmentFilter() : ProductionFilter(),
     printer: HybridPrinter(PrettyPrinter(
       methodCount: 3, // number of method calls to be displayed
       errorMethodCount: 10, // number of method calls if stacktrace is provided
@@ -89,11 +95,10 @@ class Utils {
     )),
   );
 
-  static ScrollPhysics physics =
-      Theme.of(navigator.navigatorKey.currentContext!).platform.fold(
-            material: () => const ClampingScrollPhysics(),
-            cupertino: () => const BouncingScrollPhysics(),
-          );
+  static ScrollPhysics physics = Theme.of(navigator.navigatorKey.currentContext!).platform.fold(
+        material: () => const ClampingScrollPhysics(),
+        cupertino: () => const BouncingScrollPhysics(),
+      );
   static const Duration willPopTimeout = Duration(seconds: 3);
 
   late BuildContext context;
@@ -105,15 +110,11 @@ class Utils {
 
   Utils._();
 
-  static Future<Directory?> get rootDir async =>
-      await getExternalStorageDirectory();
+  static Future<Directory?> get rootDir async => await getExternalStorageDirectory();
 
-  static Future<Directory> get cacheDir async => kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getTemporaryDirectory();
+  static Future<Directory> get cacheDir async => kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
 
-  static Future<Directory> get documentsDir async =>
-      await getApplicationDocumentsDirectory();
+  static Future<Directory> get documentsDir async => await getApplicationDocumentsDirectory();
 
   // End ////
 
@@ -156,8 +157,7 @@ class Utils {
   Color? get iconColor => theme.iconTheme.color;
 
   /// Check if dark mode theme is enable on platform on android Q+
-  bool get isPlatformDarkMode =>
-      (mediaQuery!.platformBrightness == Brightness.dark);
+  bool get isPlatformDarkMode => (mediaQuery!.platformBrightness == Brightness.dark);
 
   GlobalKey<NavigatorState> get key => router.navigatorKey;
 
@@ -178,6 +178,7 @@ class Utils {
           top: 0,
           left: 0,
           right: 0,
+          bottom: 0,
           child: secondChild,
         ),
         //
@@ -226,18 +227,11 @@ class Utils {
     _PlatformDynamicColor? cupertino,
   }) =>
       platform.fold(
-        material: () => foldTheme(
-            light: () => material?.call()?.value1 ?? light,
-            dark: () => material?.call()?.value2 ?? dark ?? light),
+        material: () => foldTheme(light: () => material?.call()?.value1 ?? light, dark: () => material?.call()?.value2 ?? dark ?? light),
         cupertino: () => CupertinoDynamicColor.resolve(
           CupertinoDynamicColor.withBrightness(
-            color: cupertino?.call()?.value1 ??
-                light ??
-                Utils.computeLuminance(Palette.primaryColor),
-            darkColor: cupertino?.call()?.value2 ??
-                dark ??
-                light ??
-                Utils.computeLuminance(Palette.secondaryColor),
+            color: cupertino?.call()?.value1 ?? light ?? Utils.computeLuminance(Palette.primaryColor),
+            darkColor: cupertino?.call()?.value2 ?? dark ?? light ?? Utils.computeLuminance(Palette.secondaryColor),
           ),
           context,
         ),
@@ -288,8 +282,7 @@ class Utils {
       );
 
   Widget loadingOverlay([Widget? child, Color? color]) => Container(
-        color: color ??
-            App.resolveColor(Palette.primaryColor.shade300.withOpacity(0.65)),
+        color: color ?? App.resolveColor(Palette.primaryColor.shade300.withOpacity(0.65)),
         child: Center(child: child ?? chasingDots),
       );
 
@@ -329,18 +322,15 @@ class Utils {
     return '';
   }
 
-  static DateTime getDate(DateTime d) =>
-      DateTime(d.year, d.month, d.day, d.hour, d.minute, d.second);
+  static DateTime getDate(DateTime d) => DateTime(d.year, d.month, d.day, d.hour, d.minute, d.second);
 
   static T foldTheme<T>({
     required T Function() light,
     T Function()? dark,
     BuildContext? context,
   }) {
-    var isDarkMode =
-        BlocProvider.of<ThemeCubit>(context ?? App.context).isDarkMode ||
-            ((MediaQuery.of(context ?? App.context).platformBrightness ==
-                Brightness.dark));
+    var isDarkMode = BlocProvider.of<ThemeCubit>(context ?? App.context).isDarkMode ||
+        ((MediaQuery.of(context ?? App.context).platformBrightness == Brightness.dark));
 
     return env.flavor.fold(
       dev: () {
@@ -350,38 +340,18 @@ class Utils {
         } else
           return light.call();
       },
-      prod: () => light.call(),
+      // prod: () => light.call(),
+      prod: () {
+        if (isDarkMode) {
+          if (dark == null) return light.call();
+          return dark.call();
+        } else
+          return light.call();
+      },
     );
   }
 
-  static Color computeLuminance(Color color) =>
-      color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-
-  static Future<Color> computeFromImage(
-    ImageProvider provider, {
-    required Size constraints,
-    Size? region,
-    Color defaultIfNull = Palette.accentColor,
-    int maximumColorCount = 16,
-  }) async {
-    try {
-      var paletteGenerator = await PaletteGenerator.fromImageProvider(
-        provider,
-        filters: [],
-        size: constraints,
-        region: region?.let((it) => Offset.zero & it),
-        maximumColorCount: maximumColorCount,
-      );
-
-      var dominantColor = paletteGenerator.dominantColor?.color;
-
-      return dominantColor?.let((it) => computeLuminance(it)) ?? defaultIfNull;
-    } catch (e) {
-      log.e(e);
-
-      return defaultIfNull;
-    }
-  }
+  static Color computeLuminance(Color color) => color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
 
   Completer<ui.Image> getImageDimensions(ImageProvider provider) {
     var completer = Completer<ui.Image>();
@@ -444,28 +414,23 @@ class Utils {
     }
     if (minutes > 0 && mins_) {
       if (time == null)
-        time =
-            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
+        time = '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
       else
-        time +=
-            '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
+        time += '$minutes ${'${short ? 'min' : 'minute'}'.pluralize(minutes).cased(casing)}';
     }
 
     if ((minutes <= 0 && hours <= 0) && secs_) {
       if (time == null)
-        time =
-            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
+        time = '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
       else
-        time +=
-            '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
+        time += '$seconds ${'${short ? 'sec' : 'second'}'.pluralize(seconds).cased(casing)}';
     }
 
     return time;
   }
 
   static Future<void> platformPop({bool animated = true}) async {
-    await SystemChannels.platform
-        .invokeMethod<void>('SystemNavigator.pop', animated);
+    await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', animated);
   }
 
   Widget positionedLoader(
@@ -486,8 +451,7 @@ class Utils {
         padding: EdgeInsets.symmetric(vertical: _topHeight ?? kToolbarHeight),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment:
-              _keyboardClosed ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment: _keyboardClosed ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [loader ?? circularLoader()],
         ),
       ),

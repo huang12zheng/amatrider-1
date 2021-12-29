@@ -1,11 +1,13 @@
 library referral_screen.dart;
 
+import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A stateless widget to render ReferralScreen.
 class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
@@ -50,31 +52,37 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
                 //
                 Row(
                   children: [
-                    const Flexible(
+                    Flexible(
                       flex: 2,
-                      child: AdaptiveTextFormInput(
-                        readOnly: true,
-                        disabled: false,
-                        initial: 'AmatRide/manuel1234',
-                        showCursor: false,
-                        autoFillHints: null,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16.0),
+                      child: BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
+                        selector: (s) => s.rider,
+                        builder: (c, rider) => AdaptiveTextFormInput(
+                          readOnly: true,
+                          disabled: false,
+                          initial: 'https://amatnow.com/ride/'
+                              '${rider?.fullName.getOrEmpty?.toLowerCase()}',
+                          showCursor: false,
+                          autoFillHints: null,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 16.0),
+                        ),
                       ),
                     ),
                     //
                     HorizontalSpace(width: 0.02.sw),
                     //
-                    SizedBox(
-                      height: 0.115.sw,
-                      width: 0.115.sw,
-                      child: InkWell(
-                        onTap: () {},
-                        borderRadius:
-                            BorderRadius.circular(Utils.inputBorderRadius),
-                        child: const Icon(
-                          Icons.copy_outlined,
-                          color: Palette.welcomeGrey,
+                    Material(
+                      type: MaterialType.transparency,
+                      child: SizedBox(
+                        height: 0.115.sw,
+                        width: 0.115.sw,
+                        child: AdaptiveInkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                          child: const Icon(
+                            Icons.copy_outlined,
+                            color: Palette.welcomeGrey,
+                          ),
                         ),
                       ),
                     ),
@@ -84,20 +92,21 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
                     DecoratedBox(
                       decoration: BoxDecoration(
                         color: Palette.accent20,
-                        borderRadius:
-                            BorderRadius.circular(Utils.inputBorderRadius),
+                        borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                       ),
                       child: SizedBox(
                         height: 0.115.sw,
                         width: 0.115.sw,
                         child: Material(
                           color: App.resolveColor(Colors.transparent),
-                          borderRadius:
-                              BorderRadius.circular(Utils.inputBorderRadius),
-                          child: InkWell(
-                            onTap: () {},
-                            borderRadius:
-                                BorderRadius.circular(Utils.inputBorderRadius),
+                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                          child: AdaptiveInkWell(
+                            onTap: () {
+                              Share.share(
+                                'Checkout AmatNow @ https://amatnow.com',
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                             child: const Icon(
                               Icons.share,
                               color: Palette.accentColor,

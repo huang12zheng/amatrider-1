@@ -430,56 +430,52 @@ class _$_RiderLocation extends _RiderLocation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RiderLocation &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.place, place) || other.place == place) &&
-            (identical(other.accuracy, accuracy) ||
-                other.accuracy == accuracy) &&
-            (identical(other.altitude, altitude) ||
-                other.altitude == altitude) &&
-            (identical(other.speed, speed) || other.speed == speed) &&
-            (identical(other.speedAccuracy, speedAccuracy) ||
-                other.speedAccuracy == speedAccuracy) &&
-            (identical(other.heading, heading) || other.heading == heading) &&
-            (identical(other.time, time) || other.time == time) &&
-            (identical(other.elapsedRealtimeNanos, elapsedRealtimeNanos) ||
-                other.elapsedRealtimeNanos == elapsedRealtimeNanos) &&
-            (identical(other.elapsedRealtimeUncertaintyNanos,
-                    elapsedRealtimeUncertaintyNanos) ||
-                other.elapsedRealtimeUncertaintyNanos ==
-                    elapsedRealtimeUncertaintyNanos) &&
-            (identical(other.headingAccuracy, headingAccuracy) ||
-                other.headingAccuracy == headingAccuracy) &&
-            (identical(other.provider, provider) ||
-                other.provider == provider) &&
-            (identical(other.satelliteNumber, satelliteNumber) ||
-                other.satelliteNumber == satelliteNumber) &&
-            (identical(other.verticalAccuracy, verticalAccuracy) ||
-                other.verticalAccuracy == verticalAccuracy) &&
-            (identical(other.isMock, isMock) || other.isMock == isMock));
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng) &&
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality().equals(other.place, place) &&
+            const DeepCollectionEquality().equals(other.accuracy, accuracy) &&
+            const DeepCollectionEquality().equals(other.altitude, altitude) &&
+            const DeepCollectionEquality().equals(other.speed, speed) &&
+            const DeepCollectionEquality()
+                .equals(other.speedAccuracy, speedAccuracy) &&
+            const DeepCollectionEquality().equals(other.heading, heading) &&
+            const DeepCollectionEquality().equals(other.time, time) &&
+            const DeepCollectionEquality()
+                .equals(other.elapsedRealtimeNanos, elapsedRealtimeNanos) &&
+            const DeepCollectionEquality().equals(
+                other.elapsedRealtimeUncertaintyNanos,
+                elapsedRealtimeUncertaintyNanos) &&
+            const DeepCollectionEquality()
+                .equals(other.headingAccuracy, headingAccuracy) &&
+            const DeepCollectionEquality().equals(other.provider, provider) &&
+            const DeepCollectionEquality()
+                .equals(other.satelliteNumber, satelliteNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.verticalAccuracy, verticalAccuracy) &&
+            const DeepCollectionEquality().equals(other.isMock, isMock));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      lat,
-      lng,
-      address,
-      place,
-      accuracy,
-      altitude,
-      speed,
-      speedAccuracy,
-      heading,
-      time,
-      elapsedRealtimeNanos,
-      elapsedRealtimeUncertaintyNanos,
-      headingAccuracy,
-      provider,
-      satelliteNumber,
-      verticalAccuracy,
-      isMock);
+      const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(lng),
+      const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(place),
+      const DeepCollectionEquality().hash(accuracy),
+      const DeepCollectionEquality().hash(altitude),
+      const DeepCollectionEquality().hash(speed),
+      const DeepCollectionEquality().hash(speedAccuracy),
+      const DeepCollectionEquality().hash(heading),
+      const DeepCollectionEquality().hash(time),
+      const DeepCollectionEquality().hash(elapsedRealtimeNanos),
+      const DeepCollectionEquality().hash(elapsedRealtimeUncertaintyNanos),
+      const DeepCollectionEquality().hash(headingAccuracy),
+      const DeepCollectionEquality().hash(provider),
+      const DeepCollectionEquality().hash(satelliteNumber),
+      const DeepCollectionEquality().hash(verticalAccuracy),
+      const DeepCollectionEquality().hash(isMock));
 
   @JsonKey(ignore: true)
   @override

@@ -52,10 +52,19 @@ _$_ServerFieldErrors _$$_ServerFieldErrorsFromJson(Map<String, dynamic> json) =>
       comment: (json['comment'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
+      bankId: (json['bank_id'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      bankName: (json['bank_name'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      accountName: (json['account_name'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
       accountNumber: (json['account_number'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
-      bankId: (json['bank_id'] as List<dynamic>?)
+      sortCode: (json['sort_code'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
       recipient: (json['recipient'] as List<dynamic>?)
@@ -120,6 +129,12 @@ _$_ServerFieldErrors _$$_ServerFieldErrorsFromJson(Map<String, dynamic> json) =>
       supportMessage: (json['message'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),
+      frontImage: (json['front_image'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      backImage: (json['back_image'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ServerFieldErrorsToJson(
@@ -151,8 +166,11 @@ Map<String, dynamic> _$$_ServerFieldErrorsToJson(
   writeNotNull('currency_id', instance.currencyId);
   writeNotNull('country', instance.country);
   writeNotNull('comment', instance.comment);
-  writeNotNull('account_number', instance.accountNumber);
   writeNotNull('bank_id', instance.bankId);
+  writeNotNull('bank_name', instance.bankName);
+  writeNotNull('account_name', instance.accountName);
+  writeNotNull('account_number', instance.accountNumber);
+  writeNotNull('sort_code', instance.sortCode);
   writeNotNull('recipient', instance.recipient);
   writeNotNull('plan', instance.plan);
   writeNotNull('payment_method', instance.paymentMethod);
@@ -179,5 +197,7 @@ Map<String, dynamic> _$$_ServerFieldErrorsToJson(
   writeNotNull('unit_price', instance.unitPrice);
   writeNotNull('required_date', instance.requiredDate);
   writeNotNull('message', instance.supportMessage);
+  writeNotNull('front_image', instance.frontImage);
+  writeNotNull('back_image', instance.backImage);
   return val;
 }

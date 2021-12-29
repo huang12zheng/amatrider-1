@@ -7,7 +7,7 @@ class _EditProfileBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AuthCubit>()..init(loader: true, countries: false),
+      create: (_) => getIt<AuthCubit>()..init(loader: true),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -22,9 +22,7 @@ class _EditProfileBottomSheet extends StatelessWidget {
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
-              listener: (_) => _?.fold(
-                dismissed: s.pop ? navigator.pop : null,
-              ),
+              listener: (_) => _?.fold(dismissed: s.pop ? navigator.pop : null),
             ).render(c),
           ),
         ),
@@ -57,12 +55,11 @@ class _EditProfileBottomSheet extends StatelessWidget {
                       Positioned(
                         top: 5,
                         right: App.sidePadding,
-                        child: Visibility(
+                        child: WidgetVisibility(
                           visible: c.select(
-                            (AuthCubit it) => it.state.isLoading,
+                            (AuthCubit it) => it.state.isLoading && it.state.rider.profile.isSome(),
                           ),
-                          child:
-                              Utils.circularLoader(color: Palette.accentColor),
+                          child: Utils.circularLoader(color: Palette.accentColor),
                         ),
                       ),
                       //
@@ -84,16 +81,16 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                         onPressed: navigator.pop,
                                         tooltip: 'Back',
                                         elevation: 0.0,
-                                        backgroundColor:
-                                            Theme.of(c).scaffoldBackgroundColor,
-                                        child: const Icon(
-                                            Icons.keyboard_backspace_rounded),
+                                        backgroundColor: Theme.of(c).scaffoldBackgroundColor,
+                                        child: const Icon(Icons.keyboard_backspace_rounded),
                                       ),
                                       cupertino: () => AdaptiveButton(
                                         text: 'Close',
-                                        width: 0.1.sw,
+                                        width: 0.15.sw,
                                         cupertinoHeight: 0.04.sh,
-                                        padding: EdgeInsets.zero,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 0.02.sw,
+                                        ),
                                         splashColor: App.resolveColor(
                                           Colors.grey.shade300,
                                           dark: Colors.grey.shade800,
@@ -128,17 +125,14 @@ class _EditProfileBottomSheet extends StatelessWidget {
                             padding: EdgeInsets.all(App.sidePadding),
                             url: (s) => s.rider.photo.getOrNull,
                             selected: (s) => s.selectedPhoto,
-                            onCameraClicked: (cubit, source) =>
-                                cubit.pickImage(source),
-                            onGalleryClicked: (cubit, source) =>
-                                cubit.pickImage(source),
+                            onCameraClicked: (cubit, source) => cubit.pickImage(source),
+                            onGalleryClicked: (cubit, source) => cubit.pickImage(source),
                           ),
                           //
                           VerticalSpace(height: 0.01.sw),
                           //
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: App.sidePadding),
+                            padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,24 +144,17 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                       Flexible(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             App.platform.fold(
-                                              material: () =>
-                                                  const TextFormInputLabel(
-                                                      text: 'First Name'),
+                                              material: () => const TextFormInputLabel(text: 'First Name'),
                                               cupertino: () => Utils.nothing,
                                             ),
                                             //
                                             App.platform.fold(
-                                              material: () =>
-                                                  const _FirstNameUpdateField(),
-                                              cupertino: () =>
-                                                  CupertinoFormSection(
-                                                children: [
-                                                  const _FirstNameUpdateField()
-                                                ],
+                                              material: () => const _FirstNameUpdateField(),
+                                              cupertino: () => CupertinoFormSection(
+                                                children: [const _FirstNameUpdateField()],
                                               ),
                                             ),
                                           ],
@@ -179,24 +166,17 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                       Flexible(
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             App.platform.fold(
-                                              material: () =>
-                                                  const TextFormInputLabel(
-                                                      text: 'Last Name'),
+                                              material: () => const TextFormInputLabel(text: 'Last Name'),
                                               cupertino: () => Utils.nothing,
                                             ),
                                             //
                                             App.platform.fold(
-                                              material: () =>
-                                                  const _LastNameUpdateField(),
-                                              cupertino: () =>
-                                                  CupertinoFormSection(
-                                                children: [
-                                                  const _LastNameUpdateField()
-                                                ],
+                                              material: () => const _LastNameUpdateField(),
+                                              cupertino: () => CupertinoFormSection(
+                                                children: [const _LastNameUpdateField()],
                                               ),
                                             ),
                                           ],
@@ -253,14 +233,11 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                       (AuthCubit it) => it.state.isLoading,
                                     ),
                                     cupertinoHeight: 0.055.sh,
-                                    padding:
-                                        App.platform.cupertino(EdgeInsets.zero),
-                                    onPressed: () =>
-                                        App.showAdaptiveBottomSheet(
+                                    padding: App.platform.cupertino(EdgeInsets.zero),
+                                    onPressed: () => App.showAdaptiveBottomSheet(
                                       c,
                                       elevation: 2.0,
-                                      builder: (_) =>
-                                          const _PhoneUpdateBottomSheet(),
+                                      builder: (_) => const _PhoneUpdateBottomSheet(),
                                     ),
                                   ),
                                 ),
@@ -269,18 +246,13 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                 //
                                 Hero(
                                   tag: Const.profileLogoutBtnHerotag,
-                                  child: Visibility(
-                                    visible: !c.select(
-                                      (AuthCubit it) =>
-                                          it.state.rider.phone.getOrNull !=
-                                              null &&
-                                          it.state.isLoading,
-                                    ),
-                                    replacement: App.loadingSpinningLines,
-                                    child: AppButton(
+                                  child: BlocSelector<AuthCubit, AuthState, bool>(
+                                    selector: (s) => s.isLoading,
+                                    builder: (c, isLaoding) => AppButton(
                                       text: 'Save Changes',
-                                      onPressed:
-                                          c.read<AuthCubit>().updateProfile,
+                                      disabled: isLaoding,
+                                      isLoading: isLaoding && c.select((AuthCubit it) => it.state.rider.phone.getOrNull != null),
+                                      onPressed: c.read<AuthCubit>().updateProfile,
                                     ),
                                   ),
                                 ),

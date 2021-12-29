@@ -22,8 +22,8 @@ class _$JourneyDetailDTOTearOff {
   const _$JourneyDetailDTOTearOff();
 
   _JourneyDetailDTO call(
-      {@JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? distance,
-      @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? duration,
+      {JourneyInfoDTO<int?>? distance,
+      JourneyInfoDTO<int?>? duration,
       @PlaceStatusSerializer() required PlaceStatus status}) {
     return _JourneyDetailDTO(
       distance: distance,
@@ -42,9 +42,7 @@ const $JourneyDetailDTO = _$JourneyDetailDTOTearOff();
 
 /// @nodoc
 mixin _$JourneyDetailDTO {
-  @JsonKey(includeIfNull: false)
   JourneyInfoDTO<int?>? get distance => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   JourneyInfoDTO<int?>? get duration => throw _privateConstructorUsedError;
   @PlaceStatusSerializer()
   PlaceStatus get status => throw _privateConstructorUsedError;
@@ -61,8 +59,8 @@ abstract class $JourneyDetailDTOCopyWith<$Res> {
           JourneyDetailDTO value, $Res Function(JourneyDetailDTO) then) =
       _$JourneyDetailDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? distance,
-      @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? duration,
+      {JourneyInfoDTO<int?>? distance,
+      JourneyInfoDTO<int?>? duration,
       @PlaceStatusSerializer() PlaceStatus status});
 
   $JourneyInfoDTOCopyWith<int?, $Res>? get distance;
@@ -131,8 +129,8 @@ abstract class _$JourneyDetailDTOCopyWith<$Res>
       __$JourneyDetailDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? distance,
-      @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? duration,
+      {JourneyInfoDTO<int?>? distance,
+      JourneyInfoDTO<int?>? duration,
       @PlaceStatusSerializer() PlaceStatus status});
 
   @override
@@ -179,8 +177,8 @@ class __$JourneyDetailDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_JourneyDetailDTO extends _JourneyDetailDTO {
   const _$_JourneyDetailDTO(
-      {@JsonKey(includeIfNull: false) this.distance,
-      @JsonKey(includeIfNull: false) this.duration,
+      {this.distance,
+      this.duration,
       @PlaceStatusSerializer() required this.status})
       : super._();
 
@@ -188,10 +186,8 @@ class _$_JourneyDetailDTO extends _JourneyDetailDTO {
       _$$_JourneyDetailDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final JourneyInfoDTO<int?>? distance;
   @override
-  @JsonKey(includeIfNull: false)
   final JourneyInfoDTO<int?>? duration;
   @override
   @PlaceStatusSerializer()
@@ -207,15 +203,17 @@ class _$_JourneyDetailDTO extends _JourneyDetailDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyDetailDTO &&
-            (identical(other.distance, distance) ||
-                other.distance == distance) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.distance, distance) &&
+            const DeepCollectionEquality().equals(other.duration, duration) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, distance, duration, status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(distance),
+      const DeepCollectionEquality().hash(duration),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -230,8 +228,8 @@ class _$_JourneyDetailDTO extends _JourneyDetailDTO {
 
 abstract class _JourneyDetailDTO extends JourneyDetailDTO {
   const factory _JourneyDetailDTO(
-          {@JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? distance,
-          @JsonKey(includeIfNull: false) JourneyInfoDTO<int?>? duration,
+          {JourneyInfoDTO<int?>? distance,
+          JourneyInfoDTO<int?>? duration,
           @PlaceStatusSerializer() required PlaceStatus status}) =
       _$_JourneyDetailDTO;
   const _JourneyDetailDTO._() : super._();
@@ -240,10 +238,8 @@ abstract class _JourneyDetailDTO extends JourneyDetailDTO {
       _$_JourneyDetailDTO.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   JourneyInfoDTO<int?>? get distance;
   @override
-  @JsonKey(includeIfNull: false)
   JourneyInfoDTO<int?>? get duration;
   @override
   @PlaceStatusSerializer()
@@ -263,8 +259,7 @@ class _$JourneyInfoDTOTearOff {
   const _$JourneyInfoDTOTearOff();
 
   _JourneyInfoDTO<B> call<B>(
-      {@JsonKey(includeIfNull: false) String? text,
-      @JsonKey(includeIfNull: false) @JourneyInfoValueSerializer() B? value}) {
+      {String? text, @JourneyInfoValueSerializer() B? value}) {
     return _JourneyInfoDTO<B>(
       text: text,
       value: value,
@@ -281,9 +276,7 @@ const $JourneyInfoDTO = _$JourneyInfoDTOTearOff();
 
 /// @nodoc
 mixin _$JourneyInfoDTO<B> {
-  @JsonKey(includeIfNull: false)
   String? get text => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   @JourneyInfoValueSerializer()
   B? get value => throw _privateConstructorUsedError;
 
@@ -298,9 +291,7 @@ abstract class $JourneyInfoDTOCopyWith<B, $Res> {
   factory $JourneyInfoDTOCopyWith(
           JourneyInfoDTO<B> value, $Res Function(JourneyInfoDTO<B>) then) =
       _$JourneyInfoDTOCopyWithImpl<B, $Res>;
-  $Res call(
-      {@JsonKey(includeIfNull: false) String? text,
-      @JsonKey(includeIfNull: false) @JourneyInfoValueSerializer() B? value});
+  $Res call({String? text, @JourneyInfoValueSerializer() B? value});
 }
 
 /// @nodoc
@@ -337,9 +328,7 @@ abstract class _$JourneyInfoDTOCopyWith<B, $Res>
           _JourneyInfoDTO<B> value, $Res Function(_JourneyInfoDTO<B>) then) =
       __$JourneyInfoDTOCopyWithImpl<B, $Res>;
   @override
-  $Res call(
-      {@JsonKey(includeIfNull: false) String? text,
-      @JsonKey(includeIfNull: false) @JourneyInfoValueSerializer() B? value});
+  $Res call({String? text, @JourneyInfoValueSerializer() B? value});
 }
 
 /// @nodoc
@@ -374,19 +363,15 @@ class __$JourneyInfoDTOCopyWithImpl<B, $Res>
 /// @nodoc
 @JsonSerializable()
 class _$_JourneyInfoDTO<B> extends _JourneyInfoDTO<B> {
-  const _$_JourneyInfoDTO(
-      {@JsonKey(includeIfNull: false) this.text,
-      @JsonKey(includeIfNull: false) @JourneyInfoValueSerializer() this.value})
+  const _$_JourneyInfoDTO({this.text, @JourneyInfoValueSerializer() this.value})
       : super._();
 
   factory _$_JourneyInfoDTO.fromJson(Map<String, dynamic> json) =>
       _$$_JourneyInfoDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final String? text;
   @override
-  @JsonKey(includeIfNull: false)
   @JourneyInfoValueSerializer()
   final B? value;
 
@@ -400,13 +385,15 @@ class _$_JourneyInfoDTO<B> extends _JourneyInfoDTO<B> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _JourneyInfoDTO<B> &&
-            (identical(other.text, text) || other.text == text) &&
+            const DeepCollectionEquality().equals(other.text, text) &&
             const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, text, const DeepCollectionEquality().hash(value));
+      runtimeType,
+      const DeepCollectionEquality().hash(text),
+      const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
@@ -421,21 +408,16 @@ class _$_JourneyInfoDTO<B> extends _JourneyInfoDTO<B> {
 
 abstract class _JourneyInfoDTO<B> extends JourneyInfoDTO<B> {
   const factory _JourneyInfoDTO(
-      {@JsonKey(includeIfNull: false)
-          String? text,
-      @JsonKey(includeIfNull: false)
-      @JourneyInfoValueSerializer()
-          B? value}) = _$_JourneyInfoDTO<B>;
+      {String? text,
+      @JourneyInfoValueSerializer() B? value}) = _$_JourneyInfoDTO<B>;
   const _JourneyInfoDTO._() : super._();
 
   factory _JourneyInfoDTO.fromJson(Map<String, dynamic> json) =
       _$_JourneyInfoDTO<B>.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   String? get text;
   @override
-  @JsonKey(includeIfNull: false)
   @JourneyInfoValueSerializer()
   B? get value;
   @override

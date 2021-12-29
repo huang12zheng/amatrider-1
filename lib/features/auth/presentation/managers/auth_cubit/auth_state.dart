@@ -17,6 +17,10 @@ class AuthState extends BaseState with _$AuthState {
   static final FocusNode newPasswordFocus = FocusNode();
   static final FocusNode passwordFocus = FocusNode();
   static final FocusNode passwordConfirmationFocus = FocusNode();
+  static final FocusNode bankNameFocus = FocusNode();
+  static final FocusNode accountNameFocus = FocusNode();
+  static final FocusNode accountNumberFocus = FocusNode();
+  static final FocusNode sortCodeFocus = FocusNode();
 
   const factory AuthState({
     required Password oldPassword,
@@ -28,10 +32,14 @@ class AuthState extends BaseState with _$AuthState {
     @Default(0.0) double passwordStrength,
     @Default(false) bool isLoading,
     @Default(false) bool validate,
+    @Default(false) bool isEmailAuthLoading,
+    @Default(false) bool isGoogleAuthLoading,
+    @Default(false) bool isAppleAuthLoading,
+    @Default(true) bool isOldPasswordHidden,
     @Default(true) bool isPasswordHidden,
     @Default(false) bool passwordMatches,
-    Country? selectedCountry,
-    @Default(KtList.empty()) KtList<Country> countries,
+    CountryCode? selectedCountry,
+    required BankAccount bankAccount,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _AuthState;
 
@@ -40,9 +48,10 @@ class AuthState extends BaseState with _$AuthState {
   factory AuthState.initial() => AuthState(
         rider: Rider.blank(),
         code: OTPCode(null),
-        oldPassword: Password(null),
+        oldPassword: Password(null, false),
         confirmPassword: Password(null),
         phoneTextController: TextEditingController(),
+        bankAccount: BankAccount.blank(),
       );
 }
 

@@ -21,6 +21,8 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
   final InputBorder? focusedErrorBorder;
   final BorderRadius? borderRadius;
   final Color? buttonColor;
+  final Color? backgroundColorLight;
+  final Color? backgroundColorDark;
   final ColorScheme? colorScheme;
   final EdgeInsetsGeometry? contentPadding;
   final InputDecoration? decoration;
@@ -77,6 +79,8 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
     this.itemFontSize,
     this.itemFontWeight,
     this.highlightColor,
+    this.backgroundColorLight,
+    this.backgroundColorDark,
     this.colorScheme,
     this.splashColor,
     this.border,
@@ -125,8 +129,12 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                   RoundedRectangleBorder(
                     side: BorderSide(
                       color: Utils.foldTheme(
-                        light: () => Palette.inputBgColor,
-                        dark: () => Palette.secondaryColor.shade400,
+                        light: () =>
+                            backgroundColorLight ?? Palette.inputBgColor,
+                        dark: () =>
+                            backgroundColorDark ??
+                            backgroundColorLight ??
+                            Palette.secondaryColor.shade400,
                       ),
                     ),
                     borderRadius: borderRadius ??
@@ -196,7 +204,8 @@ class DropdownFieldWidget<Model> extends StatelessWidget {
                                   Icon(
                                     Icons.check_circle,
                                     size: 20,
-                                    color: Palette.accentColor.shade400,
+                                    color: iconEnabledColor ??
+                                        Palette.accentColor.shade400,
                                   ),
                               ],
                             ),

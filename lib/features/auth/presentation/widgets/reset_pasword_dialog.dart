@@ -17,7 +17,7 @@ class ResetPaswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AuthCubit>()..init(countries: false),
+      create: (_) => getIt<AuthCubit>()..init(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -126,7 +126,7 @@ class _ResetPasswordCupertinoContent extends StatelessWidget {
           margin: EdgeInsets.only(top: 0.03.sw),
           backgroundColor: Colors.transparent,
           children: [
-            AdaptiveTextFormInput.flat(
+            AdaptiveTextFormInput(
               hintText: 'Enter Token (OTP)',
               autoFocus: true,
               disabled: s.isLoading,
@@ -147,7 +147,7 @@ class _ResetPasswordCupertinoContent extends StatelessWidget {
               ),
             ),
             //
-            AdaptiveTextFormInput.flat(
+            AdaptiveTextFormInput(
               hintText: 'New Password',
               enableSuggestions: false,
               autoCorrect: false,
@@ -171,7 +171,7 @@ class _ResetPasswordCupertinoContent extends StatelessWidget {
               ),
             ),
             //
-            AdaptiveTextFormInput.flat(
+            AdaptiveTextFormInput(
               hintText: 'Confirm New Password',
               enableSuggestions: false,
               autoCorrect: false,
@@ -197,8 +197,7 @@ class _ResetPasswordCupertinoContent extends StatelessWidget {
 class _ResetPasswordMaterialContent extends StatelessWidget {
   final double width;
 
-  const _ResetPasswordMaterialContent({Key? key, required this.width})
-      : super(key: key);
+  const _ResetPasswordMaterialContent({Key? key, required this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -281,12 +280,8 @@ class _ResetPasswordMaterialContent extends StatelessWidget {
                     suffixIcon: (s) => Visibility(
                       visible: s.confirmPassword.isValid && s.isPasswordHidden,
                       child: Icon(
-                        s.passwordMatches
-                            ? Icons.check_circle
-                            : Icons.cancel_rounded,
-                        color: s.passwordMatches
-                            ? Palette.successGreen
-                            : Palette.errorRed,
+                        s.passwordMatches ? Icons.check_circle : Icons.cancel_rounded,
+                        color: s.passwordMatches ? Palette.successGreen : Palette.errorRed,
                         size: 25,
                       ),
                     ),
@@ -296,8 +291,7 @@ class _ResetPasswordMaterialContent extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => c.read<AuthCubit>().forgotPassword(false),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0)
-                            .copyWith(top: 0.04.sw),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0).copyWith(top: 0.04.sw),
                         child: AdaptiveText.rich(
                           TextSpan(children: [
                             const TextSpan(text: 'Didn\'t get the code?'),

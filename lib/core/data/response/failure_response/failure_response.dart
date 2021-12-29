@@ -11,12 +11,13 @@ class FailureResponse with _$FailureResponse implements Failure {
   static const String _kAborted = 'Aborted!';
   static const String _kNotFound = 'Resource was not found on this server!';
 
+  @With<Failure>()
   const factory FailureResponse({
-    @JsonKey(includeIfNull: false) int? code,
-    @JsonKey(includeIfNull: false, defaultValue: 'error') String? status,
-    @JsonKey(includeIfNull: false) String? error,
-    @JsonKey(includeIfNull: false) ServerFieldErrors? errors,
-    @JsonKey(includeIfNull: false, defaultValue: '') required String message,
+    int? code,
+    @JsonKey(defaultValue: 'error') String? status,
+    String? error,
+    ServerFieldErrors? errors,
+    @JsonKey(defaultValue: '') required String message,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(true) bool pop,
     @JsonKey(ignore: true) @Default(true) bool show,
@@ -25,7 +26,7 @@ class FailureResponse with _$FailureResponse implements Failure {
   const FailureResponse._();
 
   factory FailureResponse.aborted() =>
-      const FailureResponse(message: _kAborted);
+      const FailureResponse(code: Failure.UNAUTHENTICATED, message: _kAborted);
 
   factory FailureResponse.alreadyExists(String message) =>
       FailureResponse(message: message);

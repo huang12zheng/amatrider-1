@@ -30,7 +30,7 @@ class _$PlacePredictionDTOTearOff {
       @JsonKey(name: 'matched_substrings')
           List<MatchedStringsDTO?> matchedSubstrings = const [],
       @JsonKey(defaultValue: [])
-          required List<PlacePredictionDTO?> predictions,
+          List<PlacePredictionDTO?> predictions = const [],
       @PlaceStatusSerializer()
           required PlaceStatus status,
       String? error}) {
@@ -244,7 +244,7 @@ class _$_PlacePredictionDTO extends _PlacePredictionDTO {
       this.description,
       this.types,
       @JsonKey(name: 'matched_substrings') this.matchedSubstrings = const [],
-      @JsonKey(defaultValue: []) required this.predictions,
+      @JsonKey(defaultValue: []) this.predictions = const [],
       @PlaceStatusSerializer() required this.status,
       this.error})
       : super._();
@@ -283,31 +283,30 @@ class _$_PlacePredictionDTO extends _PlacePredictionDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlacePredictionDTO &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            const DeepCollectionEquality().equals(other.placeId, placeId) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.types, types) &&
             const DeepCollectionEquality()
                 .equals(other.matchedSubstrings, matchedSubstrings) &&
             const DeepCollectionEquality()
                 .equals(other.predictions, predictions) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.error, error) || other.error == error));
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      placeId,
-      reference,
-      description,
+      const DeepCollectionEquality().hash(placeId),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(types),
       const DeepCollectionEquality().hash(matchedSubstrings),
       const DeepCollectionEquality().hash(predictions),
-      status,
-      error);
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(error));
 
   @JsonKey(ignore: true)
   @override
@@ -330,7 +329,7 @@ abstract class _PlacePredictionDTO extends PlacePredictionDTO {
       @JsonKey(name: 'matched_substrings')
           List<MatchedStringsDTO?> matchedSubstrings,
       @JsonKey(defaultValue: [])
-          required List<PlacePredictionDTO?> predictions,
+          List<PlacePredictionDTO?> predictions,
       @PlaceStatusSerializer()
           required PlaceStatus status,
       String? error}) = _$_PlacePredictionDTO;
@@ -497,12 +496,15 @@ class _$_MatchedStringsDTO extends _MatchedStringsDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _MatchedStringsDTO &&
-            (identical(other.length, length) || other.length == length) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            const DeepCollectionEquality().equals(other.length, length) &&
+            const DeepCollectionEquality().equals(other.offset, offset));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, length, offset);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(offset));
 
   @JsonKey(ignore: true)
   @override

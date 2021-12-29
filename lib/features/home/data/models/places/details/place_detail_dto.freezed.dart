@@ -22,7 +22,7 @@ class _$PlaceDetailDTOTearOff {
   const _$PlaceDetailDTOTearOff();
 
   _PlaceDetailDTO call(
-      {@JsonKey(name: 'address_components')
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents = const [],
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -41,7 +41,8 @@ class _$PlaceDetailDTOTearOff {
       @JsonKey(name: 'plus_code')
           PlusCodeDTO? plusCode,
       String? reference,
-      List<String> types = const [],
+      @JsonKey(defaultValue: [])
+          List<String> types = const [],
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -85,7 +86,7 @@ const $PlaceDetailDTO = _$PlaceDetailDTOTearOff();
 
 /// @nodoc
 mixin _$PlaceDetailDTO {
-  @JsonKey(name: 'address_components')
+  @JsonKey(name: 'address_components', defaultValue: [])
   List<AddressComponentDTO> get addressComponents =>
       throw _privateConstructorUsedError;
   @JsonKey(name: 'formatted_address')
@@ -105,6 +106,7 @@ mixin _$PlaceDetailDTO {
   @JsonKey(name: 'plus_code')
   PlusCodeDTO? get plusCode => throw _privateConstructorUsedError;
   String? get reference => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
   List<String> get types => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
   String? get website => throw _privateConstructorUsedError;
@@ -130,7 +132,7 @@ abstract class $PlaceDetailDTOCopyWith<$Res> {
           PlaceDetailDTO value, $Res Function(PlaceDetailDTO) then) =
       _$PlaceDetailDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'address_components')
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -149,7 +151,8 @@ abstract class $PlaceDetailDTOCopyWith<$Res> {
       @JsonKey(name: 'plus_code')
           PlusCodeDTO? plusCode,
       String? reference,
-      List<String> types,
+      @JsonKey(defaultValue: [])
+          List<String> types,
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -331,7 +334,7 @@ abstract class _$PlaceDetailDTOCopyWith<$Res>
       __$PlaceDetailDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'address_components')
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -350,7 +353,8 @@ abstract class _$PlaceDetailDTOCopyWith<$Res>
       @JsonKey(name: 'plus_code')
           PlusCodeDTO? plusCode,
       String? reference,
-      List<String> types,
+      @JsonKey(defaultValue: [])
+          List<String> types,
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -490,7 +494,7 @@ class __$PlaceDetailDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
   const _$_PlaceDetailDTO(
-      {@JsonKey(name: 'address_components')
+      {@JsonKey(name: 'address_components', defaultValue: [])
           this.addressComponents = const [],
       @JsonKey(name: 'formatted_address')
           this.formattedAddress,
@@ -509,7 +513,8 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
       @JsonKey(name: 'plus_code')
           this.plusCode,
       this.reference,
-      this.types = const [],
+      @JsonKey(defaultValue: [])
+          this.types = const [],
       this.url,
       this.website,
       this.geometry,
@@ -526,7 +531,7 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
       _$$_PlaceDetailDTOFromJson(json);
 
   @override
-  @JsonKey(name: 'address_components')
+  @JsonKey(name: 'address_components', defaultValue: [])
   final List<AddressComponentDTO> addressComponents;
   @override
   @JsonKey(name: 'formatted_address')
@@ -555,8 +560,8 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
   final PlusCodeDTO? plusCode;
   @override
   final String? reference;
-  @JsonKey(defaultValue: const [])
   @override
+  @JsonKey(defaultValue: [])
   final List<String> types;
   @override
   final String? url;
@@ -615,59 +620,55 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
             other is _PlaceDetailDTO &&
             const DeepCollectionEquality()
                 .equals(other.addressComponents, addressComponents) &&
-            (identical(other.formattedAddress, formattedAddress) ||
-                other.formattedAddress == formattedAddress) &&
-            (identical(other.formattedPhoneNumber, formattedPhoneNumber) ||
-                other.formattedPhoneNumber == formattedPhoneNumber) &&
-            (identical(other.icon, icon) || other.icon == icon) &&
-            (identical(other.iconBackgroundColor, iconBackgroundColor) ||
-                other.iconBackgroundColor == iconBackgroundColor) &&
-            (identical(other.iconMaskBaseUri, iconMaskBaseUri) ||
-                other.iconMaskBaseUri == iconMaskBaseUri) &&
-            (identical(
-                    other.internationalPhoneNumber, internationalPhoneNumber) ||
-                other.internationalPhoneNumber == internationalPhoneNumber) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.plusCode, plusCode) ||
-                other.plusCode == plusCode) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedAddress, formattedAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedPhoneNumber, formattedPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.icon, icon) &&
+            const DeepCollectionEquality()
+                .equals(other.iconBackgroundColor, iconBackgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.iconMaskBaseUri, iconMaskBaseUri) &&
+            const DeepCollectionEquality().equals(
+                other.internationalPhoneNumber, internationalPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.placeId, placeId) &&
+            const DeepCollectionEquality().equals(other.plusCode, plusCode) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
             const DeepCollectionEquality().equals(other.types, types) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.website, website) || other.website == website) &&
-            (identical(other.geometry, geometry) ||
-                other.geometry == geometry) &&
-            (identical(other.openingHours, openingHours) ||
-                other.openingHours == openingHours) &&
-            (identical(other.result, result) || other.result == result) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.website, website) &&
+            const DeepCollectionEquality().equals(other.geometry, geometry) &&
+            const DeepCollectionEquality()
+                .equals(other.openingHours, openingHours) &&
+            const DeepCollectionEquality().equals(other.result, result) &&
             const DeepCollectionEquality()
                 .equals(other.geocodingResults, geocodingResults) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
         const DeepCollectionEquality().hash(addressComponents),
-        formattedAddress,
-        formattedPhoneNumber,
-        icon,
-        iconBackgroundColor,
-        iconMaskBaseUri,
-        internationalPhoneNumber,
-        name,
-        placeId,
-        plusCode,
-        reference,
+        const DeepCollectionEquality().hash(formattedAddress),
+        const DeepCollectionEquality().hash(formattedPhoneNumber),
+        const DeepCollectionEquality().hash(icon),
+        const DeepCollectionEquality().hash(iconBackgroundColor),
+        const DeepCollectionEquality().hash(iconMaskBaseUri),
+        const DeepCollectionEquality().hash(internationalPhoneNumber),
+        const DeepCollectionEquality().hash(name),
+        const DeepCollectionEquality().hash(placeId),
+        const DeepCollectionEquality().hash(plusCode),
+        const DeepCollectionEquality().hash(reference),
         const DeepCollectionEquality().hash(types),
-        url,
-        website,
-        geometry,
-        openingHours,
-        result,
+        const DeepCollectionEquality().hash(url),
+        const DeepCollectionEquality().hash(website),
+        const DeepCollectionEquality().hash(geometry),
+        const DeepCollectionEquality().hash(openingHours),
+        const DeepCollectionEquality().hash(result),
         const DeepCollectionEquality().hash(geocodingResults),
-        status
+        const DeepCollectionEquality().hash(status)
       ]);
 
   @JsonKey(ignore: true)
@@ -683,7 +684,7 @@ class _$_PlaceDetailDTO extends _PlaceDetailDTO with DiagnosticableTreeMixin {
 
 abstract class _PlaceDetailDTO extends PlaceDetailDTO {
   const factory _PlaceDetailDTO(
-      {@JsonKey(name: 'address_components')
+      {@JsonKey(name: 'address_components', defaultValue: [])
           List<AddressComponentDTO> addressComponents,
       @JsonKey(name: 'formatted_address')
           String? formattedAddress,
@@ -702,7 +703,8 @@ abstract class _PlaceDetailDTO extends PlaceDetailDTO {
       @JsonKey(name: 'plus_code')
           PlusCodeDTO? plusCode,
       String? reference,
-      List<String> types,
+      @JsonKey(defaultValue: [])
+          List<String> types,
       String? url,
       String? website,
       GeometryDTO? geometry,
@@ -719,7 +721,7 @@ abstract class _PlaceDetailDTO extends PlaceDetailDTO {
       _$_PlaceDetailDTO.fromJson;
 
   @override
-  @JsonKey(name: 'address_components')
+  @JsonKey(name: 'address_components', defaultValue: [])
   List<AddressComponentDTO> get addressComponents;
   @override
   @JsonKey(name: 'formatted_address')
@@ -749,6 +751,7 @@ abstract class _PlaceDetailDTO extends PlaceDetailDTO {
   @override
   String? get reference;
   @override
+  @JsonKey(defaultValue: [])
   List<String> get types;
   @override
   String? get url;
@@ -924,14 +927,17 @@ class _$_PlusCodeDTO extends _PlusCodeDTO with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlusCodeDTO &&
-            (identical(other.compoundCode, compoundCode) ||
-                other.compoundCode == compoundCode) &&
-            (identical(other.globalCode, globalCode) ||
-                other.globalCode == globalCode));
+            const DeepCollectionEquality()
+                .equals(other.compoundCode, compoundCode) &&
+            const DeepCollectionEquality()
+                .equals(other.globalCode, globalCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, compoundCode, globalCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(compoundCode),
+      const DeepCollectionEquality().hash(globalCode));
 
   @JsonKey(ignore: true)
   @override

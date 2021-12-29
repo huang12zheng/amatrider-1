@@ -15,76 +15,69 @@ part 'send_package_dto.g.dart';
 @immutable
 class SendPackageDTO with _$SendPackageDTO {
   const factory SendPackageDTO({
-    @JsonKey(includeIfNull: false) String? id,
-    @JsonKey(includeIfNull: false, name: 'pickup_lat')
-    @DoubleSerializer()
-        double? pickupLat,
-    @JsonKey(includeIfNull: false, name: 'pickup_long')
-    @DoubleSerializer()
-        double? pickupLng,
-    @JsonKey(includeIfNull: false, name: 'destination_lat')
+    String? id,
+    @JsonKey(name: 'pickup_lat') @DoubleSerializer() double? pickupLat,
+    @JsonKey(name: 'pickup_long') @DoubleSerializer() double? pickupLng,
+    @JsonKey(name: 'destination_lat')
     @DoubleSerializer()
         double? destinationLat,
-    @JsonKey(includeIfNull: false, name: 'destination_long')
+    @JsonKey(name: 'destination_long')
     @DoubleSerializer()
         double? destinationLng,
     @JsonKey(name: 'pickup_address') String? pickupAddress,
     @JsonKey(name: 'destination_address') String? destinationAddress,
-    @JsonKey(includeIfNull: false, name: 'package_size')
+    @JsonKey(name: 'package_size')
     @PackageSizeSerializer()
         PackageSize? packageSize,
-    @JsonKey(includeIfNull: false, name: 'package_is_fragile')
-    @BooleanSerializer()
-        bool? isFragile,
-    @JsonKey(includeIfNull: false) @DoubleSerializer() double? amount,
-    @JsonKey(includeIfNull: false, name: 'payment_method')
+    @JsonKey(name: 'package_is_fragile') @BooleanSerializer() bool? isFragile,
+    @DoubleSerializer() double? amount,
+    @JsonKey(name: 'payment_method')
     @PaymentMethodSerializer()
         PaymentMethod? paymentMethod,
-    @JsonKey(includeIfNull: false, name: 'receiver_full_name')
-        String? receiverFullName,
-    @JsonKey(includeIfNull: false, name: 'receiver_phone_number')
-        String? receiverPhone,
-    @JsonKey(includeIfNull: false, name: 'receiver_email_address')
-        String? receiverEmailAddress,
-    @JsonKey(includeIfNull: false, name: 'receiver_alternative_phone_number')
+    @JsonKey(name: 'receiver_full_name') String? receiverFullName,
+    @JsonKey(name: 'receiver_phone_number') String? receiverPhone,
+    @JsonKey(name: 'receiver_email_address') String? receiverEmailAddress,
+    @JsonKey(name: 'receiver_alternative_phone_number')
         String? receiverPhoneAlt,
-    @JsonKey(includeIfNull: false, name: 'note') String? notes,
+    @JsonKey(name: 'note') String? notes,
     @Default(SendPackageStatus.PENDING)
     @SendPackageStatusSerializer()
         SendPackageStatus status,
     //
-    @JsonKey(includeIfNull: false, name: 'rider_id') String? riderId,
-    @JsonKey(includeIfNull: false, name: 'rider_current_lat')
-    @DoubleSerializer()
-        double? riderLat,
-    @JsonKey(includeIfNull: false, name: 'rider_current_long')
-    @DoubleSerializer()
-        double? riderLng,
-    @JsonKey(includeIfNull: false, name: 'order_active_at')
+    @JsonKey(name: 'rider_id') String? riderId,
+    @JsonKey(name: 'rider_current_lat') @DoubleSerializer() double? riderLat,
+    @JsonKey(name: 'rider_current_long') @DoubleSerializer() double? riderLng,
+    @JsonKey(name: 'order_active_at')
     @TimestampConverter()
         DateTime? orderActiveAt,
-    @JsonKey(includeIfNull: false, name: 'rider_accepted_at')
+    @JsonKey(name: 'order_cancelled_at')
+    @TimestampConverter()
+        DateTime? orderCancelledAt,
+    @JsonKey(name: 'rider_accepted_at')
     @TimestampConverter()
         DateTime? riderAcceptedAt,
-    @JsonKey(includeIfNull: false, name: 'rider_received_package_at')
+    @JsonKey(name: 'rider_received_package_at')
     @TimestampConverter()
         DateTime? riderReceivedAt,
-    @JsonKey(includeIfNull: false, name: 'rider_delivered_package_at')
+    @JsonKey(name: 'rider_delivered_package_at')
     @TimestampConverter()
         DateTime? riderDeliveredAt,
-    @JsonKey(includeIfNull: false) @SecondsToDurationConverter() Duration? time,
-    @JsonKey(includeIfNull: false) @DoubleSerializer() double? distance,
-    @JsonKey(includeIfNull: false, name: 'journeyDetails')
-        JourneyDetailDTO? journey,
-    @JsonKey(includeIfNull: false, name: 'package') SendPackageDTO? packageData,
-    @JsonKey(includeIfNull: false, name: 'user') SenderDTO? sender,
+    @JsonKey(name: 'payment_deposited_at')
+    @TimestampConverter()
+        DateTime? paymentDepositedAt,
+    @JsonKey(name: 'payment_deposited_confirmed_at')
+    @TimestampConverter()
+        DateTime? paymentDepositConfirmedAt,
     //
-    @JsonKey(includeIfNull: false, name: 'created_at')
-    @TimestampConverter()
-        DateTime? createdAt,
-    @JsonKey(includeIfNull: false, name: 'updated_at')
-    @TimestampConverter()
-        DateTime? updatedAt,
+    @SecondsToDurationConverter() Duration? time,
+    @DoubleSerializer() double? distance,
+    //
+    @JsonKey(name: 'journeyDetails') JourneyDetailDTO? journey,
+    @JsonKey(name: 'package') SendPackageDTO? packageData,
+    @JsonKey(name: 'user') SenderDTO? sender,
+    //
+    @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
+    @JsonKey(name: 'updated_at') @TimestampConverter() DateTime? updatedAt,
   }) = _SendPackageDTO;
 
   const SendPackageDTO._();
@@ -135,6 +128,7 @@ class SendPackageDTO with _$SendPackageDTO {
         createdAt: createdAt,
         updatedAt: updatedAt,
         orderActiveAt: orderActiveAt,
+        orderCancelledAt: orderCancelledAt,
         riderId: UniqueId.fromExternal(riderId),
         riderLocation: RiderLocation(
           lat: BasicTextField(riderLat),
@@ -144,6 +138,8 @@ class SendPackageDTO with _$SendPackageDTO {
         riderAcceptedAt: riderAcceptedAt,
         riderDeliveredAt: riderDeliveredAt,
         riderReceivedAt: riderReceivedAt,
+        paymentDepositedAt: paymentDepositedAt,
+        paymentDepositConfirmedAt: paymentDepositConfirmedAt,
         sender: Sender.blank().merge(sender?.domain),
         durationToPickup: time ?? Duration.zero,
         distanceToPickup: BasicTextField(distance),

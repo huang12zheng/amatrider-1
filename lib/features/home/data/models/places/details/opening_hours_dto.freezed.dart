@@ -22,9 +22,13 @@ class _$OpeningHoursDTOTearOff {
   const _$OpeningHoursDTOTearOff();
 
   _OpeningHoursDTO call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods = const [],
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText = const []}) {
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          List<PeriodDTO> periods = const [],
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+      @JsonKey(defaultValue: [])
+          List<String?> weekdayText = const []}) {
     return _OpeningHoursDTO(
       openNow: openNow,
       periods: periods,
@@ -44,8 +48,10 @@ const $OpeningHoursDTO = _$OpeningHoursDTOTearOff();
 mixin _$OpeningHoursDTO {
   @JsonKey(name: 'open_now')
   bool? get openNow => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: [])
   List<PeriodDTO> get periods => throw _privateConstructorUsedError;
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
+  @JsonKey(defaultValue: [])
   List<String?> get weekdayText => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,9 +66,13 @@ abstract class $OpeningHoursDTOCopyWith<$Res> {
           OpeningHoursDTO value, $Res Function(OpeningHoursDTO) then) =
       _$OpeningHoursDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods,
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText});
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+      @JsonKey(defaultValue: [])
+          List<String?> weekdayText});
 }
 
 /// @nodoc
@@ -105,9 +115,13 @@ abstract class _$OpeningHoursDTOCopyWith<$Res>
       __$OpeningHoursDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'open_now') bool? openNow,
-      List<PeriodDTO> periods,
-      @JsonKey(name: 'weekday_text') List<String?> weekdayText});
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
+          List<PeriodDTO> periods,
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+      @JsonKey(defaultValue: [])
+          List<String?> weekdayText});
 }
 
 /// @nodoc
@@ -148,9 +162,13 @@ class __$OpeningHoursDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
   const _$_OpeningHoursDTO(
-      {@JsonKey(name: 'open_now') this.openNow,
-      this.periods = const [],
-      @JsonKey(name: 'weekday_text') this.weekdayText = const []})
+      {@JsonKey(name: 'open_now')
+          this.openNow,
+      @JsonKey(defaultValue: [])
+          this.periods = const [],
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+      @JsonKey(defaultValue: [])
+          this.weekdayText = const []})
       : super._();
 
   factory _$_OpeningHoursDTO.fromJson(Map<String, dynamic> json) =>
@@ -159,11 +177,12 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
   @override
   @JsonKey(name: 'open_now')
   final bool? openNow;
-  @JsonKey(defaultValue: const [])
   @override
+  @JsonKey(defaultValue: [])
   final List<PeriodDTO> periods;
   @override
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
+  @JsonKey(defaultValue: [])
   final List<String?> weekdayText;
 
   @override
@@ -186,7 +205,7 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _OpeningHoursDTO &&
-            (identical(other.openNow, openNow) || other.openNow == openNow) &&
+            const DeepCollectionEquality().equals(other.openNow, openNow) &&
             const DeepCollectionEquality().equals(other.periods, periods) &&
             const DeepCollectionEquality()
                 .equals(other.weekdayText, weekdayText));
@@ -195,7 +214,7 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      openNow,
+      const DeepCollectionEquality().hash(openNow),
       const DeepCollectionEquality().hash(periods),
       const DeepCollectionEquality().hash(weekdayText));
 
@@ -212,10 +231,13 @@ class _$_OpeningHoursDTO extends _OpeningHoursDTO with DiagnosticableTreeMixin {
 
 abstract class _OpeningHoursDTO extends OpeningHoursDTO {
   const factory _OpeningHoursDTO(
-          {@JsonKey(name: 'open_now') bool? openNow,
+      {@JsonKey(name: 'open_now')
+          bool? openNow,
+      @JsonKey(defaultValue: [])
           List<PeriodDTO> periods,
-          @JsonKey(name: 'weekday_text') List<String?> weekdayText}) =
-      _$_OpeningHoursDTO;
+      @JsonKey(name: 'weekday_text', defaultValue: [])
+      @JsonKey(defaultValue: [])
+          List<String?> weekdayText}) = _$_OpeningHoursDTO;
   const _OpeningHoursDTO._() : super._();
 
   factory _OpeningHoursDTO.fromJson(Map<String, dynamic> json) =
@@ -225,9 +247,11 @@ abstract class _OpeningHoursDTO extends OpeningHoursDTO {
   @JsonKey(name: 'open_now')
   bool? get openNow;
   @override
+  @JsonKey(defaultValue: [])
   List<PeriodDTO> get periods;
   @override
-  @JsonKey(name: 'weekday_text')
+  @JsonKey(name: 'weekday_text', defaultValue: [])
+  @JsonKey(defaultValue: [])
   List<String?> get weekdayText;
   @override
   @JsonKey(ignore: true)
@@ -400,12 +424,15 @@ class _$_PeriodDTO with DiagnosticableTreeMixin implements _PeriodDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PeriodDTO &&
-            (identical(other.close, close) || other.close == close) &&
-            (identical(other.open, open) || other.open == open));
+            const DeepCollectionEquality().equals(other.close, close) &&
+            const DeepCollectionEquality().equals(other.open, open));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, close, open);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(close),
+      const DeepCollectionEquality().hash(open));
 
   @JsonKey(ignore: true)
   @override
@@ -568,12 +595,15 @@ class _$_HoursDTO with DiagnosticableTreeMixin implements _HoursDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _HoursDTO &&
-            (identical(other.day, day) || other.day == day) &&
-            (identical(other.time, time) || other.time == time));
+            const DeepCollectionEquality().equals(other.day, day) &&
+            const DeepCollectionEquality().equals(other.time, time));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, day, time);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(day),
+      const DeepCollectionEquality().hash(time));
 
   @JsonKey(ignore: true)
   @override

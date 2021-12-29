@@ -29,7 +29,7 @@ Map<String, dynamic> _$$_FailureResponseToJson(_$_FailureResponse instance) {
   writeNotNull('code', instance.code);
   writeNotNull('status', instance.status);
   writeNotNull('error', instance.error);
-  writeNotNull('errors', instance.errors);
+  writeNotNull('errors', instance.errors?.toJson());
   val['message'] = instance.message;
   return val;
 }

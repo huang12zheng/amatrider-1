@@ -10,8 +10,7 @@ class Password extends FieldObject<String?> {
   @override
   final Either<FieldObjectException<String>, String?> value;
 
-  factory Password(String? password) =>
-      Password._(Validator.passwordValidator(password));
+  factory Password(String? password, [bool validate = true]) => Password._(Validator.passwordValidator(password, validate));
 
   const Password._(this.value);
 

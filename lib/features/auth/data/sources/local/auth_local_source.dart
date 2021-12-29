@@ -14,7 +14,7 @@ class AuthLocalDatasource {
   AuthLocalDatasource(this._manager, this._database);
 
   Future<void> cacheAuthenticatedRider(RiderDTO user) async {
-    await _database.riderDAO.insertRider(user.floor);
+    await _database.riderDAO.insertItem(user.floor);
   }
 
   Future<Option<RiderDTO?>> getRider() async {

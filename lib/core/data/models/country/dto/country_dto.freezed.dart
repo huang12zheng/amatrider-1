@@ -22,11 +22,11 @@ class _$CountryDTOTearOff {
   const _$CountryDTOTearOff();
 
   _CountryDTO call(
-      {@JsonKey(includeIfNull: false) String? id,
-      @JsonKey(includeIfNull: false) String? name,
-      @JsonKey(includeIfNull: false) String? iso2,
-      @JsonKey(includeIfNull: false) String? iso3,
-      @JsonKey(includeIfNull: false, name: 'phone_code') String? dialCode}) {
+      {String? id,
+      String? name,
+      String? iso2,
+      String? iso3,
+      @JsonKey(name: 'phone_code') String? dialCode}) {
     return _CountryDTO(
       id: id,
       name: name,
@@ -46,15 +46,11 @@ const $CountryDTO = _$CountryDTOTearOff();
 
 /// @nodoc
 mixin _$CountryDTO {
-  @JsonKey(includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get name => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get iso2 => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   String? get iso3 => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false, name: 'phone_code')
+  @JsonKey(name: 'phone_code')
   String? get dialCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -69,11 +65,11 @@ abstract class $CountryDTOCopyWith<$Res> {
           CountryDTO value, $Res Function(CountryDTO) then) =
       _$CountryDTOCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(includeIfNull: false) String? id,
-      @JsonKey(includeIfNull: false) String? name,
-      @JsonKey(includeIfNull: false) String? iso2,
-      @JsonKey(includeIfNull: false) String? iso3,
-      @JsonKey(includeIfNull: false, name: 'phone_code') String? dialCode});
+      {String? id,
+      String? name,
+      String? iso2,
+      String? iso3,
+      @JsonKey(name: 'phone_code') String? dialCode});
 }
 
 /// @nodoc
@@ -124,11 +120,11 @@ abstract class _$CountryDTOCopyWith<$Res> implements $CountryDTOCopyWith<$Res> {
       __$CountryDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(includeIfNull: false) String? id,
-      @JsonKey(includeIfNull: false) String? name,
-      @JsonKey(includeIfNull: false) String? iso2,
-      @JsonKey(includeIfNull: false) String? iso3,
-      @JsonKey(includeIfNull: false, name: 'phone_code') String? dialCode});
+      {String? id,
+      String? name,
+      String? iso2,
+      String? iso3,
+      @JsonKey(name: 'phone_code') String? dialCode});
 }
 
 /// @nodoc
@@ -178,30 +174,26 @@ class __$CountryDTOCopyWithImpl<$Res> extends _$CountryDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CountryDTO extends _CountryDTO {
   const _$_CountryDTO(
-      {@JsonKey(includeIfNull: false) this.id,
-      @JsonKey(includeIfNull: false) this.name,
-      @JsonKey(includeIfNull: false) this.iso2,
-      @JsonKey(includeIfNull: false) this.iso3,
-      @JsonKey(includeIfNull: false, name: 'phone_code') this.dialCode})
+      {this.id,
+      this.name,
+      this.iso2,
+      this.iso3,
+      @JsonKey(name: 'phone_code') this.dialCode})
       : super._();
 
   factory _$_CountryDTO.fromJson(Map<String, dynamic> json) =>
       _$$_CountryDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final String? id;
   @override
-  @JsonKey(includeIfNull: false)
   final String? name;
   @override
-  @JsonKey(includeIfNull: false)
   final String? iso2;
   @override
-  @JsonKey(includeIfNull: false)
   final String? iso3;
   @override
-  @JsonKey(includeIfNull: false, name: 'phone_code')
+  @JsonKey(name: 'phone_code')
   final String? dialCode;
 
   @override
@@ -214,16 +206,21 @@ class _$_CountryDTO extends _CountryDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CountryDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.iso2, iso2) || other.iso2 == iso2) &&
-            (identical(other.iso3, iso3) || other.iso3 == iso3) &&
-            (identical(other.dialCode, dialCode) ||
-                other.dialCode == dialCode));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.iso2, iso2) &&
+            const DeepCollectionEquality().equals(other.iso3, iso3) &&
+            const DeepCollectionEquality().equals(other.dialCode, dialCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, iso2, iso3, dialCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(iso2),
+      const DeepCollectionEquality().hash(iso3),
+      const DeepCollectionEquality().hash(dialCode));
 
   @JsonKey(ignore: true)
   @override
@@ -238,35 +235,26 @@ class _$_CountryDTO extends _CountryDTO {
 
 abstract class _CountryDTO extends CountryDTO {
   const factory _CountryDTO(
-      {@JsonKey(includeIfNull: false)
-          String? id,
-      @JsonKey(includeIfNull: false)
-          String? name,
-      @JsonKey(includeIfNull: false)
-          String? iso2,
-      @JsonKey(includeIfNull: false)
-          String? iso3,
-      @JsonKey(includeIfNull: false, name: 'phone_code')
-          String? dialCode}) = _$_CountryDTO;
+      {String? id,
+      String? name,
+      String? iso2,
+      String? iso3,
+      @JsonKey(name: 'phone_code') String? dialCode}) = _$_CountryDTO;
   const _CountryDTO._() : super._();
 
   factory _CountryDTO.fromJson(Map<String, dynamic> json) =
       _$_CountryDTO.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   String? get id;
   @override
-  @JsonKey(includeIfNull: false)
   String? get name;
   @override
-  @JsonKey(includeIfNull: false)
   String? get iso2;
   @override
-  @JsonKey(includeIfNull: false)
   String? get iso3;
   @override
-  @JsonKey(includeIfNull: false, name: 'phone_code')
+  @JsonKey(name: 'phone_code')
   String? get dialCode;
   @override
   @JsonKey(ignore: true)

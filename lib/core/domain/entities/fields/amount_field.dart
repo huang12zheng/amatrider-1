@@ -4,7 +4,7 @@ import 'package:amatrider/core/domain/validator/validator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 
-class AmountField<U extends num> extends FieldObject<U?> {
+class AmountField<U extends num?> extends FieldObject<U> {
   static const AmountField DEFAULT = AmountField._(Right(0));
 
   @override
@@ -15,17 +15,16 @@ class AmountField<U extends num> extends FieldObject<U?> {
     num? min,
     bool isMin = true,
     String? msg,
-  }) {
-    return AmountField._(
-      min?.let((it) => Validator.isEmpty(input).flatMap(
-                (a) => Validator.amount(a, check: it, min: isMin, msg: msg),
-              )) ??
-          Validator.isEmpty(input),
-    );
-  }
+  }) =>
+      AmountField<U>._(
+        min?.let((it) => Validator.isEmpty(input).flatMap(
+                  (a) => Validator.amount(a, check: it, min: isMin, msg: msg),
+                )) ??
+            Validator.isEmpty(input),
+      );
 
   const AmountField._(this.value);
 
   @override
-  FieldObject<U?> copyWith(U? newValue) => AmountField(newValue);
+  AmountField<U> copyWith(U? newValue) => AmountField<U>(newValue);
 }

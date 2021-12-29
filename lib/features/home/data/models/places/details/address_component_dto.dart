@@ -17,6 +17,7 @@ class AddressComponentDTO with _$AddressComponentDTO {
     @JsonKey(name: 'long_name') String? longName,
     @JsonKey(name: 'short_name') String? shortName,
     @AddressComponentTypeSerializer()
+    @JsonKey(defaultValue: [])
     @Default([])
         List<AddressComponentType> types,
   }) = _AddressComponentDTO;

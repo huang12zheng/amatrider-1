@@ -1,13 +1,12 @@
 library contact_support_screen.dart;
 
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kt_dart/collection.dart';
@@ -18,7 +17,34 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return this;
+    return BlocProvider(
+      create: (_) => getIt<GlobalAppPreferenceCubit>(),
+      child: BlocListener<GlobalAppPreferenceCubit, GlobalPreferenceState>(
+        listenWhen: (p, c) =>
+            p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.response.maybeMap(
+                      error: (f) => f.foldCode(orElse: () => false),
+                      orElse: () => false,
+                    ))),
+        listener: (c, s) => s.status.fold(
+          () => null,
+          (it) => it?.response.map(
+            error: (f) => PopupDialog.error(message: f.message).render(c),
+            success: (s) => PopupDialog.success(
+              duration: const Duration(seconds: 3),
+              message: s.message,
+              listener: (_) => _?.fold(
+                dismissed: () {
+                  if (s.pop && navigator.current.name != DashboardRoute.name) navigator.popUntil((route) => route.isFirst);
+                },
+              ),
+            ).render(c),
+          ),
+        ),
+        child: this,
+      ),
+    );
   }
 
   void _pickImage(BuildContext ctx, [bool isLoading = false]) async {
@@ -34,9 +60,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                 light: () => AppAssets.cameraColored,
                 dark: () => AppAssets.cameraOutlined,
               ),
-              onPressed: () => ctx
-                  .read<GlobalAppPreferenceCubit>()
-                  .pickImage(ImageSource.camera),
+              onPressed: () => ctx.read<GlobalAppPreferenceCubit>().pickImage(ImageSource.camera),
             ),
             DocumentPicker(
               name: 'Gallery',
@@ -44,9 +68,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                 light: () => AppAssets.galleryColored,
                 dark: () => AppAssets.galleryOutlined,
               ),
-              onPressed: () => ctx
-                  .read<GlobalAppPreferenceCubit>()
-                  .pickImage(ImageSource.gallery),
+              onPressed: () => ctx.read<GlobalAppPreferenceCubit>().pickImage(ImageSource.gallery),
             ),
           ],
         ),
@@ -92,77 +114,66 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                   //
                   BlocBuilder<GlobalAppPreferenceCubit, GlobalPreferenceState>(
                     buildWhen: (p, c) => p.feedbackType != c.feedbackType,
-                    builder: (c, s) => Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              value: FeedbackType.suggesstion,
-                              groupValue: s.feedbackType,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              onChanged: c
-                                  .read<GlobalAppPreferenceCubit>()
-                                  .feedbackTypeChanged,
-                            ),
-                            //
-                            GestureDetector(
-                              onTap: () => c
-                                  .read<GlobalAppPreferenceCubit>()
-                                  .feedbackTypeChanged(
-                                      FeedbackType.suggesstion),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.0),
-                                child: AdaptiveText(
-                                  'Suggestion',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15.sp,
-                                ),
+                    builder: (c, s) => Material(
+                      type: MaterialType.transparency,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                value: FeedbackType.suggestion,
+                                groupValue: s.feedbackType,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                onChanged: c.read<GlobalAppPreferenceCubit>().feedbackTypeChanged,
                               ),
-                            )
-                          ],
-                        ),
-                        //
-                        HorizontalSpace(width: 0.04.sw),
-                        //
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              value: FeedbackType.inquiry,
-                              groupValue: s.feedbackType,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              onChanged: c
-                                  .read<GlobalAppPreferenceCubit>()
-                                  .feedbackTypeChanged,
-                            ),
-                            //
-                            GestureDetector(
-                              onTap: () => c
-                                  .read<GlobalAppPreferenceCubit>()
-                                  .feedbackTypeChanged(FeedbackType.inquiry),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.0),
-                                child: AdaptiveText(
-                                  'Inquiry',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15.sp,
+                              //
+                              GestureDetector(
+                                onTap: () => c.read<GlobalAppPreferenceCubit>().feedbackTypeChanged(FeedbackType.suggestion),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                  child: AdaptiveText(
+                                    'Suggestion',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15.sp,
+                                  ),
                                 ),
+                              )
+                            ],
+                          ),
+                          //
+                          HorizontalSpace(width: 0.04.sw),
+                          //
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Radio(
+                                value: FeedbackType.inquiry,
+                                groupValue: s.feedbackType,
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                onChanged: c.read<GlobalAppPreferenceCubit>().feedbackTypeChanged,
                               ),
-                            )
-                          ],
-                        ),
-                      ],
+                              //
+                              GestureDetector(
+                                onTap: () => c.read<GlobalAppPreferenceCubit>().feedbackTypeChanged(FeedbackType.inquiry),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 3.0),
+                                  child: AdaptiveText(
+                                    'Inquiry',
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15.sp,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   //
-                  ReactiveTextFormField<GlobalAppPreferenceCubit,
-                      GlobalPreferenceState>(
+                  ReactiveTextFormField<GlobalAppPreferenceCubit, GlobalPreferenceState>(
                     minLines: 5,
                     hintText: (s) => 'Message',
                     disabled: (s) => s.isLoading,
@@ -191,21 +202,17 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                             elevation: 0.0,
                             type: MaterialType.button,
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(Utils.buttonRadius),
+                              borderRadius: BorderRadius.circular(Utils.buttonRadius),
                             ),
-                            child: InkWell(
-                              borderRadius:
-                                  BorderRadius.circular(Utils.buttonRadius),
+                            child: AdaptiveInkWell(
+                              borderRadius: BorderRadius.circular(Utils.buttonRadius),
                               onTap: () async => _pickImage(c, s.isLoading),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 17, vertical: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(Icons.image,
-                                        color: Palette.text40),
+                                    Icon(Icons.image, color: App.resolveColor(Palette.text40, dark: Palette.text60)),
                                     //
                                     HorizontalSpace(width: 0.02.sw),
                                     //
@@ -213,6 +220,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                                       'Select Image',
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.w400,
+                                      textColorDark: Palette.text60,
                                       letterSpacing: Utils.letterSpacing,
                                     ),
                                   ],
@@ -240,20 +248,15 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                                 .mapIndexedNotNull(
                                   (i, image) => Padding(
                                     padding: EdgeInsets.only(right: 0.03.sw),
-                                    child: ImageUploadWidget<
-                                        GlobalAppPreferenceCubit,
-                                        GlobalPreferenceState>(
+                                    child: ImageUploadWidget<GlobalAppPreferenceCubit, GlobalPreferenceState>(
                                       state: s,
                                       isLoading: (s) => s.isLoading,
                                       width: (s) => 0.3.sw,
                                       selected: (s) => image,
                                       localFit: BoxFit.fill,
-                                      onCameraClicked: (cubit, source) =>
-                                          cubit.pickImage(source, i),
-                                      onGalleryClicked: (cubit, source) =>
-                                          cubit.pickImage(source, i),
-                                      onClosePressed: (cubit) =>
-                                          cubit.removeImage(i),
+                                      onCameraClicked: (cubit, source) => cubit.pickImage(source, i),
+                                      onGalleryClicked: (cubit, source) => cubit.pickImage(source, i),
+                                      onClosePressed: (cubit) => cubit.removeImage(i),
                                     ),
                                   ),
                                 )
@@ -267,14 +270,12 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                                   elevation: 0,
                                   type: MaterialType.transparency,
                                   borderRadius: BorderRadius.circular(100),
-                                  child: InkWell(
+                                  child: AdaptiveInkWell(
                                     borderRadius: BorderRadius.circular(100),
-                                    onTap: () async =>
-                                        _pickImage(c, s.isLoading),
+                                    onTap: () async => _pickImage(c, s.isLoading),
                                     child: Padding(
                                       padding: EdgeInsets.all(0.03.sw),
-                                      child: const Icon(Icons.add,
-                                          size: 30, color: Palette.accentColor),
+                                      child: const Icon(Icons.add, size: 30, color: Palette.accentColor),
                                     ),
                                   ),
                                 ),
@@ -293,7 +294,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
                     builder: (c, s) => AppButton(
                       text: 'Send Message',
                       isLoading: s.isLoading,
-                      onPressed: () {},
+                      onPressed: c.read<GlobalAppPreferenceCubit>().contactSupport,
                     ),
                   )
                 ],

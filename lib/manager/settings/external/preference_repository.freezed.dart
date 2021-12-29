@@ -128,12 +128,13 @@ class _$_PreferenceRepository extends _PreferenceRepository
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PreferenceRepository &&
-            (identical(other.preferences, preferences) ||
-                other.preferences == preferences));
+            const DeepCollectionEquality()
+                .equals(other.preferences, preferences));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, preferences);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(preferences));
 
   @JsonKey(ignore: true)
   @override

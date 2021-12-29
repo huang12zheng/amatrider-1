@@ -33,8 +33,7 @@ class _ProfileCardWidget extends StatelessWidget {
             ),
           ),
         ),
-        child:
-            isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
+        child: isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
       ),
     );
   }
@@ -61,23 +60,30 @@ class _AuthenticatedCard extends StatelessWidget {
             child: Row(
               children: [
                 Flexible(
-                  child: rider?.photo.getOrEmpty.let(
-                        (it) => CachedNetworkImage(
-                          imageUrl: '$it',
+                  child: GestureDetector(
+                    onTap: () => App.showAdaptiveBottomSheet(
+                      context,
+                      elevation: 2.0,
+                      isDismissible: false,
+                      bounce: true,
+                      builder: (_) => const _EditProfileBottomSheet(),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Utils.cardRadius),
+                      child: ImageBox(
+                        photo: rider?.photo.getOrNull,
+                        width: 0.18.w,
+                        height: 0.18.w,
+                        fit: BoxFit.cover,
+                        replacement: Image.asset(
+                          AppAssets.unnamed,
+                          width: 0.18.w,
+                          height: 0.18.w,
                           fit: BoxFit.contain,
-                          height: double.infinity,
-                          progressIndicatorBuilder: (_, url, download) =>
-                              Center(
-                            child: CircularProgressBar.adaptive(
-                              value: download.progress,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          errorWidget: (_, url, error) =>
-                              Image.asset(AppAssets.unnamed),
                         ),
-                      ) ??
-                      Image.asset(AppAssets.unnamed, fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
                 ),
                 //
                 HorizontalSpace(width: 0.04.sw),
@@ -108,15 +114,16 @@ class _AuthenticatedCard extends StatelessWidget {
                         ),
                       ),
                       //
-                      Flexible(
-                        child: AdaptiveText(
-                          '${rider?.phone.getOrError}',
-                          style: TextStyle(
-                            fontSize: 17.0.sp,
-                            fontWeight: FontWeight.w400,
+                      if (rider != null && rider!.phone.isValid)
+                        Flexible(
+                          child: AdaptiveText(
+                            '${rider?.phone.getOrError}',
+                            style: TextStyle(
+                              fontSize: 17.0.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -134,7 +141,7 @@ class _AuthenticatedCard extends StatelessWidget {
               Palette.primaryColor,
               dark: Palette.secondaryColor.shade300,
             ),
-            child: InkWell(
+            child: AdaptiveInkWell(
               onTap: () => App.showAdaptiveBottomSheet(
                 context,
                 elevation: 2.0,
@@ -201,47 +208,7 @@ class _GuestCard extends StatelessWidget {
                     ),
                   ),
                   //
-                  VerticalSpace(height: 0.01.sw),
-                  //
-                  Flexible(
-                    flex: 2,
-                    child: AdaptiveButton(
-                      text: 'Login',
-                      height: 0.08.sw,
-                      cupertinoHeight: 0.08.sw,
-                      width: 0.22.sw,
-                      fontSize: 15.0.sp,
-                      maxFontSize: 16,
-                      textColor: App.resolveColor(Colors.white),
-                      padding: EdgeInsets.symmetric(
-                              vertical: 0.015.sw, horizontal: 0.015.sw)
-                          .copyWith(right: 15),
-                      trailing: Padding(
-                        padding: EdgeInsets.only(left: 0.02.sw),
-                        child: Icon(
-                          AmatNow.thin_long_right,
-                          size: 10,
-                          color: App.resolveColor(Colors.white),
-                        ),
-                      ),
-                      backgroundColor: App.resolveColor(
-                        Palette.accentColor,
-                        dark: Colors.transparent,
-                      ),
-                      splashColor: App.resolveColor(
-                        Colors.white24,
-                        dark: Colors.grey.shade800,
-                      ),
-                      side: Utils.foldTheme(
-                        light: () => null,
-                        dark: () => const BorderSide(color: Colors.white70),
-                      ),
-                      onPressed: () => navigator.pushAndPopUntil(
-                        const LoginRoute(),
-                        predicate: (_) => false,
-                      ),
-                    ),
-                  ),
+                  VerticalSpace(height: 0.02.sw),
                 ],
               ),
             ),

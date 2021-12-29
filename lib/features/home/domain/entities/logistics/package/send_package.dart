@@ -18,7 +18,7 @@ class SendPackage with _$SendPackage {
     required RiderLocation destination,
     @Default(PackageSize.small) PackageSize packageSize,
     @Default(false) bool isFragile,
-    required AmountField<double> amount,
+    required AmountField<double?> amount,
     required DisplayName receiverFullName,
     required Phone receiverPhone,
     required EmailAddress receiverEmailAddress,
@@ -32,9 +32,12 @@ class SendPackage with _$SendPackage {
     @Default(Duration.zero) Duration durationToPickup,
     required BasicTextField<double?> distanceToPickup,
     DateTime? orderActiveAt,
+    DateTime? orderCancelledAt,
     DateTime? riderAcceptedAt,
     DateTime? riderReceivedAt,
     DateTime? riderDeliveredAt,
+    DateTime? paymentDepositedAt,
+    DateTime? paymentDepositConfirmedAt,
     required Sender sender,
     //
     DateTime? createdAt,
@@ -81,7 +84,7 @@ class SendPackage with _$SendPackage {
         pickup: package?.pickup != null ? package!.pickup : pickup,
         destination:
             package?.destination != null ? package!.destination : destination,
-        amount: package?.amount.isNotNull((it) => it as AmountField<double>,
+        amount: package?.amount.isNotNull((it) => it as AmountField<double?>,
                 orElse: (_) => amount) ??
             amount,
         isFragile: package?.isFragile != null ? package!.isFragile : isFragile,

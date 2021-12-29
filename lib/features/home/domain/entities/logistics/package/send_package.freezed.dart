@@ -23,7 +23,7 @@ class _$SendPackageTearOff {
       required RiderLocation destination,
       PackageSize packageSize = PackageSize.small,
       bool isFragile = false,
-      required AmountField<double> amount,
+      required AmountField<double?> amount,
       required DisplayName receiverFullName,
       required Phone receiverPhone,
       required EmailAddress receiverEmailAddress,
@@ -36,9 +36,12 @@ class _$SendPackageTearOff {
       Duration durationToPickup = Duration.zero,
       required BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) {
@@ -61,9 +64,12 @@ class _$SendPackageTearOff {
       durationToPickup: durationToPickup,
       distanceToPickup: distanceToPickup,
       orderActiveAt: orderActiveAt,
+      orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
       riderReceivedAt: riderReceivedAt,
       riderDeliveredAt: riderDeliveredAt,
+      paymentDepositedAt: paymentDepositedAt,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt,
       sender: sender,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -81,7 +87,7 @@ mixin _$SendPackage {
   RiderLocation get destination => throw _privateConstructorUsedError;
   PackageSize get packageSize => throw _privateConstructorUsedError;
   bool get isFragile => throw _privateConstructorUsedError;
-  AmountField<double> get amount => throw _privateConstructorUsedError;
+  AmountField<double?> get amount => throw _privateConstructorUsedError;
   DisplayName get receiverFullName => throw _privateConstructorUsedError;
   Phone get receiverPhone => throw _privateConstructorUsedError;
   EmailAddress get receiverEmailAddress => throw _privateConstructorUsedError;
@@ -96,9 +102,12 @@ mixin _$SendPackage {
   BasicTextField<double?> get distanceToPickup =>
       throw _privateConstructorUsedError;
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
+  DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
   DateTime? get riderReceivedAt => throw _privateConstructorUsedError;
   DateTime? get riderDeliveredAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositedAt => throw _privateConstructorUsedError;
+  DateTime? get paymentDepositConfirmedAt => throw _privateConstructorUsedError;
   Sender get sender => throw _privateConstructorUsedError; //
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
@@ -119,7 +128,7 @@ abstract class $SendPackageCopyWith<$Res> {
       RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      AmountField<double> amount,
+      AmountField<double?> amount,
       DisplayName receiverFullName,
       Phone receiverPhone,
       EmailAddress receiverEmailAddress,
@@ -132,9 +141,12 @@ abstract class $SendPackageCopyWith<$Res> {
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
@@ -173,9 +185,12 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
     Object? durationToPickup = freezed,
     Object? distanceToPickup = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -204,7 +219,7 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as AmountField<double>,
+              as AmountField<double?>,
       receiverFullName: receiverFullName == freezed
           ? _value.receiverFullName
           : receiverFullName // ignore: cast_nullable_to_non_nullable
@@ -253,6 +268,10 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -264,6 +283,14 @@ class _$SendPackageCopyWithImpl<$Res> implements $SendPackageCopyWith<$Res> {
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sender: sender == freezed
           ? _value.sender
@@ -322,7 +349,7 @@ abstract class _$SendPackageCopyWith<$Res>
       RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      AmountField<double> amount,
+      AmountField<double?> amount,
       DisplayName receiverFullName,
       Phone receiverPhone,
       EmailAddress receiverEmailAddress,
@@ -335,9 +362,12 @@ abstract class _$SendPackageCopyWith<$Res>
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt});
@@ -382,9 +412,12 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
     Object? durationToPickup = freezed,
     Object? distanceToPickup = freezed,
     Object? orderActiveAt = freezed,
+    Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
     Object? riderReceivedAt = freezed,
     Object? riderDeliveredAt = freezed,
+    Object? paymentDepositedAt = freezed,
+    Object? paymentDepositConfirmedAt = freezed,
     Object? sender = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -413,7 +446,7 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as AmountField<double>,
+              as AmountField<double?>,
       receiverFullName: receiverFullName == freezed
           ? _value.receiverFullName
           : receiverFullName // ignore: cast_nullable_to_non_nullable
@@ -462,6 +495,10 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      orderCancelledAt: orderCancelledAt == freezed
+          ? _value.orderCancelledAt
+          : orderCancelledAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       riderAcceptedAt: riderAcceptedAt == freezed
           ? _value.riderAcceptedAt
           : riderAcceptedAt // ignore: cast_nullable_to_non_nullable
@@ -473,6 +510,14 @@ class __$SendPackageCopyWithImpl<$Res> extends _$SendPackageCopyWithImpl<$Res>
       riderDeliveredAt: riderDeliveredAt == freezed
           ? _value.riderDeliveredAt
           : riderDeliveredAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositedAt: paymentDepositedAt == freezed
+          ? _value.paymentDepositedAt
+          : paymentDepositedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      paymentDepositConfirmedAt: paymentDepositConfirmedAt == freezed
+          ? _value.paymentDepositConfirmedAt
+          : paymentDepositConfirmedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sender: sender == freezed
           ? _value.sender
@@ -512,9 +557,12 @@ class _$_SendPackage extends _SendPackage {
       this.durationToPickup = Duration.zero,
       required this.distanceToPickup,
       this.orderActiveAt,
+      this.orderCancelledAt,
       this.riderAcceptedAt,
       this.riderReceivedAt,
       this.riderDeliveredAt,
+      this.paymentDepositedAt,
+      this.paymentDepositConfirmedAt,
       required this.sender,
       this.createdAt,
       this.updatedAt})
@@ -526,14 +574,14 @@ class _$_SendPackage extends _SendPackage {
   final RiderLocation pickup;
   @override
   final RiderLocation destination;
-  @JsonKey(defaultValue: PackageSize.small)
+  @JsonKey()
   @override
   final PackageSize packageSize;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isFragile;
   @override
-  final AmountField<double> amount;
+  final AmountField<double?> amount;
   @override
   final DisplayName receiverFullName;
   @override
@@ -544,7 +592,7 @@ class _$_SendPackage extends _SendPackage {
   final BasicTextField<String?> receiverPhoneAlt;
   @override
   final BasicTextField<String?> notes;
-  @JsonKey(defaultValue: SendPackageStatus.PENDING)
+  @JsonKey()
   @override
   final SendPackageStatus status;
   @override
@@ -553,7 +601,7 @@ class _$_SendPackage extends _SendPackage {
   final UniqueId<String?> riderId;
   @override
   final RiderLocation riderLocation;
-  @JsonKey(defaultValue: Duration.zero)
+  @JsonKey()
   @override
   final Duration durationToPickup;
   @override
@@ -561,11 +609,17 @@ class _$_SendPackage extends _SendPackage {
   @override
   final DateTime? orderActiveAt;
   @override
+  final DateTime? orderCancelledAt;
+  @override
   final DateTime? riderAcceptedAt;
   @override
   final DateTime? riderReceivedAt;
   @override
   final DateTime? riderDeliveredAt;
+  @override
+  final DateTime? paymentDepositedAt;
+  @override
+  final DateTime? paymentDepositConfirmedAt;
   @override
   final Sender sender;
   @override //
@@ -575,7 +629,7 @@ class _$_SendPackage extends _SendPackage {
 
   @override
   String toString() {
-    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'SendPackage(id: $id, pickup: $pickup, destination: $destination, packageSize: $packageSize, isFragile: $isFragile, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, status: $status, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, sender: $sender, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -583,76 +637,82 @@ class _$_SendPackage extends _SendPackage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SendPackage &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.pickup, pickup) || other.pickup == pickup) &&
-            (identical(other.destination, destination) ||
-                other.destination == destination) &&
-            (identical(other.packageSize, packageSize) ||
-                other.packageSize == packageSize) &&
-            (identical(other.isFragile, isFragile) ||
-                other.isFragile == isFragile) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.receiverFullName, receiverFullName) ||
-                other.receiverFullName == receiverFullName) &&
-            (identical(other.receiverPhone, receiverPhone) ||
-                other.receiverPhone == receiverPhone) &&
-            (identical(other.receiverEmailAddress, receiverEmailAddress) ||
-                other.receiverEmailAddress == receiverEmailAddress) &&
-            (identical(other.receiverPhoneAlt, receiverPhoneAlt) ||
-                other.receiverPhoneAlt == receiverPhoneAlt) &&
-            (identical(other.notes, notes) || other.notes == notes) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
-            (identical(other.riderId, riderId) || other.riderId == riderId) &&
-            (identical(other.riderLocation, riderLocation) ||
-                other.riderLocation == riderLocation) &&
-            (identical(other.durationToPickup, durationToPickup) ||
-                other.durationToPickup == durationToPickup) &&
-            (identical(other.distanceToPickup, distanceToPickup) ||
-                other.distanceToPickup == distanceToPickup) &&
-            (identical(other.orderActiveAt, orderActiveAt) ||
-                other.orderActiveAt == orderActiveAt) &&
-            (identical(other.riderAcceptedAt, riderAcceptedAt) ||
-                other.riderAcceptedAt == riderAcceptedAt) &&
-            (identical(other.riderReceivedAt, riderReceivedAt) ||
-                other.riderReceivedAt == riderReceivedAt) &&
-            (identical(other.riderDeliveredAt, riderDeliveredAt) ||
-                other.riderDeliveredAt == riderDeliveredAt) &&
-            (identical(other.sender, sender) || other.sender == sender) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.pickup, pickup) &&
+            const DeepCollectionEquality()
+                .equals(other.destination, destination) &&
+            const DeepCollectionEquality()
+                .equals(other.packageSize, packageSize) &&
+            const DeepCollectionEquality().equals(other.isFragile, isFragile) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverFullName, receiverFullName) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhone, receiverPhone) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverEmailAddress, receiverEmailAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.receiverPhoneAlt, receiverPhoneAlt) &&
+            const DeepCollectionEquality().equals(other.notes, notes) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentMethod, paymentMethod) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
+            const DeepCollectionEquality()
+                .equals(other.riderLocation, riderLocation) &&
+            const DeepCollectionEquality()
+                .equals(other.durationToPickup, durationToPickup) &&
+            const DeepCollectionEquality()
+                .equals(other.distanceToPickup, distanceToPickup) &&
+            const DeepCollectionEquality()
+                .equals(other.orderActiveAt, orderActiveAt) &&
+            const DeepCollectionEquality()
+                .equals(other.orderCancelledAt, orderCancelledAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderAcceptedAt, riderAcceptedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderReceivedAt, riderReceivedAt) &&
+            const DeepCollectionEquality()
+                .equals(other.riderDeliveredAt, riderDeliveredAt) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentDepositedAt, paymentDepositedAt) &&
+            const DeepCollectionEquality().equals(
+                other.paymentDepositConfirmedAt, paymentDepositConfirmedAt) &&
+            const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        id,
-        pickup,
-        destination,
-        packageSize,
-        isFragile,
-        amount,
-        receiverFullName,
-        receiverPhone,
-        receiverEmailAddress,
-        receiverPhoneAlt,
-        notes,
-        status,
-        paymentMethod,
-        riderId,
-        riderLocation,
-        durationToPickup,
-        distanceToPickup,
-        orderActiveAt,
-        riderAcceptedAt,
-        riderReceivedAt,
-        riderDeliveredAt,
-        sender,
-        createdAt,
-        updatedAt
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(pickup),
+        const DeepCollectionEquality().hash(destination),
+        const DeepCollectionEquality().hash(packageSize),
+        const DeepCollectionEquality().hash(isFragile),
+        const DeepCollectionEquality().hash(amount),
+        const DeepCollectionEquality().hash(receiverFullName),
+        const DeepCollectionEquality().hash(receiverPhone),
+        const DeepCollectionEquality().hash(receiverEmailAddress),
+        const DeepCollectionEquality().hash(receiverPhoneAlt),
+        const DeepCollectionEquality().hash(notes),
+        const DeepCollectionEquality().hash(status),
+        const DeepCollectionEquality().hash(paymentMethod),
+        const DeepCollectionEquality().hash(riderId),
+        const DeepCollectionEquality().hash(riderLocation),
+        const DeepCollectionEquality().hash(durationToPickup),
+        const DeepCollectionEquality().hash(distanceToPickup),
+        const DeepCollectionEquality().hash(orderActiveAt),
+        const DeepCollectionEquality().hash(orderCancelledAt),
+        const DeepCollectionEquality().hash(riderAcceptedAt),
+        const DeepCollectionEquality().hash(riderReceivedAt),
+        const DeepCollectionEquality().hash(riderDeliveredAt),
+        const DeepCollectionEquality().hash(paymentDepositedAt),
+        const DeepCollectionEquality().hash(paymentDepositConfirmedAt),
+        const DeepCollectionEquality().hash(sender),
+        const DeepCollectionEquality().hash(createdAt),
+        const DeepCollectionEquality().hash(updatedAt)
       ]);
 
   @JsonKey(ignore: true)
@@ -668,7 +728,7 @@ abstract class _SendPackage extends SendPackage {
       required RiderLocation destination,
       PackageSize packageSize,
       bool isFragile,
-      required AmountField<double> amount,
+      required AmountField<double?> amount,
       required DisplayName receiverFullName,
       required Phone receiverPhone,
       required EmailAddress receiverEmailAddress,
@@ -681,9 +741,12 @@ abstract class _SendPackage extends SendPackage {
       Duration durationToPickup,
       required BasicTextField<double?> distanceToPickup,
       DateTime? orderActiveAt,
+      DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
       DateTime? riderReceivedAt,
       DateTime? riderDeliveredAt,
+      DateTime? paymentDepositedAt,
+      DateTime? paymentDepositConfirmedAt,
       required Sender sender,
       DateTime? createdAt,
       DateTime? updatedAt}) = _$_SendPackage;
@@ -700,7 +763,7 @@ abstract class _SendPackage extends SendPackage {
   @override
   bool get isFragile;
   @override
-  AmountField<double> get amount;
+  AmountField<double?> get amount;
   @override
   DisplayName get receiverFullName;
   @override
@@ -726,11 +789,17 @@ abstract class _SendPackage extends SendPackage {
   @override
   DateTime? get orderActiveAt;
   @override
+  DateTime? get orderCancelledAt;
+  @override
   DateTime? get riderAcceptedAt;
   @override
   DateTime? get riderReceivedAt;
   @override
   DateTime? get riderDeliveredAt;
+  @override
+  DateTime? get paymentDepositedAt;
+  @override
+  DateTime? get paymentDepositConfirmedAt;
   @override
   Sender get sender;
   @override //

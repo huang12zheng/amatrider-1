@@ -13,7 +13,7 @@ _$_MetaField _$$_MetaFieldFromJson(Map<String, dynamic> json) => _$_MetaField(
       links: (json['links'] as List<dynamic>?)
               ?.map((e) => PaginationLinks.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const [],
+          [],
       path: json['path'] as String?,
       perPage: json['per_page'] as int?,
       to: json['to'] as int?,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$$_MetaFieldToJson(_$_MetaField instance) {
   writeNotNull('current_page', instance.currentPage);
   writeNotNull('from', instance.from);
   writeNotNull('last_page', instance.lastPage);
-  val['links'] = instance.links;
+  val['links'] = instance.links.map((e) => e.toJson()).toList();
   writeNotNull('path', instance.path);
   writeNotNull('per_page', instance.perPage);
   writeNotNull('to', instance.to);

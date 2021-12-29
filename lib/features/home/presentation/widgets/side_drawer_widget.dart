@@ -1,12 +1,11 @@
-import 'dart:ui';
-
+import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,10 +14,8 @@ class SideDrawerWidget extends ConsumerWidget {
   const SideDrawerWidget({Key? key}) : super(key: key);
 
   Widget get defaultImage => CircleAvatar(
-        backgroundImage:
-            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
-        foregroundImage:
-            Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
+        backgroundImage: Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
+        foregroundImage: Image.asset(AppAssets.guestAvatarPng, fit: BoxFit.contain).image,
         minRadius: 0.1.sw,
         backgroundColor: App.resolveColor(Palette.accentColor.shade600),
       );
@@ -26,41 +23,72 @@ class SideDrawerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
+      backgroundColor: Utils.platform_(cupertino: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         controller: ScrollController(),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: DrawerHeader(
-                curve: Curves.easeInOutCubic,
-                duration: const Duration(milliseconds: 600),
-                decoration: const BoxDecoration(
-                  color: Palette.accentColor,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 0.18.sw,
-                        height: 0.18.sw,
-                        child: defaultImage,
-                      ),
-                      //
-                      VerticalSpace(height: 0.03.sw),
-                      //
-                      AdaptiveText(
-                        'Guest User',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0.sp,
-                          fontWeight: FontWeight.w600,
+            BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
+              selector: (s) => s.rider,
+              builder: (c, rider) => SizedBox(
+                width: double.infinity,
+                child: DrawerHeader(
+                  curve: Curves.easeInOutCubic,
+                  duration: const Duration(milliseconds: 600),
+                  decoration: const BoxDecoration(
+                    color: Palette.accentColor,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: SizedBox.square(
+                            dimension: 0.17.sw,
+                            child: rider?.photo.getOrNull?.let(
+                                  (it) => CachedNetworkImage(
+                                    imageUrl: '$it',
+                                    fit: BoxFit.contain,
+                                    imageBuilder: (c, img) => CircleAvatar(
+                                      backgroundImage: img,
+                                      foregroundImage: img,
+                                      minRadius: 0.1.sw,
+                                      backgroundColor: App.resolveColor(Palette.accentColor.shade600),
+                                    ),
+                                    progressIndicatorBuilder: (_, url, download) => Center(
+                                      child: CircularProgressBar.adaptive(
+                                        value: download.progress,
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    errorWidget: (_, url, error) => defaultImage,
+                                  ),
+                                ) ??
+                                defaultImage,
+                          ),
                         ),
-                      ),
-                    ],
+                        //
+                        VerticalSpace(height: 0.03.sw),
+                        //
+                        Flexible(
+                          child: AdaptiveText(
+                            '${rider?.fullName.getOrEmpty}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        //
+                        VerticalSpace(height: 0.02.sw),
+                        //
+                        const Flexible(child: VerificationStatusChip()),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -69,46 +97,44 @@ class SideDrawerWidget extends ConsumerWidget {
             Column(
               children: [
                 DrawerListTile(
-                  title: 'Profile',
-                  icon: AmatNow.drawer_profile,
-                  onPressed: () => context
-                      .read<TabNavigationCubit>()
-                      .setCurrentIndex(context, 3),
-                ),
-                //
-                DrawerListTile(
-                  title: 'Notification',
+                  title: '${tr.notifications}',
                   icon: AmatNow.drawer_bell,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const NotificationRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Promotions',
+                  title: '${tr.promotions}',
                   icon: AmatNow.drawer_discount,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const PromotionsRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Invite Friends',
+                  title: '${tr.inviteFriends}',
                   size: 18,
                   icon: AmatNow.drawer_add_people,
                   onPressed: () => navigator.push(const ReferralRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Contact Support',
+                  title: 'Rate App',
+                  icon: AmatNow.star,
+                  onPressed: () {},
+                ),
+                //
+                DrawerListTile(
+                  title: '${tr.contactSupport}',
                   icon: AmatNow.drawer_support,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const ContactSupportRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'Privacy Policy',
+                  title: '${tr.privacyPolicy}',
                   icon: AmatNow.drawer_privacy,
-                  onPressed: () {},
+                  onPressed: () => navigator.push(const PrivacyPolicyRoute()),
                 ),
                 //
                 DrawerListTile(
-                  title: 'About AmatNinja',
+                  title: '${tr.aboutAmatRider}',
                   size: 18,
                   icon: AmatNow.drawer_people,
                   onPressed: () {},
@@ -121,7 +147,7 @@ class SideDrawerWidget extends ConsumerWidget {
               child: ListTile(
                 dense: true,
                 title: AdaptiveText(
-                  'Download AmatNow',
+                  '${tr.downloadAmatNow}',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,
@@ -130,7 +156,7 @@ class SideDrawerWidget extends ConsumerWidget {
                   ),
                 ),
                 subtitle: AdaptiveText(
-                  'Your one stop shop for african meals',
+                  '${tr.downloadAmatNowDesc}',
                   maxLines: 1,
                   style: TextStyle(
                     color: Palette.accentColor,
@@ -183,6 +209,7 @@ class DrawerListTile extends StatelessWidget {
           ref.read(scaffoldController.notifier).close();
           onPressed.call();
         },
+        material: true,
         horizontalTitleGap: 0.0,
         leading: Icon(icon, size: size ?? 23, color: Palette.text40),
         title: AdaptiveText(

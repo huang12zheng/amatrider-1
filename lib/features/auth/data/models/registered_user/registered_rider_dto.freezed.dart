@@ -21,10 +21,7 @@ RegisteredRiderDTO _$RegisteredRiderDTOFromJson(Map<String, dynamic> json) {
 class _$RegisteredRiderDTOTearOff {
   const _$RegisteredRiderDTOTearOff();
 
-  _RegisteredRiderDTO call(
-      {@JsonKey(includeIfNull: false) String? status,
-      @JsonKey(includeIfNull: false) RiderDTO? data,
-      @JsonKey(includeIfNull: false) RiderDTO? user}) {
+  _RegisteredRiderDTO call({String? status, RiderDTO? data, RiderDTO? user}) {
     return _RegisteredRiderDTO(
       status: status,
       data: data,
@@ -42,11 +39,8 @@ const $RegisteredRiderDTO = _$RegisteredRiderDTOTearOff();
 
 /// @nodoc
 mixin _$RegisteredRiderDTO {
-  @JsonKey(includeIfNull: false)
   String? get status => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   RiderDTO? get data => throw _privateConstructorUsedError;
-  @JsonKey(includeIfNull: false)
   RiderDTO? get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,10 +54,7 @@ abstract class $RegisteredRiderDTOCopyWith<$Res> {
   factory $RegisteredRiderDTOCopyWith(
           RegisteredRiderDTO value, $Res Function(RegisteredRiderDTO) then) =
       _$RegisteredRiderDTOCopyWithImpl<$Res>;
-  $Res call(
-      {@JsonKey(includeIfNull: false) String? status,
-      @JsonKey(includeIfNull: false) RiderDTO? data,
-      @JsonKey(includeIfNull: false) RiderDTO? user});
+  $Res call({String? status, RiderDTO? data, RiderDTO? user});
 
   $RiderDTOCopyWith<$Res>? get data;
   $RiderDTOCopyWith<$Res>? get user;
@@ -130,10 +121,7 @@ abstract class _$RegisteredRiderDTOCopyWith<$Res>
           _RegisteredRiderDTO value, $Res Function(_RegisteredRiderDTO) then) =
       __$RegisteredRiderDTOCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {@JsonKey(includeIfNull: false) String? status,
-      @JsonKey(includeIfNull: false) RiderDTO? data,
-      @JsonKey(includeIfNull: false) RiderDTO? user});
+  $Res call({String? status, RiderDTO? data, RiderDTO? user});
 
   @override
   $RiderDTOCopyWith<$Res>? get data;
@@ -178,23 +166,16 @@ class __$RegisteredRiderDTOCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
-  const _$_RegisteredRiderDTO(
-      {@JsonKey(includeIfNull: false) this.status,
-      @JsonKey(includeIfNull: false) this.data,
-      @JsonKey(includeIfNull: false) this.user})
-      : super._();
+  const _$_RegisteredRiderDTO({this.status, this.data, this.user}) : super._();
 
   factory _$_RegisteredRiderDTO.fromJson(Map<String, dynamic> json) =>
       _$$_RegisteredRiderDTOFromJson(json);
 
   @override
-  @JsonKey(includeIfNull: false)
   final String? status;
   @override
-  @JsonKey(includeIfNull: false)
   final RiderDTO? data;
   @override
-  @JsonKey(includeIfNull: false)
   final RiderDTO? user;
 
   @override
@@ -207,13 +188,17 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RegisteredRiderDTO &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.user, user) || other.user == user));
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, data, user);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(user));
 
   @JsonKey(ignore: true)
   @override
@@ -228,22 +213,17 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
 
 abstract class _RegisteredRiderDTO extends RegisteredRiderDTO {
   const factory _RegisteredRiderDTO(
-      {@JsonKey(includeIfNull: false) String? status,
-      @JsonKey(includeIfNull: false) RiderDTO? data,
-      @JsonKey(includeIfNull: false) RiderDTO? user}) = _$_RegisteredRiderDTO;
+      {String? status, RiderDTO? data, RiderDTO? user}) = _$_RegisteredRiderDTO;
   const _RegisteredRiderDTO._() : super._();
 
   factory _RegisteredRiderDTO.fromJson(Map<String, dynamic> json) =
       _$_RegisteredRiderDTO.fromJson;
 
   @override
-  @JsonKey(includeIfNull: false)
   String? get status;
   @override
-  @JsonKey(includeIfNull: false)
   RiderDTO? get data;
   @override
-  @JsonKey(includeIfNull: false)
   RiderDTO? get user;
   @override
   @JsonKey(ignore: true)

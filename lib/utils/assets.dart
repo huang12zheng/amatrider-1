@@ -19,6 +19,7 @@ mixin AppAssets {
   static const String ONBOARDING_SVG_DIR = '$SVG_DIR/onboarding';
   static const String DASHBOARD_SVG_DIR = '$SVG_DIR/dashboard';
   static const String INSIGHTS_SVG_DIR = '$DASHBOARD_SVG_DIR/insights';
+  static const String NOTIFICATION_SVG_DIR = '$DASHBOARD_SVG_DIR/notification';
   static const String AVATAR_IMAGES_DIR = '$DASHBOARD_IMAGES_DIR/avatars';
 
   /////////////////////////////////////////////////////
@@ -37,15 +38,17 @@ mixin AppAssets {
   static const String verifyAccount = '$AUTH_SVG_DIR/verify_account.svg';
   static const String forgotPassword = '$AUTH_SVG_DIR/forgot_password_boss.svg';
 
+  // Lottie Json
+  static const String checkAnimation = '$RAW_DIR/check_anim.json';
+  static const String hoorayAnimation = '$RAW_DIR/hooray_lottie_anim.json';
+
   /// USER
   static const String user = '$IMAGES_DIR/user.png';
   static const String female = '$IMAGES_DIR/female.png';
   static const String unnamed = '$IMAGES_DIR/unnamed.png';
   static const String avatarImg = '$IMAGES_DIR/avatar_png.png';
-  static const String businessManAvatar =
-      '$AVATAR_IMAGES_DIR/business_man_avatar.png';
-  static const String businessLadyAvatar =
-      '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
+  static const String businessManAvatar = '$AVATAR_IMAGES_DIR/business_man_avatar.png';
+  static const String businessLadyAvatar = '$AVATAR_IMAGES_DIR/business_woman_avatar.png';
   static const String femaleAvatar = '$AVATAR_IMAGES_DIR/female_avatar.png';
   static const String dudeAvatar = '$AVATAR_IMAGES_DIR/dude_avatar.png';
   static const String blackAvatar = '$AVATAR_IMAGES_DIR/black-dude.png';
@@ -54,10 +57,8 @@ mixin AppAssets {
 
   /// DASHBOARD
   static const String bottomNavHome = '$DASHBOARD_SVG_DIR/dashboard_home.svg';
-  static const String bottomNavDocument =
-      '$DASHBOARD_SVG_DIR/dashboard_document.svg';
-  static const String bottomNavActivity =
-      '$DASHBOARD_SVG_DIR/dashboard_activity.svg';
+  static const String bottomNavDocument = '$DASHBOARD_SVG_DIR/dashboard_document.svg';
+  static const String bottomNavActivity = '$DASHBOARD_SVG_DIR/dashboard_activity.svg';
 
   static const String slider0 = '$DASHBOARD_IMAGES_DIR/first_home_slider.png';
   static const String slider1 = '$DASHBOARD_IMAGES_DIR/second_home_slider.png';
@@ -68,25 +69,38 @@ mixin AppAssets {
 
   static const String timelinePinAsset = '$DASHBOARD_SVG_DIR/timeline_pin.svg';
   static const String _friendship = '$DASHBOARD_SVG_DIR/friendship.svg';
-  static const String _contactSupport =
-      '$DASHBOARD_SVG_DIR/contact_support.svg';
+  static const String _contactSupport = '$DASHBOARD_SVG_DIR/contact_support.svg';
   static const String takeAway = '$DASHBOARD_SVG_DIR/take_away.svg';
   static const String _balloons = '$DASHBOARD_SVG_DIR/birthday_balloons.svg';
   static const String _promoDiscount = '$DASHBOARD_SVG_DIR/promo_discount.svg';
   static const String ellipseSVG = '$DASHBOARD_SVG_DIR/ellipse.svg';
-  static const String dispatchRiderSVG =
-      '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
+  static const String dispatchRiderSVG = '$DASHBOARD_SVG_DIR/dispatch_rider.svg';
+  static const String _warningFill = '$NOTIFICATION_SVG_DIR/warning_fill.svg';
+  static const String _packageOutlined = '$NOTIFICATION_SVG_DIR/package.svg';
+  static const String _dishOutlined = '$NOTIFICATION_SVG_DIR/dish.svg';
+
+  static const String _pdf = '$DASHBOARD_SVG_DIR/pdf.svg';
+  static const String _docs = '$DASHBOARD_SVG_DIR/docs.svg';
+  static const String _cameraOutlined = '$DASHBOARD_SVG_DIR/camera_outlined.svg';
+  static const String _cameraColored = '$DASHBOARD_SVG_DIR/camera_colored.svg';
+  static const String _folderOutlined = '$DASHBOARD_SVG_DIR/folder_outlined.svg';
+  static const String _folderColored = '$DASHBOARD_SVG_DIR/folder_colored.svg';
+  static const String _galleryOutlined = '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
+  static const String _galleryColored = '$DASHBOARD_SVG_DIR/gallery_colored.svg';
+
+  static const String _thumbLove = '$DASHBOARD_SVG_DIR/thumb_love.svg';
+  static const String _groupEllipse = '$DASHBOARD_SVG_DIR/group_ellipse.svg';
 
   static const String squareCake = '$DASHBOARD_IMAGES_DIR/square_cake.png';
   static const String privacyPolicy = '$DASHBOARD_IMAGES_DIR/pps_image.png';
-  static const String closeAccount =
-      '$DASHBOARD_IMAGES_DIR/kingdom-completed.jpg';
+  static const String closeAccount = '$DASHBOARD_IMAGES_DIR/kingdom-completed.png';
 
   // EMPTY STATES
   static const String _featherSearch = '$DASHBOARD_SVG_DIR/feather_search.svg';
-  static const String _noConnectivity =
-      '$DASHBOARD_SVG_DIR/no_connectivity.svg';
+  static const String _noConnectivity = '$DASHBOARD_SVG_DIR/no_connectivity.svg';
   static const String _noHistory = '$DASHBOARD_SVG_DIR/no_history.svg';
+  static const String _noRequest = '$DASHBOARD_SVG_DIR/no_request.svg';
+  static const String _noReviews = '$DASHBOARD_SVG_DIR/no_reviews.svg';
   static const String _bigHeart = '$DASHBOARD_SVG_DIR/big_heart.svg';
 
   /////////////////////////////////////////////////////
@@ -108,6 +122,7 @@ mixin AppAssets {
     femaleAvatar,
     dudeAvatar,
     guestAvatarPng,
+    closeAccount,
   ];
 
   static const List<String> svgs = [
@@ -118,6 +133,8 @@ mixin AppAssets {
     _featherSearch,
     _noConnectivity,
     _noHistory,
+    _noRequest,
+    _noReviews,
     timelinePinAsset,
     _friendship,
     _contactSupport,
@@ -126,6 +143,19 @@ mixin AppAssets {
     _promoDiscount,
     ellipseSVG,
     dispatchRiderSVG,
+    _pdf,
+    _docs,
+    _cameraOutlined,
+    _cameraColored,
+    _folderOutlined,
+    _folderColored,
+    _galleryOutlined,
+    _galleryColored,
+    _thumbLove,
+    _groupEllipse,
+    _warningFill,
+    _packageOutlined,
+    _dishOutlined,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -151,6 +181,14 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
+  static SvgPicture emailTo([Color? color]) => SvgPicture.asset(
+        '$AUTH_SVG_DIR/mail_to.svg',
+        height: 22,
+        width: 22,
+        color: color,
+        fit: BoxFit.contain,
+      );
+
   static SvgPicture pdf = SvgPicture.asset(
     '$DASHBOARD_SVG_DIR/pdf.svg',
     height: 40,
@@ -162,36 +200,6 @@ mixin AppAssets {
     '$DASHBOARD_SVG_DIR/docs.svg',
     height: 40,
     width: 40,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture cameraOutlined = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/camera_outlined.svg',
-    height: 25,
-    width: 25,
-    color: Colors.white,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture cameraColored = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/camera_colored.svg',
-    height: 25,
-    width: 25,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture galleryOutlined = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/gallery_outlined.svg',
-    height: 25,
-    width: 25,
-    color: Colors.white,
-    fit: BoxFit.contain,
-  );
-
-  static SvgPicture galleryColored = SvgPicture.asset(
-    '$DASHBOARD_SVG_DIR/gallery_colored.svg',
-    height: 25,
-    width: 25,
     fit: BoxFit.contain,
   );
 
@@ -236,8 +244,7 @@ mixin AppAssets {
     fit: BoxFit.contain,
   );
 
-  static SvgPicture featherSearch([Size size = const Size(40, 40)]) =>
-      SvgPicture.asset(
+  static SvgPicture featherSearch([Size size = const Size(40, 40)]) => SvgPicture.asset(
         _featherSearch,
         height: size.height,
         width: size.width,
@@ -248,8 +255,7 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
-  static SvgPicture noConnectivity([Size size = const Size(23, 23)]) =>
-      SvgPicture.asset(
+  static SvgPicture noConnectivity([Size size = const Size(23, 23)]) => SvgPicture.asset(
         _noConnectivity,
         height: size.height,
         width: size.width,
@@ -260,8 +266,7 @@ mixin AppAssets {
         fit: BoxFit.contain,
       );
 
-  static SvgPicture noHistory([Size size = const Size(23, 23)]) =>
-      SvgPicture.asset(
+  static SvgPicture noHistory([Size size = const Size(23, 23)]) => SvgPicture.asset(
         _noHistory,
         height: size.height,
         width: size.width,
@@ -271,6 +276,16 @@ mixin AppAssets {
         ),
         fit: BoxFit.contain,
       );
+
+  static SvgPicture get noReviews => SvgPicture.asset(
+        _noReviews,
+        fit: BoxFit.contain,
+      );
+
+  static SvgPicture noRequest = SvgPicture.asset(
+    _noRequest,
+    fit: BoxFit.contain,
+  );
 
   static SvgPicture bigHeart = SvgPicture.asset(
     _bigHeart,
@@ -308,6 +323,86 @@ mixin AppAssets {
 
   static SvgPicture promoDiscount = SvgPicture.asset(
     _promoDiscount,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture cameraOutlined = SvgPicture.asset(
+    _cameraOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture cameraColored = SvgPicture.asset(
+    _cameraColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture folderOutlined = SvgPicture.asset(
+    _folderOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture folderColored = SvgPicture.asset(
+    _folderColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture galleryOutlined = SvgPicture.asset(
+    _galleryOutlined,
+    height: 25,
+    width: 25,
+    color: Colors.white,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture galleryColored = SvgPicture.asset(
+    _galleryColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture thumbLove = SvgPicture.asset(
+    _thumbLove,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture groupEllipse = SvgPicture.asset(
+    _groupEllipse,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture warningFill = SvgPicture.asset(
+    _warningFill,
+    height: 23,
+    width: 23,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture dishOutlined = SvgPicture.asset(
+    _dishOutlined,
+    height: 23,
+    width: 23,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture packageOutlined = SvgPicture.asset(
+    _packageOutlined,
+    height: 23,
+    width: 23,
     fit: BoxFit.contain,
   );
 

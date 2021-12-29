@@ -25,23 +25,20 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           dark: Colors.white54,
         ),
         builder: (_) => AdaptiveAlertdialog(
-          title: 'Accept Request',
-          content: 'Are you sure you '
-              'want to accept this request?',
-          cupertinoFirstButtonText: 'No, Go Back',
+          title: '${tr.acceptRequestTitle}',
+          content: '${tr.requestConfirmTxt}',
+          cupertinoFirstButtonText: '${tr.noGoBack}',
           onFirstPressed: navigator.pop,
           buttonDirection: Axis.horizontal,
-          secondButtonText: 'Yes, Accept',
+          secondButtonText: '${tr.yesAccept}',
           secondSplashColor: Colors.black12,
           secondTextStyle: const TextStyle(color: Colors.white),
           secondBgColor: Palette.accentColor,
           onSecondPressed: () async {
-            await context
-                .read<RequestCubit>()
-                .acceptPackageDelivery(context, widget.package);
+            await context.read<RequestCubit>().acceptPackageDelivery(context, widget.package);
           },
           materialFirstButton: AppOutlinedButton(
-            text: 'No, Go Back',
+            text: '${tr.noGoBack}',
             height: 0.09.sw,
             cupertinoHeight: 0.028.sh,
             fontSize: 15.sp,
@@ -60,22 +57,20 @@ class __SendPackageCardState extends State<_SendPackageCard> {
         dark: Colors.white54,
       ),
       builder: (_) => AdaptiveAlertdialog(
-        title: 'Warning!',
-        content: "Are you sure? We'll try not show this request again.",
-        cupertinoFirstButtonText: 'No, Go Back',
+        title: '${tr.warning}!',
+        content: '${tr.requestDeclineTxt}',
+        cupertinoFirstButtonText: '${tr.noGoBack}',
         onFirstPressed: navigator.pop,
         buttonDirection: Axis.horizontal,
-        secondButtonText: 'Yes',
+        secondButtonText: '${tr.yes}',
         secondSplashColor: Colors.black12,
         secondTextStyle: const TextStyle(color: Colors.white),
         secondBgColor: Palette.accentColor,
         onSecondPressed: () async {
-          await context
-              .read<RequestCubit>()
-              .declinePackageDelivery(context, widget.package);
+          await context.read<RequestCubit>().declinePackageDelivery(context, widget.package);
         },
         materialFirstButton: AppOutlinedButton(
-          text: 'No, Go Back',
+          text: '${tr.noGoBack}',
           height: 0.09.sw,
           cupertinoHeight: 0.028.sh,
           fontSize: 15.sp,
@@ -88,10 +83,8 @@ class __SendPackageCardState extends State<_SendPackageCard> {
   }
 
   void onContinue() {
-    context.read<RequestCubit>().setCurrentPackage(widget.package);
-    navigator.navigate(PackageDeliveryAcceptedRoute(
-      sendPackage: widget.package,
-    ));
+    final cubit = context.read<RequestCubit>();
+    if (cubit.state.currentPackage == null) cubit.setCurrentPackage(widget.package);
   }
 
   @override
@@ -119,8 +112,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
             tapHeaderToExpand: true,
             tapBodyToCollapse: false,
             iconColor: Palette.accentColor,
-            iconPadding:
-                const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
+            iconPadding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
             useInkWell: Utils.platform_(material: true, cupertino: false),
             headerAlignment: ExpandablePanelHeaderAlignment.center,
             inkWellBorderRadius: const BorderRadius.all(
@@ -146,14 +138,13 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         onDecline: onDecline,
                       ),
                       orElse: () => AdaptiveButton(
-                        text: 'Continue',
-                        disabled: context
-                            .select((RequestCubit el) => el.state.isLoading),
+                        text: '${tr.continueTxt}',
+                        disabled: context.select((RequestCubit el) => el.state.isLoading),
                         textColor: Colors.white,
                         backgroundColor: Palette.accentColor,
                         splashColor: Colors.white24,
-                        height: 0.05.sh,
-                        cupertinoHeight: 0.09.sw,
+                        height: 0.05.h,
+                        cupertinoHeight: 0.05.h,
                         onPressed: onContinue,
                       ),
                     ),
@@ -173,17 +164,15 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
-                            title: 'Pick Up Location',
-                            subtitle:
-                                '${widget.package.pickup.address.getOrEmpty}',
+                            title: '${tr.pickupLocationText}',
+                            subtitle: '${widget.package.pickup.address.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
-                            title: 'Delivery Location',
-                            subtitle:
-                                '${widget.package.destination.address.getOrEmpty}',
+                            title: '${tr.deliveryLocationText}',
+                            subtitle: '${widget.package.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -196,14 +185,13 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                           onDecline: onDecline,
                         ),
                         orElse: () => AdaptiveButton(
-                          text: 'Continue',
-                          disabled: context
-                              .select((RequestCubit el) => el.state.isLoading),
+                          text: '${tr.continueTxt}',
+                          disabled: context.select((RequestCubit el) => el.state.isLoading),
                           textColor: Colors.white,
                           backgroundColor: Palette.accentColor,
                           splashColor: Colors.white24,
-                          height: 0.05.sh,
-                          cupertinoHeight: 0.09.sw,
+                          height: 0.05.h,
+                          cupertinoHeight: 0.05.h,
                           onPressed: onContinue,
                         ),
                       ),
@@ -227,8 +215,15 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: Image.asset(AppAssets.slider0,
-                  width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
+              child: widget.package.sender.photo.ensure(
+                (it) => ImageBox(
+                  fit: BoxFit.cover,
+                  width: 0.14.sw,
+                  photo: '${it.getOrEmpty}',
+                  replacement: Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
+                ),
+                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
+              ),
             ),
             title: Center(
               child: Row(
@@ -271,7 +266,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         wrapped: false,
                         tags: [
                           HorizontalChip(
-                            label: 'Package',
+                            label: '${tr.package}',
                             maxFontSize: 13,
                             labelColor: Palette.accentDarkYellow,
                             backgroundColor: Palette.pastelYellow,
@@ -291,37 +286,18 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                       ),
                     ),
                     //
-                    widget.package.paymentMethod?.maybeWhen(
-                          deliveryWithCard: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          deliveryWithCash: () => Flexible(
-                            flex: 2,
-                            child: AdaptiveText(
-                              '${widget.package.paymentMethod?.formatted}',
-                              minFontSize: 12,
-                              maxLines: 1,
-                              softWrap: true,
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18.sp),
-                            ),
-                          ),
-                          orElse: () => const Icon(
-                            Icons.check_circle,
-                            color: Palette.accentGreen,
-                          ),
-                        ) ??
-                        Utils.nothing,
+                    Flexible(
+                      flex: 2,
+                      child: AdaptiveText(
+                        '${widget.package.paymentMethod?.formatted}',
+                        minFontSize: 12,
+                        maxLines: 1,
+                        softWrap: true,
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18.sp),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -353,28 +329,52 @@ class _ActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        AppOutlinedButton(
-          text: 'Decline',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Palette.accentColor,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onDecline,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AppOutlinedButton(
+            text: '${tr.decline}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) || !isAvailable,
+            textColor: Palette.accentColor,
+            height: 0.05.h,
+            cupertinoHeight: 0.05.h,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: () {
+              final status = c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onDecline?.call();
+            },
+          ),
         ),
         //
-        AdaptiveButton(
-          text: 'Accept',
-          disabled: c.select((RequestCubit el) => el.state.isLoading),
-          textColor: Colors.white,
-          backgroundColor: Palette.accentColor,
-          splashColor: Colors.white24,
-          height: 0.05.sh,
-          cupertinoHeight: 0.09.sw,
-          width: 0.3.sw,
-          cupertinoWidth: 0.3.sw,
-          onPressed: onAccept,
+        BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+          selector: (s) => s.rider?.availability == RiderAvailability.available,
+          builder: (c, isAvailable) => AdaptiveButton(
+            text: '${tr.accept}',
+            disabled: c.select((RequestCubit el) => el.state.isLoading) || !isAvailable,
+            textColor: Colors.white,
+            backgroundColor: Palette.accentColor,
+            splashColor: Colors.white24,
+            height: 0.05.h,
+            cupertinoHeight: 0.05.h,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: () {
+              final status = c.read<AuthWatcherCubit>().state.rider?.verificationStatus;
+
+              if (status != ProfileVerificationStatus.verified) {
+                navigator.push(const AccountVerificationRoute());
+                return;
+              }
+
+              onAccept?.call();
+            },
+          ),
         ),
       ],
     );

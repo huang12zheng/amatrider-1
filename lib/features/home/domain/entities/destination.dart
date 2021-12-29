@@ -1,8 +1,9 @@
 import 'package:amatrider/utils/utils.dart';
+import 'package:flutter/widgets.dart';
 
 class Destination {
   final int id;
-  final String icon;
+  final IconData icon;
   final String title;
 
   const Destination({
@@ -12,16 +13,29 @@ class Destination {
   });
 
   static List<Destination> get list => [
-        const Destination(id: 0, title: 'Home', icon: AppAssets.bottomNavHome),
+        Destination(
+          id: 0,
+          title: '${S.current.home}',
+          icon: AmatNow.dashboard_home,
+        ),
         //
-        const Destination(
-            id: 1, title: 'History', icon: AppAssets.bottomNavDocument),
+        Destination(
+          id: 1,
+          title: '${S.current.history}',
+          icon: AmatNow.dashboard_document,
+        ),
         //
-        const Destination(
-            id: 2, title: 'Insight', icon: AppAssets.bottomNavActivity),
+        Destination(
+          id: 2,
+          title: '${S.current.insightTitleText}',
+          icon: AmatNow.dashboard_activity,
+        ),
         //
-        const Destination(
-            id: 4, title: 'Profile', icon: AppAssets.bottomNavActivity),
+        Destination(
+          id: 4,
+          title: '${S.current.profile}',
+          icon: AmatNow.dashboard_home,
+        ),
       ];
 
   @override

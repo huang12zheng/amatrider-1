@@ -13,15 +13,13 @@ class SenderDTO with _$SenderDTO {
   const SenderDTO._();
 
   const factory SenderDTO({
-    @JsonKey(includeIfNull: false) String? id,
-    @JsonKey(includeIfNull: false, name: 'first_name') String? firstName,
-    @JsonKey(includeIfNull: false, name: 'last_name') String? lastName,
-    @JsonKey(includeIfNull: false) String? email,
-    @JsonKey(includeIfNull: false) String? phone,
-    @JsonKey(includeIfNull: false, name: 'image') String? image,
-    @JsonKey(includeIfNull: false, name: 'created_at')
-    @TimestampConverter()
-        DateTime? createdAt,
+    String? id,
+    @JsonKey(name: 'first_name') String? firstName,
+    @JsonKey(name: 'last_name') String? lastName,
+    String? email,
+    String? phone,
+    @JsonKey(name: 'image') String? image,
+    @JsonKey(name: 'created_at') @TimestampConverter() DateTime? createdAt,
   }) = _SenderDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).

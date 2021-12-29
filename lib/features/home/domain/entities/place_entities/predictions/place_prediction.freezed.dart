@@ -195,18 +195,22 @@ class _$_PlacePrediction extends _PlacePrediction {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlacePrediction &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.types, types) || other.types == types) &&
-            (identical(other.matched, matched) || other.matched == matched));
+            const DeepCollectionEquality().equals(other.placeId, placeId) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.types, types) &&
+            const DeepCollectionEquality().equals(other.matched, matched));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, placeId, reference, description, types, matched);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(placeId),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(types),
+      const DeepCollectionEquality().hash(matched));
 
   @JsonKey(ignore: true)
   @override
@@ -361,12 +365,15 @@ class _$_MatchedSubstrings extends _MatchedSubstrings {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _MatchedSubstrings &&
-            (identical(other.length, length) || other.length == length) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            const DeepCollectionEquality().equals(other.length, length) &&
+            const DeepCollectionEquality().equals(other.offset, offset));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, length, offset);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(offset));
 
   @JsonKey(ignore: true)
   @override

@@ -1,16 +1,10 @@
 library delivery_request_card.dart;
 
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
-import 'package:amatrider/features/home/presentation/widgets/horizontal_chip_widget.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:expandable/expandable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
-
-part 'delivery_history_card.dart';
 
 /// A stateless widget to render DeliveryRequestCard.
 class DeliveryRequestCard extends StatefulWidget {
@@ -65,8 +59,7 @@ class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
             tapHeaderToExpand: true,
             tapBodyToCollapse: false,
             iconColor: Palette.accentColor,
-            iconPadding:
-                const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
+            iconPadding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
             useInkWell: Utils.platform_(material: true, cupertino: false),
             headerAlignment: ExpandablePanelHeaderAlignment.center,
             inkWellBorderRadius: const BorderRadius.all(
@@ -74,7 +67,6 @@ class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
             ),
           ),
           child: ExpandableNotifier(
-            // initialExpanded: widget.initialExpanded,
             controller: controller,
             child: ScrollOnExpand(
               child: ExpandablePanel(
@@ -149,10 +141,8 @@ class _DeliveryRequestCardState extends State<DeliveryRequestCard> {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: widget.asset?.let((it) => Image.asset(it,
-                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill)) ??
-                  Image.asset(AppAssets.slider0,
-                      width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
+              child: widget.asset?.let((it) => Image.asset(it, width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill)) ??
+                  Image.asset(AppAssets.slider0, width: 0.14.sw, height: 0.14.sw, fit: BoxFit.fill),
             ),
             title: Center(
               child: Row(

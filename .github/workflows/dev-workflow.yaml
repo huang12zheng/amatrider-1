@@ -248,3 +248,64 @@ jobs:
           allowUpdates: false
           omitName: false
           omitBody: false
+
+  # coverage:
+  #   name: Send coverage reports
+  #   needs: build
+  #   runs-on: ${{ matrix.os }}
+  #   continue-on-error: true
+  #   env:
+  #     APP_NAME: "AmatRider"
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  #     FLUTTER_CHANNEL: "stable"
+  #     FLUTTER_VERSION: "2.5.1"
+  #     FLUTTER_RESTORE_KEY: ${{ matrix.os }}-flutter-install-cache-key-stable(2.5.1)
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ubuntu-latest]
+  #       include:
+  #         - os: ubuntu-latest
+  #           flutter_path: "$GITHUB_WORKSPACE/flutter"
+  #           ndk_path: "/usr/local/lib/android/sdk/ndk"
+  #   steps:
+  #     - name: Checkout to ${{ env.APP_NAME }} Repository
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Restore Flutter Cache
+  #       id: flutter-cache
+  #       uses: actions/cache@v2
+  #       env:
+  #         cache-name: cache-flutter-installation
+  #       with:
+  #         path: "flutter"
+  #         key: ${{ env.FLUTTER_RESTORE_KEY }}
+  #         restore-keys: ${{ env.FLUTTER_RESTORE_KEY }}
+
+  #     - name: Add Flutter to the PATH for Unix
+  #       if: startsWith(matrix.os, 'macOS') || startsWith(matrix.os, 'ubuntu')
+  #       run: |
+  #         echo "${{ matrix.flutter_path }}" >> $GITHUB_PATH
+  #         echo "${{ matrix.flutter_path }}/bin" >> $GITHUB_PATH
+
+  #     - name: Add Flutter to the PATH for Windows
+  #       if: startsWith(matrix.os, 'windows')
+  #       run: echo "${env:GITHUB_WORKSPACE}\flutter\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+  #     - name: Get flutter packages
+  #       run: flutter pub get
+
+  #     - name: Run tests with coverage
+  #       run: flutter test --coverage --coverage-path=coverage/lcov.info
+
+  #     - name: Convert coverage to ICOV
+  #       run: flutter pub run coverage:format_coverage --lcov --in=coverage --out=coverage.lcov --packages=.packages --report-on=lib
+
+  #     - name: Upload coverage to Codecov
+  #       uses: codecov/codecov-action@v1.0.2
+  #       with:
+  #         token: ${{env.CODECOV_TOKEN}}
+  #         file: coverage/lcov.info

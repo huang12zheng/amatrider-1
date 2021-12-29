@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/utils/extensions/button_type_extension.dart';
 
 class AdaptiveButton extends StatelessWidget {
   final String? text;
@@ -54,6 +54,8 @@ class AdaptiveButton extends StatelessWidget {
   final double pressedOpacity;
   final ButtonType type;
   final bool isLoading;
+  final double? loaderHeight;
+  final double? loaderWidth;
 
   AdaptiveButton({
     Key? key,
@@ -98,19 +100,16 @@ class AdaptiveButton extends StatelessWidget {
     this.pressedOpacity = 0.4,
     this.onPressed,
     this.isLoading = false,
+    this.loaderHeight,
+    this.loaderWidth,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
-        cupertinoHeight = cupertinoHeight ?? 0.065.sh,
-        type = disabled && (Platform.isIOS || Platform.isMacOS)
-            ? ButtonType.elevated
-            : ButtonType.flat,
+        cupertinoHeight = cupertinoHeight ?? 0.06.h,
+        type = disabled && (Platform.isIOS || Platform.isMacOS) ? ButtonType.elevated : ButtonType.flat,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
-        borderRadius =
-            borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
-        disabledColor = disabled
-            ? CupertinoColors.inactiveGray
-            : CupertinoColors.quaternarySystemFill,
+        borderRadius = borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
+        disabledColor = disabled ? CupertinoColors.inactiveGray : CupertinoColors.quaternarySystemFill,
         backgroundColor = backgroundColor ??
             Utils.platform_(
               material: Palette.accentColor,
@@ -163,17 +162,16 @@ class AdaptiveButton extends StatelessWidget {
     this.pressedOpacity = 0.4,
     this.onPressed,
     this.isLoading = false,
+    this.loaderHeight,
+    this.loaderWidth,
   })  : assert(text != null || child != null),
         fontSize = fontSize ?? 16.0.sp,
         height = height ?? 0.06.h,
-        cupertinoHeight = cupertinoHeight ?? 0.065.sh,
+        cupertinoHeight = cupertinoHeight ?? 0.06.h,
         type = ButtonType.elevated,
         opacity = disabled ? 0.6 : opacity ?? 1.0,
-        borderRadius =
-            borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
-        disabledColor = disabled
-            ? CupertinoColors.inactiveGray
-            : CupertinoColors.quaternarySystemFill,
+        borderRadius = borderRadius ?? BorderRadius.circular(Utils.buttonRadius),
+        disabledColor = disabled ? CupertinoColors.inactiveGray : CupertinoColors.quaternarySystemFill,
         backgroundColor = backgroundColor ??
             Utils.platform_(
               material: Palette.accentColor,
@@ -185,13 +183,14 @@ class AdaptiveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      crossFadeState:
-          isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      layoutBuilder: Utils.crossFadeLayoutBuilder,
-      duration: const Duration(milliseconds: 250),
-      secondChild: App.loadingSpinningLines,
-      firstChild: PlatformBuilder(
+    return WidgetVisibility(
+      visible: !isLoading,
+      replacement: SizedBox(
+        height: loaderHeight,
+        width: loaderWidth,
+        child: App.loadingSpinningLines,
+      ),
+      child: PlatformBuilder(
         cupertino: (context) => type.fold(
           elevated: () => SizedBox(
             width: cupertinoWidth ?? width,
@@ -242,14 +241,17 @@ class AdaptiveButton extends StatelessWidget {
               clipBehavior: clipBehavior,
               onLongPress: onLongPress,
               style: TextButton.styleFrom(
-                backgroundColor: backgroundColor,
+                backgroundColor: disabled
+                    ? backgroundColor == Colors.transparent
+                        ? backgroundColor
+                        : backgroundColor.withOpacity(0.4)
+                    : backgroundColor,
                 alignment: alignment,
                 elevation: elevation,
                 side: side,
                 splashFactory: CustomSplashFactory(splashColor: splashColor),
                 padding: padding,
-                shape:
-                    shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
+                shape: shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
                 tapTargetSize: tapTargetSize,
                 textStyle: textStyle,
               ),
@@ -263,13 +265,16 @@ class AdaptiveButton extends StatelessWidget {
             clipBehavior: clipBehavior,
             onLongPress: onLongPress,
             style: ElevatedButton.styleFrom(
-              primary: backgroundColor,
+              primary: disabled
+                  ? backgroundColor == Colors.transparent
+                      ? backgroundColor
+                      : backgroundColor.withOpacity(0.4)
+                  : backgroundColor,
               alignment: alignment,
               elevation: elevation,
               padding: padding,
               splashFactory: CustomSplashFactory(splashColor: splashColor),
-              shape:
-                  shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
+              shape: shape ?? RoundedRectangleBorder(borderRadius: borderRadius),
               tapTargetSize: tapTargetSize,
               textStyle: textStyle,
             ),
@@ -320,10 +325,9 @@ class AdaptiveButton extends StatelessWidget {
                 flex: 4,
                 child: Padding(
                   padding: childPadding ?? EdgeInsets.zero,
-                  child: Visibility(
+                  child: WidgetVisibility(
                     visible: leading != null || trailing != null,
-                    replacement:
-                        Align(alignment: Alignment.center, child: _text),
+                    replacement: Align(alignment: Alignment.center, child: _text),
                     child: _text,
                   ),
                 ),

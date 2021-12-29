@@ -12,6 +12,7 @@ abstract class Response implements _BaseResponse {
 }
 
 abstract class Failure with _FailureMixin, _BaseResponse {
+  static const int UNAUTHENTICATED = 401;
   static const int CARD_PAYMENT_FAILED = 1105;
   static const int NO_SAVED_CARD = 1104;
   static const int UNVERIFIED_ACCOUNT = 1106;
@@ -19,6 +20,7 @@ abstract class Failure with _FailureMixin, _BaseResponse {
   static const int UNVERIFIED_BVN = 1102;
   static const int UNVERIFIED_EMAIL = 1101;
   static const int UNVERIFIED_PHONE = 4031;
+  static const int INCOMPLETE_KYC = 41101;
 
   int? get code;
   Exception? get exception;

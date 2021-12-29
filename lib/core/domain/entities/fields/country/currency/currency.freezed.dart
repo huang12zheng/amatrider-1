@@ -131,7 +131,7 @@ class _$_Currency extends _Currency {
   final UniqueId<String?>? id;
   @override
   final String? name;
-  @JsonKey(defaultValue: CurrencyType.NGN)
+  @JsonKey()
   @override
   final CurrencyType? type;
 
@@ -145,13 +145,17 @@ class _$_Currency extends _Currency {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Currency &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.type, type) || other.type == type));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.type, type));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, type);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(type));
 
   @JsonKey(ignore: true)
   @override

@@ -1,14 +1,11 @@
-import 'dart:ui';
+library forgot_password_screen.dart;
 
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/presentation/widgets/reset_pasword_dialog.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/widgets/text_form_input_label.dart';
-import 'package:amatrider/widgets/vertical_spacer.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +29,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider<AuthCubit>(
-      create: (_) => getIt<AuthCubit>()..init(newController: true),
+      create: (_) => getIt<AuthCubit>()..init(),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -69,11 +66,16 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
-      child: AdaptiveScaffold(
-        adaptiveToolbar: const AdaptiveToolbar(),
-        body: CustomScrollView(
+    return AdaptiveScaffold(
+      adaptiveToolbar: const AdaptiveToolbar(implyMiddle: true),
+      body: Theme(
+        data: Theme.of(context).copyWith(
+          scaffoldBackgroundColor: App.resolveColor(
+            Palette.cardColorLight,
+            dark: Palette.cardColorDark,
+          ),
+        ),
+        child: CustomScrollView(
           clipBehavior: Clip.antiAlias,
           controller: ScrollController(),
           physics: Utils.physics,
@@ -126,17 +128,15 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                     App.platform.fold(
                       material: () => const Hero(
                         tag: Const.emailLabelHeroTag,
-                        child: TextFormInputLabel(text: 'Phone Number'),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextFormInputLabel(text: 'Phone Number'),
+                        ),
                       ),
                       cupertino: () => const SizedBox.shrink(),
                     ),
                     //
-                    App.platform.fold(
-                      material: () => _phoneInput(),
-                      cupertino: () => CupertinoFormSection(
-                        children: [_phoneInput()],
-                      ),
-                    ),
+                    AutofillGroup(child: Form(child: _phoneInput())),
                     //
                     VerticalSpace(height: 0.1.sw),
                     //
@@ -148,8 +148,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                               ? const Duration(seconds: 0)
                               : env.flavor.fold(
                                   dev: () => const Duration(minutes: 1),
-                                  prod: () =>
-                                      const Duration(minutes: 2, seconds: 5),
+                                  prod: () => const Duration(minutes: 2, seconds: 5),
                                 ),
                           child: (callback) => Hero(
                             tag: Const.authButtonHeroTag,
@@ -157,8 +156,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                               text: 'Reset Password',
                               isLoading: s.isLoading,
                               onPressed: () async {
-                                final _isSuccessful =
-                                    await c.read<AuthCubit>().forgotPassword();
+                                final _isSuccessful = await c.read<AuthCubit>().forgotPassword();
                                 if (_isSuccessful) callback();
                               },
                             ),
@@ -201,69 +199,13 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
         disabled: (s) => s.isLoading,
         validate: (s) => s.validate,
         field: (s) => s.rider.phone,
-        response: (s) => s.status,
-        onChanged: (fn, str) => fn.phoneNumberChanged(str),
-        // heroTag: Const.emailFieldHeroTag,
-        // borderRadius: BorderRadius.circular(100),
         controller: (s) => s.phoneTextController,
-        prefix: App.platform.fold(
-          cupertino: () => 'Phone Number',
-          material: () => null,
-        ),
-        prefixWidget: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 0.22.w),
-          child: BlocBuilder<AuthCubit, AuthState>(
-            builder: (c, s) => CountryListPick(
-              appBar: AppBar(
-                backgroundColor: Utils.foldTheme(
-                  light: () => Palette.cardColorLight,
-                  dark: () => Palette.cardColorDark,
-                ),
-                elevation: 0.0,
-                title: const Text('Choose a country'),
-              ),
-              pickerBuilder: (context, countryCode) => Row(
-                children: [
-                  Flexible(
-                    child: Image.asset(
-                      '${countryCode?.flagUri}',
-                      width: 30,
-                      height: 30,
-                      package: 'country_list_pick',
-                    ),
-                  ),
-                  //
-                  HorizontalSpace(width: 0.02.sw),
-                  //
-                  Flexible(
-                    child: AdaptiveText(
-                      '${countryCode?.dialCode}',
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
-              ),
-              theme: CountryTheme(
-                isShowFlag: true,
-                isShowTitle: true,
-                isShowCode: true,
-                isDownIcon: true,
-                showEnglishName: true,
-                searchHintText: 'Start typing..',
-                initialSelection: 'NG',
-                alphabetSelectedBackgroundColor: Palette.accentColor,
-              ),
-              initialSelection: 'NG',
-              onChanged: (code) {
-                print(code?.name);
-                print(code?.code);
-                print(code?.dialCode);
-                print(code?.toCountryStringOnly());
-              },
-              useUiOverlay: true,
-              useSafeArea: false,
-            ),
-          ),
-        ),
+        response: (s) => s.status,
+        errorField: (error) => error.errors?.phone,
+        onPickerBuilder: (cubit, country) {
+          if (cubit.state.selectedCountry == null) cubit.countryChanged(country);
+        },
+        onCountryChanged: (cubit, country) => cubit.countryChanged(country),
+        onChanged: (cubit, str) => cubit.phoneNumberChanged(str),
       );
 }

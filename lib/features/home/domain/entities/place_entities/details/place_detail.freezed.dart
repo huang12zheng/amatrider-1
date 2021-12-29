@@ -399,7 +399,7 @@ class _$_PlaceDetail extends _PlaceDetail with DiagnosticableTreeMixin {
       this.openingHours})
       : super._();
 
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<AddressComponent> addressComponents;
   @override
@@ -420,7 +420,7 @@ class _$_PlaceDetail extends _PlaceDetail with DiagnosticableTreeMixin {
   final BasicTextField<String?> placeId;
   @override
   final BasicTextField<String?> reference;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<BasicTextField<String?>?> types;
   @override
@@ -468,54 +468,50 @@ class _$_PlaceDetail extends _PlaceDetail with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlaceDetail &&
-            (identical(other.addressComponents, addressComponents) ||
-                other.addressComponents == addressComponents) &&
-            (identical(other.formattedAddress, formattedAddress) ||
-                other.formattedAddress == formattedAddress) &&
-            (identical(other.formattedPhoneNumber, formattedPhoneNumber) ||
-                other.formattedPhoneNumber == formattedPhoneNumber) &&
-            (identical(other.icon, icon) || other.icon == icon) &&
-            (identical(other.iconBackgroundColor, iconBackgroundColor) ||
-                other.iconBackgroundColor == iconBackgroundColor) &&
-            (identical(other.iconMaskBaseUri, iconMaskBaseUri) ||
-                other.iconMaskBaseUri == iconMaskBaseUri) &&
-            (identical(
-                    other.internationalPhoneNumber, internationalPhoneNumber) ||
-                other.internationalPhoneNumber == internationalPhoneNumber) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.reference, reference) ||
-                other.reference == reference) &&
-            (identical(other.types, types) || other.types == types) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.website, website) || other.website == website) &&
-            (identical(other.plusCode, plusCode) ||
-                other.plusCode == plusCode) &&
-            (identical(other.geometry, geometry) ||
-                other.geometry == geometry) &&
-            (identical(other.openingHours, openingHours) ||
-                other.openingHours == openingHours));
+            const DeepCollectionEquality()
+                .equals(other.addressComponents, addressComponents) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedAddress, formattedAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.formattedPhoneNumber, formattedPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.icon, icon) &&
+            const DeepCollectionEquality()
+                .equals(other.iconBackgroundColor, iconBackgroundColor) &&
+            const DeepCollectionEquality()
+                .equals(other.iconMaskBaseUri, iconMaskBaseUri) &&
+            const DeepCollectionEquality().equals(
+                other.internationalPhoneNumber, internationalPhoneNumber) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.placeId, placeId) &&
+            const DeepCollectionEquality().equals(other.reference, reference) &&
+            const DeepCollectionEquality().equals(other.types, types) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.website, website) &&
+            const DeepCollectionEquality().equals(other.plusCode, plusCode) &&
+            const DeepCollectionEquality().equals(other.geometry, geometry) &&
+            const DeepCollectionEquality()
+                .equals(other.openingHours, openingHours));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      addressComponents,
-      formattedAddress,
-      formattedPhoneNumber,
-      icon,
-      iconBackgroundColor,
-      iconMaskBaseUri,
-      internationalPhoneNumber,
-      name,
-      placeId,
-      reference,
-      types,
-      url,
-      website,
-      plusCode,
-      geometry,
-      openingHours);
+      const DeepCollectionEquality().hash(addressComponents),
+      const DeepCollectionEquality().hash(formattedAddress),
+      const DeepCollectionEquality().hash(formattedPhoneNumber),
+      const DeepCollectionEquality().hash(icon),
+      const DeepCollectionEquality().hash(iconBackgroundColor),
+      const DeepCollectionEquality().hash(iconMaskBaseUri),
+      const DeepCollectionEquality().hash(internationalPhoneNumber),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(placeId),
+      const DeepCollectionEquality().hash(reference),
+      const DeepCollectionEquality().hash(types),
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(website),
+      const DeepCollectionEquality().hash(plusCode),
+      const DeepCollectionEquality().hash(geometry),
+      const DeepCollectionEquality().hash(openingHours));
 
   @JsonKey(ignore: true)
   @override
@@ -716,14 +712,17 @@ class _$_PlacePlusCode with DiagnosticableTreeMixin implements _PlacePlusCode {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _PlacePlusCode &&
-            (identical(other.compoundCode, compoundCode) ||
-                other.compoundCode == compoundCode) &&
-            (identical(other.globalCode, globalCode) ||
-                other.globalCode == globalCode));
+            const DeepCollectionEquality()
+                .equals(other.compoundCode, compoundCode) &&
+            const DeepCollectionEquality()
+                .equals(other.globalCode, globalCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, compoundCode, globalCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(compoundCode),
+      const DeepCollectionEquality().hash(globalCode));
 
   @JsonKey(ignore: true)
   @override

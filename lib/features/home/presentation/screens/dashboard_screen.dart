@@ -7,20 +7,16 @@ import 'package:amatrider/features/home/presentation/pages/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/settings/index.dart';
-import 'package:amatrider/utils/utils.dart'
-    hide HomePage, HistoryPage, InsightsPage, ProfilePage;
-import 'package:amatrider/widgets/adaptive/adaptive.dart';
+import 'package:amatrider/utils/utils.dart' hide HomePage, HistoryPage, InsightsPage, ProfilePage;
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 /// A stateless widget to render DashboardScreen.
@@ -40,8 +36,7 @@ class DashboardScreen extends ConsumerStatefulWidget with AutoRouteWrapper {
   }
 }
 
-class _DashboardScreenState extends ConsumerState<DashboardScreen>
-    with AutomaticKeepAliveClientMixin<DashboardScreen> {
+class _DashboardScreenState extends ConsumerState<DashboardScreen> with AutomaticKeepAliveClientMixin<DashboardScreen> {
   static final _tabs = [
     const HomePage(),
     const HistoryPage(),
@@ -49,15 +44,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     const ProfilePage(),
   ];
 
-  final AsyncMemoizer<int> _memoizer = AsyncMemoizer();
+  final AsyncMemoizer<dynamic> _memoizer = AsyncMemoizer();
   DateTime _timestampPressed = DateTime.now();
 
   @override
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (ref.watch(scaffoldController.notifier).isOpen)
-      return Future.value(true);
+    if (ref.watch(scaffoldController.notifier).isOpen) return Future.value(true);
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -107,20 +101,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         (it) => CachedNetworkImage(
                           imageUrl: '${it.getOrEmpty}',
                           fit: BoxFit.contain,
-                          height: s.currentIndex == i.id ? 30 : 25,
+                          height: 24,
                           imageBuilder: (c, img) => CircleAvatar(
                             backgroundImage: img,
-                            maxRadius: s.currentIndex == i.id ? 16 : 15,
+                            maxRadius: s.currentIndex == i.id ? 16 : 14,
                             minRadius: 14,
                             backgroundColor: Colors.transparent,
                           ),
-                          progressIndicatorBuilder: (_, url, download) =>
-                              Center(
+                          progressIndicatorBuilder: (_, url, download) => Center(
                             child: CircularProgressBar.adaptive(
                               value: download.progress,
                               strokeWidth: 2,
-                              width: 25,
-                              height: 25,
+                              width: 24,
+                              height: 24,
                             ),
                           ),
                           errorWidget: (_, url, error) => defaultImage(s, i),
@@ -129,11 +122,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       );
                     },
                   )
-                : SvgPicture.asset(
+                : Icon(
                     i.icon,
-                    height: s.currentIndex == i.id ? 30 : 25,
-                    width: s.currentIndex == i.id ? 30 : 25,
-                    fit: BoxFit.contain,
                     color: s.currentIndex == i.id
                         ? Utils.foldTheme(
                             light: () => Palette.accentColor,
@@ -163,8 +153,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
         curve: Curves.easeInOutCubic,
         builder: (context, child, animation) {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-            if (context.read<TabNavigationCubit>().state.isInit)
-              context.read<TabNavigationCubit>().init(context);
+            if (context.read<TabNavigationCubit>().state.isInit) context.read<TabNavigationCubit>().init(context);
           });
 
           return BlocBuilder<TabNavigationCubit, TabNavigationState>(
@@ -180,13 +169,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               scaffold: FutureBuilder(
                 future: _memoizer.runOnce(() async {
                   final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
+                  await cubit.subscribeUserChanges();
 
-                  if (!cubit.state.isListeningForUserChanges)
-                    await cubit.subscribeUserChanges();
-
-                  return 0;
+                  // Start laravel echo (notifications) & Fetch latest notifications
+                  BlocProvider.of<NotificationCubit>(context)
+                    // ignore: unawaited_futures
+                    ..inAppNotifications()
+                    ..echo();
                 }),
-                builder: (_, __) => AdaptiveScaffold(
+                builder: (_, snapshot) => AdaptiveScaffold(
                   cupertinoTabBuilder: (_, i) => _tabs[i],
                   body: FadeTransition(opacity: animation, child: child),
                   adaptiveBottomNav: PlatformNavBar(
@@ -210,8 +201,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                         dark: () => Palette.accentColor.shade100,
                       ),
                     ),
-                    itemChanged: (i) =>
-                        c.read<TabNavigationCubit>().setCurrentIndex(c, i),
+                    itemChanged: (i) => c.read<TabNavigationCubit>().setCurrentIndex(c, i),
                   ),
                 ),
               ),

@@ -14,7 +14,7 @@ class CountryDTOList with _$CountryDTOList {
   const CountryDTOList._();
 
   const factory CountryDTOList({
-    @JsonKey(includeIfNull: false) @Default([]) List<CountryDTO> data,
+    @JsonKey(defaultValue: []) @Default([]) List<CountryDTO> data,
   }) = _CountryDTOList;
 
   factory CountryDTOList.fromJson(Map<String, dynamic> json) =>

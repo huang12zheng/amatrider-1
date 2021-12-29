@@ -1,16 +1,15 @@
 library app_database.dart;
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/data/models/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/serializer/serializers.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:kt_dart/kt.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'app_database.freezed.dart';
@@ -22,6 +21,8 @@ part 'package:amatrider/core/data/models/user/rider_dto.dart';
   TimestampFloorConverter,
   CountryDTOFloorConverter,
   RiderAvailabilityConverter,
+  VerificationStatusConverter,
+  AuthProviderFloorConverter,
 ])
 @Database(version: 1, entities: [
   _$_RiderDTO,

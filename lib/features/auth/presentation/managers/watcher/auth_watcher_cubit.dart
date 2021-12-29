@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:amatrider/core/data/database/app_database.dart';
+import 'package:amatrider/core/data/websocket_event.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/domain/response/index.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
+import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -19,13 +23,24 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   StreamSubscription<Either<Failure, Option<Rider?>>>? _authStateChanges;
   final AuthFacade _facade;
   StreamSubscription<Option<Rider?>>? _riderChanges;
+  final EchoRepository _echoRepository;
 
-  AuthWatcherCubit(this._facade) : super(AuthWatcherState.initial());
+  AuthWatcherCubit(
+    this._facade,
+    this._echoRepository,
+  ) : super(AuthWatcherState.initial());
 
   @override
   Future<void> close() async {
     await unsubscribeAuthChanges;
     await unsubscribeUserChanges;
+    if (state.rider?.uid.value != null && state.subscribedToChannel) {
+      _echoRepository.stopListening(
+        DispatchRider.profile('${state.rider?.uid.value}'),
+        DispatchRider.profileEvent,
+      );
+      _echoRepository.close(DispatchRider.profile('${state.rider?.uid.value}'));
+    }
     return super.close();
   }
 
@@ -74,6 +89,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     await _req.fold(
       (f) async => f.foldCode(
         is4031: () async => await _facade.sink(),
+        is41101: () async => await _facade.sink(),
         orElse: () => null,
       ),
       (_) async => await _facade.sink(),
@@ -98,6 +114,30 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
       ));
 
       toggleLoading(false);
+
+      if (!state.subscribedToChannel)
+        _echoRepository.private(
+          DispatchRider.profile('${_rider?.uid.value}'),
+          DispatchRider.profileEvent,
+          onInit: () {
+            emit(state.copyWith(subscribedToChannel: true));
+          },
+          onData: (data, _) async {
+            final json = jsonDecode(data) as Map<String, dynamic>;
+            final dto =
+                RiderDTO.fromJson(json['rider'] as Map<String, dynamic>);
+
+            emit(state.copyWith(rider: dto.domain));
+
+            final _storeResult =
+                await _facade.retrieveAndCacheUpdatedRider(dto: dto);
+
+            _storeResult.fold(
+              (_) => null,
+              (value) => emit(state.copyWith(option: value)),
+            );
+          },
+        );
     });
 
     toggleLoading(false);
@@ -110,8 +150,16 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
     toggleLoading(false);
 
+    if (state.rider?.uid.value != null && state.subscribedToChannel) {
+      _echoRepository.leave(
+        DispatchRider.profile('${state.rider?.uid.value}'),
+        event: DispatchRider.profileEvent,
+      );
+    }
+
     emit(state.copyWith(
       isAuthenticated: false,
+      subscribedToChannel: false,
       rider: null,
       option: none(),
     ));

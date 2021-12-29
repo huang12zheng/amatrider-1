@@ -1,8 +1,8 @@
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:amatrider/config/secrets.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 
@@ -15,29 +15,17 @@ class BuildEnvironment implements Secrets {
   final BuildFlavor flavor;
   final Uri? baseUri;
 
-  factory BuildEnvironment.factory({
-    BuildFlavor? flavor,
-    Uri? uri,
-  }) =>
-      BuildEnvironment._(
-        flavor: flavor!,
-        baseUri: uri,
-      );
+  factory BuildEnvironment.factory({BuildFlavor? flavor, Uri? uri}) => BuildEnvironment._(flavor: flavor!, baseUri: uri);
 
-  BuildEnvironment._({
-    this.flavor = BuildFlavor.dev,
-    this.baseUri,
-  });
+  BuildEnvironment._({this.flavor = BuildFlavor.dev, this.baseUri});
 
-  String get googleMapsAPI => Utils.platform_(
-      material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
+  Duration get greetingDuration => const Duration(milliseconds: 1200);
 
-  String get paystackKey => flavor.fold(
-      dev: () => Secrets.paystackKeyDev, prod: () => Secrets.paystackKeyProd);
+  String get googleMapsAPI => Utils.platform_(material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
 
-  String get flwPublicKey => flavor.fold(
-      dev: () => Secrets.flutterwaveKeyDev,
-      prod: () => Secrets.flutterwaveKeyProd);
+  String get paystackKey => flavor.fold(dev: () => Secrets.paystackKeyDev, prod: () => Secrets.paystackKeyProd);
+
+  String get flwPublicKey => flavor.fold(dev: () => Secrets.flutterwaveKeyDev, prod: () => Secrets.flutterwaveKeyProd);
 
   String get flwEncryptionKey => Secrets.flutterwaveEncrptionKey;
 
@@ -66,13 +54,13 @@ class BuildEnvironment implements Secrets {
     await flavor?.fold(
       dev: () async {
         await locator(Environment.dev);
-        await getIt<FirebaseCrashlytics>()
-            .setCrashlyticsCollectionEnabled(false);
+        await getIt<FirebasePerformance>().setPerformanceCollectionEnabled(!kDebugMode);
+        await getIt<FirebaseCrashlytics>().setCrashlyticsCollectionEnabled(!kDebugMode);
       },
       prod: () async {
         await locator(Environment.prod);
-        await getIt<FirebaseCrashlytics>()
-            .setCrashlyticsCollectionEnabled(true);
+        await getIt<FirebasePerformance>().setPerformanceCollectionEnabled(!kDebugMode);
+        await getIt<FirebaseCrashlytics>().setCrashlyticsCollectionEnabled(!kDebugMode);
       },
     );
   }

@@ -302,39 +302,39 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
       this.status = const None()})
       : super._();
 
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool validate;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isAccepting;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isDeclining;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoadingTransitPackages;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoadingActivePackages;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoadingPotentialPackages;
   @override
   final SendPackage? currentPackage;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<SendPackage> packagesInTransit;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<SendPackage> activePackages;
-  @JsonKey(defaultValue: const KtList.empty())
+  @JsonKey()
   @override
   final KtList<SendPackage> potentialPackages;
-  @JsonKey(defaultValue: const None())
+  @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
@@ -370,50 +370,44 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RequestState &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.validate, validate) ||
-                other.validate == validate) &&
-            (identical(other.isAccepting, isAccepting) ||
-                other.isAccepting == isAccepting) &&
-            (identical(other.isDeclining, isDeclining) ||
-                other.isDeclining == isDeclining) &&
-            (identical(
-                    other.isLoadingTransitPackages, isLoadingTransitPackages) ||
-                other.isLoadingTransitPackages == isLoadingTransitPackages) &&
-            (identical(
-                    other.isLoadingActivePackages, isLoadingActivePackages) ||
-                other.isLoadingActivePackages == isLoadingActivePackages) &&
-            (identical(other.isLoadingPotentialPackages,
-                    isLoadingPotentialPackages) ||
-                other.isLoadingPotentialPackages ==
-                    isLoadingPotentialPackages) &&
-            (identical(other.currentPackage, currentPackage) ||
-                other.currentPackage == currentPackage) &&
-            (identical(other.packagesInTransit, packagesInTransit) ||
-                other.packagesInTransit == packagesInTransit) &&
-            (identical(other.activePackages, activePackages) ||
-                other.activePackages == activePackages) &&
-            (identical(other.potentialPackages, potentialPackages) ||
-                other.potentialPackages == potentialPackages) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.validate, validate) &&
+            const DeepCollectionEquality()
+                .equals(other.isAccepting, isAccepting) &&
+            const DeepCollectionEquality()
+                .equals(other.isDeclining, isDeclining) &&
+            const DeepCollectionEquality().equals(
+                other.isLoadingTransitPackages, isLoadingTransitPackages) &&
+            const DeepCollectionEquality().equals(
+                other.isLoadingActivePackages, isLoadingActivePackages) &&
+            const DeepCollectionEquality().equals(
+                other.isLoadingPotentialPackages, isLoadingPotentialPackages) &&
+            const DeepCollectionEquality()
+                .equals(other.currentPackage, currentPackage) &&
+            const DeepCollectionEquality()
+                .equals(other.packagesInTransit, packagesInTransit) &&
+            const DeepCollectionEquality()
+                .equals(other.activePackages, activePackages) &&
+            const DeepCollectionEquality()
+                .equals(other.potentialPackages, potentialPackages) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLoading,
-      validate,
-      isAccepting,
-      isDeclining,
-      isLoadingTransitPackages,
-      isLoadingActivePackages,
-      isLoadingPotentialPackages,
-      currentPackage,
-      packagesInTransit,
-      activePackages,
-      potentialPackages,
-      status);
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(validate),
+      const DeepCollectionEquality().hash(isAccepting),
+      const DeepCollectionEquality().hash(isDeclining),
+      const DeepCollectionEquality().hash(isLoadingTransitPackages),
+      const DeepCollectionEquality().hash(isLoadingActivePackages),
+      const DeepCollectionEquality().hash(isLoadingPotentialPackages),
+      const DeepCollectionEquality().hash(currentPackage),
+      const DeepCollectionEquality().hash(packagesInTransit),
+      const DeepCollectionEquality().hash(activePackages),
+      const DeepCollectionEquality().hash(potentialPackages),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override

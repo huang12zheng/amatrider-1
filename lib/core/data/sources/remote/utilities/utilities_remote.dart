@@ -1,8 +1,11 @@
 library utilities_remote.dart;
 
+import 'dart:io';
+
 import 'package:amatrider/core/data/index.dart';
+import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,4 +19,36 @@ abstract class UtilitiesRemote {
 
   @GET(EndPoints.COUNTRIES)
   Future<List<CountryDTO>> countries();
+
+  @GET(EndPoints.GET_BANK_ACCOUNT)
+  Future<GenericObjectDTO<BankAccountDTO?>> bankAccount();
+
+  @POST(EndPoints.STORE_BANK_ACCOUNT)
+  Future<BankAccountDTO> storeBankAccount(@Body() BankAccountDTO dto);
+
+  @POST(EndPoints.DOCUMENT_VERIFICATION)
+  @MultiPart()
+  @Headers(<String, dynamic>{'content-type': 'multipart/form-data'})
+  Future<AppHttpResponse> documentVerification({
+    @Part(name: 'front_image') File? front,
+    @Part(name: 'back_image') File? back,
+    @Part(name: 'country_id') required String countryId,
+    @Part() required String type,
+    @SendProgress() ProgressCallback? progressCallback,
+    @ReceiveProgress() ProgressCallback? receiveProgress,
+  });
+
+  @GET(EndPoints.GET_REVIEWS)
+  Future<ReviewDTO> getReviews();
+
+  @GET(EndPoints.ALL_NOTIFICATIONS)
+  Future<GenericPaginatedListDTO<InAppNotificationDTO>> inAppNotifications();
+
+  @POST(EndPoints.CONTACT_SUPPORT)
+  @MultiPart()
+  Future<void> contactSupport({
+    @Part(name: 'type') required String type,
+    @Part(name: 'message') required String message,
+    @Part(name: 'images[]') List<File> images = const [],
+  });
 }

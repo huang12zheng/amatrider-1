@@ -131,13 +131,13 @@ class _$_TabNavigationState implements _TabNavigationState {
   const _$_TabNavigationState(
       {this.currentIndex = 0, this.isLoading = false, this.isInit = true});
 
-  @JsonKey(defaultValue: 0)
+  @JsonKey()
   @override
   final int currentIndex;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool isLoading;
-  @JsonKey(defaultValue: true)
+  @JsonKey()
   @override
   final bool isInit;
 
@@ -151,15 +151,18 @@ class _$_TabNavigationState implements _TabNavigationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _TabNavigationState &&
-            (identical(other.currentIndex, currentIndex) ||
-                other.currentIndex == currentIndex) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isInit, isInit) || other.isInit == isInit));
+            const DeepCollectionEquality()
+                .equals(other.currentIndex, currentIndex) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.isInit, isInit));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, currentIndex, isLoading, isInit);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(currentIndex),
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isInit));
 
   @JsonKey(ignore: true)
   @override

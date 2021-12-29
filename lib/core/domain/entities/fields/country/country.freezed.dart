@@ -241,7 +241,7 @@ class _$_Country extends _Country {
   final BasicTextField<String?>? iso3;
   @override
   final BasicTextField<String?>? dialCode;
-  @JsonKey(defaultValue: 'en')
+  @JsonKey()
   @override
   final String locale;
   @override
@@ -259,22 +259,28 @@ class _$_Country extends _Country {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Country &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.iso, iso) || other.iso == iso) &&
-            (identical(other.iso3, iso3) || other.iso3 == iso3) &&
-            (identical(other.dialCode, dialCode) ||
-                other.dialCode == dialCode) &&
-            (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.currency, currency) ||
-                other.currency == currency) &&
-            (identical(other.digitsCount, digitsCount) ||
-                other.digitsCount == digitsCount));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.iso, iso) &&
+            const DeepCollectionEquality().equals(other.iso3, iso3) &&
+            const DeepCollectionEquality().equals(other.dialCode, dialCode) &&
+            const DeepCollectionEquality().equals(other.locale, locale) &&
+            const DeepCollectionEquality().equals(other.currency, currency) &&
+            const DeepCollectionEquality()
+                .equals(other.digitsCount, digitsCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, iso, iso3, dialCode,
-      locale, currency, digitsCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(iso),
+      const DeepCollectionEquality().hash(iso3),
+      const DeepCollectionEquality().hash(dialCode),
+      const DeepCollectionEquality().hash(locale),
+      const DeepCollectionEquality().hash(currency),
+      const DeepCollectionEquality().hash(digitsCount));
 
   @JsonKey(ignore: true)
   @override

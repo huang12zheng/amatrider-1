@@ -70,11 +70,25 @@ class GetStartedScreen extends StatelessWidget with AutoRouteWrapper {
                   bottom: true,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
-                        .copyWith(top: App.longest * 0.05),
+                        .copyWith(top: App.longest * 0.04),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
+                          Flexible(
+                            child: AdaptiveText(
+                              'Welcome Rider!',
+                              maxLines: 1,
+                              minFontSize: 13,
+                              fontSize: 25.sp,
+                              fontWeight: FontWeight.bold,
+                              softWrap: false,
+                              wrapWords: false,
+                            ),
+                          ),
+                          //
+                          VerticalSpace(height: 0.03.sw),
+                          //
                           Flexible(
                             flex: 2,
                             child: AdaptiveText(
@@ -92,16 +106,15 @@ class GetStartedScreen extends StatelessWidget with AutoRouteWrapper {
                           VerticalSpace(height: 0.04.sw),
                           //
                           Expanded(
-                            flex: 3,
+                            flex: 4,
                             child: Column(
                               children: [
                                 Flexible(
                                   child: AppButton(
                                     text: 'Create Account',
                                     fontWeight: FontWeight.w600,
-                                    onPressed: () => navigator.pushAndPopUntil(
-                                      const SignupRoute(),
-                                      predicate: (_) => false,
+                                    onPressed: () => navigator.replaceAll(
+                                      [const SignupRoute()],
                                     ),
                                   ),
                                 ),
@@ -115,9 +128,8 @@ class GetStartedScreen extends StatelessWidget with AutoRouteWrapper {
                                     textColor: Palette.accentColor,
                                     splashColor: Colors.black12,
                                     backgroundColor: Palette.accent20,
-                                    onPressed: () => navigator.pushAndPopUntil(
-                                      const LoginRoute(),
-                                      predicate: (_) => false,
+                                    onPressed: () => navigator.replaceAll(
+                                      [const LoginRoute()],
                                     ),
                                   ),
                                 ),

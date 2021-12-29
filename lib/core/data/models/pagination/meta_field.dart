@@ -12,14 +12,14 @@ class MetaField with _$MetaField {
   const MetaField._();
 
   const factory MetaField({
-    @JsonKey(includeIfNull: false, name: 'current_page') int? currentPage,
-    @JsonKey(includeIfNull: false) int? from,
-    @JsonKey(includeIfNull: false, name: 'last_page') int? lastPage,
-    @JsonKey(includeIfNull: false) @Default([]) List<PaginationLinks> links,
-    @JsonKey(includeIfNull: false) String? path,
-    @JsonKey(includeIfNull: false, name: 'per_page') int? perPage,
-    @JsonKey(includeIfNull: false) int? to,
-    @JsonKey(includeIfNull: false) int? total,
+    @JsonKey(name: 'current_page') int? currentPage,
+    int? from,
+    @JsonKey(name: 'last_page') int? lastPage,
+    @JsonKey(defaultValue: []) @Default([]) List<PaginationLinks> links,
+    String? path,
+    @JsonKey(name: 'per_page') int? perPage,
+    int? to,
+    int? total,
   }) = _MetaField;
 
   factory MetaField.fromJson(Map<String, dynamic> json) =>

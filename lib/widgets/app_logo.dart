@@ -4,7 +4,7 @@ import 'package:amatrider/utils/utils.dart';
 
 enum _LogoPosition { stacked, horizontal, markOnly }
 
-Widget _builder(BuildContext context) => nil;
+Widget _builder(BuildContext context) => Utils.nothing;
 
 class AmatNowLogo extends StatelessWidget {
   static const double kMaxHeight = 200.0;
