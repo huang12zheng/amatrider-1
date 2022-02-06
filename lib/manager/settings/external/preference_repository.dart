@@ -40,10 +40,11 @@ class PreferenceRepository with _$PreferenceRepository {
           var msg = 'Message: List<String> not found '
               'in shared-preference cache';
           log.e(msg, _, __);
-          return null;
         },
         prod: () => null,
       );
+
+      return null;
     }
   }
 
@@ -61,10 +62,10 @@ class PreferenceRepository with _$PreferenceRepository {
         dev: () {
           var msg = 'Message: Double not found in shared-preference cache';
           log.e(msg, _, __);
-          return null;
         },
         prod: () => null,
       );
+      return null;
     }
   }
 
@@ -82,10 +83,10 @@ class PreferenceRepository with _$PreferenceRepository {
         dev: () {
           var msg = 'Message: Integer not found in shared-preference cache';
           log.e(msg, _, __);
-          return null;
         },
         prod: () => null,
       );
+      return null;
     }
   }
 
@@ -103,10 +104,10 @@ class PreferenceRepository with _$PreferenceRepository {
         dev: () {
           var msg = 'Message: String not found in shared-preference cache';
           log.e(msg, _, __);
-          return null;
         },
         prod: () => null,
       );
+      return null;
     }
   }
 

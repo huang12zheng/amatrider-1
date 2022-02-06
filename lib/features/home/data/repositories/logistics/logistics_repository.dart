@@ -7,7 +7,6 @@ import 'package:amatrider/features/home/data/sources/history_remote/history_remo
 import 'package:amatrider/features/home/data/sources/insight_remote/insight_remote.dart';
 import 'package:amatrider/features/home/data/sources/logistics_remote/logistics_remote.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
-import 'package:amatrider/features/home/domain/entities/logistics/index.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';

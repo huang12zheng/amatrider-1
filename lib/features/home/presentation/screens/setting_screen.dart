@@ -5,7 +5,6 @@ import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/theme/theme.dart';
-import 'package:amatrider/utils/amat_now_icons.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';

@@ -1,4 +1,3 @@
-import 'package:amatrider/utils/palette.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:search_page/search_page.dart';

@@ -16,7 +16,6 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
-import 'package:meta/meta.dart';
 
 part 'history_cubit.freezed.dart';
 part 'history_state.dart';

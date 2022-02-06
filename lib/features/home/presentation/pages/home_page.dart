@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
       await _cubit.allPackages(c);
       await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
       await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_RECEIVER);
+      await _cubit.allPackages(c, status: SendPackageStatus.RIDER_ACCEPTED);
       controller.refreshCompleted();
     });
   }

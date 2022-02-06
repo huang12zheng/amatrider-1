@@ -2,9 +2,7 @@ library expandable_shimmer.dart;
 
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 enum ExpandableShimmerFooter { single, double }
 
@@ -41,10 +39,7 @@ class ExpandableShimmer extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.0),
         child: SizedBox(
           width: double.infinity,
-          height: showFooterButtons ||
-                  initialExpanded != null && initialExpanded!.call(index ?? 0)
-              ? 0.15.h
-              : 0.095.h,
+          height: showFooterButtons || initialExpanded != null && initialExpanded!.call(index ?? 0) ? 0.15.h : 0.095.h,
           child: RectangleShimmer(
             width: double.infinity,
             height: double.infinity,
@@ -70,11 +65,7 @@ class ExpandableShimmer extends StatelessWidget {
                       flex: 10,
                       child: SizedBox(
                         width: double.infinity,
-                        height: showFooterButtons ||
-                                initialExpanded != null &&
-                                    initialExpanded!.call(index ?? 0)
-                            ? 0.08.h
-                            : null,
+                        height: showFooterButtons || initialExpanded != null && initialExpanded!.call(index ?? 0) ? 0.08.h : null,
                         child: Row(
                           children: [
                             Flexible(
@@ -102,10 +93,8 @@ class ExpandableShimmer extends StatelessWidget {
                                   Flexible(
                                     child: Center(
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           Expanded(
                                             flex: 4,
@@ -139,10 +128,8 @@ class ExpandableShimmer extends StatelessWidget {
                                   Flexible(
                                     child: Center(
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           Expanded(
                                             flex: 10,
@@ -155,12 +142,9 @@ class ExpandableShimmer extends StatelessWidget {
                                                     decoration: BoxDecoration(
                                                       color: App.resolveColor(
                                                         Colors.grey.shade400,
-                                                        dark: Colors
-                                                            .grey.shade700,
+                                                        dark: Colors.grey.shade700,
                                                       ),
-                                                      borderRadius: BorderRadius
-                                                          .circular(Utils
-                                                              .buttonRadius),
+                                                      borderRadius: BorderRadius.circular(Utils.buttonRadius),
                                                     ),
                                                   ),
                                                 ),
@@ -174,12 +158,9 @@ class ExpandableShimmer extends StatelessWidget {
                                                     decoration: BoxDecoration(
                                                       color: App.resolveColor(
                                                         Colors.grey.shade400,
-                                                        dark: Colors
-                                                            .grey.shade700,
+                                                        dark: Colors.grey.shade700,
                                                       ),
-                                                      borderRadius: BorderRadius
-                                                          .circular(Utils
-                                                              .buttonRadius),
+                                                      borderRadius: BorderRadius.circular(Utils.buttonRadius),
                                                     ),
                                                   ),
                                                 ),
@@ -212,10 +193,7 @@ class ExpandableShimmer extends StatelessWidget {
                       ),
                     ),
                     //
-                    if (showFooterButtons ||
-                        initialExpanded != null &&
-                            initialExpanded!.call(index ?? 0))
-                      ..._footer,
+                    if (showFooterButtons || initialExpanded != null && initialExpanded!.call(index ?? 0)) ..._footer,
                   ],
                 ),
               ),
@@ -245,8 +223,7 @@ class ExpandableShimmer extends StatelessWidget {
                               Colors.grey.shade400,
                               dark: Colors.grey.shade700,
                             ),
-                            borderRadius:
-                                BorderRadius.circular(Utils.buttonRadius),
+                            borderRadius: BorderRadius.circular(Utils.buttonRadius),
                           ),
                         ),
                       ),
@@ -262,8 +239,7 @@ class ExpandableShimmer extends StatelessWidget {
                               Colors.grey.shade400,
                               dark: Colors.grey.shade700,
                             ),
-                            borderRadius:
-                                BorderRadius.circular(Utils.buttonRadius),
+                            borderRadius: BorderRadius.circular(Utils.buttonRadius),
                           ),
                         ),
                       ),

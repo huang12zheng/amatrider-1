@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:flutter/cupertino.dart';
 
 enum PinInputType { circle, underline, box }
 

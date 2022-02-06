@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:amatrider/utils/extensions/button_type_extension.dart';
 
 class AppIconButton extends StatelessWidget {
   final double? height;

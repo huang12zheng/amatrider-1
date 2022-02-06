@@ -1,7 +1,6 @@
 import 'package:amatrider/core/domain/response/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @immutable
@@ -10,15 +9,11 @@ abstract class FieldObject<T> {
 
   Either<FieldObjectException<String>, T?> get value;
 
-  bool compare(String? other) =>
-      identical(getOrNull, other) ||
-      const DeepCollectionEquality().equals(getOrNull, other);
+  bool compare(String? other) => identical(getOrNull, other) || const DeepCollectionEquality().equals(getOrNull, other);
 
-  Either<FieldObjectException<dynamic>, Unit> get mapped =>
-      value.fold((f) => left(f), (_) => right(unit));
+  Either<FieldObjectException<dynamic>, Unit> get mapped => value.fold((f) => left(f), (_) => right(unit));
 
-  FieldObjectException<dynamic>? get failure =>
-      value.fold((f) => f, (_) => null);
+  FieldObjectException<dynamic>? get failure => value.fold((f) => f, (_) => null);
 
   U isNotNull<U>(
     U Function(FieldObject<T>)? field, {
@@ -32,8 +27,7 @@ abstract class FieldObject<T> {
     U? Function(FieldObject<T>)? fiels, {
     required U Function(FieldObject<T>) orElse,
   }) {
-    if (getOrNull != null && isValid)
-      return fiels?.call(this) ?? orElse.call(this);
+    if (getOrNull != null && isValid) return fiels?.call(this) ?? orElse.call(this);
     return orElse.call(this);
   }
 
@@ -53,8 +47,7 @@ abstract class FieldObject<T> {
       if (typesEqual<T, double>() || typesEqual<T, double?>()) return 0.0 as T;
       if (typesEqual<T, num>() || typesEqual<T, num?>()) return -1 as T;
       if (typesEqual<T, String>() || typesEqual<T, String?>()) return '' as T;
-      if (typesEqual<T, Iterable<dynamic>>() ||
-          typesEqual<T, Iterable<dynamic>?>()) return [] as T;
+      if (typesEqual<T, Iterable<dynamic>>() || typesEqual<T, Iterable<dynamic>?>()) return [] as T;
       return '' as T;
     }, id);
   }

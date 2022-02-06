@@ -1,7 +1,5 @@
 library socials_signup_screen.dart;
 
-import 'dart:io';
-
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';

@@ -6,7 +6,6 @@ import 'package:amatrider/features/home/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/features/onborading/presentation/screens/index.dart';
 import 'package:amatrider/manager/router/guards/guards.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:amatrider/_404.dart';
 

@@ -12,6 +12,7 @@ class RequestState extends BaseState with _$RequestState {
     @Default(false) bool isDeclining,
     @Default(false) bool isLoadingTransitPackages,
     @Default(false) bool isLoadingActivePackages,
+    // @Default(false) bool isLoadingAcceptedPackages,
     @Default(false) bool isLoadingPotentialPackages,
     SendPackage? currentPackage,
     @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,

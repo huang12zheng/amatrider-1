@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:amatrider/utils/palette.dart';
 import 'package:amatrider/utils/utils.dart';
 
 part 'styles-adapter.dart';

@@ -2,11 +2,6 @@ part of profile_page.dart;
 
 /// A stateless widget to render _PhoneUpdateBottomSheet.
 class _PhoneUpdateBottomSheet extends StatelessWidget {
-  static const dropdownBorderRadius = BorderRadius.only(
-    topLeft: Radius.circular(Utils.inputBorderRadius),
-    bottomLeft: Radius.circular(Utils.inputBorderRadius),
-  );
-
   const _PhoneUpdateBottomSheet({Key? key}) : super(key: key);
 
   @override

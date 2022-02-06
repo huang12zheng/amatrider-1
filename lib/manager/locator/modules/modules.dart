@@ -4,7 +4,7 @@ import 'package:amatrider/features/home/domain/repositories/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/manager/router/guards/guest_guard.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';

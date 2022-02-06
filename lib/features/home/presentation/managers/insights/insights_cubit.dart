@@ -3,7 +3,6 @@ library insights_cubit.dart;
 import 'dart:convert';
 
 import 'package:amatrider/core/data/index.dart';
-import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
@@ -16,7 +15,6 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 part 'insights_cubit.freezed.dart';
 part 'insights_state.dart';

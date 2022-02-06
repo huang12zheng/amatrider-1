@@ -1,7 +1,7 @@
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/response/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

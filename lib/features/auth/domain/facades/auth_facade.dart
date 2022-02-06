@@ -3,12 +3,11 @@ library auth_facade.dart;
 import 'dart:io';
 
 import 'package:amatrider/core/data/index.dart';
-import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/domain/response/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -74,8 +73,7 @@ abstract class AuthFacade {
     required Password confirmation,
   });
 
-  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
-      RiderAvailability availability);
+  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(RiderAvailability availability);
 
   Future<Option<AppHttpResponse?>> googleAuthentication([bool notify = false]);
 
@@ -107,8 +105,7 @@ abstract class AuthFacade {
   });
 
   Future<Either<AppHttpResponse, bool>> checkInternetConnectivity() async {
-    final isConnected = (await getIt<Connectivity>().checkConnectivity()) !=
-        ConnectivityResult.none;
+    final isConnected = (await getIt<Connectivity>().checkConnectivity()) != ConnectivityResult.none;
 
     if (!isConnected)
       return left(AppHttpResponse(AnyResponse.fromFailure(

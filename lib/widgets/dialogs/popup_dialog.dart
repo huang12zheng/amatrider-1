@@ -127,8 +127,7 @@ class _$PopupDialog {
         duration = duration ?? const Duration(seconds: 2, milliseconds: 500),
         margin = margin ?? const EdgeInsets.all(8.0),
         padding = padding ?? const EdgeInsets.all(16.0),
-        borderRadius =
-            borderRadius ?? const BorderRadius.all(Radius.circular(10.0)),
+        borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(10.0)),
         negativeButtonVisible = negativeButtonVisible ?? true,
         positiveButtonVisible = positiveButtonVisible ?? true,
         isDismissible = isDismissible ?? true,
@@ -137,8 +136,7 @@ class _$PopupDialog {
         shouldIconPulse = shouldIconPulse ?? true,
         overlayBlur = overlayBlur ?? 0.7,
         alertStyle = alertStyle ?? PopupDialogStyle.floating,
-        dismissDirection =
-            dismissDirection ?? PopupDialogDismissDirection.horizontal;
+        dismissDirection = dismissDirection ?? PopupDialogDismissDirection.horizontal;
 
   Future<dynamic> render(BuildContext context) async {
     return await _type?.fold(
@@ -197,9 +195,7 @@ class _$PopupDialog {
                 top: FlushbarPosition.TOP,
                 bottom: FlushbarPosition.BOTTOM,
               ) ??
-              (MediaQuery.of(context).viewInsets.bottom == 0
-                  ? FlushbarPosition.BOTTOM
-                  : FlushbarPosition.TOP),
+              (MediaQuery.of(context).viewInsets.bottom == 0 ? FlushbarPosition.BOTTOM : FlushbarPosition.TOP),
           flushbarStyle: alertStyle!.fold(
             floating: FlushbarStyle.FLOATING,
             grounded: FlushbarStyle.GROUNDED,
@@ -230,8 +226,7 @@ class _$PopupDialog {
               Palette.secondaryColor.shade300,
               dark: Palette.primaryColor.shade400,
             )!,
-            icon: popupIconColor ??
-                Utils.computeLuminance(Theme.of(context).iconTheme.color!),
+            icon: popupIconColor ?? Utils.computeLuminance(Theme.of(context).iconTheme.color!),
           ),
           success: SweetSheetColor.SUCCESS,
           warning: SweetSheetColor.WARNING,
@@ -247,8 +242,7 @@ class _$PopupDialog {
               onPositiveButtonPressed?.call();
             if (autoDismiss!) Navigator.pop(context);
           },
-          color: positiveButtonColor ??
-              Utils.computeLuminance(Theme.of(context).iconTheme.color!),
+          color: positiveButtonColor ?? Utils.computeLuminance(Theme.of(context).iconTheme.color!),
           icon: positiveButtonIcon,
         ),
         negative: SweetSheetAction(
@@ -260,8 +254,7 @@ class _$PopupDialog {
               onNegativeButtonPressed?.call();
             if (autoDismiss!) Navigator.pop(context);
           },
-          color: negativeButtonColor ??
-              Utils.computeLuminance(Theme.of(context).iconTheme.color!),
+          color: negativeButtonColor ?? Utils.computeLuminance(Theme.of(context).iconTheme.color!),
           icon: negativeButtonIcon,
         ),
       ),
@@ -287,7 +280,7 @@ extension on _PopupDialogType {
         return input;
       case _PopupDialogType.none:
       default:
-      // return f;
+        return null;
     }
   }
 }

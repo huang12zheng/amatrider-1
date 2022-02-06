@@ -31,9 +31,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.838162874368-95sbcci600tsqekbi2nf0m9vt8fl0dv4</string>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			</array>
 		</dict>
 	</array>
@@ -55,6 +57,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(APP_DISPLAY_NAME) needs access to your Apple Music Library to function properly</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) needs access to your camera to take photos.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -67,8 +71,6 @@
 	<string>$(APP_DISPLAY_NAME) needs access to your Photo Library to select/preview photos.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) would like permission to track you across apps and websites owned by other companies.</string>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>$(APP_DISPLAY_NAME) needs access to your Apple Music Library to function properly</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

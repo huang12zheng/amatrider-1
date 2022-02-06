@@ -1,11 +1,9 @@
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/manager/router/router.gr.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A stateless widget to render ResetPaswordDialog.

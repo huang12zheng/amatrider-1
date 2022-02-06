@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+
 part of map_cubit.dart;
 
 extension MapCubitX on MapCubit {
@@ -14,15 +16,13 @@ extension MapCubitX on MapCubit {
       final _existingCircles = state.circles;
       // final _circle = _existingCircles
       //     .firstWhereOrNull((it) => it.circleId.value == riderCircleId);
-      final _circleExists =
-          _existingCircles.any((it) => it.circleId.value == riderCircleId);
+      final _circleExists = _existingCircles.any((it) => it.circleId.value == riderCircleId);
 
       if (_circleExists) {}
     }
   }
 
-  void onMapCreated(GoogleMapController controller) =>
-      emit(state.copyWith(mapController: controller));
+  void onMapCreated(GoogleMapController controller) => emit(state.copyWith(mapController: controller));
 
   Future<void> drawPolyline(RiderLocation start, RiderLocation end) async {
     // Object for PolylinePoints
@@ -84,18 +84,10 @@ extension MapCubitX on MapCubit {
   }) async {
     // Calculating to check that the position relative
     // to the frame, and pan & zoom the camera accordingly.
-    var miny = (start.lat.getOrNull! <= end.lat.getOrNull!)
-        ? start.lat.getOrNull!
-        : end.lat.getOrNull!;
-    var minx = (start.lng.getOrNull! <= end.lng.getOrNull!)
-        ? start.lng.getOrNull!
-        : end.lng.getOrNull!;
-    var maxy = (start.lat.getOrNull! <= end.lat.getOrNull!)
-        ? end.lat.getOrNull!
-        : start.lat.getOrNull!;
-    var maxx = (start.lng.getOrNull! <= end.lng.getOrNull!)
-        ? end.lng.getOrNull!
-        : start.lng.getOrNull!;
+    var miny = (start.lat.getOrNull! <= end.lat.getOrNull!) ? start.lat.getOrNull! : end.lat.getOrNull!;
+    var minx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? start.lng.getOrNull! : end.lng.getOrNull!;
+    var maxy = (start.lat.getOrNull! <= end.lat.getOrNull!) ? end.lat.getOrNull! : start.lat.getOrNull!;
+    var maxx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? end.lng.getOrNull! : start.lng.getOrNull!;
 
     var southWestLatitude = miny;
     var southWestLongitude = minx;
@@ -128,8 +120,7 @@ extension MapCubitX on MapCubit {
     try {
       svgString = await DefaultAssetBundle.of(context).loadString(asset);
     } catch (_) {
-      svgString = await DefaultAssetBundle.of(context)
-          .loadString('${AppAssets.timelinePinAsset}');
+      svgString = await DefaultAssetBundle.of(context).loadString('${AppAssets.timelinePinAsset}');
       log.e("Asset not found for 'Bitmap Descriptor' ...using default");
     }
     // Create Drawable Root frm svg String

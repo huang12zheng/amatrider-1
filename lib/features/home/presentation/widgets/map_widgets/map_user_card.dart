@@ -3,9 +3,7 @@ library map_user_card.dart;
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// A stateless widget to render MapUserCard.
 class MapUserCard extends StatelessWidget {
@@ -26,7 +24,7 @@ class MapUserCard extends StatelessWidget {
     required this.subtitle,
   }) : super(key: key);
 
-  bool get _hasImage => imageUrl != null || localImageUrl != null;
+  // bool get _hasImage => imageUrl != null || localImageUrl != null;
 
   double get _height => height ?? 0.06.h;
   double get _width => width ?? 0.6.sw;
@@ -37,8 +35,7 @@ class MapUserCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: App.resolveColor(Palette.cardColorLight,
-              dark: Palette.cardColorDark),
+          color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
         ),
         child: Padding(
           padding: EdgeInsets.all(0.008.sw),
@@ -56,8 +53,7 @@ class MapUserCard extends StatelessWidget {
                           fit: BoxFit.contain,
                           height: _height,
                           width: _width * 0.3,
-                          progressIndicatorBuilder: (_, url, download) =>
-                              Center(
+                          progressIndicatorBuilder: (_, url, download) => Center(
                             child: CircularProgressBar.adaptive(
                               value: download.progress,
                               strokeWidth: 1.5,

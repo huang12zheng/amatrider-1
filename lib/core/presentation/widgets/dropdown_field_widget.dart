@@ -1,8 +1,6 @@
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/adaptive/adaptive.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class DropdownFieldWidget<Model> extends StatelessWidget {
   static const EdgeInsetsGeometry kdropdownContentPadding =
