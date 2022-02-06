@@ -1,20 +1,19 @@
 mixin EndPoints {
-  static const String APP_DOMAIN = 'api.manuelsnr.design';
+  static const String APP_DEV_DOMAIN = 'api.staging.amatnow.com';
+  static const String APP_PROD_DOMAIN = 'api.amatnow.com';
+  static const String DEV_WEB_URL = 'https://$APP_DEV_DOMAIN';
+  static const String PROD_WEB_URL = 'https://$APP_PROD_DOMAIN';
   static const String API_ENDPOINT = '/api/v1';
-  static const String BASE_URL = 'https://$APP_DOMAIN$API_ENDPOINT';
-  static const String PUSHER_AUTH_URL =
-      'https://api.manuelsnr.design/broadcasting/auth';
+  static const String PUSHER_AUTH_URL = '/broadcasting/auth';
   static const String SLEEP = '/rider/sleep';
 
   //.....///.....// AUTHENTICATION ENDPOINTS ....////././//...//
   static const String LOGIN = '/rider/auth/login';
   static const String REGISTER = '/rider/auth/register';
   static const String LOGOUT = '/rider/auth/logout';
-  static const String RESEND_PHONE_VERIFICATION =
-      '/rider/auth/verify/phone/resend';
+  static const String RESEND_PHONE_VERIFICATION = '/rider/auth/verify/phone/resend';
   static const String CONFIRM_PHONE_VERIFICATION = '/rider/auth/verify/phone';
-  static const String SEND_PASSWORD_RESET_MESSAGE =
-      '/rider/auth/forgot-password';
+  static const String SEND_PASSWORD_RESET_MESSAGE = '/rider/auth/forgot-password';
   static const String CONFIRM_PASSWORD_RESET = '/rider/auth/reset-password';
   static const String GOOGLE_SIGNIN = '/rider/auth/social/google';
   static const String APPLE_SIGNIN = '/rider/auth/social/apple';
@@ -26,21 +25,15 @@ mixin EndPoints {
   static const String UPDATE_PHONE = '/rider/profile/phone'; // (POST)
   static const String CONFIRM_UPDATE_PHONE = '/rider/profile/phone'; // (PATCH)
   static const String UPDATE_RIDER_PROFILE = '/rider/profile'; // (POST)
-  static const String UPDATE_RIDER_PROFILE_SOCIALS =
-      '/rider/social/profile'; // (POST)
+  static const String UPDATE_RIDER_PROFILE_SOCIALS = '/rider/social/profile'; // (POST)
 
   /// .......///////...// SEND PACKAGE ENDPOINTS .......///////./....//
   static const String GET_ACTIVE_PACKAGES = '/rider/package'; // (GET)
-  static const String ACCEPT_PACKAGE_DELIVERY =
-      '/rider/package/{id}/accept'; // (POST)
-  static const String DeCLINE_PACKAGE_DELIVERY =
-      '/rider/package/{id}/decline'; // (POST)
-  static const String UPDATE_PACKAGE_LOCATION =
-      '/rider/package/{id}/location'; // (POST)
-  static const String CONFIRM_RECEIVED_PACKAGE =
-      '/rider/package/{id}/confirm-pickup'; // (POST)
-  static const String CONFIRM_PACKAGE_DELIVERED =
-      '/rider/package/{id}/delivered'; // (POST)
+  static const String ACCEPT_PACKAGE_DELIVERY = '/rider/package/{id}/accept'; // (POST)
+  static const String DeCLINE_PACKAGE_DELIVERY = '/rider/package/{id}/decline'; // (POST)
+  static const String UPDATE_PACKAGE_LOCATION = '/rider/package/{id}/location'; // (POST)
+  static const String CONFIRM_RECEIVED_PACKAGE = '/rider/package/{id}/confirm-pickup'; // (POST)
+  static const String CONFIRM_PACKAGE_DELIVERED = '/rider/package/{id}/delivered'; // (POST)
 
   /// .......///////...// HISTORY ENDPOINTS .......///////./....//
   static const String GET_ALL_HISTORY = '/rider/history'; // (GET)
@@ -50,19 +43,15 @@ mixin EndPoints {
 
   /// .......///////...// INSIGHTS ENDPOINTS .......///////./....//
   static const String GET_INSIGHT = '/rider/insight'; // (GET)
-  static const String INITIATE_CASH_DEPOSIT =
-      '/rider/deposit/initiate'; // (POST)
+  static const String INITIATE_CASH_DEPOSIT = '/rider/deposit/initiate'; // (POST)
 
   //.....///.....// UTILITIES ENDPOINTS ....////././//...//
   static const String COUNTRIES = '/utilities/countries'; // (GET)
   static const String GET_BANK_ACCOUNT = '/rider/account-information'; // (GET)
-  static const String STORE_BANK_ACCOUNT =
-      '/rider/account-information'; // (POST)
-  static const String DOCUMENT_VERIFICATION =
-      '/rider/verification-document'; // (POST)
+  static const String STORE_BANK_ACCOUNT = '/rider/account-information'; // (POST)
+  static const String DOCUMENT_VERIFICATION = '/rider/verification-document'; // (POST)
   static const String BANKS = '/banks'; // (GET)
-  static const String TOGGLE_RIDER_AVAILABILITY =
-      '/rider/availability'; // (PATCH)
+  static const String TOGGLE_RIDER_AVAILABILITY = '/rider/availability'; // (PATCH)
   static const String DEPOSIT_CASH = '/rider/deposit'; // (POST)
   static const String CLAIM_BONUS = '/rider/claim-bonus'; // (GET)
   static const String GET_REVIEWS = '/rider/reviews'; // (GET)

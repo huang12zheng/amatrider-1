@@ -19,6 +19,14 @@ class BuildEnvironment implements Secrets {
 
   BuildEnvironment._({this.flavor = BuildFlavor.dev, this.baseUri});
 
+  // String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}');
+  String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}');
+
+  // String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.PROD_WEB_URL}');
+  String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.DEV_WEB_URL}');
+
+  String get packageName => env.flavor.fold(dev: () => '${Const.packageNameDev}', prod: () => '${Const.packageName}');
+
   Duration get greetingDuration => const Duration(milliseconds: 1200);
 
   String get googleMapsAPI => Utils.platform_(material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
@@ -38,10 +46,14 @@ class BuildEnvironment implements Secrets {
   String get pusherAuthUrl => EndPoints.PUSHER_AUTH_URL;
 
   /// Sets up the top-level [env] getter on the first call only.
-  static Future<void> init({@required BuildFlavor? flavor}) async {
+  static Future<void> init({required BuildFlavor flavor}) async {
     _env ??= BuildEnvironment.factory(
       flavor: flavor,
-      uri: Uri.https(EndPoints.APP_DOMAIN, EndPoints.API_ENDPOINT),
+      uri: Uri.https(
+        // flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}'),
+        flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}'),
+        EndPoints.API_ENDPOINT,
+      ),
     );
 
     // This app is designed only to work vertically, so we limit
@@ -51,7 +63,7 @@ class BuildEnvironment implements Secrets {
       DeviceOrientation.portraitDown,
     ]);
 
-    await flavor?.fold(
+    await flavor.fold(
       dev: () async {
         await locator(Environment.dev);
         await getIt<FirebasePerformance>().setPerformanceCollectionEnabled(!kDebugMode);
