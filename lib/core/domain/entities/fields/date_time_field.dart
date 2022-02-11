@@ -3,8 +3,7 @@ import 'package:amatrider/core/domain/response/field_object/field_object_excepti
 import 'package:amatrider/core/domain/validator/validator.dart';
 import 'package:dartz/dartz.dart';
 
-typedef DateTimeValidator = Either<FieldObjectException<String>, DateTime?>
-    Function(DateTime?);
+typedef DateTimeValidator = Either<FieldObjectException<String>, DateTime?> Function(DateTime?);
 
 class DateTimeField extends FieldObject<DateTime?> {
   static const DateTimeField DEFAULT = DateTimeField._(Right(null));
@@ -16,8 +15,7 @@ class DateTimeField extends FieldObject<DateTime?> {
     DateTime? input, {
     DateTimeValidator? other,
   }) {
-    return DateTimeField._(
-        Validator.isEmpty(input).flatMap(other ?? (a) => right(a)));
+    return DateTimeField._(Validator.isEmpty(input).flatMap(other ?? (a) => right(a)));
   }
 
   const DateTimeField._(this.value);

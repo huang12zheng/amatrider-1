@@ -49,66 +49,67 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
         child: AdaptiveAlertdialog(
           width: 0.75.w,
           title: '${tr.insightClaimBonus}',
-          body: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AdaptiveText.rich(
-                TextSpan(children: [
-                  TextSpan(
-                    text: '${tr.insightBonusAlertContent(
-                      '${cash.getOrEmpty}'.asCurrency(),
-                    )}',
-                  ),
-                ]),
-                isDefault: Utils.platform_(cupertino: true),
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w400,
-                letterSpacing: Utils.letterSpacing,
-                textAlign: TextAlign.center,
-              ),
-              //
-              VerticalSpace(height: 0.04.sw),
-              //
-              ...List.generate(3, (i) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormInputLabel(
-                      text: mapIndexToTitle(i),
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      textAlign: TextAlign.end,
-                      useDefaultText: Utils.platform_(
-                        cupertino: true,
-                        material: false,
-                      )!,
+          body: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AdaptiveText.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                      text: '${tr.insightBonusAlertContent(
+                        '${cash.getOrEmpty}'.asCurrency(),
+                      )}',
                     ),
-                    //
-                    HorizontalSpace(width: 0.03.sw),
-                    //
-                    Expanded(
-                      child: AdaptiveText(
-                        mapIndexToValue(i, account),
-                        fontSize: 18.sp,
-                        maxLines: 1,
-                        isDefault: Utils.platform_(cupertino: true),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: Utils.letterSpacing,
-                        textAlign: TextAlign.start,
+                  ]),
+                  isDefault: Utils.platform_(cupertino: true),
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: Utils.letterSpacing,
+                  textAlign: TextAlign.center,
+                ),
+                //
+                VerticalSpace(height: 0.04.sw),
+                //
+                ...List.generate(3, (i) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormInputLabel(
+                        text: mapIndexToTitle(i),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        textAlign: TextAlign.end,
+                        useDefaultText: Utils.platform_(
+                          cupertino: true,
+                          material: false,
+                        )!,
                       ),
-                    ),
-                  ],
-                );
-              }).toList(),
-            ],
-          ),
+                      //
+                      HorizontalSpace(width: 0.03.sw),
+                      //
+                      Expanded(
+                        child: AdaptiveText(
+                          mapIndexToValue(i, account),
+                          fontSize: 18.sp,
+                          maxLines: 1,
+                          isDefault: Utils.platform_(cupertino: true),
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: Utils.letterSpacing,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ],
+            )
+          ],
           isSecondDestructive: true,
           isSecondDefaultAction: true,
           cupertinoSecondButtonText: '${tr.cancel}',
-          cupertinoFirstButton:
-              BlocSelector<InsightsCubit, InsightsState, bool>(
+          cupertinoFirstButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.claimBonusLoading,
-            builder: (c, isLoading) => WidgetVisibility(
+            builder: (c, isLoading) => AnimatedVisibility(
               visible: !isLoading,
               replacement: Center(
                 child: Padding(
@@ -141,8 +142,7 @@ class _ClaimBonusDialogBuilder extends StatelessWidget {
               },
             ),
           ),
-          materialSecondButton:
-              BlocSelector<InsightsCubit, InsightsState, bool>(
+          materialSecondButton: BlocSelector<InsightsCubit, InsightsState, bool>(
             selector: (s) => s.isLoading,
             builder: (c, isLoading) => AdaptiveButton(
               text: '${tr.cancel}',

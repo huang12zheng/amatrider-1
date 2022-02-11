@@ -18,9 +18,8 @@ class GlobalPreferenceState with _$GlobalPreferenceState {
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _GlobalPreferenceState;
 
-  factory GlobalPreferenceState.initial() => GlobalPreferenceState(
-      supportMessage: BasicTextField(null),
-      currentLocale: Locale(Intl.getCurrentLocale()));
+  factory GlobalPreferenceState.initial() =>
+      GlobalPreferenceState(supportMessage: BasicTextField(''), currentLocale: Locale(Intl.getCurrentLocale()));
 }
 
 extension FeedbackTypeX on FeedbackType {

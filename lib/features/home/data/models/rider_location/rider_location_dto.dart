@@ -8,6 +8,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'rider_location_dto.g.dart';
 part 'rider_location_dto.freezed.dart';
 
+RiderLocationDTO deserializeRiderLocationDTO(Map<String, dynamic> json) => RiderLocationDTO.fromJson(json);
+Map<String, dynamic> serializeRiderLocationDTO(RiderLocationDTO object) => object.toJson();
+
 @freezed
 @immutable
 class RiderLocationDTO with _$RiderLocationDTO {
@@ -15,9 +18,7 @@ class RiderLocationDTO with _$RiderLocationDTO {
 
   const factory RiderLocationDTO({
     @JsonKey(includeIfNull: false, name: 'lat') @DoubleSerializer() double? lat,
-    @JsonKey(includeIfNull: false, name: 'long')
-    @DoubleSerializer()
-        double? lng,
+    @JsonKey(includeIfNull: false, name: 'long') @DoubleSerializer() double? lng,
     @JsonKey(includeIfNull: false) String? address,
     @JsonKey(includeIfNull: false) double? accuracy,
     @JsonKey(includeIfNull: false) double? altitude,
@@ -26,16 +27,14 @@ class RiderLocationDTO with _$RiderLocationDTO {
   }) = _RiderLocationDTO;
 
   /// Maps RiderLocation to a Data Transfer Object.
-  factory RiderLocationDTO.fromDomain(RiderLocation? instance) =>
-      RiderLocationDTO(
+  factory RiderLocationDTO.fromDomain(RiderLocation? instance) => RiderLocationDTO(
         lat: instance?.lat.getOrNull,
         lng: instance?.lng.getOrNull,
         address: instance?.address.getOrNull,
       );
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory RiderLocationDTO.fromJson(Map<String, dynamic> json) =>
-      _$RiderLocationDTOFromJson(json);
+  factory RiderLocationDTO.fromJson(Map<String, dynamic> json) => _$RiderLocationDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a RiderLocation Object.
   RiderLocation get domain => RiderLocation(

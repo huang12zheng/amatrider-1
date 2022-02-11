@@ -1,3 +1,4 @@
+import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class AdaptiveScaffold extends StatelessWidget {
   final Widget? body;
   final Color? backgroundColor;
   final PlatformNavBar? adaptiveBottomNav;
-  final Widget Function(BuildContext, int)? cupertinoTabBuilder;
+  final IndexedWidgetBuilder? cupertinoTabBuilder;
   final CupertinoPageScaffoldData Function(BuildContext, PlatformTarget)? cupertino;
   final MaterialScaffoldData Function(BuildContext, PlatformTarget)? material;
   final bool iosContentBottomPadding;
@@ -34,7 +35,13 @@ class AdaptiveScaffold extends StatelessWidget {
       widgetKey: scaffoldKey,
       appBar: adaptiveToolbar?.build(),
       body: body,
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColor ??
+          Utils.platform_(
+            cupertino: App.resolveColor(
+              Palette.cardColorLight,
+              dark: Palette.secondaryColor,
+            ),
+          ),
       bottomNavBar: adaptiveBottomNav,
       cupertinoTabChildBuilder: cupertinoTabBuilder,
       iosContentBottomPadding: iosContentBottomPadding,

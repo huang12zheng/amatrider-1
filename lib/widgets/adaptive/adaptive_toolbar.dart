@@ -2,6 +2,7 @@ import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -27,8 +28,11 @@ class AdaptiveToolbar {
   final String? tooltip;
   final String? semantics;
   // Cupertino
+  final Widget? titleWidget;
+  // final Widget? cupertinoLeadingIcon;
   final bool cupertinoImplyLeading;
   final bool implyMiddle;
+  final Alignment? cupertinoTitleAlignment;
   final String cupertinoLeading;
   final TextStyle? cupertinoLeadingStyle;
   final String? previousPageTitle;
@@ -42,6 +46,7 @@ class AdaptiveToolbar {
   const AdaptiveToolbar({
     this.key,
     this.title = '',
+    this.titleWidget,
     this.headline = const SizedBox.shrink(),
     this.leadingIcon,
     this.titleStyle,
@@ -60,8 +65,10 @@ class AdaptiveToolbar {
     this.semantics,
     this.cupertinoImplyLeading = true,
     this.implyMiddle = false,
+    // this.cupertinoLeadingIcon,
     this.cupertinoLeading = 'Close',
     this.cupertinoLeadingStyle,
+    this.cupertinoTitleAlignment,
     this.padding,
     this.previousPageTitle,
     this.brightness,
@@ -132,12 +139,19 @@ class AdaptiveToolbar {
                   cupertinoLeading,
                   style: cupertinoLeadingStyle ??
                       TextStyle(
-                        color: Utils.computeLuminance(Theme.of(App.context).scaffoldBackgroundColor),
+                        color: Utils.computeLuminance(_cupertinoBackgroundColor),
                       ),
                 ),
               ),
         ),
       );
+
+  Color get _cupertinoBackgroundColor =>
+      backgroundColor?.withAlpha(254) ??
+      App.resolveColor(
+        CupertinoColors.lightBackgroundGray.withAlpha(254),
+        dark: CupertinoColors.quaternarySystemFill,
+      )!;
 
   PlatformAppBar build() {
     return PlatformAppBar(
@@ -155,28 +169,31 @@ class AdaptiveToolbar {
                 backgroundColor: backgroundColor ?? Colors.transparent,
                 actions: actions,
                 leading: _materialLeading,
-                title: _title,
+                title: titleWidget ?? _title,
               ),
       cupertino: cupertino ??
           (_, __) => CupertinoNavigationBarData(
-                backgroundColor: backgroundColor?.withAlpha(254),
+                backgroundColor: _cupertinoBackgroundColor,
                 automaticallyImplyLeading: cupertinoImplyLeading,
                 automaticallyImplyMiddle: implyMiddle,
                 padding: padding,
                 previousPageTitle: previousPageTitle,
                 brightness: brightness,
                 transitionBetweenRoutes: transitionBetweenRoutes,
-                title: !implyMiddle ? _title : null,
+                title: !implyMiddle
+                    ? (cupertinoTitleAlignment != null ? Align(alignment: cupertinoTitleAlignment!, child: _title) : _title)
+                    : null,
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: actions,
                 ),
-                leading: cupertinoImplyLeading
-                    ? null
-                    : showCustomLeading ?? getIt<AppRouter>().navigatorKey.currentContext!.watchRouter.canPopSelfOrChildren
-                        ? _cupertinoLeading
-                        : null,
+                leading: leadingIcon ??
+                    (cupertinoImplyLeading
+                        ? null
+                        : (showCustomLeading ?? getIt<AppRouter>().navigatorKey.currentContext!.watchRouter.canPopSelfOrChildren)
+                            ? _cupertinoLeading
+                            : null),
               ),
     );
   }

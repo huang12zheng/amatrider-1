@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/websocket_event.dart';
-import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
@@ -22,9 +21,8 @@ import 'package:kt_dart/kt.dart';
 part 'notification_cubit.freezed.dart';
 part 'notification_state.dart';
 
-@injectable
-class NotificationCubit extends Cubit<NotificationState>
-    with BaseCubit<NotificationState> {
+@singleton
+class NotificationCubit extends Cubit<NotificationState> with BaseCubit<NotificationState> {
   final AuthFacade _auth;
   final EchoRepository _echoRepository;
   final UtilitiesRepository _repository;
@@ -44,13 +42,11 @@ class NotificationCubit extends Cubit<NotificationState>
   }
 
   void reset() {
-    if (riderId != null)
-      _echoRepository.close(DispatchRider.notifications('$riderId'));
+    if (riderId != null) _echoRepository.close(DispatchRider.notifications('$riderId'));
     emit(state.copyWith(subscribed: false));
   }
 
-  void _toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
-      emit(state.copyWith(
+  void _toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
@@ -60,14 +56,13 @@ class NotificationCubit extends Cubit<NotificationState>
     var _new = state.inAppNotifications.iter.toList().toImmutableList();
 
     // Sort with & group-by the createdAt property
-    var _sorted =
-        _new.sortedWith((a, b) => b.createdAt.compareTo(a.createdAt)).groupBy(
-              (it) => DateTime(
-                it.createdAt.year,
-                it.createdAt.month,
-                it.createdAt.day,
-              ),
-            );
+    var _sorted = _new.sortedWith((a, b) => b.createdAt.compareTo(a.createdAt)).groupBy(
+          (it) => DateTime(
+            it.createdAt.year,
+            it.createdAt.month,
+            it.createdAt.day,
+          ),
+        );
 
     emit(state.copyWith(inAppNotificationCollection: _sorted));
   }
@@ -86,6 +81,8 @@ class NotificationCubit extends Cubit<NotificationState>
             DispatchRider.notifications('$riderId'),
             onInit: () => emit(state.copyWith(subscribed: true)),
             onData: (data, _) {
+              emit(state.copyWith(status: none()));
+
               final json = jsonDecode(data) as Map<String, dynamic>;
 
               final _notification = _repository.mapInAppNotification(
@@ -94,19 +91,12 @@ class NotificationCubit extends Cubit<NotificationState>
 
               if (_notification.title.isValid)
                 emit(state.copyWith(
-                  status: some(AppHttpResponse.successful(
-                    _notification.title.getOrNull,
-                    pop: false,
-                    uuid: UniqueId<String>.v4().value,
-                  )),
+                  status: some(AppHttpResponse.successful(_notification.title.getOrNull, pop: false)),
                 ));
 
               emit(state.copyWith(
                 status: none(),
-                inAppNotifications: state.inAppNotifications
-                    .plusElement(_notification)
-                    .asList()
-                    .toImmutableList(),
+                inAppNotifications: state.inAppNotifications.plusElement(_notification).asList().toImmutableList(),
               ));
 
               // Update collection

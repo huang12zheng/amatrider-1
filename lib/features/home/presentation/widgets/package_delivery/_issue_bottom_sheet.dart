@@ -12,8 +12,7 @@ class _DeliveryIssueBottomsheet extends StatefulWidget {
   const _DeliveryIssueBottomsheet(this.cubit, {Key? key}) : super(key: key);
 
   @override
-  State<_DeliveryIssueBottomsheet> createState() =>
-      _DeliveryIssueBottomsheetState();
+  State<_DeliveryIssueBottomsheet> createState() => _DeliveryIssueBottomsheetState();
 }
 
 class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
@@ -32,12 +31,13 @@ class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               duration: const Duration(seconds: 3),
@@ -98,9 +98,7 @@ class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
                             ),
                             groupValue: s.cancelReason.getOrEmpty,
                             contentPadding: EdgeInsets.zero,
-                            onChanged: (val) => c
-                                .read<SendPackageCubit>()
-                                .cancelReasonChanged(val, false),
+                            onChanged: (val) => c.read<SendPackageCubit>().cancelReasonChanged(val, false),
                           ),
                         ),
                       ),
@@ -118,17 +116,14 @@ class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
                           ),
                           groupValue: s.isOtherReason,
                           contentPadding: EdgeInsets.zero,
-                          onChanged: (val) => c
-                              .read<SendPackageCubit>()
-                              .cancelReasonChanged(null, true),
+                          onChanged: (val) => c.read<SendPackageCubit>().cancelReasonChanged(null, true),
                         ),
                       ),
                       //
                       VerticalSpace(height: 0.04.sw),
                       //
                       if (s.isOtherReason)
-                        ReactiveTextFormField<SendPackageCubit,
-                            SendPackageState>(
+                        ReactiveTextFormField<SendPackageCubit, SendPackageState>(
                           hintText: (s) => 'Enter here..',
                           initial: (s) => s.cancelReason.getOrEmpty,
                           disabled: (s) => s.isLoading,
@@ -138,8 +133,7 @@ class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
                           validate: (s) => s.validate,
                           response: (s) => s.status,
                           errorField: (s) => s.errors?.bankName,
-                          onChanged: (cubit, it) =>
-                              cubit.cancelReasonChanged(it, true),
+                          onChanged: (cubit, it) => cubit.cancelReasonChanged(it, true),
                         ),
                       //
                       VerticalSpace(height: 0.08.sw),
@@ -148,7 +142,7 @@ class _DeliveryIssueBottomsheetState extends State<_DeliveryIssueBottomsheet> {
                         text: 'Send Report',
                         disabled: !s.cancelReason.isValid,
                         isLoading: s.isLoading,
-                        onPressed: c.read<SendPackageCubit>().cancelDelivery,
+                        // onPressed: c.read<SendPackageCubit>().cancelDelivery,
                       ),
                       //
                       VerticalSpace(height: App.sidePadding),

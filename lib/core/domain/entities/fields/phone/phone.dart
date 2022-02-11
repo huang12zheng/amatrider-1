@@ -17,9 +17,30 @@ class Phone extends FieldObject<String?> {
     );
   }
 
+  bool get isEmpty => value.fold((_) => true, (r) => r!.isEmpty);
+
   Phone? get formatted => value.fold(
         (f) => null,
-        (val) => Phone('${country?.dialCode?.getOrEmpty}$val'),
+        (val) {
+          if (country?.dialCode?.getOrNull != null) {
+            if (val!.contains('${country!.dialCode!.getOrEmpty}'))
+              return Phone('$val');
+            else {
+              final value = '${country!.dialCode!.getOrEmpty}$val';
+              return Phone(value.startsWith('+') ? value : '+$value');
+            }
+          } else
+            return Phone('$val');
+        },
+      );
+
+  Phone? get noDialCode => value.fold(
+        (f) => null,
+        (val) => country?.dialCode?.getOrNull == null
+            ? null
+            : Phone(
+                val?.replaceAll(country!.dialCode!.getOrEmpty!, '').replaceAll('+', ''),
+              ),
       );
 
   const Phone._(this.value, {this.country});

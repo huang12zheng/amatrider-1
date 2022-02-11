@@ -2,7 +2,6 @@ import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/features/auth/data/repositories/access_token/access_token_manager.dart';
 import 'package:amatrider/features/home/domain/repositories/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/manager/router/guards/guest_guard.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -27,6 +26,8 @@ abstract class Modules {
   AppRouter get router => AppRouter(
         authGuard: AuthGuard(),
         guestGuard: GuestGuard(),
+        incompleteKYCGuard: IncompleteKYCGuard(),
+        accountVerificationGuard: AccountVerificationGuard(),
       );
 
   @preResolve

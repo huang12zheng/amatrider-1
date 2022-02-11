@@ -26,12 +26,13 @@ class DeleteAccountAlertdialog extends StatelessWidget {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               duration: const Duration(seconds: 3),
@@ -69,14 +70,14 @@ class DeleteAccountAlertdialog extends StatelessWidget {
               scrollController: ScrollController(),
               actions: [
                 BlocBuilder<AuthCubit, AuthState>(
-                  builder: (c, s) => WidgetVisibility(
+                  builder: (c, s) => AnimatedVisibility(
                     visible: !s.isLoading,
                     replacement: Center(child: App.loadingSpinningLines),
                     child: CupertinoDialogAction(
                       isDefaultAction: false,
                       isDestructiveAction: true,
                       onPressed: c.read<AuthCubit>().deleteAccount,
-                      child: const Text('Delete Account'),
+                      child: const Text('Continue'),
                     ),
                   ),
                 ),

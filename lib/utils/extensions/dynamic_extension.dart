@@ -1,4 +1,5 @@
 import 'package:amatrider/utils/utils.dart';
+import 'package:dartz/dartz.dart';
 
 extension DynamicX on dynamic {
   bool get isNull => this == null;
@@ -35,4 +36,8 @@ extension ObjectExt<T> on T {
   R also<R>(R Function(T it) func) {
     return func(this);
   }
+}
+
+extension DartzX<A> on Option<A?> {
+  A? get getOrNull => getOrElse(() => null);
 }

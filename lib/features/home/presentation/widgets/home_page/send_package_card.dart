@@ -1,31 +1,32 @@
 part of home_page.dart;
 
-/// A stateless widget to render _SendPackageCard.
-class _SendPackageCard extends StatefulWidget {
-  final SendPackage package;
+/// A stateless widget to render _DeliverableCard.
+class _DeliverableCard extends StatefulWidget {
+  final Logistics item;
   final bool initialExpanded;
+  final void Function() onAccept;
+  final void Function() onDecline;
 
-  const _SendPackageCard({
+  const _DeliverableCard({
     Key? key,
-    required this.package,
+    required this.item,
     this.initialExpanded = false,
+    required this.onAccept,
+    required this.onDecline,
   }) : super(key: key);
 
   @override
-  State<_SendPackageCard> createState() => __SendPackageCardState();
+  State<_DeliverableCard> createState() => __DeliverableCardState();
 }
 
-class __SendPackageCardState extends State<_SendPackageCard> {
+class __DeliverableCardState extends State<_DeliverableCard> {
   ExpandableController? controller;
 
   void onAccept() => App.showAlertDialog(
         context: context,
-        barrierColor: App.resolveColor(
-          Colors.grey.shade800.withOpacity(0.55),
-          dark: Colors.white54,
-        ),
         builder: (_) => AdaptiveAlertdialog(
           title: '${tr.acceptRequestTitle}',
+          titleHeight: App.platform.cupertino(0.04.h),
           content: '${tr.requestConfirmTxt}',
           cupertinoFirstButtonText: '${tr.noGoBack}',
           onFirstPressed: navigator.pop,
@@ -35,7 +36,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           secondTextStyle: const TextStyle(color: Colors.white),
           secondBgColor: Palette.accentColor,
           onSecondPressed: () async {
-            await context.read<RequestCubit>().acceptPackageDelivery(context, widget.package);
+            await context.read<RequestCubit>().acceptDeliverable(context, widget.item, onAccepted: widget.onAccept);
           },
           materialFirstButton: AppOutlinedButton(
             text: '${tr.noGoBack}',
@@ -52,12 +53,9 @@ class __SendPackageCardState extends State<_SendPackageCard> {
   void onDecline() {
     App.showAlertDialog(
       context: context,
-      barrierColor: App.resolveColor(
-        Colors.grey.shade800.withOpacity(0.55),
-        dark: Colors.white54,
-      ),
       builder: (_) => AdaptiveAlertdialog(
         title: '${tr.warning}!',
+        titleHeight: App.platform.cupertino(0.04.h),
         content: '${tr.requestDeclineTxt}',
         cupertinoFirstButtonText: '${tr.noGoBack}',
         onFirstPressed: navigator.pop,
@@ -67,7 +65,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
         secondTextStyle: const TextStyle(color: Colors.white),
         secondBgColor: Palette.accentColor,
         onSecondPressed: () async {
-          await context.read<RequestCubit>().declinePackageDelivery(context, widget.package);
+          await context.read<RequestCubit>().declineDeliverable(context, widget.item, onDeclined: widget.onDecline);
         },
         materialFirstButton: AppOutlinedButton(
           text: '${tr.noGoBack}',
@@ -84,7 +82,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
 
   void onContinue() {
     final cubit = context.read<RequestCubit>();
-    if (cubit.state.currentPackage == null) cubit.setCurrentPackage(widget.package);
+    if (cubit.state.current == null) cubit.setCurrent(widget.item);
   }
 
   @override
@@ -101,10 +99,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
       ),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: App.resolveColor(
-            Colors.white,
-            dark: Palette.secondaryColor,
-          ),
+          color: App.resolveColor(Colors.white, dark: Palette.cardColorDark),
         ),
         child: ExpandableTheme(
           data: ExpandableThemeData(
@@ -132,7 +127,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 15.0,
                     ).copyWith(bottom: 10.0),
-                    child: widget.package.status.maybeWhen(
+                    child: widget.item.status.maybeWhen(
                       active: () => _ActionButtons(
                         onAccept: onAccept,
                         onDecline: onDecline,
@@ -165,21 +160,21 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
                             title: '${tr.pickupLocationText}',
-                            subtitle: '${widget.package.pickup.address.getOrEmpty}',
+                            subtitle: '${widget.item.pickup.fullAddress.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             title: '${tr.deliveryLocationText}',
-                            subtitle: '${widget.package.destination.address.getOrEmpty}',
+                            subtitle: '${widget.item.destination.fullAddress.getOrEmpty}',
                           ),
                         ],
                       ),
                       //
                       VerticalSpace(height: 0.007.sw),
                       //
-                      widget.package.status.maybeWhen(
+                      widget.item.status.maybeWhen(
                         active: () => _ActionButtons(
                           onAccept: onAccept,
                           onDecline: onDecline,
@@ -215,14 +210,26 @@ class __SendPackageCardState extends State<_SendPackageCard> {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: widget.package.sender.photo.ensure(
-                (it) => ImageBox(
+              child: (widget.item.type.when(
+                order: () => widget.item.status.maybeWhen(
+                  active: () => widget.item.store.image,
+                  enrouteToStoreOrSender: () => widget.item.store.image,
+                  orElse: () => widget.item.receiver.photo,
+                ),
+                package: () => widget.item.status.maybeWhen(
+                  active: () => widget.item.sender.photo,
+                  enrouteToStoreOrSender: () => widget.item.sender.photo,
+                  orElse: () => widget.item.sender.photo,
+                ),
+              )).ensure(
+                (it) => ImageBox.network(
                   fit: BoxFit.cover,
                   width: 0.14.sw,
+                  height: double.maxFinite,
                   photo: '${it.getOrEmpty}',
-                  replacement: Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
+                  replacement: Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.maxFinite, fit: BoxFit.cover),
                 ),
-                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, fit: BoxFit.cover),
+                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.maxFinite, fit: BoxFit.cover),
               ),
             ),
             title: Center(
@@ -231,18 +238,35 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 6,
                     child: AdaptiveText(
-                      '${widget.package.receiverFullName.getOrEmpty}',
+                      widget.item.type.when(
+                        order: () => widget.item.status.maybeWhen(
+                          active: () => '${widget.item.store.name.getOrEmpty}',
+                          enrouteToStoreOrSender: () => '${widget.item.store.name.getOrEmpty}',
+                          orElse: () => '${widget.item.receiver.fullName.getOrEmpty}',
+                        ),
+                        package: () => widget.item.status.maybeWhen(
+                          active: () => '${widget.item.sender.fullName.getOrEmpty}',
+                          enrouteToStoreOrSender: () => '${widget.item.sender.fullName.getOrEmpty}',
+                          orElse: () => '${widget.item.receiver.fullName.getOrEmpty}',
+                        ),
+                      ),
                       fontWeight: FontWeight.w600,
+                      maxLines: 2,
+                      minFontSize: 13,
+                      maxFontSize: 18,
                       fontSize: 16.sp,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   //
                   Flexible(
+                    flex: 4,
                     child: AdaptiveText(
-                      '${widget.package.amount.getOrEmpty}'.asCurrency(),
-                      minFontSize: 14,
+                      '${widget.item.price.getOrEmpty}'.asCurrency(),
+                      maxLines: 1,
+                      minFontSize: 13,
                       maxFontSize: 17,
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -265,20 +289,29 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                         scrollMargin: EdgeInsets.only(right: 0.02.sw),
                         wrapped: false,
                         tags: [
-                          HorizontalChip(
-                            label: '${tr.package}',
-                            maxFontSize: 13,
-                            labelColor: Palette.accentDarkYellow,
-                            backgroundColor: Palette.pastelYellow,
-                            type: HorizontalChipType.none,
+                          widget.item.type.when(
+                            order: () => HorizontalChip(
+                              label: 'Order',
+                              maxFontSize: 13,
+                              labelColor: Palette.accentDarkBlue,
+                              backgroundColor: Palette.pastelBlue,
+                              type: HorizontalChipType.none,
+                            ),
+                            package: () => HorizontalChip(
+                              label: '${tr.package}',
+                              maxFontSize: 13,
+                              labelColor: Palette.accentDarkYellow,
+                              backgroundColor: Palette.pastelYellow,
+                              type: HorizontalChipType.none,
+                            ),
                           ),
                           //
                           HorizontalChip(
                             label: '${Utils.hoursAndMins(
-                              widget.package.durationToPickup,
+                              widget.item.durationToPickup,
                             )}',
                             maxFontSize: 13,
-                            labelColor: Palette.accentGreen,
+                            labelColor: App.resolveColor(Palette.accentGreen, dark: Palette.accentDarkGreen),
                             backgroundColor: Palette.pastelGreen,
                             type: HorizontalChipType.none,
                           ),
@@ -289,7 +322,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
                     Flexible(
                       flex: 2,
                       child: AdaptiveText(
-                        '${widget.package.paymentMethod?.formatted}',
+                        '${widget.item.paymentMethod?.formatted}',
                         minFontSize: 12,
                         maxLines: 1,
                         softWrap: true,
@@ -305,10 +338,7 @@ class __SendPackageCardState extends State<_SendPackageCard> {
             dense: false,
             horizontalTitleGap: 8.0,
             minVerticalPadding: 8.0,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 0.01.sw,
-              horizontal: 0.03.sw,
-            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.03.sw),
           ),
         ),
       );
@@ -356,7 +386,9 @@ class _ActionButtons extends StatelessWidget {
           selector: (s) => s.rider?.availability == RiderAvailability.available,
           builder: (c, isAvailable) => AdaptiveButton(
             text: '${tr.accept}',
-            disabled: c.select((RequestCubit el) => el.state.isLoading) || !isAvailable,
+            disabled: c.select((RequestCubit el) => el.state.isLoading) ||
+                c.select((RequestCubit el) => el.state.inTransit.isNotEmpty()) ||
+                !isAvailable,
             textColor: Colors.white,
             backgroundColor: Palette.accentColor,
             splashColor: Colors.white24,

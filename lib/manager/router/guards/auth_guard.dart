@@ -6,17 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AuthGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final authenticated =
-        BlocProvider.of<AuthWatcherCubit>(router.navigatorKey.currentContext!)
-            .state
-            .isAuthenticated;
+    final context = router.navigatorKey.currentContext;
 
-    if (authenticated) {
+    if (context != null) {
+      final authenticated = BlocProvider.of<AuthWatcherCubit>(context).state.isAuthenticated;
+
+      if (authenticated) {
+        resolver.next(true);
+      } else {
+        await router.replaceAll([const LoginRoute()]);
+      }
+    } else
       resolver.next(true);
-    } else {
-      await router.replaceAll(
-        [const LoginRoute()],
-      );
-    }
   }
 }

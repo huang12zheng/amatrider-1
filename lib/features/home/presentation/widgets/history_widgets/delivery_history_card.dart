@@ -76,16 +76,14 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
                             title: '${tr.pickupLocationText}',
-                            subtitle:
-                                '${widget.history.pickup.address.getOrEmpty}',
+                            subtitle: '${widget.history.pickup.address.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             title: '${tr.deliveryLocationText}',
-                            subtitle:
-                                '${widget.history.destination.address.getOrEmpty}',
+                            subtitle: '${widget.history.destination.address.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -153,8 +151,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                     fit: BoxFit.contain,
                   ),
                 ),
-                orElse: (_) => Image.asset(AppAssets.slider1,
-                    width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
               ),
             ),
             title: Center(
@@ -165,7 +162,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                   Expanded(
                     flex: 4,
                     child: AdaptiveText(
-                      '${widget.history.receiverFullName.getOrEmpty}',
+                      '${widget.history.receiver.fullName.getOrEmpty}',
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp,
                     ),

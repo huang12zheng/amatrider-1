@@ -16,10 +16,6 @@ class DeliveryHistory with _$DeliveryHistory {
     required RiderLocation pickup,
     required RiderLocation destination,
     required AmountField<double?> amount,
-    required DisplayName receiverFullName,
-    required Phone receiverPhone,
-    required EmailAddress receiverEmailAddress,
-    required BasicTextField<String?> receiverPhoneAlt,
     required BasicTextField<String?> notes,
     required PaymentMethod paymentMethod,
     //
@@ -29,7 +25,9 @@ class DeliveryHistory with _$DeliveryHistory {
     required BasicTextField<double?> distanceToPickup,
     //
     required Rider rider,
-    required Sender sender,
+    required User sender,
+    required Store store,
+    required User receiver,
     //
     DateTime? orderActiveAt,
     DateTime? orderCancelledAt,

@@ -1,5 +1,3 @@
-export 'send_package/list/send_package_list_dto.dart';
-export 'send_package/single/send_package_dto.dart';
 export 'rider_location/rider_location_dto.dart';
 export 'places/predictions/place_prediction_dto.dart';
 export 'places/details/place_detail_dto.dart';
@@ -14,3 +12,6 @@ export 'generic/generic_object.dart';
 export 'generic/generic_list_object.dart';
 export 'generic/generic_paginated_list.dart';
 export 'notification/in_app_notification_dto.dart';
+export 'logistics/index.dart';
+export 'meta/type/meta_type.dart';
+export 'meta/meta_object.dart';

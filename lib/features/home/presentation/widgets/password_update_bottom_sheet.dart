@@ -13,12 +13,13 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
@@ -93,9 +94,9 @@ class _FormLayout extends StatelessWidget {
         //
         PasswordFormField<AuthCubit, AuthState>(
           isNew: false,
+          useHero: false,
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
-          validateFieldObject: (s) => false,
           isObscured: (s) => s.isOldPasswordHidden,
           field: (s) => s.oldPassword,
           focus: AuthState.oldPasswordFocus,
@@ -112,6 +113,7 @@ class _FormLayout extends StatelessWidget {
         //
         PasswordFormField<AuthCubit, AuthState>(
           isNew: true,
+          useHero: false,
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
           isObscured: (s) => s.isPasswordHidden,
@@ -130,6 +132,7 @@ class _FormLayout extends StatelessWidget {
         //
         PasswordFormField<AuthCubit, AuthState>(
           isNew: true,
+          useHero: false,
           disabled: (s) => s.isLoading,
           validate: (s) => s.validate,
           isObscured: (s) => s.isPasswordHidden,

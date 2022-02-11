@@ -14,7 +14,7 @@ part 'any_response.freezed.dart';
   fallbackUnion: 'error',
 )
 @immutable
-class AnyResponse with _$AnyResponse {
+class AnyResponse extends Response with _$AnyResponse {
   static const String _kdefaultMsg = 'Oops Bad request! No Response.';
 
   const AnyResponse._();
@@ -23,7 +23,7 @@ class AnyResponse with _$AnyResponse {
   const factory AnyResponse.error({
     int? code,
     String? status,
-    @JsonKey(name: 'message') String? messageTxt,
+    @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
     @JsonKey(ignore: true) String? details,
     String? error,
     ServerFieldErrors? errors,
@@ -43,23 +43,34 @@ class AnyResponse with _$AnyResponse {
     );
   }
 
-  /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory AnyResponse.fromJson(Map<String, dynamic> json) =>
-      _$AnyResponseFromJson(json);
+  factory AnyResponse.fromInfo(Info info) {
+    return AnyResponse.info(
+      status: info.status,
+      messageTxt: info.message,
+      details: info.details,
+      pop: info.pop,
+    );
+  }
 
-  @With<Response>()
-  @With<Success>()
-  const factory AnyResponse.success({
-    @JsonKey(ignore: true) String? uuid,
+  /// Maps the incoming Json to a Data Transfer Object (DTO).
+  factory AnyResponse.fromJson(Map<String, dynamic> json) => _$AnyResponseFromJson(json);
+
+  @With<Info>()
+  const factory AnyResponse.info({
     String? status,
-    @JsonKey(name: 'message') String? messageTxt,
+    @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(false) bool pop,
-    @JsonKey(ignore: true) @Default(true) bool show,
+  }) = InfoResponseType;
+
+  @With<Success>()
+  const factory AnyResponse.success({
+    String? status,
+    @JsonKey(includeIfNull: false, name: 'message') String? messageTxt,
+    @JsonKey(ignore: true) String? details,
+    @JsonKey(ignore: true) @Default(false) bool pop,
   }) = SuccessfulResponse;
 
-  String get message =>
-      messageTxt?.let((m) => m.isNotEmpty ? m : _kdefaultMsg) ??
-      status ??
-      _kdefaultMsg;
+  @override
+  String get message => messageTxt?.let((m) => m.isNotEmpty ? m : _kdefaultMsg) ?? status ?? _kdefaultMsg;
 }

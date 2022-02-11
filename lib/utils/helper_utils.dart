@@ -50,17 +50,6 @@ void throwIfNot(bool condition, Object error) {
   if (!condition) throw error;
 }
 
-void navigateToOTPVerification() {
-  if (navigator.current.name != OTPVerificationRoute.name && navigator.topRoute.name != DashboardRoute.name)
-    navigator.pushAndPopUntil(OTPVerificationRoute(), predicate: (route) => false);
-}
-
-void navigateToSocials() {
-  if (navigator.current.name != SocialsSignupRoute.name &&
-      navigator.current.name != OTPVerificationRoute.name &&
-      navigator.current.name != DashboardRoute.name) navigator.pushAndPopUntil(const SocialsSignupRoute(), predicate: (route) => false);
-}
-
 class Utils {
   /// Create Singleton start ///
   static final Utils _singleton = Utils._();
@@ -230,10 +219,11 @@ class Utils {
         material: () => foldTheme(light: () => material?.call()?.value1 ?? light, dark: () => material?.call()?.value2 ?? dark ?? light),
         cupertino: () => CupertinoDynamicColor.resolve(
           CupertinoDynamicColor.withBrightness(
-            color: cupertino?.call()?.value1 ?? light ?? Utils.computeLuminance(Palette.primaryColor),
+            color: foldTheme(light: () => cupertino?.call()?.value1 ?? light, dark: () => cupertino?.call()?.value2 ?? dark ?? light) ??
+                Utils.computeLuminance(Palette.primaryColor),
             darkColor: cupertino?.call()?.value2 ?? dark ?? light ?? Utils.computeLuminance(Palette.secondaryColor),
           ),
-          context,
+          App.context,
         ),
       );
 
@@ -329,26 +319,15 @@ class Utils {
     T Function()? dark,
     BuildContext? context,
   }) {
-    var isDarkMode = BlocProvider.of<ThemeCubit>(context ?? App.context).isDarkMode ||
-        ((MediaQuery.of(context ?? App.context).platformBrightness == Brightness.dark));
+    final _context = context ?? App.context;
 
-    return env.flavor.fold(
-      dev: () {
-        if (isDarkMode) {
-          if (dark == null) return light.call();
-          return dark.call();
-        } else
-          return light.call();
-      },
-      // prod: () => light.call(),
-      prod: () {
-        if (isDarkMode) {
-          if (dark == null) return light.call();
-          return dark.call();
-        } else
-          return light.call();
-      },
-    );
+    var isDarkMode = BlocProvider.of<ThemeCubit>(_context).isDarkMode || (MediaQuery.of(_context).platformBrightness == Brightness.dark);
+
+    if (isDarkMode) {
+      if (dark == null) return light.call();
+      return dark.call();
+    } else
+      return light.call();
   }
 
   static Color computeLuminance(Color color) => color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
@@ -674,6 +653,12 @@ class Utils {
     bool useRootNavigator = true,
     RouteSettings? routeSettings,
   }) async {
+    final _barrierColor = barrierColor ??
+        App.resolveColor(
+          Colors.grey.shade800.withOpacity(0.55),
+          dark: Colors.black87.withOpacity(0.55),
+        );
+
     if (Platform.isIOS || Platform.isMacOS)
       return (await showCupertinoDialog<U?>(
         context: context,
@@ -686,7 +671,7 @@ class Utils {
       context: context,
       builder: builder,
       barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      barrierColor: _barrierColor,
       useSafeArea: useSafeArea,
       useRootNavigator: useRootNavigator,
       routeSettings: routeSettings,

@@ -37,10 +37,8 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
     this._locationService,
   ) : super(SendPackageState.initial());
 
-  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
-        isLoading: isLoading ?? !state.isLoading,
-        status: status ?? state.status,
-      ));
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
+      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading, status: status ?? state.status));
 
   @override
   Future<void> close() async {
@@ -50,76 +48,77 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
     return super.close();
   }
 
-  void init(SendPackage package) => emit(state.copyWith(package: package));
+  void init(Logistics deliverable, BuildContext ctx) async {
+    emit(state.copyWith(isLoadingSingle: true, deliverable: deliverable));
+
+    echo();
+
+    await BlocProvider.of<LocationCubit>(ctx).getRiderLocation(ctx, callback: (r) async {
+      final result = await _logisticsRepository.single(deliverable, lat: '${r.lat.getOrNull}', lng: '${r.lng.getOrNull}');
+
+      result.fold(
+        (e) => emit(state.copyWith(isLoadingSingle: false, status: optionOf(e))),
+        (value) => emit(state.copyWith(isLoadingSingle: false, deliverable: value)),
+      );
+    });
+  }
 
   void cancelReasonChanged(String? reason, [bool isOther = false]) =>
       emit(state.copyWith(cancelReason: BasicTextField(reason), isOtherReason: isOther));
 
   void resetIssueSheet() {
-    emit(state.copyWith(
-      isOtherReason: true,
-      cancelReason: BasicTextField(null),
-    ));
+    emit(state.copyWith(isOtherReason: true, cancelReason: BasicTextField(null)));
   }
 
   void closeWebsocket() {
-    if (state.package.id.value != null) {
-      _echoRepository.stopListening(
-        SendPackageEvents.channel('${state.package.id.value}'),
-        SendPackageEvents.location,
+    if (state.deliverable?.id.value != null) {
+      state.deliverable?.type.when(
+        order: () => _echoRepository.leave(
+          DeliverableEvents.orderChannel('${state.deliverable?.id.value}'),
+          event: DeliverableEvents.orderEvent,
+        ),
+        package: () => _echoRepository.leave(
+          DeliverableEvents.packageChannel('${state.deliverable?.id.value}'),
+          event: DeliverableEvents.packageEvent,
+        ),
       );
-      _echoRepository.stopListening(
-        SendPackageEvents.channel('${state.package.id.value}'),
-        SendPackageEvents.received,
-      );
-      _echoRepository.stopListening(
-        SendPackageEvents.channel('${state.package.id.value}'),
-        SendPackageEvents.delivered,
-      );
-
-      // _echoRepository.close(
-      //   SendPackageEvents.channel('${state.package.id.value}'),
-      //   nullify: true,
-      // );
     }
   }
 
-  void track(BuildContext c) async {
-    final _locationCubit = BlocProvider.of<LocationCubit>(c);
-    await _locationCubit.request(c, background: true);
+  void codeChanged(String? value, [bool fresh = false]) =>
+      emit(state.copyWith(code: BasicTextField(value), validate: fresh ? false : state.validate));
 
-    await _locationSubscription?.cancel();
+  void updateRiderLocation(BuildContext context) async {
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+    final _mapCubit = BlocProvider.of<MapCubit>(context);
+
+    // Set initial location update
+    await _locationCubit.getRiderLocation(context, callback: (location) async {
+      await _mapCubit.updateCurrentLocation(context, location);
+
+      await _logisticsRepository.updateLocation(state.deliverable!, location: location);
+    });
+  }
+
+  void liveLocationUpdates(BuildContext context) async {
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+
+    updateRiderLocation(context);
+
+    // Request background location
+    await _locationCubit.request(context, background: true, awaitBackground: true);
+
     _locationSubscription ??= (await _locationService.changeSettings()).liveLocation().listen(
-      (result) {
+      (result) async {
         // Clear all errors
         emit(state.copyWith(status: none()));
 
         result.fold(
-          (failure) => emit(state.copyWith(
-            status: optionOf(AppHttpResponse(failure)),
-          )),
+          (failure) => emit(state.copyWith(status: optionOf(AppHttpResponse(failure)))),
           (location) async {
-            final _mapCubit = BlocProvider.of<MapCubit>(c);
-            await _mapCubit.updateCurrentLocation(location, c, isFirstLocationUpdate);
-            isFirstLocationUpdate = false;
+            final result = await _logisticsRepository.updateLocation(state.deliverable!, location: location);
 
-            try {
-              final _conn = await connection();
-
-              await _conn.fold(
-                () async {
-                  await _logisticsRepository.updateLocation(
-                    '${state.package.id.value}',
-                    location: RiderLocationDTO.fromDomain(location),
-                  );
-                },
-                (e) async => emit(state.copyWith(status: optionOf(e))),
-              );
-            } on AppHttpResponse catch (e) {
-              emit(state.copyWith(status: optionOf(e)));
-            } on AppNetworkException catch (e) {
-              emit(state.copyWith(status: optionOf(e.asResponse())));
-            }
+            result.response.mapOrNull(error: (_) => emit(state.copyWith(status: optionOf(result))));
           },
         );
       },
@@ -127,129 +126,116 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
   }
 
   void echo() async {
-    _echoRepository.channel(SendPackageEvents.channel(state.package.id.value!));
-
-    _echoRepository.listen(
-      SendPackageEvents.location,
-      onData: (data, _this) => mapDataToState(data),
-    );
-
-    _echoRepository.listen(
-      SendPackageEvents.received,
-      onData: (data, _this) => mapDataToState(data),
-    );
-
-    _echoRepository.listen(
-      SendPackageEvents.delivered,
-      onData: (data, _this) => mapDataToState(data),
+    state.deliverable?.type.when(
+      order: () => _echoRepository.public(
+        DeliverableEvents.orderChannel(state.deliverable!.id.value!),
+        DeliverableEvents.orderEvent,
+        onData: (data, _this) => _mapDeliverableUpdates(data),
+      ),
+      package: () => _echoRepository.private(
+        DeliverableEvents.packageChannel(state.deliverable!.id.value!),
+        DeliverableEvents.packageEvent,
+        onData: (data, _this) => _mapDeliverableUpdates(data),
+      ),
     );
   }
 
-  void mapDataToState(String data) {
+  void _mapDeliverableUpdates(String data) {
     final json = jsonDecode(data) as Map<String, dynamic>;
-    final result = SendPackageDTO.fromJson(json);
+    final result = LogisticsDTO.fromJson(json);
 
-    final journey = result.journey?.domain;
-    final newPackage = result.id != null ? result.domain : result.packageData?.domain;
+    JourneyDetailDTO? journeyDTO;
+    if (json.containsKey('journeyDetails') && json['journeyDetails'] != null)
+      journeyDTO = JourneyDetailDTO.fromJson(json['journeyDetails'] as Map<String, dynamic>);
 
-    emit(state.copyWith(
-      journey: journey ?? state.journey,
-      package: state.package.merge(newPackage),
-    ));
+    result.deliverable?.type.when(
+      order: () {
+        final newOrder = result.userOrder?.id.value != null ? result.userOrder : result.order?.orderData?.domain;
+
+        final merged = (state.deliverable as UserOrder).merge(newOrder?.copyWith(
+          journey: journeyDTO?.domain ?? state.deliverable!.journey!,
+        ));
+
+        emit(state.copyWith(deliverable: merged));
+      },
+      package: () {
+        final newPackage = result.sendPackage?.id.value != null ? result.sendPackage : result.package?.packageData?.domain;
+
+        final merged = (state.deliverable as SendPackage).merge(newPackage?.copyWith(
+          journey: journeyDTO?.domain ?? state.deliverable!.journey!,
+        ));
+
+        emit(state.copyWith(deliverable: merged));
+      },
+    );
   }
 
-  void confirmPackagePickup() async {
-    toggleLoading(true, none());
+  void confirmPickup(BuildContext ctx, void Function() callback) async {
+    emit(state.copyWith(isConfirmingPickup: true, validate: true, status: none()));
 
-    try {
-      final _conn = await connection();
+    if (state.code.isValid) {
+      callback.call();
 
-      await _conn.fold(
-        () async {
-          final _either = await _locationService.getLocation();
+      await BlocProvider.of<LocationCubit>(ctx).getRiderLocation(ctx, callback: (location) async {
+        final _result = await _logisticsRepository.confirmPickup(
+          state.deliverable!,
+          lat: '${location.lat.getOrNull}',
+          lng: '${location.lng.getOrNull}',
+          token: '${state.code.getOrNull}',
+        );
 
-          await _either.fold(
-            (e) async => emit(state.copyWith(status: optionOf(AppHttpResponse(e)))),
-            (location) async {
-              final _result = await _logisticsRepository.confirmPackageReceived(
-                '${state.package.id.value}',
-                lat: '${location?.lat.getOrNull}',
-                lng: '${location?.lng.getOrNull}',
-              );
-
-              emit(state.copyWith(status: some(_result)));
-            },
-          );
-        },
-        (e) async => emit(state.copyWith(status: optionOf(e))),
-      );
-    } on AppNetworkException catch (e) {
-      emit(state.copyWith(status: some(e.asResponse())));
-    }
-
-    toggleLoading(false);
+        emit(state.copyWith(status: some(_result), validate: false, isConfirmingPickup: false));
+      });
+    } else
+      emit(state.copyWith(isConfirmingPickup: false));
   }
 
-  void confirmPackageDelivery() async {
-    toggleLoading(true, none());
+  void confirmDelivery(
+    BuildContext ctx,
+    void Function() callback, [
+    void Function(Logistics)? onDelivered,
+  ]) async {
+    emit(state.copyWith(isConfirmingDelivery: true, validate: true, status: none()));
 
-    try {
-      final _conn = await connection();
+    if (state.code.isValid || state.deliverable!.contactlessDelivery) {
+      callback.call();
 
-      await _conn.fold(
-        () async {
-          final _either = await _locationService.getLocation();
+      await BlocProvider.of<LocationCubit>(ctx).getRiderLocation(ctx, callback: (location) async {
+        final _result = await _logisticsRepository.confirmDelivery(
+          state.deliverable!,
+          lat: '${location.lat.getOrNull}',
+          lng: '${location.lng.getOrNull}',
+          token: '${state.code.getOrNull}',
+        );
 
-          await _either.fold(
-            (e) async => emit(state.copyWith(status: optionOf(AppHttpResponse(e)))),
-            (location) async {
-              final _result = await _logisticsRepository.confirmPackageDelivered(
-                '${state.package.id.value}',
-                lat: '${location?.lat.getOrNull}',
-                lng: '${location?.lng.getOrNull}',
-              );
+        _result.response.mapOrNull(
+          success: (_) {
+            final value = state.deliverable?.type.when(
+              order: () => (state.deliverable as UserOrder).copyWith(status: ParcelStatus.DELIVERED),
+              package: () => (state.deliverable as SendPackage).copyWith(status: ParcelStatus.DELIVERED),
+            );
 
-              _result.response.mapOrNull(
-                success: (_) {
-                  emit(state.copyWith.package.call(
-                    status: SendPackageStatus.DELIVERED,
-                  ));
-                },
-              );
+            emit(state.copyWith(deliverable: value));
 
-              emit(state.copyWith(
-                status: some(_result.copyWith.response.call(pop: true)),
-              ));
-            },
-          );
-        },
-        (e) async => emit(state.copyWith(status: optionOf(e))),
-      );
-    } on AppNetworkException catch (e) {
-      emit(state.copyWith(status: some(e.asResponse())));
-    }
+            onDelivered?.call(value!);
+          },
+        );
 
-    toggleLoading(false);
+        emit(state.copyWith(
+          validate: false,
+          isConfirmingDelivery: false,
+          status: some(_result.copyWith.response.call(pop: true)),
+        ));
+      });
+    } else
+      emit(state.copyWith(isConfirmingDelivery: false));
   }
 
-  void cancelDelivery() async {
-    toggleLoading(true, none());
+  void alertArrival(Logistics deliverable, [String? name]) async {
+    emit(state.copyWith(isLoading: true, status: none()));
 
-    try {
-      final _conn = await connection();
+    final result = await _logisticsRepository.alertArrival(state.deliverable!, name);
 
-      await _conn.fold(
-        () async {
-          emit(state.copyWith(
-            status: some(AppHttpResponse.successful('Delivery cancelled!')),
-          ));
-        },
-        (e) async => emit(state.copyWith(status: optionOf(e))),
-      );
-    } on AppNetworkException catch (e) {
-      emit(state.copyWith(status: some(e.asResponse())));
-    }
-
-    toggleLoading(false);
+    emit(state.copyWith(isLoading: false, status: some(result)));
   }
 }

@@ -55,20 +55,24 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(APP_DISPLAY_NAME) needs access to your Apple Music Library to function properly</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) needs access to your camera to take photos.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>$(APP_DISPLAY_NAME) needs access to use Local Network.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location when in background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Please grant permission to $(APP_DISPLAY_NAME) to collect information about this device's location on motion detected.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) needs access to your Photo Library to select/preview photos.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) would like permission to track you across apps and websites owned by other companies.</string>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>$(APP_DISPLAY_NAME) needs access to your Apple Music Library to function properly</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

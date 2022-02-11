@@ -15,7 +15,7 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 part 'app_database.freezed.dart';
 part 'app_database.g.dart';
 part 'base_dao.dart';
-part 'package:amatrider/core/data/models/user/rider_dto.dart';
+part 'package:amatrider/core/data/models/rider/rider_dto.dart';
 
 @TypeConverters([
   TimestampFloorConverter,

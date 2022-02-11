@@ -37,33 +37,29 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
   @override
   Future<void> close() {
     if (riderId != null) {
-      _echoRepository.stopListening(
-          HistoryEvents.channel('$riderId'), HistoryEvents.event);
+      _echoRepository.stopListening(HistoryEvents.channel('$riderId'), HistoryEvents.event);
       _echoRepository.close(HistoryEvents.channel('$riderId'));
     }
     return super.close();
   }
 
-  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
-      emit(state.copyWith(
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
 
   void _updateCollection() {
     // Ensure only unique elements are present
-    var _new =
-        state.histories.iter.toList().unique((val) => val.id).toImmutableList();
+    var _new = state.histories.iter.toList().unique((val) => val.id).toImmutableList();
 
     // Sort with & group-by the createdAt property
-    var _sorted =
-        _new.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)).groupBy(
-              (it) => DateTime(
-                it.createdAt!.year,
-                it.createdAt!.month,
-                it.createdAt!.day,
-              ),
-            );
+    var _sorted = _new.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)).groupBy(
+          (it) => DateTime(
+            it.createdAt!.year,
+            it.createdAt!.month,
+            it.createdAt!.day,
+          ),
+        );
 
     emit(state.copyWith(historyCollection: _sorted));
   }
@@ -82,16 +78,11 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
           onData: (data, _) {
             final json = jsonDecode(data) as Map<String, dynamic>;
 
-            final history = DeliveryHistoryDTO.fromJson(
-                json['package'] as Map<String, dynamic>);
+            final history = DeliveryHistoryDTO.fromJson(json['package'] as Map<String, dynamic>);
 
             emit(state.copyWith(
               status: none(),
-              histories: state.histories
-                  .plusElement(history.domain)
-                  .asList()
-                  .unique((val) => val.id)
-                  .toImmutableList(),
+              histories: state.histories.plusElement(history.domain).asList().unique((val) => val.id).toImmutableList(),
             ));
 
             // Update collection

@@ -38,6 +38,7 @@
        android:fullBackupOnly="true"
        android:extractNativeLibs="true"
        android:requestLegacyExternalStorage="true"
+       android:usesCleartextTraffic="true"
        tools:replace="android:extractNativeLibs"
        tools:targetApi="m">
 
@@ -78,5 +79,9 @@
 
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
     </application>
 </manifest>

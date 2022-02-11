@@ -24,7 +24,7 @@ extension MapCubitX on MapCubit {
 
   void onMapCreated(GoogleMapController controller) => emit(state.copyWith(mapController: controller));
 
-  Future<void> drawPolyline(RiderLocation start, RiderLocation end) async {
+  Future<void> drawPolyline(UserAddress start, UserAddress end) async {
     // Object for PolylinePoints
     final polylinePoints = PolylinePoints();
 
@@ -36,76 +36,79 @@ extension MapCubitX on MapCubit {
 
     // Generating the list of coordinates to be used for
     // drawing the polylines
-    var _result = await polylinePoints.getRouteBetweenCoordinates(
-      env.googleMapsAPI, // Google Maps API Key
-      PointLatLng(start.lat.getOrNull!, start.lng.getOrNull!),
-      PointLatLng(end.lat.getOrNull!, end.lng.getOrNull!),
-      travelMode: TravelMode.driving,
-      optimizeWaypoints: false,
-      avoidFerries: true,
-      avoidHighways: false,
-      avoidTolls: false,
-    );
+    if (start.lat.getOrNull != null && start.lng.getOrNull != null && end.lat.getOrNull != null && end.lng.getOrNull != null) {
+      var _result = await polylinePoints.getRouteBetweenCoordinates(
+        env.googleMapsAPI, // Google Maps API Key
+        PointLatLng(start.lat.getOrNull!, start.lng.getOrNull!),
+        PointLatLng(end.lat.getOrNull!, end.lng.getOrNull!),
+        travelMode: TravelMode.driving,
+        optimizeWaypoints: false,
+        avoidFerries: true,
+        avoidHighways: false,
+        avoidTolls: false,
+      );
 
-    // Adding the coordinates to the list
-    if (_result.points.isNotEmpty) {
-      _result.points.forEach((point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
+      // Adding the coordinates to the list
+      if (_result.points.isNotEmpty) {
+        _result.points.forEach((point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        });
+      }
+
+      // Defining an ID
+      var _id = PolylineId('start-${start.lat.getOrNull},${start.lng.getOrNull}; '
+          'end-${end.lat.getOrNull},${end.lng.getOrNull}');
+
+      // Initializing Polyline
+      var _line = Polyline(
+        polylineId: _id,
+        color: Palette.accentColor,
+        points: polylineCoordinates,
+        startCap: Cap.roundCap,
+        endCap: Cap.roundCap,
+        width: 5,
+        geodesic: true,
+        jointType: JointType.round,
+      );
+
+      // Adding the polyline to the map
+      polylines[_id] = _line;
+
+      emit(state.copyWith(polylines: Set<Polyline>.of(polylines.values)));
     }
-
-    // Defining an ID
-    var _id = PolylineId('start-${start.lat.getOrNull},${start.lng.getOrNull}; '
-        'end-${end.lat.getOrNull},${end.lng.getOrNull}');
-
-    // Initializing Polyline
-    var _line = Polyline(
-      polylineId: _id,
-      color: Palette.accentColor,
-      points: polylineCoordinates,
-      startCap: Cap.roundCap,
-      endCap: Cap.roundCap,
-      width: 5,
-      geodesic: true,
-      jointType: JointType.round,
-    );
-
-    // Adding the polyline to the map
-    polylines[_id] = _line;
-
-    emit(state.copyWith(polylines: Set<Polyline>.of(polylines.values)));
-    // emit(state.copyWith(polylines: {...state.polylines, _line}));
   }
 
   Future<void> adjustMapBounds(
-    RiderLocation start,
-    RiderLocation end, {
+    UserAddress start,
+    UserAddress end, {
     double padding = 150.0,
   }) async {
     // Calculating to check that the position relative
     // to the frame, and pan & zoom the camera accordingly.
-    var miny = (start.lat.getOrNull! <= end.lat.getOrNull!) ? start.lat.getOrNull! : end.lat.getOrNull!;
-    var minx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? start.lng.getOrNull! : end.lng.getOrNull!;
-    var maxy = (start.lat.getOrNull! <= end.lat.getOrNull!) ? end.lat.getOrNull! : start.lat.getOrNull!;
-    var maxx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? end.lng.getOrNull! : start.lng.getOrNull!;
+    if (start.lat.getOrNull != null && start.lng.getOrNull != null && end.lat.getOrNull != null && end.lng.getOrNull != null) {
+      var miny = (start.lat.getOrNull! <= end.lat.getOrNull!) ? start.lat.getOrNull! : end.lat.getOrNull!;
+      var minx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? start.lng.getOrNull! : end.lng.getOrNull!;
+      var maxy = (start.lat.getOrNull! <= end.lat.getOrNull!) ? end.lat.getOrNull! : start.lat.getOrNull!;
+      var maxx = (start.lng.getOrNull! <= end.lng.getOrNull!) ? end.lng.getOrNull! : start.lng.getOrNull!;
 
-    var southWestLatitude = miny;
-    var southWestLongitude = minx;
+      var southWestLatitude = miny;
+      var southWestLongitude = minx;
 
-    var northEastLatitude = maxy;
-    var northEastLongitude = maxx;
+      var northEastLatitude = maxy;
+      var northEastLongitude = maxx;
 
-    // Accommodate the two locations within the
-    // camera view of the map
-    await state.mapController?.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-          northeast: LatLng(northEastLatitude, northEastLongitude),
-          southwest: LatLng(southWestLatitude, southWestLongitude),
+      // Accommodate the two locations within the
+      // camera view of the map
+      await state.mapController?.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+            northeast: LatLng(northEastLatitude, northEastLongitude),
+            southwest: LatLng(southWestLatitude, southWestLongitude),
+          ),
+          padding,
         ),
-        padding,
-      ),
-    );
+      );
+    }
   }
 
   Future<BitmapDescriptor> customSVGMarker(

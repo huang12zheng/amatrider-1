@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,54 +11,74 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 // ignore: must_be_immutable
 class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
   final double _width;
-  final String? title;
-  final bool centerTitle;
-  final TextStyle? titleTextStyle;
-  final Widget? body;
-  final bool centerContent;
-  final String? content;
-  final double? contentFontSize;
-  final double minContentFontSize;
-  final TextStyle? contentTextStyle;
-  final B? defaultValue;
-  final String? firstButtonText;
-  final double? firstButtonHeight;
-  final String secondButtonText;
-  final double? secondButtonHeight;
-  final bool disableSecondButton;
-  final String? cupertinoFirstButtonText;
-  final String cupertinoSecondButtonText;
+
+  final double? maxHeight;
   final Future<B> Function()? onFirstPressedFuture;
   final B Function()? onFirstPressed;
-  final Color? firstBgColor;
-  final Color? firstSplashColor;
-  final TextStyle? firstTextStyle;
   final Future<B> Function()? onSecondPressedFuture;
   final B Function()? onSecondPressed;
-  final Color? secondBgColor;
-  final Color? secondSplashColor;
-  final bool isFirstDefaultAction;
-  final bool isSecondDefaultAction;
-  final bool isFirstDestructive;
-  final bool isSecondDestructive;
-  final TextStyle? secondTextStyle;
+  final List<Widget>? body;
   final Axis buttonDirection;
+  final String? content;
+  final Alignment contentAlignment;
+  final double? contentFontSize;
+  final EdgeInsets? contentPadding;
+  final TextAlign contentTextAlignment;
+  final TextStyle? contentTextStyle;
+  final Widget? cupertinoFirstButton;
+  final String? cupertinoFirstButtonText;
+  final Widget? cupertinoSecondButton;
+  final String cupertinoSecondButtonText;
+  final B? defaultValue;
+  final bool disableSecondButton;
+  final Color? firstBgColor;
+  final double? firstButtonHeight;
+  final String? firstButtonText;
+  final Color? firstSplashColor;
+  final TextStyle? firstTextStyle;
+  final bool isFirstDefaultAction;
+  final bool isFirstDestructive;
+  final bool isSecondDefaultAction;
+  final bool isSecondDestructive;
+  final bool material;
+  final EdgeInsets? materialActionsPadding;
+  final double materialButtonHorizontalGap;
+  final double materialButtonVerticalGap;
   final Widget? materialFirstButton;
   final Widget? materialSecondButton;
-  final Widget? cupertinoFirstButton;
-  final Widget? cupertinoSecondButton;
-  final double materialButtonVerticalGap;
-  final double materialButtonHorizontalGap;
+  final double minContentFontSize;
+  final Color? secondBgColor;
+  final double? secondButtonHeight;
+  final String secondButtonText;
+  final Color? secondSplashColor;
+  final TextStyle? secondTextStyle;
+  final String? title;
+  final Alignment titleAlignment;
+  final double? titleHeight;
+  final EdgeInsetsGeometry? titlePadding;
+  final TextAlign titleTextAlignment;
+  final TextStyle? titleTextStyle;
+  final Widget? titleWidget;
+  final bool useMaterialActions;
+  final bool autoPopFirstButton;
+  final bool autoPopSecondButton;
 
   AdaptiveAlertdialog({
     Key? key,
     double? width,
+    this.maxHeight,
     this.title,
-    this.centerTitle = true,
-    this.centerContent = true,
+    this.titleHeight,
+    this.titleWidget,
+    this.titlePadding,
+    this.titleAlignment = Alignment.center,
+    this.titleTextAlignment = TextAlign.center,
+    this.contentAlignment = Alignment.center,
+    this.contentTextAlignment = TextAlign.center,
     this.titleTextStyle,
     this.body,
     this.content,
+    this.contentPadding,
     this.contentTextStyle,
     this.contentFontSize,
     this.minContentFontSize = 14,
@@ -89,6 +111,11 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
     this.cupertinoSecondButton,
     double? materialButtonVerticalGap,
     double? materialButtonHorizontalGap,
+    this.material = false,
+    this.useMaterialActions = false,
+    this.materialActionsPadding,
+    this.autoPopFirstButton = true,
+    this.autoPopSecondButton = true,
   })  : assert((onFirstPressed == null && onFirstPressedFuture != null) ||
             (onFirstPressed != null && onFirstPressedFuture == null) ||
             (onFirstPressed == null && onFirstPressedFuture == null)),
@@ -103,129 +130,77 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
         materialButtonHorizontalGap = materialButtonHorizontalGap ?? 0.03.w,
         super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTextStyle(
-      style: TextStyle(
-        color: App.resolveColor(Palette.text100, dark: Palette.text100Dark),
-      ),
-      child: MediaQuery.removeViewInsets(
-        context: context,
-        removeLeft: true,
-        removeRight: true,
-        child: PlatformAlertDialog(
-          widgetKey: key,
-          material: (_, __) => MaterialAlertDialogData(
-            scrollable: false,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            elevation: 2.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Utils.buttonRadius),
-            ),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            titlePadding: EdgeInsets.symmetric(
-              horizontal: 0.04.sw,
-              vertical: 0.04.sw,
-            ),
-            insetPadding: EdgeInsets.zero,
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: App.sidePadding,
-              vertical: App.sidePadding,
-            ).copyWith(top: title != null ? 0.0 : null),
-            titleTextStyle:
-                DefaultTextStyle.of(context).style.merge(TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600).merge(titleTextStyle)),
-          ),
-          cupertino: (_, __) => CupertinoAlertDialogData(
-            scrollController: ScrollController(),
-            insetAnimationCurve: Curves.easeInOutCubic,
-            insetAnimationDuration: const Duration(milliseconds: 1500),
-            actions: [
-              cupertinoFirstButtonText?.let(
-                    (it) => CupertinoDialogAction(
-                      isDefaultAction: isFirstDefaultAction,
-                      isDestructiveAction: isFirstDestructive,
-                      onPressed: () async => navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue),
-                      child: Text('$it'),
-                    ),
-                  ) ??
-                  cupertinoFirstButton ??
-                  Utils.nothing,
-              //
-              if (!disableSecondButton)
-                cupertinoSecondButton ??
-                    CupertinoDialogAction(
-                      isDefaultAction: isSecondDefaultAction,
-                      isDestructiveAction: isSecondDestructive,
-                      onPressed: () async =>
-                          navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue),
-                      child: Text('$cupertinoSecondButtonText'),
-                    ),
-            ],
-          ),
-          title: title?.let(
-            (it) => SizedBox(
-              width: _width,
-              height: 0.03.sh,
-              child: Material(
-                type: MaterialType.transparency,
-                textStyle: titleTextStyle,
-                child: Align(
-                  alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
-                  child: AdaptiveText(
+  Widget get _title => SizedBox(
+        width: _width,
+        height: _titleHeight,
+        child: Material(
+          type: MaterialType.transparency,
+          textStyle: titleTextStyle,
+          child: Align(
+            alignment: titleAlignment,
+            child: title?.let(
+                  (it) => AdaptiveText(
                     '$it',
                     softWrap: true,
                     maxLines: 1,
-                    textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: App.resolveColor(Palette.text100, dark: Palette.text100Dark),
-                    ).merge(titleTextStyle),
+                    textAlign: titleTextAlignment,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                    textColor: Palette.text100,
+                    textColorDark: Palette.text100Dark,
+                    style: titleTextStyle,
+                    isDefault: Utils.platform_(cupertino: true),
                   ),
-                ),
-              ),
-            ),
+                ) ??
+                titleWidget,
           ),
-          content: SingleChildScrollView(
-            clipBehavior: Clip.antiAlias,
-            physics: Utils.physics,
-            scrollDirection: Axis.vertical,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: SizedBox(
-              width: _width,
-              child: Column(
-                children: [
-                  body ??
-                      Align(
-                        alignment: centerContent ? Alignment.center : Alignment.centerLeft,
-                        child: content?.let(
-                              (it) => Utils.platform_(
-                                material: AdaptiveText(
-                                  '$content',
-                                  softWrap: true,
-                                  wrapWords: true,
-                                  minFontSize: minContentFontSize,
-                                  textAlign: centerContent ? TextAlign.center : TextAlign.start,
-                                  fontSize: contentFontSize ?? 16.sp,
-                                  fontWeight: FontWeight.w400,
-                                  style: contentTextStyle,
-                                ),
-                                cupertino: Text(
-                                  '$content',
-                                  softWrap: true,
-                                  textAlign: centerContent ? TextAlign.center : TextAlign.start,
-                                  style: TextStyle(
+        ),
+      );
+
+  double get _titleHeight => titleHeight ?? 0.03.h;
+
+  Widget _content(BuildContext c) => SingleChildScrollView(
+        clipBehavior: Clip.antiAlias,
+        physics: Utils.physics,
+        scrollDirection: Axis.vertical,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: LimitedBox(
+          maxHeight: maxHeight ?? double.infinity,
+          child: SizedBox(
+            width: _width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ...body ??
+                    [
+                      Flexible(
+                        child: SingleChildScrollView(
+                          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                          child: Align(
+                            alignment: contentAlignment,
+                            child: content?.let(
+                                  (it) => AdaptiveText(
+                                    '$content',
+                                    softWrap: true,
+                                    wrapWords: true,
+                                    minFontSize: minContentFontSize,
+                                    textAlign: contentTextAlignment,
                                     fontSize: contentFontSize ?? 16.sp,
                                     fontWeight: FontWeight.w400,
-                                  ).merge(contentTextStyle),
-                                ),
-                              ),
-                            ) ??
-                            Utils.nothing,
+                                    style: contentTextStyle,
+                                    isDefault: Utils.platform_(cupertino: true),
+                                  ),
+                                ) ??
+                                Utils.nothing,
+                          ),
+                        ),
                       ),
-                  //
-                  if (body != null || content != null) Theme.of(context).platform.material(VerticalSpace(height: 0.07.sw)) ?? Utils.nothing,
-                  //
+                    ],
+                //
+                if (!useMaterialActions)
+                  if (body != null || content != null) Theme.of(c).platform.material(VerticalSpace(height: 0.07.sw)) ?? Utils.nothing,
+                //
+                if (!useMaterialActions)
                   App.platform.fold(
                     cupertino: () => const SizedBox.shrink(),
                     material: () => buttonDirection == Axis.vertical
@@ -238,29 +213,36 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                             //
                             if (!disableSecondButton) _secondButton(buttonDirection),
                           ])
-                        : Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                            Flexible(child: _firstButton(buttonDirection)),
-                            //
-                            firstButtonText?.let((it) => HorizontalSpace(width: materialButtonHorizontalGap)) ??
-                                (materialFirstButton == null ? const Spacer(flex: 2) : HorizontalSpace(width: materialButtonHorizontalGap)),
-                            //
-                            if (!disableSecondButton) Flexible(child: _secondButton(buttonDirection)),
-                          ]),
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Flexible(child: _firstButton(buttonDirection)),
+                              //
+                              firstButtonText?.let((it) => HorizontalSpace(width: materialButtonHorizontalGap)) ??
+                                  (materialFirstButton == null
+                                      ? const Spacer(flex: 2)
+                                      : HorizontalSpace(width: materialButtonHorizontalGap)),
+                              //
+                              if (!disableSecondButton) Flexible(child: _secondButton(buttonDirection)),
+                            ],
+                          ),
                   ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _firstButton(Axis direction) =>
       materialFirstButton ??
       firstButtonText?.let(
         (it) => AdaptiveButton(
-          onPressed: () async => navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue),
+          onPressed: () async {
+            if (autoPopFirstButton)
+              unawaited(navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue));
+            else
+              (await onFirstPressedFuture?.call()) ?? onFirstPressed?.call();
+          },
           text: firstButtonText,
           height: firstButtonHeight ?? 0.045.h,
           cupertinoHeight: 0.028.sh,
@@ -280,10 +262,36 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
       ) ??
       Utils.nothing;
 
+  MaterialAlertDialogData _materialAlertDialogData(BuildContext c) => MaterialAlertDialogData(
+        scrollable: false,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 2.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Utils.buttonRadius),
+        ),
+        backgroundColor: Theme.of(c).scaffoldBackgroundColor,
+        titlePadding: titlePadding ??
+            EdgeInsets.symmetric(
+              horizontal: 0.04.sw,
+              vertical: 0.04.sw,
+            ),
+        insetPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: App.sidePadding,
+          vertical: App.sidePadding,
+        ).copyWith(top: title != null ? 0.0 : null).merge(contentPadding),
+        titleTextStyle: DefaultTextStyle.of(c).style.merge(TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600).merge(titleTextStyle)),
+      );
+
   Widget _secondButton(Axis direction) =>
       materialSecondButton ??
       AdaptiveButton(
-        onPressed: () async => navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue),
+        onPressed: () async {
+          if (autoPopSecondButton)
+            unawaited(navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue));
+          else
+            (await onSecondPressedFuture?.call()) ?? onSecondPressed?.call();
+        },
         text: secondButtonText,
         height: secondButtonHeight ?? 0.045.h,
         cupertinoHeight: 0.028.sh,
@@ -299,4 +307,121 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      style: TextStyle(color: App.resolveColor(Palette.text100, dark: Palette.text100Dark)),
+      child: MediaQuery.removeViewInsets(
+        context: context,
+        removeLeft: true,
+        removeRight: true,
+        child: material
+            ? AlertDialog(
+                scrollable: _materialAlertDialogData(context).scrollable!,
+                clipBehavior: _materialAlertDialogData(context).clipBehavior!,
+                elevation: _materialAlertDialogData(context).elevation!,
+                shape: _materialAlertDialogData(context).shape!,
+                backgroundColor: _materialAlertDialogData(context).backgroundColor!,
+                titlePadding: _materialAlertDialogData(context).titlePadding!,
+                insetPadding: _materialAlertDialogData(context).insetPadding!,
+                contentPadding: contentPadding ?? _materialAlertDialogData(context).contentPadding!,
+                titleTextStyle: _materialAlertDialogData(context).titleTextStyle!,
+                contentTextStyle: contentTextStyle,
+                title: _title,
+                content: _content(context),
+                actionsPadding: EdgeInsets.zero.merge(materialActionsPadding),
+                actions: [
+                  if (useMaterialActions)
+                    firstButtonText?.let(
+                          (it) => TextButton(
+                            style: TextButton.styleFrom(
+                              splashFactory: CustomSplashFactory(
+                                splashColor: App.resolveColor(Colors.black12, dark: Colors.grey.shade800),
+                              ),
+                            ),
+                            onPressed: () async =>
+                                navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue),
+                            child: AdaptiveText(
+                              '$firstButtonText',
+                              maxLines: 1,
+                              fontSize: 17.sp,
+                              isDefault: true,
+                              fontWeight: FontWeight.w600,
+                              softWrap: false,
+                              wrapWords: false,
+                            ),
+                          ),
+                        ) ??
+                        materialFirstButton ??
+                        Utils.nothing,
+                  //
+                  if (useMaterialActions)
+                    materialSecondButton ??
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            splashFactory: CustomSplashFactory(
+                              splashColor: App.resolveColor(Colors.black12, dark: Colors.grey.shade800),
+                            ),
+                          ),
+                          onPressed: () async =>
+                              navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue),
+                          child: AdaptiveText(
+                            secondButtonText,
+                            maxLines: 1,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w600,
+                            isDefault: true,
+                            softWrap: false,
+                            wrapWords: false,
+                            textColor: Palette.accentColor,
+                            textColorDark: Palette.accentColor,
+                          ),
+                        ),
+                ],
+              )
+            : PlatformAlertDialog(
+                widgetKey: key,
+                title: _title,
+                content: _content(context),
+                material: (_, __) => _materialAlertDialogData(context),
+                cupertino: (_, __) => CupertinoAlertDialogData(
+                  scrollController: ScrollController(),
+                  insetAnimationCurve: Curves.easeInOutCubic,
+                  insetAnimationDuration: const Duration(milliseconds: 1500),
+                  actions: [
+                    if (cupertinoFirstButton != null) cupertinoFirstButton!,
+                    //
+                    if (cupertinoFirstButtonText != null)
+                      CupertinoDialogAction(
+                        isDefaultAction: isFirstDefaultAction,
+                        isDestructiveAction: isFirstDestructive,
+                        onPressed: () async {
+                          if (autoPopFirstButton)
+                            unawaited(navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue));
+                          else
+                            (await onFirstPressedFuture?.call()) ?? onFirstPressed?.call();
+                        },
+                        child: Text('$cupertinoFirstButtonText'),
+                      ),
+                    //
+                    if (!disableSecondButton)
+                      cupertinoSecondButton ??
+                          CupertinoDialogAction(
+                            isDefaultAction: isSecondDefaultAction,
+                            isDestructiveAction: isSecondDestructive,
+                            onPressed: () async {
+                              if (autoPopSecondButton)
+                                unawaited(navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue));
+                              else
+                                (await onSecondPressedFuture?.call()) ?? onSecondPressed?.call();
+                            },
+                            child: Text('$cupertinoSecondButtonText'),
+                          ),
+                  ],
+                ),
+              ),
+      ),
+    );
+  }
 }

@@ -21,16 +21,15 @@ class AvailablilityWidget extends StatelessWidget {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (s) => PopupDialog.success(
-                    duration: const Duration(seconds: 1), message: s.message)
-                .render(c),
+            success: (s) => PopupDialog.success(duration: const Duration(seconds: 1), message: s.message).render(c),
           ),
         ),
         child: BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
@@ -54,9 +53,7 @@ class AvailablilityWidget extends StatelessWidget {
               Headline('${tr.status}: ', fontSize: 17.sp),
               //
               AdaptiveText(
-                s.rider?.availability == RiderAvailability.available
-                    ? '${tr.active}'
-                    : '${tr.inActive}',
+                s.rider?.availability == RiderAvailability.available ? '${tr.active}' : '${tr.inActive}',
                 fontSize: 17.sp,
                 textColor: Palette.text40,
                 fontWeight: FontWeight.w400,
@@ -69,8 +66,7 @@ class AvailablilityWidget extends StatelessWidget {
                   inactiveTrackColor: Colors.grey.shade300,
                 ),
                 onChanged: (value) {
-                  final _availability =
-                      c.read<AuthWatcherCubit>().state.rider?.availability;
+                  final _availability = c.read<AuthWatcherCubit>().state.rider?.availability;
 
                   final cubit = c.read<AuthCubit>();
 

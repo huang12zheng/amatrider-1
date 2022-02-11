@@ -23,7 +23,7 @@ class PromotionsScreen extends StatelessWidget with AutoRouteWrapper {
       adaptiveToolbar: const AdaptiveToolbar(),
       body: Visibility(
         visible: false,
-        replacement: StageOwnerWidget(
+        replacement: EmptyStateWidget(
           asset: right(AppAssets.promoDiscount),
           title: 'No promotions yet.',
           description: 'Check back later.',

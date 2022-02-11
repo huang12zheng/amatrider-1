@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,6 @@ class PasswordFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState>
   late ReactiveState _state;
 
   final bool Function(ReactiveState)? validate;
-  final bool Function(ReactiveState)? validateFieldObject;
   final bool Function(ReactiveState)? disabled;
   final FieldObject<String?>? Function(ReactiveState)? field;
   final void Function(Reactive, String)? onChanged;
@@ -40,14 +39,13 @@ class PasswordFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState>
     Key? key,
     this.prefix,
     this.validate,
-    this.validateFieldObject,
     this.disabled,
     this.field,
     this.onChanged,
     this.focus,
     this.next,
     this.response,
-    this.useHero = false,
+    this.useHero = true,
     this.isNew = true,
     required this.isObscured,
     this.onToggle,
@@ -108,7 +106,7 @@ class PasswordFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState>
           next: next,
           onChanged: (val) => onChanged?.call(c.read<Reactive>(), val),
           errorText: field?.call(s)?.value.fold(
-                (f) => (validateFieldObject?.call(s) ?? true) ? f.message : null,
+                (f) => f.message,
                 (_) => response?.call(s).fold(
                       () => null,
                       (http) => http?.response.maybeMap(

@@ -14,8 +14,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
   @override
   void initState() {
     super.initState();
-    context.read<SendPackageCubit>().track(context);
-    context.read<SendPackageCubit>().echo();
+    context.read<SendPackageCubit>().liveLocationUpdates(context);
   }
 
   @override
@@ -80,42 +79,43 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 8,
-                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
-                      selector: (s) => s.package,
-                      builder: (c, package) => TimelineStatusWidget(
+                    child: BlocSelector<SendPackageCubit, SendPackageState, Logistics?>(
+                      selector: (s) => s.deliverable,
+                      builder: (c, deliverable) => TimelineStatusWidget(
                         padding: EdgeInsets.zero,
                         itemHeight: (_, __) => 0.06.h,
                         statuses: [
-                          ...package.status.between(
-                            start: () => [
-                              TimelineStatus(
-                                asset: AppAssets.timelinePinAsset,
-                                assetColor: Palette.accentBlue,
-                                subtitle: 'Your Location',
-                                titleFontSize: 18.sp,
-                              ),
-                              //
-                              TimelineStatus(
-                                asset: AppAssets.timelinePinAsset,
-                                assetColor: Palette.accentGreen,
-                                subtitle: '${package.pickup.address.getOrEmpty}',
-                              ),
-                            ],
-                            end: () => [
-                              TimelineStatus(
-                                asset: AppAssets.timelinePinAsset,
-                                assetColor: Palette.accentBlue,
-                                subtitle: 'Your Location',
-                                titleFontSize: 18.sp,
-                              ),
-                              //
-                              TimelineStatus(
-                                asset: AppAssets.timelinePinAsset,
-                                assetColor: Palette.accentGreen,
-                                subtitle: '${package.destination.address.getOrEmpty}',
-                              ),
-                            ],
-                          ),
+                          if (deliverable != null)
+                            ...deliverable.status.between(
+                              start: () => [
+                                TimelineStatus(
+                                  asset: AppAssets.timelinePinAsset,
+                                  assetColor: Palette.accentBlue,
+                                  subtitle: 'Your Location',
+                                  titleFontSize: 18.sp,
+                                ),
+                                //
+                                TimelineStatus(
+                                  asset: AppAssets.timelinePinAsset,
+                                  assetColor: Palette.accentGreen,
+                                  subtitle: '${deliverable.pickup.fullAddress.getOrEmpty}',
+                                ),
+                              ],
+                              end: () => [
+                                TimelineStatus(
+                                  asset: AppAssets.timelinePinAsset,
+                                  assetColor: Palette.accentBlue,
+                                  subtitle: 'Your Location',
+                                  titleFontSize: 18.sp,
+                                ),
+                                //
+                                TimelineStatus(
+                                  asset: AppAssets.timelinePinAsset,
+                                  assetColor: Palette.accentGreen,
+                                  subtitle: '${deliverable.destination.fullAddress.getOrEmpty}',
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
@@ -123,20 +123,20 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 2,
-                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
-                      selector: (s) => s.package,
-                      builder: (c, package) => Row(
+                    child: BlocSelector<SendPackageCubit, SendPackageState, Logistics?>(
+                      selector: (s) => s.deliverable,
+                      builder: (c, deliverable) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Headline(
-                            'Payment - ${package.paymentMethod?.formatted}',
+                            'Payment - ${deliverable?.paymentMethod?.formatted}',
                             fontSize: 17.sp,
                             maxFontSize: 18,
                             fontWeight: FontWeight.w400,
                           ),
                           //
                           Headline(
-                            '${package.amount.getOrEmpty}'.asCurrency(),
+                            '${deliverable?.price.getOrEmpty}'.asCurrency(),
                             textColor: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
                             fontWeight: FontWeight.w600,
                             fontSize: 20.sp,
@@ -151,37 +151,46 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                   //
                   Flexible(
                     flex: 3,
-                    child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
-                      selector: (s) => s.package,
-                      builder: (c, s) => UserContactDeliveryCard(
-                        photo: s.status.maybeWhen(
-                          riderAccepted: () => '${s.sender.photo.getOrEmpty}',
-                          enrouteToSender: () => '${s.sender.photo.getOrEmpty}',
-                          orElse: () => '',
-                        ),
-                        title: s.status.maybeWhen(
-                          riderAccepted: () => 'Sender',
-                          enrouteToSender: () => 'Sender',
-                          enrouteToReceiver: () => 'Receiver',
-                          riderReceived: () => 'Receiver',
-                          delivered: () => 'Receiver',
-                          orElse: () => 'Sender',
-                        ),
-                        subtitle: s.status.maybeWhen(
-                          riderAccepted: () => '${s.sender.fullName.getOrEmpty}',
-                          enrouteToSender: () => '${s.sender.fullName.getOrEmpty}',
-                          enrouteToReceiver: () => '${s.receiverFullName.getOrEmpty}',
-                          riderReceived: () => '${s.receiverFullName.getOrEmpty}',
-                          delivered: () => '${s.receiverFullName.getOrEmpty}',
-                          orElse: () => '....',
-                        ),
-                        phone: s.status.maybeWhen(
-                          enrouteToReceiver: () => '${s.receiverPhone.getOrEmpty}',
-                          riderReceived: () => '${s.receiverPhone.getOrEmpty}',
-                          delivered: () => '${s.receiverPhone.getOrEmpty}',
-                          orElse: () => null,
-                        ),
-                      ),
+                    child: BlocSelector<SendPackageCubit, SendPackageState, Logistics?>(
+                      selector: (s) => s.deliverable,
+                      builder: (c, s) => s == null
+                          ? Utils.nothing
+                          : UserContactDeliveryCard(
+                              photo: s.type.when(
+                                order: () => s.status.between(
+                                  start: () => '${s.store.image.getOrEmpty}',
+                                  end: () => '${s.receiver.photo.getOrEmpty}',
+                                ),
+                                package: () => s.status.between(
+                                  start: () => '${s.sender.photo.getOrEmpty}',
+                                  end: () => '${s.receiver.photo.getOrEmpty}',
+                                ),
+                              ),
+                              title: s.status.between(
+                                start: () => s.type.when(order: () => 'Store', package: () => 'Sender'),
+                                end: () => 'Receiver',
+                              ),
+                              subtitle: s.type.when(
+                                order: () => s.status.between(
+                                  start: () => '${s.store.name.getOrEmpty}',
+                                  end: () => '${s.receiver.fullName.getOrEmpty}',
+                                ),
+                                package: () => s.status.between(
+                                  start: () => '${s.sender.fullName.getOrEmpty}',
+                                  end: () => '${s.receiver.fullName.getOrEmpty}',
+                                ),
+                              ),
+                              phone: s.type.when(
+                                order: () => s.status.between(
+                                  start: () => '${s.store.phone.getOrEmpty}',
+                                  end: () => '${s.receiver.phone.getOrEmpty}',
+                                ),
+                                package: () => s.status.between(
+                                  start: () => '${s.sender.phone.getOrEmpty}',
+                                  end: () => '${s.receiver.phone.getOrEmpty}',
+                                ),
+                              ),
+                            ),
                     ),
                   ),
                   //
@@ -191,48 +200,56 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                     flex: 4,
                     child: SizedBox(
                       width: double.infinity,
-                      child: BlocSelector<SendPackageCubit, SendPackageState, SendPackage>(
-                        selector: (s) => s.package,
-                        builder: (c, package) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: _BottomSheetItem.pickup(context)
-                              .map(
-                                (e) => Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Flexible(
-                                      flex: 2,
-                                      child: DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          color: e.bgColor,
-                                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-                                        ),
-                                        child: AppIconButton(
-                                          tooltip: '${e.title}',
-                                          elevation: 0,
-                                          backgroundColor: e.bgColor,
-                                          type: MaterialType.button,
-                                          padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
-                                          borderRadius: BorderRadius.circular(Utils.buttonRadius),
-                                          onPressed: e.onPressed,
-                                          child: Icon(e.icon, color: e.iconColor),
+                      child: BlocSelector<SendPackageCubit, SendPackageState, Logistics?>(
+                        selector: (s) => s.deliverable,
+                        builder: (c, deliverable) {
+                          final actions = _BottomSheetItem.pickup(context, deliverable);
+
+                          return Row(
+                            mainAxisAlignment: actions.length > 2
+                                ? MainAxisAlignment.spaceBetween
+                                : actions.length <= 1
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.spaceAround,
+                            children: actions
+                                .map(
+                                  (e) => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Flexible(
+                                        flex: 2,
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            color: e.bgColor,
+                                            borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                                          ),
+                                          child: AppIconButton(
+                                            tooltip: '${e.title}',
+                                            elevation: 0,
+                                            backgroundColor: e.bgColor,
+                                            type: MaterialType.button,
+                                            padding: EdgeInsets.symmetric(horizontal: 0.03.sw),
+                                            borderRadius: BorderRadius.circular(Utils.buttonRadius),
+                                            onPressed: e.onPressed,
+                                            child: Icon(e.icon, color: e.iconColor),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    //
-                                    Flexible(
-                                      child: AdaptiveText(
-                                        '${e.title}',
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: Utils.letterSpacing,
+                                      //
+                                      Flexible(
+                                        child: AdaptiveText(
+                                          '${e.title}',
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: Utils.letterSpacing,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -252,20 +269,21 @@ class _PanelBuilderState extends State<_PanelBuilder> {
 }
 
 String? formatJourneyInfo(SendPackageState s) {
-  return s.package.status.maybeWhen(
-    enrouteToSender: () => s.journey.status.maybeWhen(
-      ok: () => s.journey.duration_.fold(
+  return s.deliverable?.status.maybeWhen(
+    enrouteToStoreOrSender: () => s.deliverable?.journey?.status.maybeWhen(
+      ok: () => s.deliverable?.journey?.duration_.fold(
         (_) => 'You have arrived at the Pickup location',
         (time) => 'Arriving at Pickup in $time',
       ),
       orElse: () => 'Head to Pickup address',
     ),
-    delivered: () => 'Package delivered to '
-        '${s.package.receiverFullName.getOrEmpty}',
-    riderReceived: () => 'You received package from '
-        '${s.package.sender.fullName.getOrEmpty}',
-    enrouteToReceiver: () => s.journey.status.maybeWhen(
-      ok: () => s.journey.duration_.fold(
+    delivered: () => 'Package delivered to ${s.deliverable?.receiver.fullName.getOrEmpty}',
+    received: () => s.deliverable?.type.when(
+      order: () => 'Item picked up from Store',
+      package: () => 'You received package from ${s.deliverable?.sender.fullName.getOrEmpty}',
+    ),
+    enrouteToReceiver: () => s.deliverable?.journey?.status.maybeWhen(
+      ok: () => s.deliverable?.journey?.duration_.fold(
         (_) => 'You have arrived at your Destination',
         (time) => 'Arriving at Destination in $time',
       ),
@@ -284,50 +302,125 @@ class _BottomSheetItem {
 
   _BottomSheetItem({required this.title, required this.icon, this.bgColor = Palette.neutralF5, this.iconColor, this.onPressed});
 
-  static List<_BottomSheetItem> pickup(BuildContext c) => [
-        _BottomSheetItem(
-          title: 'Call Sender',
-          icon: Icons.phone_sharp,
-          onPressed: () async {
-            final senderPhone = BlocProvider.of<SendPackageCubit>(c).state.package.sender.phone;
-
-            final formattedPhone = 'tel:${senderPhone.getOrEmpty?.removeNewLines().trimWhiteSpaces()}';
-
-            await canLaunch(formattedPhone) ? await launch(formattedPhone) : print('could not launch phone');
-          },
+  static void arrivalAlertDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    VoidCallback? onPressed,
+  }) {
+    App.showAlertDialog(
+      context: context,
+      builder: (_) => BlocProvider.value(
+        value: context.read<SendPackageCubit>(),
+        child: AdaptiveAlertdialog(
+          title: '$title',
+          titleHeight: App.platform.cupertino(0.04.h),
+          body: [
+            AdaptiveText(
+              '$message',
+              fontSize: 16.sp,
+              minFontSize: 12,
+              maxFontSize: 16,
+              isDefault: Utils.platform_(cupertino: true),
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.center,
+              letterSpacing: Utils.letterSpacing,
+            ),
+          ],
+          buttonDirection: Axis.horizontal,
+          cupertinoFirstButtonText: 'No, Go Back',
+          isSecondDestructive: true,
+          secondButtonText: 'Yes',
+          secondSplashColor: Colors.black12,
+          secondTextStyle: const TextStyle(color: Colors.white),
+          secondBgColor: Palette.accentColor,
+          // autoPopSecondButton: false,
+          onSecondPressed: Utils.platform_(
+            material: onPressed,
+            cupertino: navigator.pop,
+          ),
+          cupertinoSecondButton: CupertinoDialogAction(
+            isDefaultAction: true,
+            isDestructiveAction: false,
+            onPressed: onPressed,
+            child: const Text('Yes, Confirm'),
+          ),
+          materialFirstButton: AppOutlinedButton(
+            text: 'No, Go Back',
+            textColor: Palette.text100,
+            textColorDark: Palette.text100Dark,
+            borderColor: Palette.text100,
+            borderColorDark: Palette.text100Dark,
+            height: 0.045.h,
+            cupertinoHeight: 0.028.sh,
+            width: 0.3.sw,
+            cupertinoWidth: 0.3.sw,
+            onPressed: navigator.pop,
+          ),
         ),
-        if (BlocProvider.of<SendPackageCubit>(c).state.package.notes.isValid)
+      ),
+    );
+  }
+
+  static List<_BottomSheetItem> pickup(BuildContext c, Logistics? deliverable) => [
+        if (deliverable?.type == LogisticsType.order && ParcelStatus.inTransitToSender.contains(deliverable?.status) ||
+            deliverable?.type == LogisticsType.package)
+          _BottomSheetItem(
+            title: deliverable?.type.when(order: () => 'Call Receiver', package: () => 'Call Sender') ?? 'Call Sender',
+            icon: Icons.phone_sharp,
+            iconColor: App.resolveColor(Palette.darkChip, dark: Palette.iconDark),
+            onPressed: () async {
+              final senderPhone = deliverable?.type.when(
+                order: () => deliverable.receiver.phone,
+                package: () => deliverable.sender.phone,
+              );
+
+              final formattedPhone = 'tel:${senderPhone?.getOrEmpty?.removeNewLines().trimWhiteSpaces()}';
+
+              await canLaunch(formattedPhone) ? await launch(formattedPhone) : print('could not launch phone');
+            },
+          ),
+        //
+        if (deliverable?.notes.getOrNull != null)
           _BottomSheetItem(
             title: 'Notes',
-            icon: Icons.note,
+            icon: Icons.book,
+            iconColor: App.resolveColor(Palette.darkChip, dark: Palette.iconDark),
             onPressed: () {
-              final p = BlocProvider.of<SendPackageCubit>(c).state.package;
-
               App.showAlertDialog(
                 context: c,
-                barrierColor: App.resolveColor(
-                  Colors.grey.shade800.withOpacity(0.55),
-                  dark: Colors.white54,
-                ),
                 builder: (_) => _AdditionalNotesDialog(
-                  p.notes,
-                  altPhone: p.receiverPhoneAlt,
+                  deliverable!.notes,
+                  altPhone: deliverable.receiver.phoneAlt,
                 ),
               );
             },
           ),
-        _BottomSheetItem(
-          title: 'Report a Problem',
-          icon: Icons.report,
-          onPressed: () {
-            App.showAdaptiveBottomSheet(
+        //
+        if (deliverable?.type == LogisticsType.package && ParcelStatus.inTransitToSender.contains(deliverable?.status))
+          _BottomSheetItem(
+            title: 'Arrival Alert',
+            icon: Icons.report,
+            iconColor: App.resolveColor(Palette.darkChip, dark: Palette.iconDark),
+            onPressed: () => arrivalAlertDialog(
               c,
-              elevation: 2.0,
-              builder: (_) => _DeliveryIssueBottomsheet(
-                BlocProvider.of<SendPackageCubit>(c),
-              ),
-            );
-          },
-        ),
+              title: 'Arrival Alert',
+              message: 'Inform ${deliverable?.sender.fullName.getOrEmpty} of your arrival?',
+              onPressed: () => c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.sender.fullName.getOrEmpty),
+            ),
+          ),
+        //
+        if (ParcelStatus.inTransitToReceiver.contains(deliverable?.status))
+          _BottomSheetItem(
+            title: 'Arrival Alert',
+            icon: Icons.report,
+            iconColor: App.resolveColor(Palette.darkChip, dark: Palette.iconDark),
+            onPressed: () => arrivalAlertDialog(
+              c,
+              title: 'Arrival Alert',
+              message: 'Inform ${deliverable?.receiver.fullName.getOrEmpty} of your arrival?',
+              onPressed: () => c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.receiver.fullName.getOrEmpty),
+            ),
+          ),
       ];
 }

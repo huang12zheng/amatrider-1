@@ -22,7 +22,7 @@ void main() async {
   final storage = await HydratedStorage.build(storageDirectory: await Utils.cacheDir);
 
   await HydratedBlocOverrides.runZoned(
-    () => runZonedGuarded(
+    () async => await runZonedGuarded(
       () async {
         // Setup Environmental variables & Service provider
         await BuildEnvironment.init(flavor: BuildFlavor.dev);

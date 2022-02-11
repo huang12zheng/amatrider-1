@@ -29,11 +29,26 @@ mixin EndPoints {
 
   /// .......///////...// SEND PACKAGE ENDPOINTS .......///////./....//
   static const String GET_ACTIVE_PACKAGES = '/rider/package'; // (GET)
+  static const String GET_SINGLE_PACKAGE = '/rider/package/{id}'; // (GET)
   static const String ACCEPT_PACKAGE_DELIVERY = '/rider/package/{id}/accept'; // (POST)
-  static const String DeCLINE_PACKAGE_DELIVERY = '/rider/package/{id}/decline'; // (POST)
+  static const String DECLINE_PACKAGE_DELIVERY = '/rider/package/{id}/decline'; // (POST)
   static const String UPDATE_PACKAGE_LOCATION = '/rider/package/{id}/location'; // (POST)
   static const String CONFIRM_RECEIVED_PACKAGE = '/rider/package/{id}/confirm-pickup'; // (POST)
   static const String CONFIRM_PACKAGE_DELIVERED = '/rider/package/{id}/delivered'; // (POST)
+  static const String ALERT_PACKAGE_ARRIVAL = '/rider/package/{id}/rider-arrived'; // (GET)
+
+  /// .......///////...// ORDERS ENDPOINTS .......///////./....//
+  static const String GET_ACTIVE_ORDERS = '/rider/orders'; // (GET)
+  static const String GET_SINGLE_ORDER = '/rider/orders/{id}'; // (GET)
+  static const String ACCEPT_ORDER_DELIVERY = '/rider/orders/{id}/accept'; // (POST)
+  static const String DECLINE_ORDER_DELIVERY = '/rider/orders/{id}/decline'; // (POST)
+  static const String UPDATE_ORDER_LOCATION = '/rider/orders/{id}/location'; // (POST)
+  static const String CONFIRM_RECEIVED_ORDER = '/rider/orders/{id}/confirm-pickup'; // (POST)
+  static const String CONFIRM_ORDER_DELIVERED = '/rider/orders/{id}/delivered'; // (POST)
+  static const String ALERT_ORDER_ARRIVAL = '/rider/orders/{id}/rider-arrived'; // (GET)
+
+  static const String GET_ALL_ACTIVE = '/rider/deliverable'; // (GET)
+  static const String GET_ALL_IN_TRANSIT = '/rider/deliverable/transit'; // (GET)
 
   /// .......///////...// HISTORY ENDPOINTS .......///////./....//
   static const String GET_ALL_HISTORY = '/rider/history'; // (GET)

@@ -10,8 +10,7 @@ import 'package:intl/intl.dart';
 class SendPackageNotificationCard extends StatelessWidget {
   final SendPackage package;
 
-  const SendPackageNotificationCard({Key? key, required this.package})
-      : super(key: key);
+  const SendPackageNotificationCard({Key? key, required this.package}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class SendPackageNotificationCard extends StatelessWidget {
                           VerticalSpace(height: 0.02.sw),
                           //
                           AdaptiveText(
-                            '${package.receiverFullName.getOrEmpty}',
+                            '${package.receiver.fullName.getOrEmpty}',
                             maxLines: 1,
                             fontSize: 16.sp,
                             textColor: Palette.neutralLabel,
@@ -84,8 +83,7 @@ class SendPackageNotificationCard extends StatelessWidget {
                             child: RawMaterialButton(
                               onPressed: () {},
                               elevation: 0.0,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
                               fillColor: Palette.accent20,
                               focusElevation: 0.0,
                               highlightElevation: 0.0,

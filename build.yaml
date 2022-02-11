@@ -12,6 +12,7 @@ targets:
           create_to_json: true
           explicit_to_json: true
           include_if_null: false
+          field_rename: snake
       freezed:
         options:
           union_key: type

@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// A stateless widget to render HistoryPage.
 class HistoryPage extends StatefulWidget {
@@ -32,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
     _cubit = getIt<HistoryCubit>()..echo();
   }
 
-  void onRefresh(BuildContext c, RefreshController controller) async {
+  void onRefresh(BuildContext c, DragToRefreshState controller) async {
     await BlocProvider.of<HistoryCubit>(c).getHistory();
     controller.refreshCompleted();
   }
@@ -46,12 +45,13 @@ class _HistoryPageState extends State<HistoryPage> {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.error(message: s.message).render(c),
           ),
@@ -59,37 +59,42 @@ class _HistoryPageState extends State<HistoryPage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: '${tr.menu}',
-            showCustomLeading: true,
+            showCustomLeading: App.platform.material(true),
+            implyLeading: false,
+            cupertinoImplyLeading: false,
             leadingAction: () {},
-            leadingIcon: Consumer(
+            leadingIcon: App.platform.material(Consumer(
               builder: (_, ref, child) => PlatformIconButton(
                 materialIcon: const Icon(Icons.menu),
                 cupertinoIcon: const Icon(CupertinoIcons.bars),
                 onPressed: ref.read(scaffoldController.notifier).open,
               ),
-            ),
+            )),
             actions: [
-              Center(
-                child: Consumer(
-                  builder: (_, ref, child) => AppIconButton(
-                    tooltip: 'Menu',
-                    backgroundColor: Colors.transparent,
-                    elevation: 0.0,
-                    onPressed: ref.read(scaffoldController.notifier).open,
-                    padding: EdgeInsets.zero,
-                    child: Center(
-                      child: Icon(
-                        CupertinoIcons.bars,
-                        size: 30,
-                        color: Utils.foldTheme(
-                          light: () => Palette.cardColorDark,
-                          dark: () => Palette.cardColorLight,
+              Utils.platform_(
+                cupertino: Center(
+                  child: Consumer(
+                    builder: (_, ref, child) => AppIconButton(
+                      tooltip: 'Menu',
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                      onPressed: ref.read(scaffoldController.notifier).open,
+                      padding: EdgeInsets.zero,
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.bars,
+                          size: 30,
+                          color: Utils.foldTheme(
+                            light: () => Palette.cardColorDark,
+                            dark: () => Palette.cardColorLight,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
+                material: Utils.nothing,
+              )!,
               //
               const Spacer(),
               //
@@ -102,8 +107,8 @@ class _HistoryPageState extends State<HistoryPage> {
                 initialRefresh: true,
                 onRefresh: (controller) => onRefresh(c, controller),
                 child: BlocBuilder<HistoryCubit, HistoryState>(
-                  builder: (c, s) => WidgetVisibility(
-                    visible: !DragToRefresh.of(c).refreshController.isLoading && !s.isLoading && s.histories.isEmpty(),
+                  builder: (c, s) => AnimatedVisibility(
+                    visible: !DragToRefresh.of(c).controller.isLoading && !s.isLoading && s.histories.isEmpty(),
                     replacement: CustomScrollView(
                       shrinkWrap: true,
                       physics: Utils.physics,
@@ -144,7 +149,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                       ],
                     ),
-                    child: StageOwnerWidget(
+                    child: EmptyStateWidget(
                       asset: right(AppAssets.noHistory(
                         const Size.fromHeight(80),
                       )),

@@ -13,21 +13,30 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 
-  void navigateUser(BuildContext c, bool isFirstLaunch) {
+  static void navigateIfNotAuthenticated() {
+    if (navigator.current.name == DashboardRoute.name)
+      navigator.replaceAll([const GetStartedRoute()]);
+    else {
+      final isFirstAppLaunch = App.context.read<GlobalAppPreferenceCubit>().isFirstAppLaunch;
+
+      _navigateUser(App.context, isFirstAppLaunch);
+    }
+  }
+
+  static void _navigateUser(BuildContext c, bool isFirstLaunch) {
     final isAuthenticated = c.read<AuthWatcherCubit>().state.isAuthenticated;
 
+    final playbackEnded = c.read<OnboardingCubit>().state.playbackEnded;
+
+    // if (playbackEnded) {
     if (!isFirstLaunch) {
       if (isAuthenticated)
-        navigator.pushAndPopUntil(const DashboardRoute(),
-            predicate: (_) => false);
-      else {
-        if (navigator.current.name != OTPVerificationRoute.name)
-          navigator.pushAndPopUntil(const GetStartedRoute(),
-              predicate: (_) => false);
-      }
+        navigator.replaceAll([const DashboardRoute()]);
+      else
+        navigator.replaceAll([const GetStartedRoute()]);
     } else {
-      navigator.pushAndPopUntil(const OnboardingRoute(),
-          predicate: (_) => false);
+      navigator.replaceAll([const OnboardingRoute()]);
+      // }
     }
   }
 
@@ -38,10 +47,9 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
       child: BlocListener<OnboardingCubit, OnboardingState>(
         listenWhen: (p, c) => p.playbackEnded != c.playbackEnded,
         listener: (c, s) async {
-          final isFirstAppLaunch =
-              c.read<GlobalAppPreferenceCubit>().isFirstAppLaunch;
+          final isFirstAppLaunch = c.read<GlobalAppPreferenceCubit>().isFirstAppLaunch;
 
-          if (s.playbackEnded) navigateUser(c, isFirstAppLaunch);
+          if (s.playbackEnded) _navigateUser(c, isFirstAppLaunch);
         },
         child: this,
       ),
@@ -63,49 +71,19 @@ class _SplashScreenState extends State<SplashScreen> {
               final controller = c.read<OnboardingCubit>().playerController;
               return FutureBuilder(
                 future: _memoizer.runOnce(() async {
-                  await BlocProvider.of<AuthWatcherCubit>(App.context)
-                      .subscribeToAuthChanges(
+                  await BlocProvider.of<AuthWatcherCubit>(App.context).subscribeToAuthChanges(
                     (either) => either.fold(
-                      (failure) => failure.foldCode(
-                        orElse: () => null,
-                        is41101: () {
-                          App.context
-                              .read<OnboardingCubit>()
-                              .subscribeToPlayback(
-                            after: () async {
-                              navigateToSocials();
-                            },
-                          );
-                        },
-                        is4031: () {
-                          App.context
-                              .read<OnboardingCubit>()
-                              .subscribeToPlayback(
-                            after: () async {
-                              navigateToOTPVerification();
-                            },
-                          );
-                        },
-                      ),
+                      (failure) => null,
                       (option) => option.fold(
-                        () {
-                          if (navigator.current.name == DashboardRoute.name)
-                            navigator.pushAndPopUntil(const GetStartedRoute(),
-                                predicate: (route) => false);
-                        },
-                        (_) async {
-                          final state =
-                              App.context.read<OnboardingCubit>().state;
+                        () => SplashScreen.navigateIfNotAuthenticated(),
+                        (_) {
+                          final state = App.context.read<OnboardingCubit>().state;
 
-                          if (state.playbackEnded &&
-                              navigator.current.name != DashboardRoute.name) {
+                          if (state.playbackEnded && navigator.current.name != DashboardRoute.name) {
                             WidgetsBinding.instance!.addPostFrameCallback(
                               (_) async => await Future.delayed(
                                 env.greetingDuration,
-                                () async {
-                                  await navigator
-                                      .replaceAll([const DashboardRoute()]);
-                                },
+                                () async => await navigator.replaceAll([const DashboardRoute()]),
                               ),
                             );
                           }
@@ -114,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   );
                 }),
-                builder: (_, __) => WidgetVisibility(
+                builder: (_, __) => AnimatedVisibility(
                   visible: s.isVideoPlaying,
                   replacement: SizedBox.square(
                     dimension: Theme.of(context).platform.fold(
@@ -136,10 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           ? const SizedBox.shrink()
                           : OrientationBuilder(
                               builder: (_, orientation) => AspectRatio(
-                                aspectRatio: orientation.index ==
-                                        Orientation.portrait.index
-                                    ? 0.49
-                                    : 1.91,
+                                aspectRatio: orientation.index == Orientation.portrait.index ? 0.49 : 1.91,
                                 child: VideoPlayer(controller),
                               ),
                             ),

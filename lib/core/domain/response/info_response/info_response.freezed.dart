@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'info_response.dart';
+part of info_response.dart;
 
 // **************************************************************************
 // FreezedGenerator
@@ -18,17 +18,17 @@ class _$InfoResponseTearOff {
   const _$InfoResponseTearOff();
 
   _InfoResponse call(
-      {required String? uuid,
-      String? status,
+      {String? status,
       String? details,
+      InfoType type = InfoType.any,
       required String message,
-      bool show = true}) {
+      @JsonKey(ignore: true) bool pop = false}) {
     return _InfoResponse(
-      uuid: uuid,
       status: status,
       details: details,
+      type: type,
       message: message,
-      show: show,
+      pop: pop,
     );
   }
 }
@@ -38,11 +38,12 @@ const $InfoResponse = _$InfoResponseTearOff();
 
 /// @nodoc
 mixin _$InfoResponse {
-  String? get uuid => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   String? get details => throw _privateConstructorUsedError;
+  InfoType get type => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  bool get show => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  bool get pop => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InfoResponseCopyWith<InfoResponse> get copyWith =>
@@ -55,11 +56,11 @@ abstract class $InfoResponseCopyWith<$Res> {
           InfoResponse value, $Res Function(InfoResponse) then) =
       _$InfoResponseCopyWithImpl<$Res>;
   $Res call(
-      {String? uuid,
-      String? status,
+      {String? status,
       String? details,
+      InfoType type,
       String message,
-      bool show});
+      @JsonKey(ignore: true) bool pop});
 }
 
 /// @nodoc
@@ -72,17 +73,13 @@ class _$InfoResponseCopyWithImpl<$Res> implements $InfoResponseCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? uuid = freezed,
     Object? status = freezed,
     Object? details = freezed,
+    Object? type = freezed,
     Object? message = freezed,
-    Object? show = freezed,
+    Object? pop = freezed,
   }) {
     return _then(_value.copyWith(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -91,13 +88,17 @@ class _$InfoResponseCopyWithImpl<$Res> implements $InfoResponseCopyWith<$Res> {
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as InfoType,
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
-      show: show == freezed
-          ? _value.show
-          : show // ignore: cast_nullable_to_non_nullable
+      pop: pop == freezed
+          ? _value.pop
+          : pop // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -111,11 +112,11 @@ abstract class _$InfoResponseCopyWith<$Res>
       __$InfoResponseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? uuid,
-      String? status,
+      {String? status,
       String? details,
+      InfoType type,
       String message,
-      bool show});
+      @JsonKey(ignore: true) bool pop});
 }
 
 /// @nodoc
@@ -130,17 +131,13 @@ class __$InfoResponseCopyWithImpl<$Res> extends _$InfoResponseCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? uuid = freezed,
     Object? status = freezed,
     Object? details = freezed,
+    Object? type = freezed,
     Object? message = freezed,
-    Object? show = freezed,
+    Object? pop = freezed,
   }) {
     return _then(_InfoResponse(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -149,13 +146,17 @@ class __$InfoResponseCopyWithImpl<$Res> extends _$InfoResponseCopyWithImpl<$Res>
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as InfoType,
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
-      show: show == freezed
-          ? _value.show
-          : show // ignore: cast_nullable_to_non_nullable
+      pop: pop == freezed
+          ? _value.pop
+          : pop // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -165,28 +166,29 @@ class __$InfoResponseCopyWithImpl<$Res> extends _$InfoResponseCopyWithImpl<$Res>
 
 class _$_InfoResponse extends _InfoResponse {
   const _$_InfoResponse(
-      {required this.uuid,
-      this.status,
+      {this.status,
       this.details,
+      this.type = InfoType.any,
       required this.message,
-      this.show = true})
+      @JsonKey(ignore: true) this.pop = false})
       : super._();
 
-  @override
-  final String? uuid;
   @override
   final String? status;
   @override
   final String? details;
-  @override
-  final String message;
   @JsonKey()
   @override
-  final bool show;
+  final InfoType type;
+  @override
+  final String message;
+  @override
+  @JsonKey(ignore: true)
+  final bool pop;
 
   @override
   String toString() {
-    return 'InfoResponse(uuid: $uuid, status: $status, details: $details, message: $message, show: $show)';
+    return 'InfoResponse(status: $status, details: $details, type: $type, message: $message, pop: $pop)';
   }
 
   @override
@@ -194,21 +196,21 @@ class _$_InfoResponse extends _InfoResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InfoResponse &&
-            const DeepCollectionEquality().equals(other.uuid, uuid) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.details, details) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.message, message) &&
-            const DeepCollectionEquality().equals(other.show, show));
+            const DeepCollectionEquality().equals(other.pop, pop));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(uuid),
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(details),
+      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(message),
-      const DeepCollectionEquality().hash(show));
+      const DeepCollectionEquality().hash(pop));
 
   @JsonKey(ignore: true)
   @override
@@ -218,23 +220,24 @@ class _$_InfoResponse extends _InfoResponse {
 
 abstract class _InfoResponse extends InfoResponse {
   const factory _InfoResponse(
-      {required String? uuid,
-      String? status,
+      {String? status,
       String? details,
+      InfoType type,
       required String message,
-      bool show}) = _$_InfoResponse;
+      @JsonKey(ignore: true) bool pop}) = _$_InfoResponse;
   const _InfoResponse._() : super._();
 
-  @override
-  String? get uuid;
   @override
   String? get status;
   @override
   String? get details;
   @override
+  InfoType get type;
+  @override
   String get message;
   @override
-  bool get show;
+  @JsonKey(ignore: true)
+  bool get pop;
   @override
   @JsonKey(ignore: true)
   _$InfoResponseCopyWith<_InfoResponse> get copyWith =>

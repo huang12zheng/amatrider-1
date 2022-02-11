@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ClipboardManager {
+abstract class ClipboardManager {
   static Future<bool> copy(String text, {String? msg}) async {
     await Clipboard.setData(ClipboardData(text: text));
 

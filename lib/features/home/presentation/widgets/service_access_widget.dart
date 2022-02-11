@@ -154,7 +154,7 @@ class AccessScreen extends StatelessWidget with AutoRouteWrapper {
                             ),
                             //
                             Flexible(
-                              child: WidgetVisibility(
+                              child: AnimatedVisibility(
                                 visible: !Platform.isIOS,
                                 child: AppOutlinedButton(
                                   text: '${secondButtonText ?? 'Exit ${Const.appName}'}',

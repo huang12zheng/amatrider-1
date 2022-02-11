@@ -2,7 +2,7 @@ library marker_generator.dart;
 
 import 'dart:typed_data';
 
-import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -19,7 +19,7 @@ class MarkerGenerator {
   final bool flat;
   final double? height;
   final String id;
-  final RiderLocation latlng;
+  final UserAddress latlng;
   final Set<Marker> markers;
   final double? pixelRatio;
   final Uint8List? unsigned;
@@ -77,12 +77,7 @@ class MarkerGenerator {
 
   void build() {
     // final _markerExists = markers.any((it) => it.markerId.value == id);
-    final _filtered = markers
-        .toList()
-        .toImmutableList()
-        .filterNot((it) => it.markerId.value == id)
-        .asList()
-        .toSet();
+    final _filtered = markers.toList().toImmutableList().filterNot((it) => it.markerId.value == id).asList().toSet();
 
     _when(
       bitmap: () {

@@ -34,6 +34,26 @@ Map<String, dynamic> _$$ErrorResponseToJson(_$ErrorResponse instance) {
   return val;
 }
 
+_$InfoResponseType _$$InfoResponseTypeFromJson(Map<String, dynamic> json) =>
+    _$InfoResponseType(
+      status: json['status'] as String?,
+      messageTxt: json['message'] as String?,
+    );
+
+Map<String, dynamic> _$$InfoResponseTypeToJson(_$InfoResponseType instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('status', instance.status);
+  writeNotNull('message', instance.messageTxt);
+  return val;
+}
+
 _$SuccessfulResponse _$$SuccessfulResponseFromJson(Map<String, dynamic> json) =>
     _$SuccessfulResponse(
       status: json['status'] as String?,

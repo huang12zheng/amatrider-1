@@ -3,8 +3,7 @@ library any_response_serializer.dart;
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-class AnyResponseSerializer
-    implements JsonConverter<AnyResponse, Map<String, dynamic>> {
+class AnyResponseSerializer implements JsonConverter<AnyResponse, Map<String, dynamic>> {
   const AnyResponseSerializer();
 
   @override
@@ -14,13 +13,16 @@ class AnyResponseSerializer
         messageTxt: 'Fatal: No response from server! Pls contact support.',
       );
 
-    if (!json.containsKey('status') ||
-        (json.containsKey('status') && json['status'] is num)) {
+    if (!json.containsKey('status'))
+      return ErrorResponse.fromJson(json);
+    else if ((json.containsKey('status') && json['status'] is num)) {
       return ErrorResponse.fromJson(json);
     } else
       switch (json['status'] as String) {
         case 'success':
           return SuccessfulResponse.fromJson(json);
+        case 'info':
+          return InfoResponseType.fromJson(json);
         case 'error':
         default:
           return ErrorResponse.fromJson(json);

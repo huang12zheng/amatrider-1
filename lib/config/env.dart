@@ -11,7 +11,7 @@ enum BuildFlavor { prod, dev }
 BuildEnvironment get env => _env!;
 BuildEnvironment? _env;
 
-class BuildEnvironment implements Secrets {
+class BuildEnvironment with Secrets {
   final BuildFlavor flavor;
   final Uri? baseUri;
 
@@ -29,21 +29,21 @@ class BuildEnvironment implements Secrets {
 
   Duration get greetingDuration => const Duration(milliseconds: 1200);
 
-  String get googleMapsAPI => Utils.platform_(material: Secrets.androidAPIKey, cupertino: Secrets.iOSAPIKey)!;
+  String get googleMapsAPI => Utils.platform_(material: androidAPIKey, cupertino: iOSAPIKey)!;
 
-  String get paystackKey => flavor.fold(dev: () => Secrets.paystackKeyDev, prod: () => Secrets.paystackKeyProd);
+  String get paystackKey => flavor.fold(dev: () => paystackKeyDev, prod: () => paystackKeyProd);
 
-  String get flwPublicKey => flavor.fold(dev: () => Secrets.flutterwaveKeyDev, prod: () => Secrets.flutterwaveKeyProd);
+  String get flwPublicKey => flavor.fold(dev: () => flutterwaveKeyDev, prod: () => flutterwaveKeyProd);
 
-  String get flwEncryptionKey => Secrets.flutterwaveEncrptionKey;
+  String get flwEncryptionKey => flutterwaveEncrptionKey;
 
-  String get pusherKey => Secrets.pusherKey;
+  String get pusherKey => appPusherKey;
 
-  String get pusherCluster => Secrets.pusherCluster;
+  String get pusherCluster => appPusherCluster;
 
-  String get pusherAppId => Secrets.pusherAppId;
+  String get pusherAppId => appPusherAppId;
 
-  String get pusherAuthUrl => EndPoints.PUSHER_AUTH_URL;
+  String get pusherAuthUrl => Uri.https('$domain', '${EndPoints.PUSHER_AUTH_URL}').toString();
 
   /// Sets up the top-level [env] getter on the first call only.
   static Future<void> init({required BuildFlavor flavor}) async {

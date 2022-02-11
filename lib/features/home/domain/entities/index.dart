@@ -11,3 +11,6 @@ export 'insight/activity/dispatch_activity.dart';
 export 'history/delivery_history.dart';
 export 'review/review.dart';
 export 'notification/index.dart';
+export 'store/store.dart';
+export 'store/location/store_location.dart';
+export 'media/index.dart';

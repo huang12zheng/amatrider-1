@@ -5,13 +5,11 @@ import 'dart:convert';
 import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
-import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
-import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -26,24 +24,23 @@ part 'request_state.dart';
 
 @injectable
 class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
-  final AuthFacade _auth;
   final EchoRepository _echoRepository;
   final LogisticsRepository _logisticsRepository;
 
   String? riderId;
 
   RequestCubit(
-    this._auth,
     this._logisticsRepository,
     this._echoRepository,
   ) : super(RequestState.initial());
 
   @override
   Future<void> close() {
-    _echoRepository.stopListening(RequestEvents.packageAcceptedChannel, RequestEvents.packageAcceptedEvent);
     if (riderId != null) {
-      _echoRepository.stopListening(RequestEvents.packageDeliveredChannel('$riderId'), RequestEvents.packageDeliveredEvent);
-      _echoRepository.close(RequestEvents.newRequestChannel('$riderId'));
+      _echoRepository.leave(RequestEvents.newPackageChannel('$riderId'), event: RequestEvents.newPackageEvent);
+      _echoRepository.leave(RequestEvents.newOrderChannel('$riderId'), event: RequestEvents.newOrderEvent);
+      // _echoRepository.leave(RequestEvents.packageDeliveredChannel('$riderId'), event: RequestEvents.packageDeliveredEvent);
+      // _echoRepository.leave(RequestEvents.orderDeliveredChannel('$riderId'), event: RequestEvents.packageDeliveredEvent);
     }
     return super.close();
   }
@@ -51,258 +48,183 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
   // void _toggleLoading([bool? isLoading]) =>
   //     emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
-  void clearList() => emit(state.copyWith(
-        activePackages: const KtList.empty(),
-        packagesInTransit: const KtList.empty(),
-        potentialPackages: const KtList.empty(),
-        currentPackage: null,
-      ));
+  void markAsDelivered(Logistics? deliverable) {
+    final item = state.inTransit.firstOrNull((it) => it.id == deliverable?.id);
 
-  void setCurrentPackage(SendPackage? package) {
-    if (package != null && riderId != null) {
-      getIt<EchoRepository>().channel(RequestEvents.packageDeliveredChannel('$riderId')).listen(RequestEvents.packageDeliveredEvent,
-          onData: (data, _this) {
-        final json = jsonDecode(data) as Map<String, dynamic>;
-        final result = SendPackageDTO.fromJson(json);
-
-        final _delivered = result.id != null ? result.domain : result.packageData?.domain;
-
-        final _match = state.packagesInTransit.firstOrNull((it) => it.id == _delivered?.id);
-
-        if (_match != null)
-          emit(state.copyWith(
-            packagesInTransit: state.packagesInTransit.minusElement(_match),
-          ));
-      });
-    }
-
-    emit(state.copyWith(currentPackage: package));
+    if (item != null) emit(state.copyWith(inTransit: state.inTransit.minusElementIfPresent(item)));
   }
 
-  void _updateActivePackages({
-    KtList<SendPackage>? active,
-    SendPackage? package,
-  }) {
-    if (active != null)
+  void _mapNewDeliverable(Map<String, dynamic> json) {
+    final meta = json.containsKey('meta') ? MetaObjectDTO.fromJson(json['meta'] as Map<String, dynamic>) : null;
+
+    final deliverable = meta?.mapOrNull(
+      package: (dto) {
+        final title = json.containsKey('title') ? '${json['title']}' : 'New Active Package';
+        emit(state.copyWith(status: some(AppHttpResponse.successful(title, pop: false))));
+        return dto.package.domain;
+      },
+      order: (dto) {
+        final title = json.containsKey('title') ? '${json['title']}' : 'New Order Available for Pickup';
+        emit(state.copyWith(status: some(AppHttpResponse.successful(title, pop: false))));
+        return dto.order.domain;
+      },
+    );
+
+    if (deliverable != null)
       emit(state.copyWith(
-        activePackages: active.sortedWith(
-          (a, b) => b.createdAt!.compareTo(a.createdAt!),
-        ),
-      ));
-    if (package != null && !state.activePackages.contains(package))
-      emit(state.copyWith(
-        activePackages: state.activePackages.plusElement(package).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+        inTransit: state.inTransit.minusElementIfPresent(deliverable),
+        active: state.active.plusElementIfAbsent(deliverable).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
       ));
   }
 
-  void _updatePackagesInTransit({
-    KtList<SendPackage>? inTransit,
-    SendPackage? package,
-  }) {
-    if (inTransit != null)
-      emit(state.copyWith(
-        packagesInTransit: inTransit.sortedWith(
-          (a, b) => b.createdAt!.compareTo(a.createdAt!),
-        ),
-      ));
-    if (package != null && !state.packagesInTransit.contains(package))
-      emit(state.copyWith(
-        packagesInTransit: state.packagesInTransit.plusElement(package).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
-      ));
+  void setCurrent(Logistics? item) {
+    emit(state.copyWith(current: item));
   }
 
-  void echo() async {
-    final _result = await _auth.rider;
+  void echo(Rider rider) async {
+    riderId = rider.uid.value!;
 
-    _result.fold(
-      () => null,
-      (account) {
-        riderId = account!.uid.value!;
+    _echoRepository.private(
+      RequestEvents.newPackageChannel('$riderId'),
+      RequestEvents.newPackageEvent,
+      onData: (data, _) {
+        emit(state.copyWith(status: none()));
 
-        _echoRepository.private(
-          RequestEvents.newRequestChannel('$riderId'),
-          RequestEvents.newRequestEvent,
-          onData: (data, _) {
-            final json = jsonDecode(data) as Map<String, dynamic>;
-            final title = json.containsKey('title') ? json['title'] as String : null;
+        _mapNewDeliverable(jsonDecode(data) as Map<String, dynamic>);
+      },
+    );
 
-            if (title != null)
-              emit(state.copyWith(
-                status: some(AppHttpResponse.successful(
-                  title,
-                  pop: false,
-                  uuid: UniqueId<String>.v4().value,
-                )),
-              ));
+    _echoRepository.private(
+      RequestEvents.newOrderChannel('$riderId'),
+      RequestEvents.newOrderEvent,
+      onData: (data, _) {
+        emit(state.copyWith(status: none()));
 
-            final package = SendPackageDTO.fromJson(json);
+        _mapNewDeliverable(jsonDecode(data) as Map<String, dynamic>);
+      },
+    );
+  }
 
-            _updateActivePackages(package: package.packageData?.domain);
-          },
+  Future<void> allInTransit(BuildContext context, {RiderLocation? location}) async {
+    emit(state.copyWith(isLoadingInTransit: true, status: none()));
+
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+
+    await _locationCubit.getRiderLocation(
+      context,
+      callback: (location) async {
+        final _result = await _logisticsRepository.allInTransit(
+          lat: '${location.lat.getOrEmpty}',
+          lng: '${location.lng.getOrEmpty}',
         );
 
-        _echoRepository.public(
-          RequestEvents.packageAcceptedChannel,
-          RequestEvents.packageAcceptedEvent,
-          onData: (data, _) {
-            final json = jsonDecode(data) as Map<String, dynamic>;
-            final package = SendPackageDTO.fromJson(json);
+        _result.fold(
+          (e) => emit(state.copyWith(
+            status: optionOf(e),
+            isLoadingInTransit: false,
+          )),
+          (list) => emit(state.copyWith(
+            isLoadingInTransit: false,
+            inTransit: list.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+          )),
+        );
+      },
+    );
+  }
 
-            if (package.packageData?.riderId == riderId) {
-              // Update in transit
-              _updatePackagesInTransit(package: package.packageData?.domain);
-              // Set current
-              setCurrentPackage(package.packageData?.domain);
+  Future<void> allActive(BuildContext context, {RiderLocation? location}) async {
+    emit(state.copyWith(isLoadingActive: true, status: none()));
 
-              emit(state.copyWith(isAccepting: false));
-            }
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+
+    await _locationCubit.getRiderLocation(
+      context,
+      callback: (location) async {
+        final _result = await _logisticsRepository.allActive(
+          lat: '${location.lat.getOrEmpty}',
+          lng: '${location.lng.getOrEmpty}',
+        );
+
+        _result.fold(
+          (e) => emit(state.copyWith(
+            status: optionOf(e),
+            isLoadingActive: false,
+          )),
+          (list) {
+            final active = list.filter((it) =>
+                !ParcelStatus.packageInTransit.contains(it.status) &&
+                !ParcelStatus.orderWithRider.contains(it.status) &&
+                !ParcelStatus.delivered.contains(it.status));
+
+            emit(state.copyWith(
+              isLoadingActive: false,
+              active: active.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+            ));
           },
         );
       },
     );
   }
 
-  Future<void> _checkWasUpdatedRecently(BuildContext c, void Function(RiderLocation) callback) async {
-    final _locationCubit = BlocProvider.of<LocationCubit>(c);
-
-    if (_locationCubit.wasUpdatedRecently) {
-      final _location = _locationCubit.state.position;
-      callback.call(_location!);
-    } else {
-      await _locationCubit.getRiderLocation(c, callback: callback);
-    }
-  }
-
-  Future<void> allPackages(
-    BuildContext c, {
-    SendPackageStatus status = SendPackageStatus.ACTIVE,
-    RiderLocation? location,
+  Future<void> acceptDeliverable(
+    BuildContext context,
+    Logistics item, {
+    required void Function() onAccepted,
   }) async {
-    await _checkWasUpdatedRecently(c, (location) async {
-      emit(state.copyWith(
-        isLoading: true,
-        isLoadingTransitPackages: true,
-        isLoadingActivePackages: true,
-        status: none(),
-      ));
+    emit(state.copyWith(isLoading: true, isAccepting: true, status: none()));
 
-      final _result = await _logisticsRepository.allRequests(
-        status: status,
-        lat: '${location.lat.getOrEmpty}',
-        lng: '${location.lng.getOrEmpty}',
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+
+    await _locationCubit.getRiderLocation(context, callback: (location) async {
+      final _result = await _logisticsRepository.acceptDeliverable(
+        item,
+        lat: '${location.lat.getOrNull}',
+        lng: '${location.lng.getOrNull}',
       );
 
-      _result.fold(
-        (e) => status.maybeWhen(
-          active: () => emit(state.copyWith(
-            status: optionOf(e),
-            isLoadingActivePackages: false,
-          )),
-          enroute: () => emit(state.copyWith(
-            status: optionOf(e),
-            isLoadingTransitPackages: false,
-            isLoadingActivePackages: false,
-          )),
-          orElse: () => null,
-        ),
-        (list) {
-          status.maybeWhen(
-            active: () {
-              emit(state.copyWith(isLoadingActivePackages: false));
-              _updateActivePackages(active: list.domain);
-            },
-            enroute: () {
-              emit(state.copyWith(
-                isLoadingTransitPackages: false,
-                isLoadingActivePackages: false,
-              ));
+      _result.response.mapOrNull(
+        error: (_) => emit(state.copyWith(isLoading: false, isAccepting: false, status: optionOf(_result))),
+        success: (_) {
+          // Check if RiderID in deliverable is the same as the authenticated Rider
+          // If TRUE -> Add to "Packages in Transit"
+          final match = state.active.firstOrNull((it) => it.id == item.id);
 
-              _updatePackagesInTransit(
-                inTransit: list.domain.plus(state.packagesInTransit).asList().unique((val) => val.id).toImmutableList(),
-              );
-            },
-            orElse: () => null,
-          );
+          // Update in transit
+          emit(state.copyWith(
+            isLoading: false,
+            isAccepting: false,
+            active: state.active.minusElementIfPresent(match!),
+            inTransit: state.inTransit.plusElementIfAbsent(match).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+          ));
+
+          // Set current
+          setCurrent(match);
+
+          onAccepted.call();
         },
       );
-
-      emit(state.copyWith(isLoading: false));
     });
   }
 
-  Future<void> acceptPackageDelivery(
-    BuildContext c,
-    SendPackage package,
-  ) async {
-    await _checkWasUpdatedRecently(c, (location) async {
-      emit(state.copyWith(isLoading: true, isAccepting: true, status: none()));
-      try {
-        final _conn = await connection();
+  Future<void> declineDeliverable(
+    BuildContext context,
+    Logistics item, {
+    required void Function() onDeclined,
+  }) async {
+    emit(state.copyWith(isLoading: true, isDeclining: true, status: none()));
 
-        await _conn.fold(
-          () async {
-            final _result = await _logisticsRepository.acceptPackageDelivery(
-              '${package.id.value}',
-              lat: '${location.lat.getOrNull}',
-              lng: '${location.lng.getOrNull}',
-            );
+    final _locationCubit = BlocProvider.of<LocationCubit>(context);
 
-            _result.response.map(
-              error: (_) => emit(state.copyWith(status: some(_result))),
-              success: (_) {
-                emit(state.copyWith(
-                  activePackages: state.activePackages.minusElement(package),
-                  currentPackage: package,
-                  status: some(_result),
-                ));
-              },
-            );
-          },
-          (e) async => emit(state.copyWith(status: optionOf(e))),
-        );
-      } on AppNetworkException catch (e) {
-        emit(state.copyWith(status: some(e.asResponse())));
-      }
+    await _locationCubit.getRiderLocation(context, callback: (location) async {
+      final _result = await _logisticsRepository.declineDeliverable(
+        item,
+        lat: '${location.lat.getOrNull}',
+        lng: '${location.lng.getOrNull}',
+      );
 
-      emit(state.copyWith(isLoading: false, isAccepting: false));
-    });
-  }
+      emit(state.copyWith(isLoading: false, isDeclining: false, status: optionOf(_result)));
 
-  Future<void> declinePackageDelivery(
-    BuildContext c,
-    SendPackage package,
-  ) async {
-    await _checkWasUpdatedRecently(c, (location) async {
-      emit(state.copyWith(isLoading: true, isDeclining: true, status: none()));
-
-      try {
-        final _conn = await connection();
-
-        await _conn.fold(
-          () async {
-            final _result = await _logisticsRepository.declinePackageDelivery(
-              '${package.id.value}',
-              lat: '${location.lat.getOrNull}',
-              lng: '${location.lng.getOrNull}',
-            );
-
-            _result.response.map(
-              error: (_) => emit(state.copyWith(status: some(_result))),
-              success: (_) {
-                emit(state.copyWith(
-                  activePackages: state.activePackages.minusElement(package),
-                  status: some(_result),
-                ));
-              },
-            );
-          },
-          (e) async => emit(state.copyWith(status: optionOf(e))),
-        );
-      } on AppNetworkException catch (e) {
-        emit(state.copyWith(status: some(e.asResponse())));
-      }
-
-      emit(state.copyWith(isLoading: false, isDeclining: false));
+      _result.response.mapOrNull(success: (_) => onDeclined());
     });
   }
 }

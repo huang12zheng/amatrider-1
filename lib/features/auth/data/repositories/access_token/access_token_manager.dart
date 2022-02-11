@@ -26,6 +26,19 @@ class AccessTokenManager {
     );
   }
 
+  AccessToken raw() {
+    // Retrieve opened box
+    final _token = _box.get(Const.kAccessTokenKey);
+    final _expiry = _box.get(Const.kAccessTokenExpiryKey);
+
+    // return cached access token
+    return AccessToken(
+      accessToken: BasicTextField(_token?.replaceAll('Bearer ', '')),
+      tokenType: TokenType.parse(null),
+      expiryDate: BasicTextField(int.tryParse(_expiry ?? '')),
+    );
+  }
+
   Future<void> save({
     String? token,
     required TokenResponse response,

@@ -276,7 +276,7 @@ class ExpandableShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WidgetVisibility(
+    return AnimatedVisibility(
       visible: _asList,
       replacement: shimmer(),
       child: ListView.custom(

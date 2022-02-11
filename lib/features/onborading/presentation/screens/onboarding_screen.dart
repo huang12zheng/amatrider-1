@@ -47,7 +47,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
                   count: c.read<OnboardingCubit>().items.size,
                   effect: ExpandingDotsEffect(
                     expansionFactor: 3.5,
-                    activeDotColor: App.theme.colorScheme.secondary,
+                    activeDotColor: Palette.accentColor,
                     radius: 100.0,
                     spacing: 6.0,
                     dotHeight: App.height * 0.006,
@@ -73,7 +73,7 @@ class OnboardingScreen extends StatelessWidget with AutoRouteWrapper {
                   height: 0.09.sw,
                   width: 0.18.sw,
                   fontSize: 18.sp,
-                  cupertinoHeight: 0.05.h,
+                  cupertinoHeight: 0.045.h,
                   splashColor: Colors.black.withOpacity(0.09),
                   padding: EdgeInsets.all(0.007.sw),
                   onPressed: () => navigator.pushAndPopUntil(
@@ -161,8 +161,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                         right: 0,
                         bottom: App.longest * 0.02,
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: App.sidePadding),
+                          padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -204,9 +203,7 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                         child: AppButton(
                                           text: 'Next',
                                           fontWeight: FontWeight.w600,
-                                          onPressed: !c
-                                                  .watch<OnboardingCubit>()
-                                                  .isLast(left(widget.item!))
+                                          onPressed: !c.watch<OnboardingCubit>().isLast(left(widget.item!))
                                               ? c.read<OnboardingCubit>().next
                                               : () => navigator.pushAndPopUntil(
                                                     const GetStartedRoute(),

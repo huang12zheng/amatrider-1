@@ -23,11 +23,13 @@ class _$AppHttpResponseTearOff {
 
   _AppHttpResponse call(@AnyResponseSerializer() AnyResponse response,
       {@JsonKey(ignore: true) dynamic data,
-      @JsonKey(ignore: true) _d.DioError? exception}) {
+      @JsonKey(ignore: true) _d.DioError? exception,
+      @JsonKey(ignore: true) AppNetworkExceptionReason? failureReason}) {
     return _AppHttpResponse(
       response,
       data: data,
       exception: exception,
+      failureReason: failureReason,
     );
   }
 
@@ -47,6 +49,9 @@ mixin _$AppHttpResponse {
   dynamic get data => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _d.DioError? get exception => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  AppNetworkExceptionReason? get failureReason =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,7 +67,8 @@ abstract class $AppHttpResponseCopyWith<$Res> {
   $Res call(
       {@AnyResponseSerializer() AnyResponse response,
       @JsonKey(ignore: true) dynamic data,
-      @JsonKey(ignore: true) _d.DioError? exception});
+      @JsonKey(ignore: true) _d.DioError? exception,
+      @JsonKey(ignore: true) AppNetworkExceptionReason? failureReason});
 
   $AnyResponseCopyWith<$Res> get response;
 }
@@ -81,6 +87,7 @@ class _$AppHttpResponseCopyWithImpl<$Res>
     Object? response = freezed,
     Object? data = freezed,
     Object? exception = freezed,
+    Object? failureReason = freezed,
   }) {
     return _then(_value.copyWith(
       response: response == freezed
@@ -95,6 +102,10 @@ class _$AppHttpResponseCopyWithImpl<$Res>
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as _d.DioError?,
+      failureReason: failureReason == freezed
+          ? _value.failureReason
+          : failureReason // ignore: cast_nullable_to_non_nullable
+              as AppNetworkExceptionReason?,
     ));
   }
 
@@ -116,7 +127,8 @@ abstract class _$AppHttpResponseCopyWith<$Res>
   $Res call(
       {@AnyResponseSerializer() AnyResponse response,
       @JsonKey(ignore: true) dynamic data,
-      @JsonKey(ignore: true) _d.DioError? exception});
+      @JsonKey(ignore: true) _d.DioError? exception,
+      @JsonKey(ignore: true) AppNetworkExceptionReason? failureReason});
 
   @override
   $AnyResponseCopyWith<$Res> get response;
@@ -138,6 +150,7 @@ class __$AppHttpResponseCopyWithImpl<$Res>
     Object? response = freezed,
     Object? data = freezed,
     Object? exception = freezed,
+    Object? failureReason = freezed,
   }) {
     return _then(_AppHttpResponse(
       response == freezed
@@ -152,6 +165,10 @@ class __$AppHttpResponseCopyWithImpl<$Res>
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as _d.DioError?,
+      failureReason: failureReason == freezed
+          ? _value.failureReason
+          : failureReason // ignore: cast_nullable_to_non_nullable
+              as AppNetworkExceptionReason?,
     ));
   }
 }
@@ -160,7 +177,9 @@ class __$AppHttpResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AppHttpResponse extends _AppHttpResponse {
   const _$_AppHttpResponse(@AnyResponseSerializer() this.response,
-      {@JsonKey(ignore: true) this.data, @JsonKey(ignore: true) this.exception})
+      {@JsonKey(ignore: true) this.data,
+      @JsonKey(ignore: true) this.exception,
+      @JsonKey(ignore: true) this.failureReason})
       : super._();
 
   factory _$_AppHttpResponse.fromJson(Map<String, dynamic> json) =>
@@ -175,6 +194,9 @@ class _$_AppHttpResponse extends _AppHttpResponse {
   @override
   @JsonKey(ignore: true)
   final _d.DioError? exception;
+  @override
+  @JsonKey(ignore: true)
+  final AppNetworkExceptionReason? failureReason;
 
   @override
   bool operator ==(dynamic other) {
@@ -183,7 +205,9 @@ class _$_AppHttpResponse extends _AppHttpResponse {
             other is _AppHttpResponse &&
             const DeepCollectionEquality().equals(other.response, response) &&
             const DeepCollectionEquality().equals(other.data, data) &&
-            const DeepCollectionEquality().equals(other.exception, exception));
+            const DeepCollectionEquality().equals(other.exception, exception) &&
+            const DeepCollectionEquality()
+                .equals(other.failureReason, failureReason));
   }
 
   @override
@@ -191,7 +215,8 @@ class _$_AppHttpResponse extends _AppHttpResponse {
       runtimeType,
       const DeepCollectionEquality().hash(response),
       const DeepCollectionEquality().hash(data),
-      const DeepCollectionEquality().hash(exception));
+      const DeepCollectionEquality().hash(exception),
+      const DeepCollectionEquality().hash(failureReason));
 
   @JsonKey(ignore: true)
   @override
@@ -206,8 +231,10 @@ class _$_AppHttpResponse extends _AppHttpResponse {
 
 abstract class _AppHttpResponse extends AppHttpResponse {
   const factory _AppHttpResponse(@AnyResponseSerializer() AnyResponse response,
-      {@JsonKey(ignore: true) dynamic data,
-      @JsonKey(ignore: true) _d.DioError? exception}) = _$_AppHttpResponse;
+          {@JsonKey(ignore: true) dynamic data,
+          @JsonKey(ignore: true) _d.DioError? exception,
+          @JsonKey(ignore: true) AppNetworkExceptionReason? failureReason}) =
+      _$_AppHttpResponse;
   const _AppHttpResponse._() : super._();
 
   factory _AppHttpResponse.fromJson(Map<String, dynamic> json) =
@@ -222,6 +249,9 @@ abstract class _AppHttpResponse extends AppHttpResponse {
   @override
   @JsonKey(ignore: true)
   _d.DioError? get exception;
+  @override
+  @JsonKey(ignore: true)
+  AppNetworkExceptionReason? get failureReason;
   @override
   @JsonKey(ignore: true)
   _$AppHttpResponseCopyWith<_AppHttpResponse> get copyWith =>

@@ -3,6 +3,7 @@ library location_cubit.dart;
 import 'dart:async';
 
 import 'package:amatrider/core/data/response/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/home/data/repositories/places_repository/places_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
@@ -63,6 +64,8 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
   bool get wasUpdatedRecently =>
       state.lastUpdate != null ? (state.lastUpdate!.difference(DateTime.now()) < const Duration(minutes: 2)) : false;
 
+  void disableBackgroundLocation() => _service.requestBackgroundMode(false);
+
   Future<dynamic> showPermissionRationale(BuildContext context, {Future<void> Function()? callback}) async {
     if (!(await hasPermission)) {
       if (navigator.current.name != AccessRoute.name)
@@ -107,19 +110,65 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     BuildContext c, {
     bool background = false,
     Future<void> Function(bool)? future,
+    bool awaitBackground = false,
   }) async {
-    if (!state.isRequestingService) await requestService(c, future: future, service: _service);
+    if (!state.isRequestingService) await requestService(c, future: !awaitBackground ? future : null, service: _service);
 
     // Update request state
     emit(state.copyWith(isRequestingService: false));
 
-    if (background) await requestBackground(c);
+    if (background) await requestBackground(c, future: awaitBackground ? future : null);
   }
 
   Future<void> getRiderLocation(
     BuildContext c, {
     required void Function(RiderLocation) callback,
-    bool getAddress = true,
+    bool getAddress = false,
+    bool callbackBeforeAddress = true,
+    bool fresh = false,
+  }) async {
+    await env.flavor.fold(
+      dev: () async {
+        final location = RiderLocation(
+          lat: BasicTextField(6.46962420769978),
+          lng: BasicTextField(3.20450716310222),
+          address: BasicTextField(null),
+        );
+
+        if (callbackBeforeAddress) callback.call(location);
+
+        if (getAddress) {
+          toggleLoading(true);
+
+          // Find address from lat, lng
+          final place = await findFromLatlng(location);
+
+          emit(state.copyWith(position: location.copyWith(place: place)));
+
+          if (!callbackBeforeAddress) callback.call(state.position!);
+
+          toggleLoading(false);
+        } else {
+          emit(state.copyWith(position: location.copyWith(place: state.position?.place)));
+        }
+      },
+      prod: () async {
+        if (fresh) {
+          await _getRiderLocation(c, callback: callback, getAddress: getAddress, callbackBeforeAddress: callbackBeforeAddress);
+        } else if (wasUpdatedRecently) {
+          callback(state.position!);
+        } else {
+          await _getRiderLocation(c, callback: callback, getAddress: getAddress, callbackBeforeAddress: callbackBeforeAddress);
+        }
+      },
+    );
+  }
+
+  Future<void> _getRiderLocation(
+    BuildContext c, {
+    required void Function(RiderLocation) callback,
+    bool getAddress = false,
+    bool callbackBeforeAddress = true,
   }) async {
     await request(c, future: (granted) async {
       toggleLoading(true);
@@ -131,41 +180,41 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
           final _result = await _service.getLocation();
 
           await _result.fold(
-            (error) async => emit(state.copyWith(
-              status: some(AppHttpResponse(error)),
-            )),
+            (error) async => emit(state.copyWith(status: some(AppHttpResponse(error)))),
             (location) async {
-              emit(state.copyWith(position: location, lastUpdate: DateTime.now()));
+              emit(state.copyWith(position: location?.copyWith(place: state.position?.place), lastUpdate: DateTime.now()));
 
-              callback.call(location!);
+              if (callbackBeforeAddress) callback.call(location!);
 
-              if (getAddress)
+              if (getAddress) {
                 // Find address from lat, lng
-                await findFromLatlng(location);
+                final place = await findFromLatlng(location!);
+
+                emit(state.copyWith(position: state.position?.copyWith(place: place)));
+
+                if (!callbackBeforeAddress) callback.call(state.position!);
+              }
             },
           );
         },
         (status) async => emit(state.copyWith(status: optionOf(status))),
       );
 
-      if (!getAddress) toggleLoading(false);
+      toggleLoading(false);
     });
   }
 
-  Future<void> findFromLatlng(RiderLocation location) async {
+  Future<PlaceDetail?> findFromLatlng(RiderLocation location) async {
     final lat = location.lat.getOrNull;
     final lng = location.lng.getOrNull;
 
     final _response = await _placesRepository.reverseGeocode(
       latLng: '$lat,$lng',
+      resultType: 'street_address|administrative_area_level_1|administrative_area_level_2|locality|sublocality|political|country',
       key: env.googleMapsAPI,
     );
 
-    final place = _response.geocodes.firstOrNull();
-
-    emit(state.copyWith(position: state.position?.copyWith(place: place)));
-
-    toggleLoading(false);
+    return _response.geocodes.firstOrNull();
   }
 
   Future<void> requestService(
@@ -211,6 +260,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
   Future<void> requestBackground(
     BuildContext c, {
     bool enforce = true,
+    Future<void> Function(bool)? future,
   }) async {
     final _backgroundEnabled = await _service.backgroundEnabled;
 
@@ -223,7 +273,17 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
             'distance travelled even when the app is closed or not in use.',
         btnText: 'Enable background location',
         defaultValue: true,
-        onAccept: () async => await _service.requestBackgroundMode(),
+        onAccept: () async {
+          await _service.requestBackgroundMode();
+
+          final _enabled = await _service.backgroundEnabled;
+
+          emit(state.copyWith(isBackgroundEnabled: _enabled));
+
+          if (_enabled) await future?.call(_enabled);
+
+          return _enabled;
+        },
       ));
 
       if (_status == null || !_status) await requestBackground(c, enforce: enforce);

@@ -4,26 +4,28 @@ import 'package:flutter/material.dart';
 
 /// A stateless widget to render AppOutlinedButton.
 class AppOutlinedButton extends StatelessWidget {
-  final double? height;
-  final double width;
-  final bool disabled;
+  final Color? borderColor;
+  final Color? borderColorDark;
+  final Widget? child;
+  final EdgeInsetsGeometry? childPadding;
   final double? cupertinoHeight;
   final double? cupertinoWidth;
-  final String? text;
-  final Color textColor;
-  final Color textColorDark;
-  final Widget? child;
+  final bool disabled;
   final double? fontSize;
-  final EdgeInsetsGeometry? padding;
   final FontWeight? fontWeight;
-  final VoidCallback? onPressed;
+  final double? height;
+  final bool? isDefaultText;
   final bool isLoading;
   final double? loaderHeight;
   final double? loaderWidth;
-  final Color? borderColor;
-  final Color? borderColorDark;
+  final VoidCallback? onPressed;
+  final EdgeInsetsGeometry? padding;
   final Color? splashColor;
   final Color? splashColorDark;
+  final String? text;
+  final Color textColor;
+  final Color textColorDark;
+  final double width;
 
   const AppOutlinedButton({
     Key? key,
@@ -47,6 +49,8 @@ class AppOutlinedButton extends StatelessWidget {
     this.borderColorDark,
     this.splashColor,
     this.splashColorDark,
+    this.isDefaultText,
+    this.childPadding,
   })  : textColor = textColor ?? Palette.accentColor,
         textColorDark = textColorDark ?? textColor ?? Palette.accentColor,
         super(key: key);
@@ -61,12 +65,14 @@ class AppOutlinedButton extends StatelessWidget {
       cupertinoWidth: cupertinoWidth,
       disabled: disabled,
       fontSize: fontSize,
+      isDefaultText: isDefaultText,
       fontWeight: fontWeight,
       padding: App.platform.cupertino(EdgeInsets.zero),
       isLoading: isLoading,
       loaderHeight: loaderHeight,
       loaderWidth: loaderWidth,
       textColor: textColor,
+      childPadding: childPadding,
       textColorDark: textColorDark,
       textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
       backgroundColor: Colors.transparent,
@@ -77,7 +83,7 @@ class AppOutlinedButton extends StatelessWidget {
       side: BorderSide(
         color: App.resolveColor(
           borderColor ?? Palette.accentColor,
-          dark: borderColorDark ?? borderColor ?? Palette.accentDark,
+          dark: borderColorDark ?? borderColor ?? Palette.accentColor,
         )!,
       ),
       onPressed: onPressed,

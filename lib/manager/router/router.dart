@@ -25,7 +25,7 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       usesPathAsKey: true,
       page: OnboardingScreen,
-      guards: [GuestGuard],
+      guards: [GuestGuard, IncompleteKYCGuard],
     ),
     AdaptiveRoute(
       fullMatch: true,
@@ -34,7 +34,7 @@ import 'package:amatrider/_404.dart';
       page: GetStartedScreen,
       path: 'get-started-screen',
       cupertinoPageTitle: 'Get Started',
-      guards: [GuestGuard],
+      guards: [GuestGuard, IncompleteKYCGuard],
     ),
     //
     AdaptiveRoute(
@@ -44,7 +44,7 @@ import 'package:amatrider/_404.dart';
       page: LoginScreen,
       path: 'login-screen',
       cupertinoPageTitle: 'Login',
-      guards: [GuestGuard],
+      guards: [GuestGuard, IncompleteKYCGuard],
     ),
     //
     AdaptiveRoute(
@@ -54,7 +54,7 @@ import 'package:amatrider/_404.dart';
       path: 'signup-screen',
       page: SignupScreen,
       cupertinoPageTitle: 'Sign Up',
-      guards: [GuestGuard],
+      guards: [GuestGuard, IncompleteKYCGuard],
     ),
     //
     AdaptiveRoute(
@@ -62,9 +62,9 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       usesPathAsKey: true,
       path: 'socials-signup-screen',
-      page: SocialsSignupScreen,
+      page: SocialsAuthScreen,
       cupertinoPageTitle: 'Continue with Socials',
-      guards: [GuestGuard],
+      // guards: [GuestGuard],
     ),
     //
     AdaptiveRoute(
@@ -75,7 +75,7 @@ import 'package:amatrider/_404.dart';
       page: ForgotPasswordScreen,
       path: 'forgot-password-screen',
       cupertinoPageTitle: 'Password Reset',
-      guards: [GuestGuard],
+      guards: [GuestGuard, IncompleteKYCGuard],
     ),
     //
     AdaptiveRoute(
@@ -96,7 +96,7 @@ import 'package:amatrider/_404.dart';
       maintainState: true,
       page: AccountVerificationScreen,
       path: 'account-verification-screen',
-      guards: [AuthGuard],
+      guards: [AuthGuard, AccountVerificationGuard],
     ),
     //
     AdaptiveRoute(
@@ -248,14 +248,15 @@ const dashboardRouter = AutoRoute(
   fullMatch: true,
   page: DashboardScreen,
   maintainState: true,
-  guards: [AuthGuard],
+  guards: [AuthGuard, IncompleteKYCGuard],
   children: [
     AutoRoute(
       path: 'home',
       name: 'HomeRouter',
       page: EmptyRouterPage,
+      guards: [AuthGuard, IncompleteKYCGuard],
       children: [
-        AutoRoute(path: '', page: HomePage),
+        AutoRoute(path: '', page: HomePage, guards: [AuthGuard, IncompleteKYCGuard]),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -265,7 +266,7 @@ const dashboardRouter = AutoRoute(
       name: 'HistoryRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: HistoryPage),
+        AutoRoute(path: '', page: HistoryPage, guards: [AuthGuard, IncompleteKYCGuard]),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -275,7 +276,7 @@ const dashboardRouter = AutoRoute(
       name: 'InsightRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: InsightsPage),
+        AutoRoute(path: '', page: InsightsPage, guards: [AuthGuard, IncompleteKYCGuard]),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -285,7 +286,7 @@ const dashboardRouter = AutoRoute(
       name: 'ProfileRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: ProfilePage),
+        AutoRoute(path: '', page: ProfilePage, guards: [AuthGuard, IncompleteKYCGuard]),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),

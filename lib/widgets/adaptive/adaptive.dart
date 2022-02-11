@@ -9,3 +9,5 @@ export 'adaptive_button.dart';
 export 'adaptive_alertdialog.dart';
 export 'adaptive_scaffold_body.dart';
 export 'adaptive_ink_well.dart';
+export 'adaptive_fullscreen.dart';
+export 'adaptive_bottomsheet.dart';

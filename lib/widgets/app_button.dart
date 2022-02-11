@@ -4,20 +4,25 @@ import 'package:flutter/material.dart';
 
 /// A stateless widget to render AppButton.
 class AppButton extends StatelessWidget {
-  final String? text;
-  final double? height;
-  final double width;
+  final Color? backgroundColor;
+  final Widget? child;
   final double? cupertinoHeight;
   final double? cupertinoWidth;
-  final Widget? child;
+  final bool disabled;
   final double? fontSize;
   final FontWeight? fontWeight;
-  final VoidCallback? onPressed;
-  final Color? backgroundColor;
+  final double? height;
+  final bool? isDefaultText;
   final bool isLoading;
   final double? loaderHeight;
   final double? loaderWidth;
-  final bool disabled;
+  final VoidCallback? onPressed;
+  final BorderSide? side;
+  final Color? splashColor;
+  final String? text;
+  final Color? textColor;
+  final Color? textColorDark;
+  final double width;
 
   const AppButton({
     Key? key,
@@ -30,11 +35,16 @@ class AppButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.onPressed,
+    this.textColor,
+    this.textColorDark,
     this.backgroundColor,
+    this.splashColor,
     this.isLoading = false,
     this.disabled = false,
     this.loaderHeight,
     this.loaderWidth,
+    this.side,
+    this.isDefaultText,
   }) : super(key: key);
 
   @override
@@ -43,9 +53,11 @@ class AppButton extends StatelessWidget {
       text: text,
       fontSize: fontSize,
       fontWeight: fontWeight,
-      textColor: Colors.white,
+      textColor: textColor ?? Colors.white,
+      textColorDark: textColorDark ?? textColor,
       height: height,
       width: width,
+      isDefaultText: isDefaultText,
       cupertinoHeight: cupertinoHeight,
       cupertinoWidth: cupertinoWidth,
       isLoading: isLoading,
@@ -54,12 +66,9 @@ class AppButton extends StatelessWidget {
       disabled: disabled,
       padding: App.platform.cupertino(EdgeInsets.zero),
       textStyle: const TextStyle(letterSpacing: Utils.labelLetterSpacing),
-      backgroundColor: backgroundColor ?? App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
-      splashColor: App.resolveColor(Colors.white24, dark: Colors.grey.shade800),
-      // side: Utils.foldTheme(
-      //   light: () => null,
-      //   dark: () => BorderSide(color: App.resolveColor(Colors.white70)!),
-      // ),
+      backgroundColor: backgroundColor ?? Palette.accentColor,
+      splashColor: splashColor ?? App.resolveColor(Colors.white24, dark: Colors.white12),
+      side: side,
       onPressed: onPressed,
       child: child,
     );

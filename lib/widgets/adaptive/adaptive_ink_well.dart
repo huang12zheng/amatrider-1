@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class AdaptiveInkWell extends StatelessWidget with AutoRouteWrapper {
   final Widget child;
   final bool autofocus;
+  final bool disabled;
   final BorderRadius? borderRadius;
   final bool canRequestFocus;
   final bool containedInkWell;
@@ -36,6 +37,7 @@ class AdaptiveInkWell extends StatelessWidget with AutoRouteWrapper {
   const AdaptiveInkWell({
     Key? key,
     required this.child,
+    this.disabled = false,
     this.autofocus = false,
     this.borderRadius,
     this.canRequestFocus = true,
@@ -84,14 +86,14 @@ class AdaptiveInkWell extends StatelessWidget with AutoRouteWrapper {
       highlightShape: highlightShape,
       hoverColor: hoverColor,
       mouseCursor: mouseCursor,
-      onDoubleTap: onDoubleTap,
-      onFocusChange: onFocusChange,
-      onHighlightChanged: onHighlightChanged,
-      onHover: onHover,
-      onLongPress: onLongPress,
-      onTap: onTap,
-      onTapCancel: onTapCancel,
-      onTapDown: onTapDown,
+      onDoubleTap: disabled ? null : onDoubleTap,
+      onFocusChange: disabled ? null : onFocusChange,
+      onHighlightChanged: disabled ? null : onHighlightChanged,
+      onHover: disabled ? null : onHover,
+      onLongPress: disabled ? null : onLongPress,
+      onTap: disabled ? null : onTap,
+      onTapCancel: disabled ? null : onTapCancel,
+      onTapDown: disabled ? null : onTapDown,
       overlayColor: overlayColor,
       radius: radius,
       splashColor: splashColor,

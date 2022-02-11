@@ -32,7 +32,7 @@ void main() async {
   final storage = await HydratedStorage.build(storageDirectory: await Utils.cacheDir);
 
   await HydratedBlocOverrides.runZoned(
-    () => runZonedGuarded(
+    () async => await runZonedGuarded(
       () async {
         // Setup Environmental variables & Service provider
         await BuildEnvironment.init(flavor: BuildFlavor.prod);
@@ -42,7 +42,7 @@ void main() async {
 
         runApp(const ProviderScope(child: AmatRider()));
       },
-      (error, stackTrace) => log.wtf(error.toString(), error, stackTrace),
+      (error, trace) => log.e(error.toString(), error, trace),
     ),
     storage: storage,
   );

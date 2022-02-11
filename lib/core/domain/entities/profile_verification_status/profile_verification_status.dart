@@ -21,16 +21,15 @@ class ProfileVerificationStatus extends EnumClass {
 
   static BuiltSet<ProfileVerificationStatus> get values => _$values;
 
-  static BuiltList<ProfileVerificationStatus> get list =>
-      _$values.toBuiltList();
+  static BuiltList<ProfileVerificationStatus> get list => _$values.toBuiltList();
 
   static ProfileVerificationStatus valueOf(String name) => _$valueOf(name);
 
-  static ProfileVerificationStatus fromInt(int value) {
+  static ProfileVerificationStatus fromBool(bool value) {
     switch (value) {
-      case 1:
+      case true:
         return ProfileVerificationStatus.verified;
-      case 0:
+      case false:
       default:
         return ProfileVerificationStatus.unverified;
     }
@@ -55,6 +54,27 @@ extension ProfileVerificationStatusX on ProfileVerificationStatus {
         return unverified.call();
       default:
         return unverified.call();
+    }
+  }
+
+  T maybeWhen<T>({
+    T Function()? verified,
+    T Function()? inReview,
+    T Function()? failed,
+    T Function()? unverified,
+    required T Function() orElse,
+  }) {
+    switch (this) {
+      case ProfileVerificationStatus.verified:
+        return verified?.call() ?? orElse();
+      case ProfileVerificationStatus.in_review:
+        return inReview?.call() ?? orElse();
+      case ProfileVerificationStatus.failed:
+        return failed?.call() ?? orElse();
+      case ProfileVerificationStatus.unverified:
+        return unverified?.call() ?? orElse();
+      default:
+        return orElse();
     }
   }
 }

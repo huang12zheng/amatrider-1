@@ -54,8 +54,8 @@ class _$RiderDTOTearOff {
       @DoubleSerializer()
           double? avgRating,
       @JsonKey(name: 'is_verified')
-      @IntegerSerializer()
-          int isVerified = 0,
+      @BooleanSerializer()
+          bool? isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
@@ -137,8 +137,8 @@ mixin _$RiderDTO {
   @DoubleSerializer()
   double? get avgRating => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_verified')
-  @IntegerSerializer()
-  int get isVerified => throw _privateConstructorUsedError;
+  @BooleanSerializer()
+  bool? get isVerified => throw _privateConstructorUsedError;
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()
   ProfileVerificationStatus? get verificationStatus =>
@@ -198,8 +198,8 @@ abstract class $RiderDTOCopyWith<$Res> {
       @DoubleSerializer()
           double? avgRating,
       @JsonKey(name: 'is_verified')
-      @IntegerSerializer()
-          int isVerified,
+      @BooleanSerializer()
+          bool? isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
@@ -312,7 +312,7 @@ class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
       isVerified: isVerified == freezed
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
-              as int,
+              as bool?,
       verificationStatus: verificationStatus == freezed
           ? _value.verificationStatus
           : verificationStatus // ignore: cast_nullable_to_non_nullable
@@ -375,8 +375,8 @@ abstract class _$RiderDTOCopyWith<$Res> implements $RiderDTOCopyWith<$Res> {
       @DoubleSerializer()
           double? avgRating,
       @JsonKey(name: 'is_verified')
-      @IntegerSerializer()
-          int isVerified,
+      @BooleanSerializer()
+          bool? isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
@@ -490,7 +490,7 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
       isVerified: isVerified == freezed
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
-              as int,
+              as bool?,
       verificationStatus: verificationStatus == freezed
           ? _value.verificationStatus
           : verificationStatus // ignore: cast_nullable_to_non_nullable
@@ -552,8 +552,8 @@ class _$_RiderDTO extends _RiderDTO {
       @DoubleSerializer()
           this.avgRating,
       @JsonKey(name: 'is_verified')
-      @IntegerSerializer()
-          this.isVerified = 0,
+      @BooleanSerializer()
+          this.isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           this.verificationStatus,
@@ -621,8 +621,8 @@ class _$_RiderDTO extends _RiderDTO {
   final double? avgRating;
   @override
   @JsonKey(name: 'is_verified')
-  @IntegerSerializer()
-  final int isVerified;
+  @BooleanSerializer()
+  final bool? isVerified;
   @override
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()
@@ -753,8 +753,8 @@ abstract class _RiderDTO extends RiderDTO {
       @DoubleSerializer()
           double? avgRating,
       @JsonKey(name: 'is_verified')
-      @IntegerSerializer()
-          int isVerified,
+      @BooleanSerializer()
+          bool? isVerified,
       @JsonKey(name: 'verification_state')
       @VerificationStatusSerializer()
           ProfileVerificationStatus? verificationStatus,
@@ -821,8 +821,8 @@ abstract class _RiderDTO extends RiderDTO {
   double? get avgRating;
   @override
   @JsonKey(name: 'is_verified')
-  @IntegerSerializer()
-  int get isVerified;
+  @BooleanSerializer()
+  bool? get isVerified;
   @override
   @JsonKey(name: 'verification_state')
   @VerificationStatusSerializer()

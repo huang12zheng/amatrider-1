@@ -8,12 +8,13 @@ import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/domain/repositories/index.dart';
+import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -21,16 +22,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/collection.dart';
 
-part 'map_cubit.freezed.dart';
 part '_map_cubit.part.dart';
+part 'map_cubit.freezed.dart';
 part 'map_state.dart';
 
 @injectable
 class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   static const double _kdefaultCircleRadius = 1500;
 
-  StreamSubscription<FutureOr<Either<AnyResponse, RiderLocation?>>>?
-      _locationSubscription;
+  StreamSubscription<FutureOr<Either<AnyResponse, RiderLocation?>>>? _locationSubscription;
 
   final LocationService _service;
 
@@ -45,16 +45,15 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   String get riderCircleId => 'rider-current-location-circle';
   String get riderMarkerId => 'rider-current-location-marker';
 
-  void toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  void toggleLoading([bool? isLoading]) => emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
   void updateZoom(double newZoom) => emit(state.copyWith(currentZoom: newZoom));
 
-  void init({
-    BuildContext? ctx,
-    RiderLocation? start,
-    RiderLocation? end,
-    RiderLocation? prevLocation,
+  void init(
+    BuildContext ctx, {
+    UserAddress? start,
+    UserAddress? end,
+    RiderLocation? prevUserLocation,
     Widget? startWidget,
     Widget? endWidget,
     MarkerPainter? startPainter,
@@ -64,7 +63,12 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
   }) async {
     toggleLoading(true);
 
-    if (ctx != null && start != null && end != null) {
+    if (start != null &&
+        start.lat.getOrNull != null &&
+        start.lng.getOrNull != null &&
+        end != null &&
+        end.lat.getOrNull != null &&
+        end.lng.getOrNull != null) {
       if (startWidget != null) {
         MarkerGenerator.widget(
           id: '${start.lat},${start.lng}',
@@ -137,63 +141,59 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
         ));
       }
 
-      await drawPolyline(start, end);
+      if (start.lat.getOrNull != null && start.lng.getOrNull != null && end.lat.getOrNull != null && end.lng.getOrNull != null)
+        await drawPolyline(start, end);
 
-      await adjustMapBounds(start, end);
+      if (start.lat.getOrNull != null && start.lng.getOrNull != null && end.lat.getOrNull != null && end.lng.getOrNull != null)
+        await adjustMapBounds(start, end);
     } else {
-      await updateCurrentLocation(prevLocation);
+      await updateCurrentLocation(ctx, prevUserLocation);
     }
 
     toggleLoading(false);
   }
 
-  void toogleTraffic() =>
-      emit(state.copyWith(trafficEnabled: !state.trafficEnabled));
+  void toogleTraffic() => emit(state.copyWith(trafficEnabled: !state.trafficEnabled));
 
-  Future<void> updateCurrentLocation(
-      [RiderLocation? position, BuildContext? ctx, bool pan = true]) async {
-    final Either<AnyResponse, RiderLocation?> _result;
+  Future<void> updateCurrentLocation(BuildContext ctx, [RiderLocation? position, bool pan = true]) async {
+    RiderLocation? location;
 
-    if (position != null)
-      _result = right(position);
-    else
-      _result = await _service.getLocation();
+    if (position != null) {
+      location = position;
+      await _zoomAndPan(ctx, location, pan);
+    } else
+      await BlocProvider.of<LocationCubit>(ctx).getRiderLocation(ctx, callback: (l) async => await _zoomAndPan(ctx, l, pan));
+  }
 
-    await _result.fold(
-      (response) async => log.e(response),
-      (location) async => await location?.let((it) async {
-        if (ctx != null) {
-          MarkerGenerator.widget(
-            id: '$riderMarkerId',
-            latlng: location,
-            markers: state.markers,
-            widget: AppAssets.dispatchRider(const Size.square(45)),
-            context: ctx,
-            onCreated: (markers) {
-              // log.w('Param markers length ===> ${markers.length}');
-              emit(state.copyWith(markers: markers));
-              // log.wtf('STATE markers length ===> ${state.markers.length}');
-            },
-          ).build();
-        }
+  Future<void> _zoomAndPan(BuildContext ctx, [RiderLocation? location, bool pan = true]) async {
+    MarkerGenerator.widget(
+      id: '$riderMarkerId',
+      latlng: UserAddress.fromLocation(location!),
+      markers: state.markers,
+      widget: AppAssets.dispatchRider(const Size.square(45)),
+      context: ctx,
+      onCreated: (markers) {
+        // log.w('Param markers length ===> ${markers.length}');
+        emit(state.copyWith(markers: markers));
+        // log.wtf('STATE markers length ===> ${state.markers.length}');
+      },
+    ).build();
 
-        // updateCircle(riderCircleId, location, strokeColor: Colors.transparent);
+    // updateCircle(riderCircleId, location, strokeColor: Colors.transparent);
 
-        if (pan) {
-          const zoom = 15.8746;
-          final _position = CameraPosition(
-            target: LatLng(it.lat.getOrEmpty!, it.lng.getOrEmpty!),
-            zoom: zoom,
-          );
+    if (pan) {
+      const zoom = 15.8746;
+      final _position = CameraPosition(
+        target: LatLng(location.lat.getOrEmpty!, location.lng.getOrEmpty!),
+        zoom: zoom,
+      );
 
-          updateZoom(zoom);
+      updateZoom(zoom);
 
-          await state.mapController?.animateCamera(
-            CameraUpdate.newCameraPosition(_position),
-          );
-        }
-      }),
-    );
+      await state.mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(_position),
+      );
+    }
   }
 
   void updateCircle(
@@ -207,12 +207,7 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
     final _existingCircles = state.circles;
     // final _markerExists = _existingCircles.any((it) => it.circleId.value == id);
 
-    final _stripped = _existingCircles
-        .toList()
-        .toImmutableList()
-        .filterNot((it) => it.circleId.value == id)
-        .asList()
-        .toSet();
+    final _stripped = _existingCircles.toList().toImmutableList().filterNot((it) => it.circleId.value == id).asList().toSet();
 
     _stripped.add(Circle(
       circleId: CircleId(id),

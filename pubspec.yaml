@@ -46,6 +46,8 @@ dependencies:
   sign_in_with_apple: ^3.3.0
   # Customize App font
   google_fonts: ^2.2.0
+  # A widget that detects the visibility of its child and notifies a callback.
+  visibility_detector: ^0.2.2
   ###### Google Maps & Location Services ######
   #############################################
   # This plugin for Flutter handles getting a location on Android and iOS.
@@ -161,6 +163,8 @@ dependencies:
   flutter_screenutil: ^5.1.1
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
   video_player: ^2.2.10
+  # A video player for Flutter with Cupertino and Material play controls
+  chewie: ^1.2.2
   # A Flutter plugin for iOS and Android for picking images from the image library,
   # and taking new pictures with the camera.
   image_picker: ^0.8.4+5
@@ -184,6 +188,8 @@ dependencies:
   dotted_border: ^2.0.0+1
   # A draggable Flutter widget that makes implementing a SlidingUpPanel much easier!
   sliding_up_panel: ^2.0.0+1
+  # Execute code after the first layout of your widget has been performed, i.e. after the first frame has been displayed.
+  after_layout: ^1.1.0
   # Show beautiful bottom sheet as confirmation dialog quickly and easily.
   sweetsheet: ^0.4.0
   # This repository is an unofficial conversion of the Lottie-android library in pure Dart.
@@ -225,6 +231,8 @@ dependencies:
   share_plus: ^3.0.4
   # a widget provided to the flutter scroll component drop-down refresh and pull up load.
   pull_to_refresh: ^2.0.0
+  # A carousel slider widget, support infinite scroll and custom child widget.
+  carousel_slider: ^4.0.0
   # A simple yet fully customizable ratingbar for
   # flutter which also include a rating bar indicator,
   # supporting any fraction of rating.
@@ -233,6 +241,9 @@ dependencies:
   fl_chart: ^0.40.6
   # Flutter plugin for launching a URL. Supports web, phone, SMS, and email schemes.
   url_launcher: ^6.0.18
+  # Photo View provides a gesture sensitive zoomable widget.
+  # Photo View is largely used to show interactive images and other stuff such as SVG.
+  photo_view: ^0.13.0
 
 flutter_intl:
   enabled: true
@@ -241,6 +252,10 @@ dependency_overrides:
   provider: ^6.0.1
   async: ^2.8.2
   analyzer: ^2.2.0
+  auto_route:
+    git:
+      url: https://github.com/Agondev/auto_route_library
+      path: auto_route
 
 dev_dependencies:
   flutter_test:

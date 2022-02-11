@@ -69,7 +69,9 @@ class _$DeliveryHistoryDTOTearOff {
       @JsonKey(name: 'rider')
           RiderDTO? rider,
       @JsonKey(name: 'user')
-          SenderDTO? sender,
+          UserDTO? sender,
+      @JsonKey(name: 'restaurant')
+          StoreDTO? store,
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
@@ -121,6 +123,7 @@ class _$DeliveryHistoryDTOTearOff {
       distance: distance,
       rider: rider,
       sender: sender,
+      store: store,
       orderActiveAt: orderActiveAt,
       orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
@@ -191,7 +194,9 @@ mixin _$DeliveryHistoryDTO {
   @JsonKey(name: 'rider')
   RiderDTO? get rider => throw _privateConstructorUsedError;
   @JsonKey(name: 'user')
-  SenderDTO? get sender => throw _privateConstructorUsedError; //
+  UserDTO? get sender => throw _privateConstructorUsedError;
+  @JsonKey(name: 'restaurant')
+  StoreDTO? get store => throw _privateConstructorUsedError; //
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
@@ -281,7 +286,9 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
       @JsonKey(name: 'rider')
           RiderDTO? rider,
       @JsonKey(name: 'user')
-          SenderDTO? sender,
+          UserDTO? sender,
+      @JsonKey(name: 'restaurant')
+          StoreDTO? store,
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
@@ -313,7 +320,8 @@ abstract class $DeliveryHistoryDTOCopyWith<$Res> {
           DeliveryHistoryDTO? historyData});
 
   $RiderDTOCopyWith<$Res>? get rider;
-  $SenderDTOCopyWith<$Res>? get sender;
+  $UserDTOCopyWith<$Res>? get sender;
+  $StoreDTOCopyWith<$Res>? get store;
   $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
 
@@ -349,6 +357,7 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? distance = freezed,
     Object? rider = freezed,
     Object? sender = freezed,
+    Object? store = freezed,
     Object? orderActiveAt = freezed,
     Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
@@ -444,7 +453,11 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as SenderDTO?,
+              as UserDTO?,
+      store: store == freezed
+          ? _value.store
+          : store // ignore: cast_nullable_to_non_nullable
+              as StoreDTO?,
       orderActiveAt: orderActiveAt == freezed
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
@@ -500,13 +513,24 @@ class _$DeliveryHistoryDTOCopyWithImpl<$Res>
   }
 
   @override
-  $SenderDTOCopyWith<$Res>? get sender {
+  $UserDTOCopyWith<$Res>? get sender {
     if (_value.sender == null) {
       return null;
     }
 
-    return $SenderDTOCopyWith<$Res>(_value.sender!, (value) {
+    return $UserDTOCopyWith<$Res>(_value.sender!, (value) {
       return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  @override
+  $StoreDTOCopyWith<$Res>? get store {
+    if (_value.store == null) {
+      return null;
+    }
+
+    return $StoreDTOCopyWith<$Res>(_value.store!, (value) {
+      return _then(_value.copyWith(store: value));
     });
   }
 
@@ -577,7 +601,9 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
       @JsonKey(name: 'rider')
           RiderDTO? rider,
       @JsonKey(name: 'user')
-          SenderDTO? sender,
+          UserDTO? sender,
+      @JsonKey(name: 'restaurant')
+          StoreDTO? store,
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
@@ -611,7 +637,9 @@ abstract class _$DeliveryHistoryDTOCopyWith<$Res>
   @override
   $RiderDTOCopyWith<$Res>? get rider;
   @override
-  $SenderDTOCopyWith<$Res>? get sender;
+  $UserDTOCopyWith<$Res>? get sender;
+  @override
+  $StoreDTOCopyWith<$Res>? get store;
   @override
   $DeliveryHistoryDTOCopyWith<$Res>? get historyData;
 }
@@ -650,6 +678,7 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
     Object? distance = freezed,
     Object? rider = freezed,
     Object? sender = freezed,
+    Object? store = freezed,
     Object? orderActiveAt = freezed,
     Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
@@ -745,7 +774,11 @@ class __$DeliveryHistoryDTOCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as SenderDTO?,
+              as UserDTO?,
+      store: store == freezed
+          ? _value.store
+          : store // ignore: cast_nullable_to_non_nullable
+              as StoreDTO?,
       orderActiveAt: orderActiveAt == freezed
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
@@ -842,6 +875,8 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
           this.rider,
       @JsonKey(name: 'user')
           this.sender,
+      @JsonKey(name: 'restaurant')
+          this.store,
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           this.orderActiveAt,
@@ -944,7 +979,10 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
   final RiderDTO? rider;
   @override
   @JsonKey(name: 'user')
-  final SenderDTO? sender;
+  final UserDTO? sender;
+  @override
+  @JsonKey(name: 'restaurant')
+  final StoreDTO? store;
   @override //
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()
@@ -987,7 +1025,7 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
 
   @override
   String toString() {
-    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
+    return 'DeliveryHistoryDTO(id: $id, pickupLat: $pickupLat, pickupLng: $pickupLng, destinationLat: $destinationLat, destinationLng: $destinationLng, pickupAddress: $pickupAddress, destinationAddress: $destinationAddress, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, time: $time, distance: $distance, rider: $rider, sender: $sender, store: $store, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, depositedAt: $depositedAt, depositConfirmedAt: $depositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt, historyData: $historyData)';
   }
 
   @override
@@ -1025,6 +1063,7 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
             const DeepCollectionEquality().equals(other.distance, distance) &&
             const DeepCollectionEquality().equals(other.rider, rider) &&
             const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality().equals(other.store, store) &&
             const DeepCollectionEquality()
                 .equals(other.orderActiveAt, orderActiveAt) &&
             const DeepCollectionEquality()
@@ -1069,6 +1108,7 @@ class _$_DeliveryHistoryDTO extends _DeliveryHistoryDTO {
         const DeepCollectionEquality().hash(distance),
         const DeepCollectionEquality().hash(rider),
         const DeepCollectionEquality().hash(sender),
+        const DeepCollectionEquality().hash(store),
         const DeepCollectionEquality().hash(orderActiveAt),
         const DeepCollectionEquality().hash(orderCancelledAt),
         const DeepCollectionEquality().hash(riderAcceptedAt),
@@ -1141,7 +1181,9 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
       @JsonKey(name: 'rider')
           RiderDTO? rider,
       @JsonKey(name: 'user')
-          SenderDTO? sender,
+          UserDTO? sender,
+      @JsonKey(name: 'restaurant')
+          StoreDTO? store,
       @JsonKey(name: 'order_active_at')
       @TimestampConverter()
           DateTime? orderActiveAt,
@@ -1244,7 +1286,10 @@ abstract class _DeliveryHistoryDTO extends DeliveryHistoryDTO {
   RiderDTO? get rider;
   @override
   @JsonKey(name: 'user')
-  SenderDTO? get sender;
+  UserDTO? get sender;
+  @override
+  @JsonKey(name: 'restaurant')
+  StoreDTO? get store;
   @override //
   @JsonKey(name: 'order_active_at')
   @TimestampConverter()

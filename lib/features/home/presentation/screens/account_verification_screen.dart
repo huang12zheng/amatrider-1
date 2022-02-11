@@ -28,12 +28,13 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (res) => navigator.pushAndPopUntil(
               SuccessRoute(
@@ -70,21 +71,26 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: AdaptiveText(
-                    'Account Verification',
-                    fontSize: 24.sp,
-                    maxLines: 1,
-                    fontWeight: FontWeight.w600,
+            SafeArea(
+              left: false,
+              right: false,
+              bottom: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: AdaptiveText(
+                      'Account Verification',
+                      fontSize: 24.sp,
+                      maxLines: 1,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                //
-                const Flexible(child: VerificationStatusChip()),
-              ],
+                  //
+                  const Flexible(child: VerificationStatusChip()),
+                ],
+              ),
             ),
             //
             VerticalSpace(height: 0.04.sw),
@@ -241,62 +247,73 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
               buildWhen: (p, c) => p.documentID != c.documentID,
               builder: (c, s) => IgnorePointer(
                 ignoring: c.read<AuthWatcherCubit>().state.rider?.verificationStatus == ProfileVerificationStatus.verified,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (_, i) => i != DocumentID.values.length ? VerticalSpace(height: 0.04.sw) : Utils.nothing,
-                  itemBuilder: (_, i) => AdaptiveListTile(
-                    material: true,
-                    leading: Icon(DocumentID.values.elementAt(i).icon,
-                        color: Utils.platform_(
-                          cupertino: s.documentID == DocumentID.values.elementAt(i)
-                              ? Palette.accentColor
-                              : CupertinoColors.systemGrey.resolveFrom(context),
-                        )),
-                    title: AdaptiveText(
-                      '${DocumentID.values.elementAt(i).name}',
-                      textColor: s.documentID == DocumentID.values.elementAt(i)
-                          ? Palette.accentColor
-                          : App.resolveColor(
-                              Palette.text100,
-                              dark: Utils.platform_(cupertino: Colors.white70),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: DocumentID.values
+                      .map(
+                        (e) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AdaptiveListTile(
+                              material: true,
+                              leading: Icon(e.icon,
+                                  color: Utils.platform_(
+                                    cupertino: s.documentID == e ? Palette.accentColor : CupertinoColors.systemGrey.resolveFrom(context),
+                                  )),
+                              title: AdaptiveText(
+                                '${e.name}',
+                                textColor: s.documentID == e
+                                    ? Palette.accentColor
+                                    : App.resolveColor(
+                                        Palette.text100,
+                                        dark: Utils.platform_(cupertino: Colors.white70),
+                                      ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: s.documentID == e ? Palette.accentColor : Palette.neutralF5,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                              ),
+                              tileColor: s.documentID == e
+                                  ? Palette.accent20
+                                  : App.resolveColor(
+                                      Palette.neutralF5,
+                                      dark: Palette.secondaryColor.shade400,
+                                    ),
+                              horizontalTitleGap: 0.01.sw,
+                              onTap: () => c.read<VerificationCubit>().documentTypeChanged(e),
                             ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: s.documentID == DocumentID.values.elementAt(i) ? Palette.accentColor : Palette.neutralF5,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-                    ),
-                    tileColor: s.documentID == DocumentID.values.elementAt(i)
-                        ? Palette.accent20
-                        : App.resolveColor(
-                            Palette.neutralF5,
-                            dark: Palette.secondaryColor.shade400,
-                          ),
-                    horizontalTitleGap: 0.01.sw,
-                    onTap: () => c.read<VerificationCubit>().documentTypeChanged(DocumentID.values.elementAt(i)),
-                  ),
-                  itemCount: DocumentID.values.length,
+                            e != DocumentID.values[DocumentID.values.length - 1] ? VerticalSpace(height: 0.04.sw) : Utils.nothing
+                          ],
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ),
             //
             VerticalSpace(height: 0.03.h),
             //
-            BlocBuilder<VerificationCubit, VerificationState>(
-              builder: (c, s) => BlocSelector<AuthWatcherCubit, AuthWatcherState, ProfileVerificationStatus?>(
-                selector: (s) => s.rider?.verificationStatus,
-                builder: (c, status) => status == ProfileVerificationStatus.in_review || status == ProfileVerificationStatus.verified
-                    ? Utils.nothing
-                    : AppButton(
-                        text: 'Continue',
-                        disabled: s.isLoading || s.documentID == null || s.countries.isEmpty(),
-                        onPressed: () => navigator.push(DocumentUploadRoute(
-                          cubit: context.read<VerificationCubit>(),
-                        )),
-                      ),
+            SafeArea(
+              top: false,
+              left: false,
+              right: false,
+              child: BlocBuilder<VerificationCubit, VerificationState>(
+                builder: (c, s) => BlocSelector<AuthWatcherCubit, AuthWatcherState, ProfileVerificationStatus?>(
+                  selector: (s) => s.rider?.verificationStatus,
+                  builder: (c, status) => status == ProfileVerificationStatus.in_review || status == ProfileVerificationStatus.verified
+                      ? Utils.nothing
+                      : AppButton(
+                          text: 'Continue',
+                          disabled: s.isLoading || s.documentID == null || s.countries.isEmpty(),
+                          onPressed: () => navigator.push(DocumentUploadRoute(
+                            cubit: context.read<VerificationCubit>(),
+                          )),
+                        ),
+                ),
               ),
             ),
             //

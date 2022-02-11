@@ -22,26 +22,26 @@ class _$RequestStateTearOff {
       bool validate = false,
       bool isAccepting = false,
       bool isDeclining = false,
-      bool isLoadingTransitPackages = false,
-      bool isLoadingActivePackages = false,
-      bool isLoadingPotentialPackages = false,
-      SendPackage? currentPackage,
-      KtList<SendPackage> packagesInTransit = const KtList.empty(),
-      KtList<SendPackage> activePackages = const KtList.empty(),
-      KtList<SendPackage> potentialPackages = const KtList.empty(),
+      bool isLoadingInTransit = false,
+      bool isLoadingActive = false,
+      bool isLoadingPotential = false,
+      Logistics? current,
+      KtList<Logistics> inTransit = const KtList.empty(),
+      KtList<Logistics> active = const KtList.empty(),
+      KtList<Logistics> potential = const KtList.empty(),
       Option<AppHttpResponse?> status = const None()}) {
     return _RequestState(
       isLoading: isLoading,
       validate: validate,
       isAccepting: isAccepting,
       isDeclining: isDeclining,
-      isLoadingTransitPackages: isLoadingTransitPackages,
-      isLoadingActivePackages: isLoadingActivePackages,
-      isLoadingPotentialPackages: isLoadingPotentialPackages,
-      currentPackage: currentPackage,
-      packagesInTransit: packagesInTransit,
-      activePackages: activePackages,
-      potentialPackages: potentialPackages,
+      isLoadingInTransit: isLoadingInTransit,
+      isLoadingActive: isLoadingActive,
+      isLoadingPotential: isLoadingPotential,
+      current: current,
+      inTransit: inTransit,
+      active: active,
+      potential: potential,
       status: status,
     );
   }
@@ -56,15 +56,19 @@ mixin _$RequestState {
   bool get validate => throw _privateConstructorUsedError;
   bool get isAccepting => throw _privateConstructorUsedError;
   bool get isDeclining => throw _privateConstructorUsedError;
-  bool get isLoadingTransitPackages => throw _privateConstructorUsedError;
-  bool get isLoadingActivePackages => throw _privateConstructorUsedError;
-  bool get isLoadingPotentialPackages => throw _privateConstructorUsedError;
-  SendPackage? get currentPackage => throw _privateConstructorUsedError;
-  KtList<SendPackage> get packagesInTransit =>
-      throw _privateConstructorUsedError;
-  KtList<SendPackage> get activePackages => throw _privateConstructorUsedError;
-  KtList<SendPackage> get potentialPackages =>
-      throw _privateConstructorUsedError;
+  bool get isLoadingInTransit => throw _privateConstructorUsedError;
+  bool get isLoadingActive => throw _privateConstructorUsedError;
+  bool get isLoadingPotential => throw _privateConstructorUsedError;
+  Logistics? get current => throw _privateConstructorUsedError;
+  KtList<Logistics> get inTransit => throw _privateConstructorUsedError;
+  KtList<Logistics> get active => throw _privateConstructorUsedError;
+  KtList<Logistics> get potential =>
+      throw _privateConstructorUsedError; // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
+// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
+// @Default(KtList.empty()) KtList<SendPackage> activePackages,
+// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
+// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
+// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -82,16 +86,14 @@ abstract class $RequestStateCopyWith<$Res> {
       bool validate,
       bool isAccepting,
       bool isDeclining,
-      bool isLoadingTransitPackages,
-      bool isLoadingActivePackages,
-      bool isLoadingPotentialPackages,
-      SendPackage? currentPackage,
-      KtList<SendPackage> packagesInTransit,
-      KtList<SendPackage> activePackages,
-      KtList<SendPackage> potentialPackages,
+      bool isLoadingInTransit,
+      bool isLoadingActive,
+      bool isLoadingPotential,
+      Logistics? current,
+      KtList<Logistics> inTransit,
+      KtList<Logistics> active,
+      KtList<Logistics> potential,
       Option<AppHttpResponse?> status});
-
-  $SendPackageCopyWith<$Res>? get currentPackage;
 }
 
 /// @nodoc
@@ -108,13 +110,13 @@ class _$RequestStateCopyWithImpl<$Res> implements $RequestStateCopyWith<$Res> {
     Object? validate = freezed,
     Object? isAccepting = freezed,
     Object? isDeclining = freezed,
-    Object? isLoadingTransitPackages = freezed,
-    Object? isLoadingActivePackages = freezed,
-    Object? isLoadingPotentialPackages = freezed,
-    Object? currentPackage = freezed,
-    Object? packagesInTransit = freezed,
-    Object? activePackages = freezed,
-    Object? potentialPackages = freezed,
+    Object? isLoadingInTransit = freezed,
+    Object? isLoadingActive = freezed,
+    Object? isLoadingPotential = freezed,
+    Object? current = freezed,
+    Object? inTransit = freezed,
+    Object? active = freezed,
+    Object? potential = freezed,
     Object? status = freezed,
   }) {
     return _then(_value.copyWith(
@@ -134,50 +136,39 @@ class _$RequestStateCopyWithImpl<$Res> implements $RequestStateCopyWith<$Res> {
           ? _value.isDeclining
           : isDeclining // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingTransitPackages: isLoadingTransitPackages == freezed
-          ? _value.isLoadingTransitPackages
-          : isLoadingTransitPackages // ignore: cast_nullable_to_non_nullable
+      isLoadingInTransit: isLoadingInTransit == freezed
+          ? _value.isLoadingInTransit
+          : isLoadingInTransit // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingActivePackages: isLoadingActivePackages == freezed
-          ? _value.isLoadingActivePackages
-          : isLoadingActivePackages // ignore: cast_nullable_to_non_nullable
+      isLoadingActive: isLoadingActive == freezed
+          ? _value.isLoadingActive
+          : isLoadingActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingPotentialPackages: isLoadingPotentialPackages == freezed
-          ? _value.isLoadingPotentialPackages
-          : isLoadingPotentialPackages // ignore: cast_nullable_to_non_nullable
+      isLoadingPotential: isLoadingPotential == freezed
+          ? _value.isLoadingPotential
+          : isLoadingPotential // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentPackage: currentPackage == freezed
-          ? _value.currentPackage
-          : currentPackage // ignore: cast_nullable_to_non_nullable
-              as SendPackage?,
-      packagesInTransit: packagesInTransit == freezed
-          ? _value.packagesInTransit
-          : packagesInTransit // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
-      activePackages: activePackages == freezed
-          ? _value.activePackages
-          : activePackages // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
-      potentialPackages: potentialPackages == freezed
-          ? _value.potentialPackages
-          : potentialPackages // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
+      current: current == freezed
+          ? _value.current
+          : current // ignore: cast_nullable_to_non_nullable
+              as Logistics?,
+      inTransit: inTransit == freezed
+          ? _value.inTransit
+          : inTransit // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
+      active: active == freezed
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
+      potential: potential == freezed
+          ? _value.potential
+          : potential // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Option<AppHttpResponse?>,
     ));
-  }
-
-  @override
-  $SendPackageCopyWith<$Res>? get currentPackage {
-    if (_value.currentPackage == null) {
-      return null;
-    }
-
-    return $SendPackageCopyWith<$Res>(_value.currentPackage!, (value) {
-      return _then(_value.copyWith(currentPackage: value));
-    });
   }
 }
 
@@ -193,17 +184,14 @@ abstract class _$RequestStateCopyWith<$Res>
       bool validate,
       bool isAccepting,
       bool isDeclining,
-      bool isLoadingTransitPackages,
-      bool isLoadingActivePackages,
-      bool isLoadingPotentialPackages,
-      SendPackage? currentPackage,
-      KtList<SendPackage> packagesInTransit,
-      KtList<SendPackage> activePackages,
-      KtList<SendPackage> potentialPackages,
+      bool isLoadingInTransit,
+      bool isLoadingActive,
+      bool isLoadingPotential,
+      Logistics? current,
+      KtList<Logistics> inTransit,
+      KtList<Logistics> active,
+      KtList<Logistics> potential,
       Option<AppHttpResponse?> status});
-
-  @override
-  $SendPackageCopyWith<$Res>? get currentPackage;
 }
 
 /// @nodoc
@@ -222,13 +210,13 @@ class __$RequestStateCopyWithImpl<$Res> extends _$RequestStateCopyWithImpl<$Res>
     Object? validate = freezed,
     Object? isAccepting = freezed,
     Object? isDeclining = freezed,
-    Object? isLoadingTransitPackages = freezed,
-    Object? isLoadingActivePackages = freezed,
-    Object? isLoadingPotentialPackages = freezed,
-    Object? currentPackage = freezed,
-    Object? packagesInTransit = freezed,
-    Object? activePackages = freezed,
-    Object? potentialPackages = freezed,
+    Object? isLoadingInTransit = freezed,
+    Object? isLoadingActive = freezed,
+    Object? isLoadingPotential = freezed,
+    Object? current = freezed,
+    Object? inTransit = freezed,
+    Object? active = freezed,
+    Object? potential = freezed,
     Object? status = freezed,
   }) {
     return _then(_RequestState(
@@ -248,34 +236,34 @@ class __$RequestStateCopyWithImpl<$Res> extends _$RequestStateCopyWithImpl<$Res>
           ? _value.isDeclining
           : isDeclining // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingTransitPackages: isLoadingTransitPackages == freezed
-          ? _value.isLoadingTransitPackages
-          : isLoadingTransitPackages // ignore: cast_nullable_to_non_nullable
+      isLoadingInTransit: isLoadingInTransit == freezed
+          ? _value.isLoadingInTransit
+          : isLoadingInTransit // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingActivePackages: isLoadingActivePackages == freezed
-          ? _value.isLoadingActivePackages
-          : isLoadingActivePackages // ignore: cast_nullable_to_non_nullable
+      isLoadingActive: isLoadingActive == freezed
+          ? _value.isLoadingActive
+          : isLoadingActive // ignore: cast_nullable_to_non_nullable
               as bool,
-      isLoadingPotentialPackages: isLoadingPotentialPackages == freezed
-          ? _value.isLoadingPotentialPackages
-          : isLoadingPotentialPackages // ignore: cast_nullable_to_non_nullable
+      isLoadingPotential: isLoadingPotential == freezed
+          ? _value.isLoadingPotential
+          : isLoadingPotential // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentPackage: currentPackage == freezed
-          ? _value.currentPackage
-          : currentPackage // ignore: cast_nullable_to_non_nullable
-              as SendPackage?,
-      packagesInTransit: packagesInTransit == freezed
-          ? _value.packagesInTransit
-          : packagesInTransit // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
-      activePackages: activePackages == freezed
-          ? _value.activePackages
-          : activePackages // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
-      potentialPackages: potentialPackages == freezed
-          ? _value.potentialPackages
-          : potentialPackages // ignore: cast_nullable_to_non_nullable
-              as KtList<SendPackage>,
+      current: current == freezed
+          ? _value.current
+          : current // ignore: cast_nullable_to_non_nullable
+              as Logistics?,
+      inTransit: inTransit == freezed
+          ? _value.inTransit
+          : inTransit // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
+      active: active == freezed
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
+      potential: potential == freezed
+          ? _value.potential
+          : potential // ignore: cast_nullable_to_non_nullable
+              as KtList<Logistics>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -292,13 +280,13 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
       this.validate = false,
       this.isAccepting = false,
       this.isDeclining = false,
-      this.isLoadingTransitPackages = false,
-      this.isLoadingActivePackages = false,
-      this.isLoadingPotentialPackages = false,
-      this.currentPackage,
-      this.packagesInTransit = const KtList.empty(),
-      this.activePackages = const KtList.empty(),
-      this.potentialPackages = const KtList.empty(),
+      this.isLoadingInTransit = false,
+      this.isLoadingActive = false,
+      this.isLoadingPotential = false,
+      this.current,
+      this.inTransit = const KtList.empty(),
+      this.active = const KtList.empty(),
+      this.potential = const KtList.empty(),
       this.status = const None()})
       : super._();
 
@@ -316,31 +304,36 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
   final bool isDeclining;
   @JsonKey()
   @override
-  final bool isLoadingTransitPackages;
+  final bool isLoadingInTransit;
   @JsonKey()
   @override
-  final bool isLoadingActivePackages;
+  final bool isLoadingActive;
   @JsonKey()
   @override
-  final bool isLoadingPotentialPackages;
+  final bool isLoadingPotential;
   @override
-  final SendPackage? currentPackage;
+  final Logistics? current;
   @JsonKey()
   @override
-  final KtList<SendPackage> packagesInTransit;
+  final KtList<Logistics> inTransit;
   @JsonKey()
   @override
-  final KtList<SendPackage> activePackages;
+  final KtList<Logistics> active;
   @JsonKey()
   @override
-  final KtList<SendPackage> potentialPackages;
+  final KtList<Logistics> potential;
   @JsonKey()
-  @override
+  @override // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
+// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
+// @Default(KtList.empty()) KtList<SendPackage> activePackages,
+// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
+// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
+// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
   final Option<AppHttpResponse?> status;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RequestState(isLoading: $isLoading, validate: $validate, isAccepting: $isAccepting, isDeclining: $isDeclining, isLoadingTransitPackages: $isLoadingTransitPackages, isLoadingActivePackages: $isLoadingActivePackages, isLoadingPotentialPackages: $isLoadingPotentialPackages, currentPackage: $currentPackage, packagesInTransit: $packagesInTransit, activePackages: $activePackages, potentialPackages: $potentialPackages, status: $status)';
+    return 'RequestState(isLoading: $isLoading, validate: $validate, isAccepting: $isAccepting, isDeclining: $isDeclining, isLoadingInTransit: $isLoadingInTransit, isLoadingActive: $isLoadingActive, isLoadingPotential: $isLoadingPotential, current: $current, inTransit: $inTransit, active: $active, potential: $potential, status: $status)';
   }
 
   @override
@@ -352,16 +345,13 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('validate', validate))
       ..add(DiagnosticsProperty('isAccepting', isAccepting))
       ..add(DiagnosticsProperty('isDeclining', isDeclining))
-      ..add(DiagnosticsProperty(
-          'isLoadingTransitPackages', isLoadingTransitPackages))
-      ..add(DiagnosticsProperty(
-          'isLoadingActivePackages', isLoadingActivePackages))
-      ..add(DiagnosticsProperty(
-          'isLoadingPotentialPackages', isLoadingPotentialPackages))
-      ..add(DiagnosticsProperty('currentPackage', currentPackage))
-      ..add(DiagnosticsProperty('packagesInTransit', packagesInTransit))
-      ..add(DiagnosticsProperty('activePackages', activePackages))
-      ..add(DiagnosticsProperty('potentialPackages', potentialPackages))
+      ..add(DiagnosticsProperty('isLoadingInTransit', isLoadingInTransit))
+      ..add(DiagnosticsProperty('isLoadingActive', isLoadingActive))
+      ..add(DiagnosticsProperty('isLoadingPotential', isLoadingPotential))
+      ..add(DiagnosticsProperty('current', current))
+      ..add(DiagnosticsProperty('inTransit', inTransit))
+      ..add(DiagnosticsProperty('active', active))
+      ..add(DiagnosticsProperty('potential', potential))
       ..add(DiagnosticsProperty('status', status));
   }
 
@@ -376,20 +366,16 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
                 .equals(other.isAccepting, isAccepting) &&
             const DeepCollectionEquality()
                 .equals(other.isDeclining, isDeclining) &&
-            const DeepCollectionEquality().equals(
-                other.isLoadingTransitPackages, isLoadingTransitPackages) &&
-            const DeepCollectionEquality().equals(
-                other.isLoadingActivePackages, isLoadingActivePackages) &&
-            const DeepCollectionEquality().equals(
-                other.isLoadingPotentialPackages, isLoadingPotentialPackages) &&
             const DeepCollectionEquality()
-                .equals(other.currentPackage, currentPackage) &&
+                .equals(other.isLoadingInTransit, isLoadingInTransit) &&
             const DeepCollectionEquality()
-                .equals(other.packagesInTransit, packagesInTransit) &&
+                .equals(other.isLoadingActive, isLoadingActive) &&
             const DeepCollectionEquality()
-                .equals(other.activePackages, activePackages) &&
-            const DeepCollectionEquality()
-                .equals(other.potentialPackages, potentialPackages) &&
+                .equals(other.isLoadingPotential, isLoadingPotential) &&
+            const DeepCollectionEquality().equals(other.current, current) &&
+            const DeepCollectionEquality().equals(other.inTransit, inTransit) &&
+            const DeepCollectionEquality().equals(other.active, active) &&
+            const DeepCollectionEquality().equals(other.potential, potential) &&
             const DeepCollectionEquality().equals(other.status, status));
   }
 
@@ -400,13 +386,13 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(validate),
       const DeepCollectionEquality().hash(isAccepting),
       const DeepCollectionEquality().hash(isDeclining),
-      const DeepCollectionEquality().hash(isLoadingTransitPackages),
-      const DeepCollectionEquality().hash(isLoadingActivePackages),
-      const DeepCollectionEquality().hash(isLoadingPotentialPackages),
-      const DeepCollectionEquality().hash(currentPackage),
-      const DeepCollectionEquality().hash(packagesInTransit),
-      const DeepCollectionEquality().hash(activePackages),
-      const DeepCollectionEquality().hash(potentialPackages),
+      const DeepCollectionEquality().hash(isLoadingInTransit),
+      const DeepCollectionEquality().hash(isLoadingActive),
+      const DeepCollectionEquality().hash(isLoadingPotential),
+      const DeepCollectionEquality().hash(current),
+      const DeepCollectionEquality().hash(inTransit),
+      const DeepCollectionEquality().hash(active),
+      const DeepCollectionEquality().hash(potential),
       const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
@@ -421,13 +407,13 @@ abstract class _RequestState extends RequestState {
       bool validate,
       bool isAccepting,
       bool isDeclining,
-      bool isLoadingTransitPackages,
-      bool isLoadingActivePackages,
-      bool isLoadingPotentialPackages,
-      SendPackage? currentPackage,
-      KtList<SendPackage> packagesInTransit,
-      KtList<SendPackage> activePackages,
-      KtList<SendPackage> potentialPackages,
+      bool isLoadingInTransit,
+      bool isLoadingActive,
+      bool isLoadingPotential,
+      Logistics? current,
+      KtList<Logistics> inTransit,
+      KtList<Logistics> active,
+      KtList<Logistics> potential,
       Option<AppHttpResponse?> status}) = _$_RequestState;
   const _RequestState._() : super._();
 
@@ -440,20 +426,25 @@ abstract class _RequestState extends RequestState {
   @override
   bool get isDeclining;
   @override
-  bool get isLoadingTransitPackages;
+  bool get isLoadingInTransit;
   @override
-  bool get isLoadingActivePackages;
+  bool get isLoadingActive;
   @override
-  bool get isLoadingPotentialPackages;
+  bool get isLoadingPotential;
   @override
-  SendPackage? get currentPackage;
+  Logistics? get current;
   @override
-  KtList<SendPackage> get packagesInTransit;
+  KtList<Logistics> get inTransit;
   @override
-  KtList<SendPackage> get activePackages;
+  KtList<Logistics> get active;
   @override
-  KtList<SendPackage> get potentialPackages;
-  @override
+  KtList<Logistics> get potential;
+  @override // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
+// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
+// @Default(KtList.empty()) KtList<SendPackage> activePackages,
+// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
+// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
+// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
   Option<AppHttpResponse?> get status;
   @override
   @JsonKey(ignore: true)

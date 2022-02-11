@@ -8,14 +8,14 @@ part 'payment_method.g.dart';
 
 class PaymentMethod extends EnumClass {
   static const PaymentMethod CARD = _$CARD;
-  static const PaymentMethod PAY_ON_DELIVERY_WITH_CARD =
-      _$PAY_ON_DELIVERY_WITH_CARD;
-  static const PaymentMethod PAY_ON_DELIVERY_WITH_CASH =
-      _$PAY_ON_DELIVERY_WITH_CASH;
+  static const PaymentMethod PAY_ON_DELIVERY_WITH_CARD = _$PAY_ON_DELIVERY_WITH_CARD;
+  static const PaymentMethod PAY_ON_DELIVERY_WITH_CASH = _$PAY_ON_DELIVERY_WITH_CASH;
   static const PaymentMethod PAY_WITH_BANK_TRANSFER = _$PAY_WITH_BANK_TRANSFER;
   static const PaymentMethod FLUTTERWAVE = _$FLUTTERWAVE;
   static const PaymentMethod STRIPE = _$STRIPE;
   static const PaymentMethod PAYSTACK = _$PAYSTACK;
+  @BuiltValueEnumConst(fallback: true)
+  static const PaymentMethod NONE = _$NONE;
 
   const PaymentMethod._(String name) : super(name);
 

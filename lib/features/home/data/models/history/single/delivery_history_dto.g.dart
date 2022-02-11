@@ -36,7 +36,10 @@ _$_DeliveryHistoryDTO _$$_DeliveryHistoryDTOFromJson(
           : RiderDTO.fromJson(json['rider'] as Map<String, dynamic>),
       sender: json['user'] == null
           ? null
-          : SenderDTO.fromJson(json['user'] as Map<String, dynamic>),
+          : UserDTO.fromJson(json['user'] as Map<String, dynamic>),
+      store: json['restaurant'] == null
+          ? null
+          : StoreDTO.fromJson(json['restaurant'] as Map<String, dynamic>),
       orderActiveAt:
           const TimestampConverter().fromJson(json['order_active_at']),
       orderCancelledAt:
@@ -98,6 +101,7 @@ Map<String, dynamic> _$$_DeliveryHistoryDTOToJson(
   writeNotNull('distance', const DoubleSerializer().toJson(instance.distance));
   writeNotNull('rider', instance.rider?.toJson());
   writeNotNull('user', instance.sender?.toJson());
+  writeNotNull('restaurant', instance.store?.toJson());
   writeNotNull('order_active_at',
       const TimestampConverter().toJson(instance.orderActiveAt));
   writeNotNull('order_cancelled_at',

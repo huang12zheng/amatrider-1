@@ -14,7 +14,7 @@ _$_RiderLocationDTO _$$_RiderLocationDTOFromJson(Map<String, dynamic> json) =>
       accuracy: (json['accuracy'] as num?)?.toDouble(),
       altitude: (json['altitude'] as num?)?.toDouble(),
       speed: (json['speed'] as num?)?.toDouble(),
-      speedAccuracy: (json['speedAccuracy'] as num?)?.toDouble(),
+      speedAccuracy: (json['speed_accuracy'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$_RiderLocationDTOToJson(_$_RiderLocationDTO instance) {
@@ -32,6 +32,6 @@ Map<String, dynamic> _$$_RiderLocationDTOToJson(_$_RiderLocationDTO instance) {
   writeNotNull('accuracy', instance.accuracy);
   writeNotNull('altitude', instance.altitude);
   writeNotNull('speed', instance.speed);
-  writeNotNull('speedAccuracy', instance.speedAccuracy);
+  writeNotNull('speed_accuracy', instance.speedAccuracy);
   return val;
 }

@@ -1,32 +1,40 @@
-part of profile_page.dart;
+library phone_update_bottomsheet.dart;
 
-/// A stateless widget to render _PhoneUpdateBottomSheet.
-class _PhoneUpdateBottomSheet extends StatelessWidget {
-  const _PhoneUpdateBottomSheet({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
+
+/// A stateless widget to render PhoneUpdateBottomSheet.
+class PhoneUpdateBottomSheet extends StatelessWidget {
+  const PhoneUpdateBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<AuthCubit>(),
+      create: (_) => getIt<AuthCubit>()..init(loader: true),
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
-          (th) => th?.response.map(
+          (it) => it?.response.map(
+            info: (f) => PopupDialog.info(message: f.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(
                 dismissed: () => s.pop
-                    ? navigator.popAndPush(OTPVerificationRoute(
-                        type: OTPVerificationType.newPhoneNumber,
-                      ))
+                    ? App.rootRoute == DashboardRoute.name
+                        ? navigator.pop().then((_) => navigator.push(const OTPVerificationRoute()))
+                        : navigator.pushAndPopUntil(const OTPVerificationRoute(), predicate: (_) => false)
                     : null,
               ),
             ).render(c),
@@ -41,7 +49,7 @@ class _PhoneUpdateBottomSheet extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              VerticalSpace(height: 0.04.sw),
+              0.01.verticalh,
               //
               ClipRRect(
                 borderRadius: BorderRadius.circular(Utils.cardRadius),
@@ -51,7 +59,7 @@ class _PhoneUpdateBottomSheet extends StatelessWidget {
                 ),
               ),
               //
-              VerticalSpace(height: 0.03.sw),
+              0.014.verticalh,
               //
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
@@ -66,46 +74,38 @@ class _PhoneUpdateBottomSheet extends StatelessWidget {
                       ),
                     ),
                     //
-                    App.platform.fold(
-                      material: () => PhoneFormField<AuthCubit, AuthState>(
-                        disabled: (s) => s.isLoading,
-                        validate: (s) => s.validate,
-                        field: (s) => s.rider.phone,
-                        focus: AuthState.newPhoneFocus,
-                        borderRadius: BorderRadius.circular(100),
-                        controller: (s) => s.phoneTextController,
-                        onPickerBuilder: (cubit, country) {
-                          if (cubit.state.selectedCountry == null)
-                            cubit.countryChanged(country);
-                        },
-                        onCountryChanged: (cubit, country) =>
-                            cubit.countryChanged(country),
-                        onChanged: (cubit, str) =>
-                            cubit.phoneNumberChanged(str),
-                      ),
-                      cupertino: () => CupertinoFormSection(children: [
-                        PhoneFormField<AuthCubit, AuthState>(
-                          prefix: 'Phone',
-                          disabled: (s) => s.isLoading,
-                          validate: (s) => s.validate,
-                          focus: AuthState.newPhoneFocus,
-                          response: (s) => s.status,
-                          field: (s) => s.rider.phone,
-                          onChanged: (fn, str) => fn.phoneNumberChanged(str),
-                        ),
-                      ]),
+                    PhoneFormField<AuthCubit, AuthState>(
+                      disabled: (s) => s.isLoading,
+                      validate: (s) => s.validate,
+                      field: (s) => s.rider.phone,
+                      focus: AuthState.newPhoneFocus,
+                      controller: (s) => s.phoneTextController,
+                      response: (s) => s.status,
+                      selectedCountry: (s) => s.selectedCountry,
+                      hideCountryPicker: (s) => s.selectedCountry == null,
+                      onPickerBuilder: (cubit, country) {
+                        if (cubit.state.selectedCountry == null) cubit.countryChanged(country);
+                      },
+                      onCountryChanged: (cubit, country) => cubit.countryChanged(country),
+                      onChanged: (cubit, str) => cubit.phoneNumberChanged(str),
                     ),
                     //
-                    VerticalSpace(height: 0.04.sw),
+                    0.018.verticalh,
                     //
-                    BlocBuilder<AuthCubit, AuthState>(
-                      buildWhen: (p, c) => p.isLoading != c.isLoading,
-                      builder: (c, s) => Hero(
-                        tag: Const.profileLogoutBtnHerotag,
-                        child: AppButton(
-                          text: 'Continue',
-                          isLoading: s.isLoading,
-                          onPressed: c.read<AuthCubit>().sendPhoneUpdateOTP,
+                    SafeArea(
+                      top: false,
+                      left: false,
+                      right: false,
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        buildWhen: (p, c) => p.isLoading != c.isLoading,
+                        builder: (c, s) => Hero(
+                          tag: Const.profileLogoutBtnHerotag,
+                          child: AppButton(
+                            text: 'Continue',
+                            isLoading: s.isLoading,
+                            disabled: s.isLoading,
+                            onPressed: c.read<AuthCubit>().sendPhoneUpdateOTP,
+                          ),
                         ),
                       ),
                     ),

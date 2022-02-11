@@ -90,6 +90,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                 fontSize: 17.0.sp,
                               ),
                             ),
+                            tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
                             contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                             value: true,
                             inactiveThumbColor: Palette.text40,
@@ -107,6 +108,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                             context.watch<ThemeCubit>().isDarkMode ? 'Light Mode' : 'Dark Mode',
                             style: listTileTextStyle,
                           ),
+                          tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
                           contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                           value: context.watch<ThemeCubit>().isDarkMode,
                           inactiveThumbColor: Palette.text40,
@@ -144,6 +146,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                     'Manage Password',
                                     style: listTileTextStyle,
                                   ),
+                                  tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
                                   contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                                   leading: const Icon(
                                     AmatNow.key_password,
@@ -174,10 +177,6 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                 onTap: () {
                                   App.showAlertDialog(
                                     context: context,
-                                    barrierColor: App.resolveColor(
-                                      Colors.grey.shade800.withOpacity(0.55),
-                                      dark: Colors.white54,
-                                    ),
                                     builder: (_) => const DeleteAccountAlertdialog(),
                                   );
                                 },

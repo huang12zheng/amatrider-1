@@ -7,15 +7,17 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
+//
+// ignore_for_file: type=lint
 
-import 'dart:async' as _i14;
+import 'dart:async' as _i15;
 
 import 'package:amatrider/_404.dart' as _i7;
 import 'package:amatrider/core/presentation/index.dart' as _i6;
 import 'package:amatrider/features/auth/presentation/managers/managers.dart'
-    as _i12;
+    as _i13;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
-import 'package:amatrider/features/home/domain/entities/index.dart' as _i13;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i14;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i9;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -24,20 +26,27 @@ import 'package:amatrider/features/home/presentation/widgets/index.dart' as _i5;
 import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:amatrider/manager/router/guards/guards.dart' as _i11;
-import 'package:amatrider/widgets/widgets.dart' as _i15;
+import 'package:amatrider/widgets/widgets.dart' as _i16;
 import 'package:auto_route/auto_route.dart' as _i8;
+import 'package:flutter/cupertino.dart' as _i12;
 import 'package:flutter/material.dart' as _i10;
 
 class AppRouter extends _i8.RootStackRouter {
   AppRouter(
       {_i10.GlobalKey<_i10.NavigatorState>? navigatorKey,
       required this.guestGuard,
-      required this.authGuard})
+      required this.incompleteKYCGuard,
+      required this.authGuard,
+      required this.accountVerificationGuard})
       : super(navigatorKey);
 
   final _i11.GuestGuard guestGuard;
 
+  final _i11.IncompleteKYCGuard incompleteKYCGuard;
+
   final _i11.AuthGuard authGuard;
+
+  final _i11.AccountVerificationGuard accountVerificationGuard;
 
   @override
   final Map<String, _i8.PageFactory> pagesMap = {
@@ -65,10 +74,10 @@ class AppRouter extends _i8.RootStackRouter {
           child: const _i2.SignupScreen(),
           title: 'Sign Up');
     },
-    SocialsSignupRoute.name: (routeData) {
+    SocialsAuthRoute.name: (routeData) {
       return _i8.AdaptivePage<dynamic>(
           routeData: routeData,
-          child: const _i2.SocialsSignupScreen(),
+          child: const _i2.SocialsAuthScreen(),
           title: 'Continue with Socials');
     },
     ForgotPasswordRoute.name: (routeData) {
@@ -79,11 +88,9 @@ class AppRouter extends _i8.RootStackRouter {
           title: 'Password Reset');
     },
     OTPVerificationRoute.name: (routeData) {
-      final args = routeData.argsAs<OTPVerificationRouteArgs>(
-          orElse: () => const OTPVerificationRouteArgs());
       return _i8.AdaptivePage<dynamic>(
           routeData: routeData,
-          child: _i2.OTPVerificationScreen(key: args.key, type: args.type),
+          child: const _i2.OTPVerificationScreen(),
           fullscreenDialog: true,
           title: 'OTP');
     },
@@ -122,7 +129,9 @@ class AppRouter extends _i8.RootStackRouter {
       return _i8.AdaptivePage<dynamic>(
           routeData: routeData,
           child: _i3.PackageDeliveryAcceptedScreen(
-              key: args.key, sendPackage: args.sendPackage));
+              key: args.key,
+              deliverable: args.deliverable,
+              onDelivered: args.onDelivered));
     },
     OrderDeliveryAcceptedRoute.name: (routeData) {
       return _i8.AdaptivePage<dynamic>(
@@ -256,32 +265,31 @@ class AppRouter extends _i8.RootStackRouter {
             path: '/onboarding-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard]),
+            guards: [guestGuard, incompleteKYCGuard]),
         _i8.RouteConfig(GetStartedRoute.name,
             path: 'get-started-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard]),
+            guards: [guestGuard, incompleteKYCGuard]),
         _i8.RouteConfig(LoginRoute.name,
             path: 'login-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard]),
+            guards: [guestGuard, incompleteKYCGuard]),
         _i8.RouteConfig(SignupRoute.name,
             path: 'signup-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard]),
-        _i8.RouteConfig(SocialsSignupRoute.name,
+            guards: [guestGuard, incompleteKYCGuard]),
+        _i8.RouteConfig(SocialsAuthRoute.name,
             path: 'socials-signup-screen',
             fullMatch: true,
-            usesPathAsKey: true,
-            guards: [guestGuard]),
+            usesPathAsKey: true),
         _i8.RouteConfig(ForgotPasswordRoute.name,
             path: 'forgot-password-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard]),
+            guards: [guestGuard, incompleteKYCGuard]),
         _i8.RouteConfig(OTPVerificationRoute.name,
             path: 'otp-verification-screen',
             fullMatch: true,
@@ -290,15 +298,22 @@ class AppRouter extends _i8.RootStackRouter {
             path: 'bottom-navigation',
             fullMatch: true,
             guards: [
-              authGuard
+              authGuard,
+              incompleteKYCGuard
             ],
             children: [
               _i8.RouteConfig(HomeRouter.name,
                   path: 'home',
                   parent: DashboardRoute.name,
+                  guards: [
+                    authGuard,
+                    incompleteKYCGuard
+                  ],
                   children: [
                     _i8.RouteConfig(HomePage.name,
-                        path: '', parent: HomeRouter.name),
+                        path: '',
+                        parent: HomeRouter.name,
+                        guards: [authGuard, incompleteKYCGuard]),
                     _i8.RouteConfig('*#redirect',
                         path: '*',
                         parent: HomeRouter.name,
@@ -310,7 +325,9 @@ class AppRouter extends _i8.RootStackRouter {
                   parent: DashboardRoute.name,
                   children: [
                     _i8.RouteConfig(HistoryPage.name,
-                        path: '', parent: HistoryRouter.name),
+                        path: '',
+                        parent: HistoryRouter.name,
+                        guards: [authGuard, incompleteKYCGuard]),
                     _i8.RouteConfig('*#redirect',
                         path: '*',
                         parent: HistoryRouter.name,
@@ -322,7 +339,9 @@ class AppRouter extends _i8.RootStackRouter {
                   parent: DashboardRoute.name,
                   children: [
                     _i8.RouteConfig(InsightsPage.name,
-                        path: '', parent: InsightRouter.name),
+                        path: '',
+                        parent: InsightRouter.name,
+                        guards: [authGuard, incompleteKYCGuard]),
                     _i8.RouteConfig('*#redirect',
                         path: '*',
                         parent: InsightRouter.name,
@@ -334,7 +353,9 @@ class AppRouter extends _i8.RootStackRouter {
                   parent: DashboardRoute.name,
                   children: [
                     _i8.RouteConfig(ProfilePage.name,
-                        path: '', parent: ProfileRouter.name),
+                        path: '',
+                        parent: ProfileRouter.name,
+                        guards: [authGuard, incompleteKYCGuard]),
                     _i8.RouteConfig('*#redirect',
                         path: '*',
                         parent: ProfileRouter.name,
@@ -345,7 +366,7 @@ class AppRouter extends _i8.RootStackRouter {
         _i8.RouteConfig(AccountVerificationRoute.name,
             path: 'account-verification-screen',
             fullMatch: true,
-            guards: [authGuard]),
+            guards: [authGuard, accountVerificationGuard]),
         _i8.RouteConfig(DocumentUploadRoute.name,
             path: 'document-upload-screen',
             fullMatch: true,
@@ -457,12 +478,12 @@ class SignupRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.SocialsSignupScreen]
-class SocialsSignupRoute extends _i8.PageRouteInfo<void> {
-  const SocialsSignupRoute()
-      : super(SocialsSignupRoute.name, path: 'socials-signup-screen');
+/// [_i2.SocialsAuthScreen]
+class SocialsAuthRoute extends _i8.PageRouteInfo<void> {
+  const SocialsAuthRoute()
+      : super(SocialsAuthRoute.name, path: 'socials-signup-screen');
 
-  static const String name = 'SocialsSignupRoute';
+  static const String name = 'SocialsAuthRoute';
 }
 
 /// generated route for
@@ -476,29 +497,11 @@ class ForgotPasswordRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.OTPVerificationScreen]
-class OTPVerificationRoute extends _i8.PageRouteInfo<OTPVerificationRouteArgs> {
-  OTPVerificationRoute(
-      {_i10.Key? key,
-      _i2.OTPVerificationType? type = _i2.OTPVerificationType.phoneNumber})
-      : super(OTPVerificationRoute.name,
-            path: 'otp-verification-screen',
-            args: OTPVerificationRouteArgs(key: key, type: type));
+class OTPVerificationRoute extends _i8.PageRouteInfo<void> {
+  const OTPVerificationRoute()
+      : super(OTPVerificationRoute.name, path: 'otp-verification-screen');
 
   static const String name = 'OTPVerificationRoute';
-}
-
-class OTPVerificationRouteArgs {
-  const OTPVerificationRouteArgs(
-      {this.key, this.type = _i2.OTPVerificationType.phoneNumber});
-
-  final _i10.Key? key;
-
-  final _i2.OTPVerificationType? type;
-
-  @override
-  String toString() {
-    return 'OTPVerificationRouteArgs{key: $key, type: $type}';
-  }
 }
 
 /// generated route for
@@ -524,7 +527,7 @@ class AccountVerificationRoute extends _i8.PageRouteInfo<void> {
 /// generated route for
 /// [_i3.DocumentUploadScreen]
 class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
-  DocumentUploadRoute({_i10.Key? key, required _i12.VerificationCubit cubit})
+  DocumentUploadRoute({_i12.Key? key, required _i13.VerificationCubit cubit})
       : super(DocumentUploadRoute.name,
             path: 'document-upload-screen',
             args: DocumentUploadRouteArgs(key: key, cubit: cubit));
@@ -535,9 +538,9 @@ class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
 class DocumentUploadRouteArgs {
   const DocumentUploadRouteArgs({this.key, required this.cubit});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i12.VerificationCubit cubit;
+  final _i13.VerificationCubit cubit;
 
   @override
   String toString() {
@@ -575,25 +578,30 @@ class EditBankDetailsRoute extends _i8.PageRouteInfo<void> {
 class PackageDeliveryAcceptedRoute
     extends _i8.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
   PackageDeliveryAcceptedRoute(
-      {_i10.Key? key, required _i13.SendPackage sendPackage})
+      {_i12.Key? key,
+      required _i14.Logistics deliverable,
+      void Function(_i14.Logistics)? onDelivered})
       : super(PackageDeliveryAcceptedRoute.name,
             path: 'package-delivery-accepted-screen',
             args: PackageDeliveryAcceptedRouteArgs(
-                key: key, sendPackage: sendPackage));
+                key: key, deliverable: deliverable, onDelivered: onDelivered));
 
   static const String name = 'PackageDeliveryAcceptedRoute';
 }
 
 class PackageDeliveryAcceptedRouteArgs {
-  const PackageDeliveryAcceptedRouteArgs({this.key, required this.sendPackage});
+  const PackageDeliveryAcceptedRouteArgs(
+      {this.key, required this.deliverable, this.onDelivered});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i13.SendPackage sendPackage;
+  final _i14.Logistics deliverable;
+
+  final void Function(_i14.Logistics)? onDelivered;
 
   @override
   String toString() {
-    return 'PackageDeliveryAcceptedRouteArgs{key: $key, sendPackage: $sendPackage}';
+    return 'PackageDeliveryAcceptedRouteArgs{key: $key, deliverable: $deliverable, onDelivered: $onDelivered}';
   }
 }
 
@@ -655,15 +663,15 @@ class PromotionsRoute extends _i8.PageRouteInfo<void> {
 /// [_i5.AccessScreen]
 class AccessRoute extends _i8.PageRouteInfo<AccessRouteArgs> {
   AccessRoute(
-      {_i10.Key? key,
+      {_i12.Key? key,
       required String title,
       required String content,
       String firstButtonText = 'Grant Access',
       String? secondButtonText,
-      required _i14.Future<bool> Function() onAccept,
-      _i14.Future<bool> Function()? onWillPop,
-      _i14.Future<bool> Function()? onDecline,
-      _i15.AdaptiveText? additionalContent})
+      required _i15.Future<bool> Function() onAccept,
+      _i15.Future<bool> Function()? onWillPop,
+      _i15.Future<bool> Function()? onDecline,
+      _i16.AdaptiveText? additionalContent})
       : super(AccessRoute.name,
             path: 'service-access-widget',
             args: AccessRouteArgs(
@@ -692,7 +700,7 @@ class AccessRouteArgs {
       this.onDecline,
       this.additionalContent});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   final String title;
 
@@ -702,13 +710,13 @@ class AccessRouteArgs {
 
   final String? secondButtonText;
 
-  final _i14.Future<bool> Function() onAccept;
+  final _i15.Future<bool> Function() onAccept;
 
-  final _i14.Future<bool> Function()? onWillPop;
+  final _i15.Future<bool> Function()? onWillPop;
 
-  final _i14.Future<bool> Function()? onDecline;
+  final _i15.Future<bool> Function()? onDecline;
 
-  final _i15.AdaptiveText? additionalContent;
+  final _i16.AdaptiveText? additionalContent;
 
   @override
   String toString() {
@@ -720,20 +728,20 @@ class AccessRouteArgs {
 /// [_i6.SuccessScreen]
 class SuccessRoute extends _i8.PageRouteInfo<SuccessRouteArgs> {
   SuccessRoute(
-      {_i10.Key? key,
-      _i10.Widget? svg,
-      _i10.Widget? image,
+      {_i12.Key? key,
+      _i12.Widget? svg,
+      _i12.Widget? image,
       String? lottieJson,
       required String title,
       String? description,
       String? buttonText,
       Duration animationDuration = const Duration(milliseconds: 1600),
-      _i10.BoxFit fit = _i10.BoxFit.cover,
+      _i12.BoxFit fit = _i12.BoxFit.cover,
       double? width,
       double? height,
       void Function()? onButtonPressed,
       void Function()? onBackPressed,
-      _i14.Future<void> Function()? onInitState})
+      _i15.Future<void> Function()? onInitState})
       : super(SuccessRoute.name,
             path: 'success-screen',
             args: SuccessRouteArgs(
@@ -765,18 +773,18 @@ class SuccessRouteArgs {
       this.description,
       this.buttonText,
       this.animationDuration = const Duration(milliseconds: 1600),
-      this.fit = _i10.BoxFit.cover,
+      this.fit = _i12.BoxFit.cover,
       this.width,
       this.height,
       this.onButtonPressed,
       this.onBackPressed,
       this.onInitState});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i10.Widget? svg;
+  final _i12.Widget? svg;
 
-  final _i10.Widget? image;
+  final _i12.Widget? image;
 
   final String? lottieJson;
 
@@ -788,7 +796,7 @@ class SuccessRouteArgs {
 
   final Duration animationDuration;
 
-  final _i10.BoxFit fit;
+  final _i12.BoxFit fit;
 
   final double? width;
 
@@ -798,7 +806,7 @@ class SuccessRouteArgs {
 
   final void Function()? onBackPressed;
 
-  final _i14.Future<void> Function()? onInitState;
+  final _i15.Future<void> Function()? onInitState;
 
   @override
   String toString() {
@@ -818,7 +826,7 @@ class NotificationRoute extends _i8.PageRouteInfo<void> {
 /// generated route for
 /// [_i6.NotConnectedScreen]
 class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i10.Key? key, required _i14.Future<dynamic> future})
+  NotConnectedRoute({_i12.Key? key, required _i15.Future<dynamic> future})
       : super(NotConnectedRoute.name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -829,9 +837,9 @@ class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i14.Future<dynamic> future;
+  final _i15.Future<dynamic> future;
 
   @override
   String toString() {

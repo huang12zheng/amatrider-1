@@ -22,4 +22,6 @@ mixin Const {
   static const String kPhoneNumberPrefKey = 'user-phone-number-pref-key';
 
   static const double maxUploadSize = 1e+7;
+
+  static const double defaultConversionRate = 0.032;
 }

@@ -1,14 +1,9 @@
-mixin SendPackageEvents {
-  static String channel(String id) => 'package.activity.$id';
+mixin DeliverableEvents {
+  static String packageChannel(String id) => 'package.activity.$id'; // Private channel
+  static String get packageEvent => '.package.status';
 
-  // Rider location update
-  static String get location => '.package.rider_location_updated';
-
-  // Rider picked-up package from sender
-  static String get received => '.package.rider.received';
-
-  // Rider has delivered package to receiver
-  static String get delivered => '.package.rider.delivered';
+  static String orderChannel(String id) => 'order.status-update.$id'; // Public channel
+  static String get orderEvent => '.order.status.update';
 }
 
 mixin DispatchRider {
@@ -34,13 +29,18 @@ mixin InsightEvents {
 }
 
 mixin RequestEvents {
-  static String newRequestChannel(String riderId) => 'rider.packages.$riderId';
-  static String get newRequestEvent => '.rider.packages.new';
+  static String newPackageChannel(String riderId) => 'rider.packages.$riderId'; // Private channel
+  static String get newPackageEvent => '.rider.packages.new';
 
-  static String get packageAcceptedChannel => 'package.info';
-  static String get packageAcceptedEvent => '.package.accepted';
+  static String newOrderChannel(String riderId) => 'rider.orders.$riderId'; // Private channel
+  static String get newOrderEvent => '.rider.orders.new';
 
-  static String packageDeliveredChannel(String riderId) =>
-      'rider.package.$riderId';
-  static String get packageDeliveredEvent => '.rider.package.status.delivered';
+  // static String get acceptedChannel => 'deliverable.info'; // Public channel
+  // static String get acceptedEvent => '.deliverable.accepted';
+
+  // static String packageDeliveredChannel(String riderId) => 'rider.package.$riderId'; // Private channel
+  // static String get packageDeliveredEvent => '.rider.package.status.delivered';
+
+  // static String orderDeliveredChannel(String riderId) => 'order.activity.$riderId'; // Public channel
+  // static String get orderDeliveredEvent => '.order.delivered';
 }

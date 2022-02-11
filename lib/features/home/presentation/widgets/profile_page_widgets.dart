@@ -70,7 +70,7 @@ class _AuthenticatedCard extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(Utils.cardRadius),
-                      child: ImageBox(
+                      child: ImageBox.network(
                         photo: rider?.photo.getOrNull,
                         width: 0.18.w,
                         height: 0.18.w,

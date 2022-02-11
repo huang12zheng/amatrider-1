@@ -13,46 +13,46 @@ class EchoRepository {
   dynamic _channel;
   Echo? echo;
 
-  EchoRepository._(this.echo);
+  final AccessTokenManager _accessTokenManager;
+
+  EchoRepository._(this._accessTokenManager);
 
   @factoryMethod
-  factory EchoRepository.initialize(AccessTokenManager _manager) {
-    // log.wtf('Token ==> ${_manager.get().accessToken.getOrNull}');
+  factory EchoRepository.initialize(AccessTokenManager _manager) => EchoRepository._(_manager);
 
-    var _options = PusherOptions(
-      cluster: env.pusherCluster,
-      encrypted: false,
-      auth: PusherAuth(
-        env.pusherAuthUrl,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': '${_manager.get().accessToken.getOrEmpty}',
-        },
-      ),
-    );
-
-    var _pusher = PusherClient(env.pusherKey, _options,
-        autoConnect: false, enableLogging: true);
-
-    // Initialize Laravel Echo
-    var echo = Echo(
-      broadcaster: EchoBroadcasterType.Pusher,
-      client: _pusher,
-    )..connector.pusher.onConnectionStateChange((state) {
-        print(state!.currentState.toString());
-      });
-
-    return EchoRepository._(echo);
-  }
-
-  EchoRepository channel(
+  EchoRepository __channel(
     String? channelName, {
     void Function()? onInit,
     EchoChannel type = EchoChannel.private,
   }) {
-    // Leave the current channel if already listening (should be called just oonce)
-    leave(channelName);
+    if (echo == null) {
+      final url = env.pusherAuthUrl + '?token=${_accessTokenManager.raw().accessToken.getOrEmpty}';
+
+      final _options = PusherOptions(
+        cluster: env.pusherCluster,
+        encrypted: false,
+        maxReconnectionAttempts: 20,
+        maxReconnectGapInSeconds: 10,
+        auth: PusherAuth(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': '${_accessTokenManager.get().accessToken.getOrEmpty}',
+          },
+        ),
+      );
+
+      final _pusher = PusherClient(env.pusherKey, _options, autoConnect: false, enableLogging: true);
+
+      // Initialize Laravel Echo
+      echo = Echo(
+        broadcaster: EchoBroadcasterType.Pusher,
+        client: _pusher,
+      )..connector.pusher.onConnectionStateChange((state) {
+          print(state!.currentState.toString());
+        });
+    }
 
     // Echo initialized
     onInit?.call();
@@ -98,8 +98,9 @@ class EchoRepository {
     void Function(PusherEvent?)? onListen,
     required void Function(String, EchoRepository) onData,
   }) {
-    return channel(
+    return __channel(
       channelName,
+      onInit: onInit,
       type: EchoChannel.public,
     ).listen(event, onData: onData, onListen: onListen);
   }
@@ -111,8 +112,9 @@ class EchoRepository {
     void Function(PusherEvent?)? onListen,
     required void Function(String, EchoRepository) onData,
   }) {
-    return channel(
+    return __channel(
       channelName,
+      onInit: onInit,
       type: EchoChannel.private,
     ).listen(event, onData: onData, onListen: onListen);
   }
@@ -123,7 +125,7 @@ class EchoRepository {
     void Function(PusherEvent?)? onListen,
     required void Function(String, EchoRepository) onData,
   }) {
-    channel(channelName, onInit: onInit)._channel.notification((e) {
+    __channel(channelName, onInit: onInit)._channel.notification((e) {
       // Started listening
       onListen?.call(e is PusherEvent ? e : null);
       // On data received
@@ -137,25 +139,41 @@ class EchoRepository {
     echo?.channel(channelName).stopListening(event);
   }
 
-  void leaveChannel(String? channelName, {String? event}) {
-    if (event != null) channelName?.let((it) => stopListening(it, event));
+  void leaveChannel(String? channelName, {String? event, bool? listen}) {
+    final _stopListening = listen ?? event != null;
+
+    assert(
+      (_stopListening && event != null) || (!_stopListening && event == null) || (!_stopListening && event != null),
+      'The event cannot be null!',
+    );
+
+    if (_stopListening) channelName?.let((it) => stopListening(it, event!));
     // Leave the given channel.
     channelName?.let((it) => echo?.leaveChannel(it));
   }
 
-  void leave(String? channelName, {String? event}) {
-    leaveChannel(channelName, event: event);
+  void leave(String? channelName, {String? event, bool? listen}) {
+    final _stopListening = listen ?? event != null;
+
+    assert(
+      (_stopListening && event != null) || (!_stopListening && event == null) || (!_stopListening && event != null),
+      'The event cannot be null!',
+    );
+
+    if (_stopListening) channelName?.let((it) => stopListening(it, event!));
+
     // Leave the given channel, as well as its private and presence variants.
     channelName?.let((it) => echo?.leave(it));
+
+    // Leave the given channel.
+    channelName?.let((it) => echo?.leaveChannel(it));
   }
 
-  void close(String? channelName, {bool nullify = false}) async {
+  void close(String? channelName, {String? event, bool? listen}) async {
     leave(channelName);
     // Disconnect from the Echo server.
     echo?.disconnect();
-    if (nullify) {
-      echo = null;
-      _channel = null;
-    }
+    echo = null;
+    _channel = null;
   }
 }

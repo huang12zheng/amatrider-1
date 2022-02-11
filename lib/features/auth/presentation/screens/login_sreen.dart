@@ -11,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget with AutoRouteWrapper {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,27 +27,20 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(
-                        is4031: () {
-                          WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
+                      error: (f) => f.fold(
+                        orElse: () {
+                          navigator.replaceAll([const DashboardRoute()]);
                           return false;
                         },
-                        is41101: () {
-                          WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToSocials());
-                          return false;
-                        },
-                        orElse: () => false,
                       ),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (s) => PopupDialog.success(
-              duration: env.greetingDuration,
-              message: s.message,
-            ).render(c),
+            success: (s) => PopupDialog.success(duration: env.greetingDuration, message: s.message).render(c),
           ),
         ),
         child: this,
@@ -73,14 +65,10 @@ class _LoginScreenState extends State<LoginScreen> with AutomaticKeepAliveClient
     _timestampPressed = DateTime.now();
 
     if (_showWarn) {
-      await Fluttertoast.showToast(
-        msg: 'Tap again to exit',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
+      await ToastManager.short('Tap again to exit');
       return Future.value(false);
     } else {
-      await Fluttertoast.cancel();
+      await ToastManager.cancel();
       return Future.value(true);
     }
   }

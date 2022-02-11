@@ -1,4 +1,8 @@
+library otp_verification_screen.dart;
+
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
+import 'package:amatrider/features/home/presentation/managers/index.dart';
+import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
@@ -7,18 +11,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-enum OTPVerificationType { phoneNumber, newPhoneNumber }
 
 /// A stateless widget to render OTPVerificationScreen.
 class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
-  final OTPVerificationType? type;
-
-  const OTPVerificationScreen({
-    Key? key,
-    this.type = OTPVerificationType.phoneNumber,
-  }) : super(key: key);
+  const OTPVerificationScreen({Key? key}) : super(key: key);
 
   @override
   State<OTPVerificationScreen> createState() => _OTPVerificationScreenState();
@@ -32,20 +28,21 @@ class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(
                 dismissed: () => s.pop
-                    ? App.rootRoute == DashboardRoute.name
-                        ? navigator.pop()
-                        : navigator.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false)
+                    ? (navigator.stackData.firstOrNone?.name == DashboardRoute.name
+                        ? navigator.popUntil((route) => route.settings.name == DashboardRoute.name)
+                        : navigator.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false))
                     : null,
               ),
             ).render(c),
@@ -59,8 +56,18 @@ class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   DateTime _timestampPressed = DateTime.now();
+  bool canResendOTPOnLaunch = true;
 
   final TapGestureRecognizer tapRecognizer = TapGestureRecognizer()..onTap = (() => navigator.replace(const LoginRoute()));
+
+  TapGestureRecognizer changePhoneTap(BuildContext ctx) => TapGestureRecognizer()
+    ..onTap = () => App.showAdaptiveBottomSheet(
+          ctx,
+          elevation: 3.0,
+          bounce: true,
+          useRootNavigator: false,
+          builder: (_) => const PhoneUpdateBottomSheet(),
+        );
 
   String maskPhoneNumber(AuthState s) {
     return s.rider.phone.getOrNull?.let((it) {
@@ -76,23 +83,19 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   Future<bool> maybePop() async {
-    if (!navigator.isRoot) return true;
+    if (context.watchRouter.canPopSelfOrChildren && !context.watchRouter.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
     final _showWarn = difference >= Utils.willPopTimeout;
 
-    _timestampPressed = DateTime.now();
+    setState(() => _timestampPressed = DateTime.now());
 
     if (_showWarn) {
-      await Fluttertoast.showToast(
-        msg: 'Tap again to exit',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
+      await ToastManager.short('Tap again to exit');
       return Future.value(false);
     } else {
-      await Fluttertoast.cancel();
+      await ToastManager.cancel();
       return Future.value(true);
     }
   }
@@ -100,261 +103,198 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      body: Theme(
-        data: Theme.of(context).copyWith(
-          scaffoldBackgroundColor: App.resolveColor(
-            Palette.cardColorLight,
-            dark: Palette.cardColorDark,
-          ),
-        ),
-        child: SingleChildScrollView(
-          clipBehavior: Clip.antiAlias,
-          controller: ScrollController(),
-          physics: Utils.physics,
-          padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
-          child: SizedBox(
-            width: double.infinity,
-            child: BlocBuilder<AuthCubit, AuthState>(
-              builder: (c, s) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SafeArea(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 0.04.sw),
-                        child: SvgPicture.asset(
-                          AppAssets.verifyAccount,
-                          width: 0.77.sw,
-                          fit: BoxFit.contain,
+      backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.secondaryColor),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            clipBehavior: Clip.antiAlias,
+            controller: ScrollController(),
+            physics: Utils.physics,
+            padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
+            child: SizedBox(
+              width: double.infinity,
+              child: BlocBuilder<AuthCubit, AuthState>(
+                builder: (c, s) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SafeArea(
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 0.04.sw),
+                          child: SvgPicture.asset(
+                            AppAssets.verifyAccount,
+                            width: 0.77.sw,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.05.sw),
-                  //
-                  AdaptiveText(
-                    'Verify Phone Number',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 26.sp,
-                          color: Palette.accentColor.shade400,
-                        ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.03.sw),
-                  //
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.rider.phone != c.rider.phone,
-                    builder: (c, s) => AdaptiveText(
-                      'We sent a unique code to '
-                      '${maskPhoneNumber(s)}, kindly enter the code below.',
-                      softWrap: true,
-                      maxLines: 3,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                    //
+                    VerticalSpace(height: 0.05.sw),
+                    //
+                    AdaptiveText(
+                      'Verify Phone Number',
+                      fontSize: 26.sp,
+                      fontWeight: FontWeight.w600,
+                      textColor: Palette.accentColor.shade400,
+                    ),
+                    //
+                    0.014.verticalh,
+                    //
+                    BlocBuilder<AuthCubit, AuthState>(
+                      buildWhen: (p, c) => p.rider.phone != c.rider.phone,
+                      builder: (c, s) => AdaptiveText.rich(
+                        TextSpan(children: [
+                          TextSpan(text: 'We sent a unique code to ${maskPhoneNumber(s)}, kindly enter the code below. '),
+                          TextSpan(
+                            text: 'Change Number',
+                            style: const TextStyle(color: Palette.accentColor, fontWeight: FontWeight.w600),
+                            recognizer: changePhoneTap(c),
+                          ),
+                        ]),
+                        softWrap: true,
                         fontSize: 17.sp,
+                        textAlign: TextAlign.left,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.1.sw),
-                  //
-                  Material(
-                    type: MaterialType.transparency,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0.07.sw),
-                      child: PinInputWidget<AuthCubit, AuthState>(
-                        length: AuthState.OTP_CODE_LENGTH,
-                        validate: (s) => s.validate,
-                        disabled: (s) => s.isLoading,
-                        controller: (s) => TextEditingController(
-                          text: s.code.getOrEmpty,
-                        ),
-                        cursorColor: Utils.foldTheme(
-                          light: () => null,
-                          dark: () => Colors.white,
-                        ),
-                        keyboardType: TextInputType.text,
-                        onChanged: context.read<AuthCubit>().otpCodeChanged,
-                        onCompleted: (_) => widget.type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
-                        ),
-                        onSubmitted: (_) => widget.type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
-                        ),
-                        listenWhen: (p, c) => p.isLoading != c.isLoading,
-                        validator: (s) => s.code.value.fold(
-                          (f) => f.message,
-                          (_) => s.status.fold(
-                            () => null,
-                            (http) => http?.response.maybeMap(
-                              error: (f) => f.errors?.token?.firstOrNone,
-                              orElse: () => null,
+                    //
+                    0.04.verticalh,
+                    //
+                    Material(
+                      type: MaterialType.transparency,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.07.sw),
+                        child: PinInputWidget<AuthCubit, AuthState>(
+                          length: AuthState.OTP_CODE_LENGTH,
+                          validate: (s) => s.validate,
+                          disabled: (s) => s.isLoading,
+                          controller: (s) => TextEditingController(text: s.code.getOrEmpty),
+                          cursorColor: App.resolveColor(null, dark: Colors.white),
+                          keyboardType: TextInputType.number,
+                          onChanged: context.read<AuthCubit>().otpCodeChanged,
+                          onCompleted: (_) => c.read<AuthCubit>().verifyPhone,
+                          onSubmitted: (_) => c.read<AuthCubit>().verifyPhone,
+                          listenWhen: (p, c) => p.isLoading != c.isLoading,
+                          validator: (s) => s.code.value.fold(
+                            (f) => f.message,
+                            (_) => s.status.fold(
+                              () => null,
+                              (http) => http?.response.maybeMap(
+                                error: (f) => f.errors?.token?.firstOrNone,
+                                orElse: () => null,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.06.sw),
-                  //
-                  Align(
-                    alignment: Alignment.center,
-                    child: CountdownWidget(
-                      duration: env.flavor.fold(
-                        dev: () => const Duration(seconds: 2),
-                        prod: () => const Duration(minutes: 2, seconds: 3),
+                    //
+                    0.06.verticalh,
+                    //
+                    BlocBuilder<AuthCubit, AuthState>(
+                      buildWhen: (p, c) => p.isLoading != c.isLoading,
+                      builder: (c, s) => Hero(
+                        tag: Const.authButtonHeroTag,
+                        child: AppButton(
+                          text: 'Verify',
+                          isLoading: s.isLoading,
+                          fontWeight: FontWeight.w700,
+                          onPressed: c.read<AuthCubit>().verifyPhone,
+                        ),
                       ),
-                      child: (callback) => GestureDetector(
-                        onTap: () async {
-                          await widget.type?.fold(
-                            phone: () => c.read<AuthCubit>().resendPhoneOTP(),
-                            newPhone: () => c.read<AuthCubit>().sendPhoneUpdateOTP(false),
-                          );
-                          callback();
-                        },
-                        child: IgnorePointer(
-                          ignoring: s.isLoading,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AdaptiveText.rich(
-                              TextSpan(children: [
-                                const TextSpan(text: 'Didn’t get the code? '),
-                                //
-                                TextSpan(
-                                  text: 'Resend.',
-                                  style: TextStyle(
-                                    color: Utils.foldTheme(
-                                      context: context,
-                                      light: () => Palette.accentColor,
-                                      dark: () => Palette.accentColor.shade50,
+                    ),
+                    //
+                    0.04.verticalh,
+                    //
+                    Align(
+                      alignment: Alignment.center,
+                      child: CountdownWidget(
+                        duration: env.flavor.fold(
+                          dev: () => const Duration(seconds: 2),
+                          prod: () => const Duration(minutes: 2, seconds: 3),
+                        ),
+                        // autostart: canResendOTPOnLaunch,
+                        child: (callback) => GestureDetector(
+                          onTap: () async {
+                            await c.read<AuthCubit>().sendPhoneUpdateOTP(false);
+                            callback();
+                            // setState(() => canResendOTPOnLaunch = false);
+                          },
+                          child: IgnorePointer(
+                            ignoring: s.isLoading,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AdaptiveText.rich(
+                                TextSpan(children: [
+                                  const TextSpan(text: 'Didn’t get the code? '),
+                                  //
+                                  TextSpan(
+                                    text: 'Resend.',
+                                    style: TextStyle(
+                                      color: Utils.foldTheme(
+                                        context: context,
+                                        light: () => Palette.accentColor,
+                                        dark: () => Palette.accentColor.shade50,
+                                      ),
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                              ]),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w400),
+                                ]),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.07.sw),
-                  //
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.isLoading != c.isLoading,
-                    builder: (c, s) => Hero(
-                      tag: Const.authButtonHeroTag,
-                      child: AppButton(
-                        text: 'Verify',
-                        isLoading: s.isLoading,
-                        fontWeight: FontWeight.w700,
-                        onPressed: widget.type?.fold(
-                          phone: () => c.read<AuthCubit>().verifyPhone,
-                          newPhone: () => c.read<AuthCubit>().confirmPhoneUpdate,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //
-                  env.flavor.fold(
-                    dev: () => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        VerticalSpace(height: 0.04.sw),
-                        //
-                        AdaptiveButton(
-                          text: 'Skip for Now',
-                          textColor: App.resolveColor(
-                            Palette.accentColor,
-                            dark: Colors.white,
-                          ),
-                          textStyle: const TextStyle(
-                            letterSpacing: Utils.labelLetterSpacing,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          splashColor: Utils.foldTheme(
-                            light: () => Colors.grey.shade200,
-                            dark: () => Colors.grey.shade800,
-                          ),
-                          side: const BorderSide(color: Palette.accentColor),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                    prod: () => Utils.nothing,
-                  ),
-                  //
-                  VerticalSpace(height: 0.04.sw),
-                  //
-                  widget.type!.fold(
-                    phone: () => Utils.nothing,
-                    newPhone: () => Hero(
-                      tag: Const.loginAndSignupSwitchTag,
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: AdaptiveText.rich(
-                              TextSpan(children: [
-                                const TextSpan(text: 'Wrong mobile number? '),
-                                TextSpan(
-                                  text: 'Try again',
-                                  recognizer: TapGestureRecognizer()..onTap = navigator.pop,
-                                  style: TextStyle(
-                                    color: Utils.foldTheme(
-                                      context: context,
-                                      light: () => Palette.accentColor,
-                                      dark: () => Palette.accentColor.shade100,
-                                    ),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ]),
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: Utils.labelLetterSpacing,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  //
-                  VerticalSpace(height: App.sidePadding),
-                ],
+                    //
+                    0.04.verticalh,
+                  ],
+                ),
               ),
             ),
           ),
-        ),
+          //
+          if (navigator.stackData.firstOrNone?.name != DashboardRoute.name)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 0.02.w, right: 0.02.w),
+                  child: BlocSelector<AuthWatcherCubit, AuthWatcherState, bool>(
+                    selector: (s) => s.isLoggingOut,
+                    builder: (c, isLoggingOut) => AnimatedVisibility(
+                      visible: !isLoggingOut,
+                      replacement: App.loadingSpinningLines,
+                      child: AppOutlinedButton(
+                        text: 'Logout',
+                        height: 0.09.sw,
+                        width: 0.2.sw,
+                        fontSize: 18.sp,
+                        cupertinoHeight: 0.045.h,
+                        cupertinoWidth: 0.25.w,
+                        splashColor: Colors.black.withOpacity(0.09),
+                        padding: EdgeInsets.all(0.007.sw),
+                        onPressed: () async {
+                          // Reset current Index to 0
+                          c.read<TabNavigationCubit>().reset();
+                          // Signout the authenticated rider
+                          await c.read<AuthWatcherCubit>().signOut();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
-  }
-}
-
-extension on OTPVerificationType {
-  T fold<T>({
-    required T Function() phone,
-    T Function()? newPhone,
-  }) {
-    switch (this) {
-      case OTPVerificationType.phoneNumber:
-        return phone.call();
-      case OTPVerificationType.newPhoneNumber:
-        return newPhone?.call() ?? phone.call();
-    }
   }
 }

@@ -6,6 +6,7 @@ import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/data/models/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
+import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -16,8 +17,9 @@ import 'package:injectable/injectable.dart';
 @singleton
 class AuthRemoteDatasource {
   final AppHttpClient _dio;
+  final PreferenceRepository preferences;
 
-  AuthRemoteDatasource(this._dio);
+  AuthRemoteDatasource(this._dio, this.preferences);
 
   Future<Response<dynamic>> createRiderAccount(RiderDTO dto) async {
     // Generate Form Data for request
@@ -170,13 +172,18 @@ class AuthRemoteDatasource {
       );
 
       return _response.response.map(
+        info: (info) => left(_response),
         error: (error) => left(_response.copyWith(
           response: _response.response,
           data: _result.data,
         )),
-        success: (_) => right(RegisteredRiderDTO.fromJson(
-          _result.data as Map<String, dynamic>,
-        ).data),
+        success: (_) {
+          preferences.remove(Const.kPhoneNumberPrefKey);
+
+          return right(RegisteredRiderDTO.fromJson(
+            _result.data as Map<String, dynamic>,
+          ).data);
+        },
       );
     } on AppHttpResponse catch (e, trace) {
       return _catchBlock(e, callback, trace);

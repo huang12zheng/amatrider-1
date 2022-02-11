@@ -1,7 +1,7 @@
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Headline extends StatelessWidget {
   final String title;
@@ -16,23 +16,24 @@ class Headline extends StatelessWidget {
   final Color? textColorLight;
   final Color? textColorDark;
   final TextOverflow? overflow;
+  final double letterSpacing;
 
   // ignore: prefer_const_constructors_in_immutables
-  Headline(
-    this.title, {
-    Key? key,
-    this.maxLines,
-    this.fontSize,
-    this.minFontSize = 12,
-    this.maxFontSize = double.infinity,
-    this.textAlign,
-    this.fontWeight,
-    this.style,
-    this.textColor,
-    this.textColorLight,
-    this.textColorDark,
-    this.overflow,
-  }) : super(key: key);
+  Headline(this.title,
+      {Key? key,
+      this.maxLines,
+      this.fontSize,
+      this.minFontSize = 12,
+      this.maxFontSize = double.infinity,
+      this.textAlign,
+      this.fontWeight,
+      this.style,
+      this.textColor,
+      this.textColorLight,
+      this.textColorDark,
+      this.overflow,
+      this.letterSpacing = Utils.letterSpacing})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class Headline extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize ?? 20.sp,
         fontWeight: fontWeight ?? FontWeight.w600,
-        letterSpacing: Utils.letterSpacing,
+        letterSpacing: letterSpacing,
         fontStyle: FontStyle.normal,
         color: Theme.of(context).platform.fold(
               material: () => App.resolveColor(

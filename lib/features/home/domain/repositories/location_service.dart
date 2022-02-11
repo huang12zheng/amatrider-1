@@ -99,29 +99,9 @@ class LocationService {
     void Function(RiderLocation)? onData,
   }) async {
     try {
-      final _result = await env.flavor.fold(
-        prod: () => _location.getLocation(),
-        dev: () async => await Utils.platform_(
-          material: _location.getLocation(),
-          cupertino: null,
-        ),
-      );
+      final _result = await _location.getLocation();
 
-      final location = env.flavor.fold(
-        dev: () {
-          final dummyLocation = RiderLocation(
-            lat: BasicTextField(41.038284),
-            lng: BasicTextField(28.970329),
-            address: BasicTextField('Istanbul, Turkey'),
-          );
-
-          return Utils.platform_(
-            material: _result == null ? dummyLocation : RiderLocation.fromLocation(_result),
-            cupertino: dummyLocation,
-          )!;
-        },
-        prod: () => RiderLocation.fromLocation(_result!),
-      );
+      final location = RiderLocation.fromLocation(_result);
 
       onData?.call(location);
 
@@ -131,10 +111,10 @@ class LocationService {
     }
   }
 
-  Stream<Either<AnyResponse, RiderLocation?>> liveLocation() async* {
+  Stream<Either<AnyResponse, RiderLocation>> liveLocation() async* {
     yield* _location.onLocationChanged
         .transform(
-          StreamTransformer<LocationData, Either<AnyResponse, RiderLocation?>>.fromHandlers(
+          StreamTransformer<LocationData, Either<AnyResponse, RiderLocation>>.fromHandlers(
             handleData: (data, event) => event.add(
               right(RiderLocation.fromLocation(data)),
             ),

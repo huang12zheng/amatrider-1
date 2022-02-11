@@ -142,9 +142,9 @@ class SocialBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WidgetVisibility(
+    return AnimatedVisibility(
       visible: visiblility,
-      child: WidgetVisibility(
+      child: AnimatedVisibility(
         visible: isLoading,
         replacement: App.loadingSpinningLines,
         child: Column(

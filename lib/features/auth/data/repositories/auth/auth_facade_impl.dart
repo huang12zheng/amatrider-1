@@ -46,13 +46,10 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         __userChagesController = StreamController.broadcast();
 
   @override
-  Future<Option<Rider?>> get rider async =>
-      (await retrieveAndCacheUpdatedRider(forceGetLocalCache: true))
-          .getOrElse(() => none());
+  Future<Option<Rider?>> get rider async => (await retrieveAndCacheUpdatedRider(forceGetLocalCache: true)).getOrElse(() => none());
 
   @override
-  Future<Either<AppHttpResponse, Option<Rider?>>> get currentRider async =>
-      retrieveAndCacheUpdatedRider(forceGetLocalCache: false);
+  Future<Either<AppHttpResponse, Option<Rider?>>> get currentRider async => retrieveAndCacheUpdatedRider(forceGetLocalCache: false);
 
   @override
   Future<AppHttpResponse> confirmPasswordReset({
@@ -77,37 +74,6 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         // Attempt Authentication
         (r) async => remote.confirmPasswordReset(dto),
       );
-
-      return AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
-    } on AppHttpResponse catch (ex, trace) {
-      return handleFailure(e: ex, trace: trace);
-    } on AppNetworkException catch (ex, trace) {
-      return handleFailure(e: ex.asResponse(), trace: trace);
-    }
-  }
-
-  @override
-  Future<AppHttpResponse> confirmUpdatePhone({
-    required Phone phone,
-    required OTPCode code,
-  }) async {
-    try {
-      // Check if device has good connection
-      final _conn = await checkInternetConnectivity();
-
-      final _response = await _conn.fold(
-        // Re-Throw Exception
-        (f) => throw f,
-        // Update user profile
-        (_) => remote.confirmUpdatePhoneNumber(
-          phone: phone.getOrNull,
-          token: code.getOrNull,
-        ),
-      );
-
-      final cached = await retrieveAndCacheUpdatedRider();
-
-      await cached.fold((l) => null, (user) async => update(user));
 
       return AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
     } on AppHttpResponse catch (ex, trace) {
@@ -149,8 +115,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         _response.data as Map<String, dynamic>,
       );
 
-      await phone.getOrEmpty?.let((it) async => await preferences.setString(
-          key: Const.kPhoneNumberPrefKey, value: it));
+      await phone.getOrEmpty?.let((it) async => await preferences.setString(key: Const.kPhoneNumberPrefKey, value: it));
 
       // Automatically Login new Rider
       return await login(
@@ -180,17 +145,15 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
 
           await sink(await currentRider);
 
-          await signOut(true);
+          await signOut(notify: true);
 
-          return AppHttpResponse.fromJson(
-              _response.data as Map<String, dynamic>);
+          return AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
         },
       );
     } on AppHttpResponse catch (ex, trace) {
       return await handleFailure(e: ex, trace: trace, notify: true);
     } on AppNetworkException catch (ex, trace) {
-      return await handleFailure(
-          e: ex.asResponse(), trace: trace, notify: true);
+      return await handleFailure(e: ex.asResponse(), trace: trace, notify: true);
     }
   }
 
@@ -217,7 +180,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       //// Cache Access token
       await local.cacheRiderAccessToken(_response.data);
 
-      // If login was successful, fetch updated user creds
+      // If login was successful, fetch updated Rider creds
       // Else we'll pass in the initial registration response for caching
       var temp = RiderDTO.fromDomain(
         Rider.blank(email: email, password: password),
@@ -231,24 +194,22 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       // Log Firebase Analytics Login event
       await analytics.logLogin(loginMethod: 'email');
 
-      final _res =
-          AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
+      // Sink new signin event
+      await sink();
 
-      return _res.copyWith(
-        response: await cached.fold(
-          (failure) async {
-            await sink();
-            return failure.response;
-          },
-          (o) async {
-            await sink();
-            //
-            final firstName = o.getOrElse(() => null)?.firstName;
-            return _res.response.copyWith(
-              messageTxt: 'Welcome back ${firstName?.getOrEmpty}!',
-            );
-          },
-        ),
+      final _res = AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
+
+      return await cached.fold(
+        (failure) async {
+          await sink();
+          return AppHttpResponse(failure.response);
+        },
+        (o) async {
+          await sink();
+          return AppHttpResponse(_res.response.copyWith(
+            messageTxt: 'Welcome back ${o.getOrElse(() => null)?.firstName.getOrEmpty}!',
+          ));
+        },
       );
     } on AppHttpResponse catch (ex, trace) {
       return handleFailure(e: ex, trace: trace);
@@ -258,33 +219,10 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
-  Stream<Either<AppHttpResponse, Option<Rider?>>> get onAuthStateChanges =>
-      __controller.stream;
+  Stream<Either<AppHttpResponse, Option<Rider?>>> get onAuthStateChanges => __controller.stream;
 
   @override
   Stream<Option<Rider?>> get onRiderChanges => __userChagesController.stream;
-
-  @override
-  Future<AppHttpResponse> resendVerificationEmail(
-    Phone phone,
-  ) async {
-    try {
-      final _conn = await checkInternetConnectivity();
-
-      final _response = await _conn.fold(
-        // Re-Throw Exception
-        (f) => throw f,
-        // Attempt Authentication
-        (r) async => remote.resendPhoneVerification(phone.getOrEmpty),
-      );
-
-      return AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
-    } on AppHttpResponse catch (ex, trace) {
-      return handleFailure(e: ex, trace: trace);
-    } on AppNetworkException catch (ex, trace) {
-      return handleFailure(e: ex.asResponse(), trace: trace);
-    }
-  }
 
   @override
   Future<Either<AppHttpResponse, Option<Rider?>>> retrieveAndCacheUpdatedRider({
@@ -292,19 +230,17 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
     bool shouldThrow = false,
     bool forceGetLocalCache = false,
   }) async {
-    Future<Either<AppHttpResponse, Option<Rider?>>> _local(
-        AppHttpResponse failure) async {
-      if (forceGetLocalCache)
-        return right((await local.getRider())
-            .fold(() => none(), (dto) => some(dto?.domain)));
+    Future<Either<AppHttpResponse, Option<Rider?>>> _local(AppHttpResponse failure) async {
+      if (forceGetLocalCache) return right((await local.getRider()).fold(() => none(), (dto) => some(dto?.domain)));
 
-      return failure.foldCode(
+      return failure.fold(
         // if reason for failure was 401,
         // logout the user (probably an expired accessToken)
         is401: () {
-          signOut(false);
+          signOut(notify: true);
           return left(failure);
         },
+        is41101: () => left(failure),
         // Unverified phone number
         is4031: () async {
           await preferences.setString(
@@ -313,7 +249,6 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
           );
           return left(failure);
         },
-        is41101: () => left(failure),
         // Else proceed with local fetch
         orElse: () async => right((await local.getRider()).fold(
           () => none(),
@@ -329,10 +264,21 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
     final _conn = await checkInternetConnectivity();
     // Fetch Updated user info from remote source
     return _conn.fold(
-      (f) async => shouldThrow ? throw f : _local(f),
+      (f) async {
+        if (shouldThrow)
+          throw left(f);
+        else
+          return (await _local(f)).fold(
+            (_) => left(f),
+            (option) => option.fold(
+              () => left(f),
+              (_) => right(option),
+            ),
+          );
+      },
       (_) async => (await remote.getRider()).fold(
         // If could not retrieve data form server, fetch local
-        (f) async => _local(f),
+        (f) => _local(f),
         (dto) async {
           // Cache updated user data
           await dto?.let((it) => local.cacheAuthenticatedRider(it));
@@ -363,37 +309,35 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
-  Future<void> signOut(
-    bool? notify, {
-    bool email = true,
+  Future<void> signOut({
+    bool notify = true,
+    bool regular = true,
     bool google = true,
-    bool facebook = true,
-    bool twitter = true,
     bool apple = true,
   }) async {
     try {
-      await preferences.remove(Const.kPhoneNumberPrefKey);
+      if (regular) await preferences.remove(Const.kPhoneNumberPrefKey);
       // Sign user-out of all services
       await Future.wait([
-        if (email) remote.signOut(),
+        if (regular) remote.signOut(),
         if (google) googleSignIn.signOut(),
         // Delete local
-        if (email) local.signOut(),
+        if (regular) local.signOut(),
       ]);
 
-      // Notify of signout
-      await sink(right(none()));
+      // Notify listeners about sign-out
+      if (notify) await sink(right(none()));
     } catch (_) {
       // Delete local cache
       await Future.wait([local.signOut()]);
 
-      await sink(right(none()));
+      // Notify listeners about sign-out
+      if (notify) await sink(right(none()));
     }
   }
 
   @override
-  Future<void> sink(
-          [Either<AppHttpResponse, Option<Rider?>>? userOrFailure]) async =>
+  Future<void> sink([Either<AppHttpResponse, Option<Rider?>>? userOrFailure]) async =>
       __controller.sink.add(userOrFailure ?? await currentRider);
 
   @override
@@ -408,8 +352,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
-  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(
-      RiderAvailability availability) async {
+  Future<Either<AppHttpResponse, Rider>> toggleRiderAvailability(RiderAvailability availability) async {
     try {
       // Check if device has good connection
       final _conn = await checkInternetConnectivity();
@@ -418,8 +361,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         (f) async => left(f),
         (r) async {
           final _result = await remote.toggleAvailability(availability);
-          final _riderDTO =
-              RiderDTO.fromJson(_result.data as Map<String, dynamic>);
+          final _riderDTO = RiderDTO.fromJson(_result.data as Map<String, dynamic>);
 
           await update(optionOf(_riderDTO.domain));
 
@@ -436,8 +378,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
-  Future<void> update(Option<Rider?> user) async =>
-      __userChagesController.sink.add(user);
+  Future<void> update(Option<Rider?> user) async => __userChagesController.sink.add(user);
 
   @override
   Future<AppHttpResponse> updatePassword({
@@ -464,8 +405,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         _response.data as Map<String, dynamic>,
       );
 
-      await _return.response.map(
-        error: (_) => null,
+      await _return.response.mapOrNull(
         success: (_) async {
           final cached = await retrieveAndCacheUpdatedRider();
           await cached.fold((l) => null, (user) async => update(user));
@@ -486,21 +426,25 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       // Check if device has good connection
       final _conn = await checkInternetConnectivity();
 
-      final _response = await _conn.fold(
+      final _result = await _conn.fold(
         // Re-Throw Exception
         (f) => throw f,
         // Update user profile
         (_) => remote.updatePhoneNumber(phone?.getOrEmpty),
       );
 
-      await phone?.getOrEmpty?.let(
-        (it) => preferences.setString(
-          key: Const.kPhoneNumberPrefKey,
-          value: it,
+      final _response = AppHttpResponse.fromJson(_result.data as Map<String, dynamic>);
+
+      await _response.response.mapOrNull(
+        success: (_) => phone?.getOrEmpty?.let(
+          (it) => preferences.setString(
+            key: Const.kPhoneNumberPrefKey,
+            value: it,
+          ),
         ),
       );
 
-      return AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
+      return _response;
     } on AppHttpResponse catch (ex, trace) {
       return handleFailure(e: ex, trace: trace, notify: false);
     } on AppNetworkException catch (ex, trace) {
@@ -541,8 +485,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
         _response.data as Map<String, dynamic>,
       );
 
-      await _return.response.map(
-        error: (_) => null,
+      await _return.response.mapOrNull(
         success: (_) async {
           await user.dto?.let((it) => local.cacheAuthenticatedRider(it));
           await update(some(user.domain));
@@ -558,9 +501,10 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
   }
 
   @override
-  Future<AppHttpResponse> updateSocialsProfile({
+  Future<Option<AppHttpResponse?>> updateSocialsProfile({
     DisplayName? firstName,
     DisplayName? lastName,
+    EmailAddress? email,
     Phone? phone,
   }) async {
     try {
@@ -575,29 +519,27 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
           RiderDTO.fromDomain(Rider.blank(
             firstName: firstName,
             lastName: lastName,
+            email: email,
             phone: phone,
           )),
         ),
       );
 
-      final _return = AppHttpResponse.fromJson(
-        _response.data as Map<String, dynamic>,
-      );
+      final _return = AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
 
       return await _return.response.map(
-        error: (_) => _return,
+        info: (_) => none(),
+        error: (_) => none(),
         success: (_) async {
           final _userOrFailure = await currentRider;
-          return _userOrFailure.fold(
-            (failure) => failure,
-            (_) => _return,
-          );
+          // await sink(_userOrFailure);
+          return _userOrFailure.fold((failure) => optionOf(failure), (_) => none());
         },
       );
     } on AppHttpResponse catch (ex, trace) {
-      return handleFailure(e: ex, trace: trace, notify: false);
+      return optionOf(await handleFailure(e: ex, trace: trace));
     } on AppNetworkException catch (ex, trace) {
-      return handleFailure(e: ex.asResponse(), trace: trace, notify: false);
+      return optionOf(await handleFailure(e: ex.asResponse(), trace: trace));
     }
   }
 
@@ -612,20 +554,17 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
 
       final _response = await _conn.fold(
         (f) => throw f,
-        (_) => remote.verifyPhoneNumber(
-          phone: phone.getOrEmpty,
-          token: token.getOrEmpty,
-        ),
+        (_) => remote.verifyPhoneNumber(phone: phone.getOrNull, token: token.getOrNull),
       );
 
       // verification successful, fetch & cache fresh user data
-      final _return = AppHttpResponse.fromJson(
-        _response.data as Map<String, dynamic>,
-      );
+      final _return = AppHttpResponse.fromJson(_response.data as Map<String, dynamic>);
 
-      await _return.response.map(
-        error: (_) => null,
+      await _return.response.mapOrNull(
         success: (_) async {
+          // Remove phone number from cache
+          await preferences.remove(Const.kPhoneNumberPrefKey);
+
           final cached = await retrieveAndCacheUpdatedRider();
 
           await cached.fold((l) => null, (user) async {

@@ -11,7 +11,7 @@ class IntToBoolSerializer implements JsonConverter<bool?, dynamic> {
         ? null
         : value is int
             ? value
-            : int.tryParse(value as String);
+            : int.tryParse('$value');
 
     if (_value == null) return false;
 

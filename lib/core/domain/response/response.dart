@@ -7,30 +7,34 @@ mixin _BaseResponse {
 }
 
 abstract class Response implements _BaseResponse {
-  bool get show;
-  String? get uuid;
+  const Response();
+
+  // bool get show;
+  // String? get uuid;
 }
 
-abstract class Failure with _FailureMixin, _BaseResponse {
+abstract class Failure with _FailureMixin implements Response {
   static const int UNAUTHENTICATED = 401;
+  static const int INCOMPLETE_PROFILE = 41101;
+  static const int UNVERIFIED_PHONE = 4031;
   static const int CARD_PAYMENT_FAILED = 1105;
   static const int NO_SAVED_CARD = 1104;
   static const int UNVERIFIED_ACCOUNT = 1106;
-  static const int INCOMPLETE_PROFILE = 1103;
   static const int UNVERIFIED_BVN = 1102;
   static const int UNVERIFIED_EMAIL = 1101;
-  static const int UNVERIFIED_PHONE = 4031;
   static const int INCOMPLETE_KYC = 41101;
 
   int? get code;
   Exception? get exception;
 }
 
-abstract class Success with Response {
+abstract class Success implements Response {
   bool get pop;
 }
 
-abstract class Info with Response {}
+abstract class Info implements Response {
+  bool get pop;
+}
 
 mixin _FailureMixin {
   String? get error;

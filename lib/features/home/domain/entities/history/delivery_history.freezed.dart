@@ -22,10 +22,6 @@ class _$DeliveryHistoryTearOff {
       required RiderLocation pickup,
       required RiderLocation destination,
       required AmountField<double?> amount,
-      required DisplayName receiverFullName,
-      required Phone receiverPhone,
-      required EmailAddress receiverEmailAddress,
-      required BasicTextField<String?> receiverPhoneAlt,
       required BasicTextField<String?> notes,
       required PaymentMethod paymentMethod,
       required UniqueId<String?> riderId,
@@ -33,7 +29,9 @@ class _$DeliveryHistoryTearOff {
       Duration durationToPickup = Duration.zero,
       required BasicTextField<double?> distanceToPickup,
       required Rider rider,
-      required Sender sender,
+      required User sender,
+      required Store store,
+      required User receiver,
       DateTime? orderActiveAt,
       DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
@@ -48,10 +46,6 @@ class _$DeliveryHistoryTearOff {
       pickup: pickup,
       destination: destination,
       amount: amount,
-      receiverFullName: receiverFullName,
-      receiverPhone: receiverPhone,
-      receiverEmailAddress: receiverEmailAddress,
-      receiverPhoneAlt: receiverPhoneAlt,
       notes: notes,
       paymentMethod: paymentMethod,
       riderId: riderId,
@@ -60,6 +54,8 @@ class _$DeliveryHistoryTearOff {
       distanceToPickup: distanceToPickup,
       rider: rider,
       sender: sender,
+      store: store,
+      receiver: receiver,
       orderActiveAt: orderActiveAt,
       orderCancelledAt: orderCancelledAt,
       riderAcceptedAt: riderAcceptedAt,
@@ -82,11 +78,6 @@ mixin _$DeliveryHistory {
   RiderLocation get pickup => throw _privateConstructorUsedError;
   RiderLocation get destination => throw _privateConstructorUsedError;
   AmountField<double?> get amount => throw _privateConstructorUsedError;
-  DisplayName get receiverFullName => throw _privateConstructorUsedError;
-  Phone get receiverPhone => throw _privateConstructorUsedError;
-  EmailAddress get receiverEmailAddress => throw _privateConstructorUsedError;
-  BasicTextField<String?> get receiverPhoneAlt =>
-      throw _privateConstructorUsedError;
   BasicTextField<String?> get notes => throw _privateConstructorUsedError;
   PaymentMethod get paymentMethod => throw _privateConstructorUsedError; //
   UniqueId<String?> get riderId => throw _privateConstructorUsedError;
@@ -95,7 +86,9 @@ mixin _$DeliveryHistory {
   BasicTextField<double?> get distanceToPickup =>
       throw _privateConstructorUsedError; //
   Rider get rider => throw _privateConstructorUsedError;
-  Sender get sender => throw _privateConstructorUsedError; //
+  User get sender => throw _privateConstructorUsedError;
+  Store get store => throw _privateConstructorUsedError;
+  User get receiver => throw _privateConstructorUsedError; //
   DateTime? get orderActiveAt => throw _privateConstructorUsedError;
   DateTime? get orderCancelledAt => throw _privateConstructorUsedError;
   DateTime? get riderAcceptedAt => throw _privateConstructorUsedError;
@@ -121,10 +114,6 @@ abstract class $DeliveryHistoryCopyWith<$Res> {
       RiderLocation pickup,
       RiderLocation destination,
       AmountField<double?> amount,
-      DisplayName receiverFullName,
-      Phone receiverPhone,
-      EmailAddress receiverEmailAddress,
-      BasicTextField<String?> receiverPhoneAlt,
       BasicTextField<String?> notes,
       PaymentMethod paymentMethod,
       UniqueId<String?> riderId,
@@ -132,7 +121,9 @@ abstract class $DeliveryHistoryCopyWith<$Res> {
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       Rider rider,
-      Sender sender,
+      User sender,
+      Store store,
+      User receiver,
       DateTime? orderActiveAt,
       DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
@@ -147,7 +138,9 @@ abstract class $DeliveryHistoryCopyWith<$Res> {
   $RiderLocationCopyWith<$Res> get destination;
   $RiderLocationCopyWith<$Res> get riderLocation;
   $RiderCopyWith<$Res> get rider;
-  $SenderCopyWith<$Res> get sender;
+  $UserCopyWith<$Res> get sender;
+  $StoreCopyWith<$Res> get store;
+  $UserCopyWith<$Res> get receiver;
 }
 
 /// @nodoc
@@ -165,10 +158,6 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
     Object? pickup = freezed,
     Object? destination = freezed,
     Object? amount = freezed,
-    Object? receiverFullName = freezed,
-    Object? receiverPhone = freezed,
-    Object? receiverEmailAddress = freezed,
-    Object? receiverPhoneAlt = freezed,
     Object? notes = freezed,
     Object? paymentMethod = freezed,
     Object? riderId = freezed,
@@ -177,6 +166,8 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
     Object? distanceToPickup = freezed,
     Object? rider = freezed,
     Object? sender = freezed,
+    Object? store = freezed,
+    Object? receiver = freezed,
     Object? orderActiveAt = freezed,
     Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
@@ -204,22 +195,6 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      receiverFullName: receiverFullName == freezed
-          ? _value.receiverFullName
-          : receiverFullName // ignore: cast_nullable_to_non_nullable
-              as DisplayName,
-      receiverPhone: receiverPhone == freezed
-          ? _value.receiverPhone
-          : receiverPhone // ignore: cast_nullable_to_non_nullable
-              as Phone,
-      receiverEmailAddress: receiverEmailAddress == freezed
-          ? _value.receiverEmailAddress
-          : receiverEmailAddress // ignore: cast_nullable_to_non_nullable
-              as EmailAddress,
-      receiverPhoneAlt: receiverPhoneAlt == freezed
-          ? _value.receiverPhoneAlt
-          : receiverPhoneAlt // ignore: cast_nullable_to_non_nullable
-              as BasicTextField<String?>,
       notes: notes == freezed
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -251,7 +226,15 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as Sender,
+              as User,
+      store: store == freezed
+          ? _value.store
+          : store // ignore: cast_nullable_to_non_nullable
+              as Store,
+      receiver: receiver == freezed
+          ? _value.receiver
+          : receiver // ignore: cast_nullable_to_non_nullable
+              as User,
       orderActiveAt: orderActiveAt == freezed
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
@@ -320,9 +303,23 @@ class _$DeliveryHistoryCopyWithImpl<$Res>
   }
 
   @override
-  $SenderCopyWith<$Res> get sender {
-    return $SenderCopyWith<$Res>(_value.sender, (value) {
+  $UserCopyWith<$Res> get sender {
+    return $UserCopyWith<$Res>(_value.sender, (value) {
       return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  @override
+  $StoreCopyWith<$Res> get store {
+    return $StoreCopyWith<$Res>(_value.store, (value) {
+      return _then(_value.copyWith(store: value));
+    });
+  }
+
+  @override
+  $UserCopyWith<$Res> get receiver {
+    return $UserCopyWith<$Res>(_value.receiver, (value) {
+      return _then(_value.copyWith(receiver: value));
     });
   }
 }
@@ -339,10 +336,6 @@ abstract class _$DeliveryHistoryCopyWith<$Res>
       RiderLocation pickup,
       RiderLocation destination,
       AmountField<double?> amount,
-      DisplayName receiverFullName,
-      Phone receiverPhone,
-      EmailAddress receiverEmailAddress,
-      BasicTextField<String?> receiverPhoneAlt,
       BasicTextField<String?> notes,
       PaymentMethod paymentMethod,
       UniqueId<String?> riderId,
@@ -350,7 +343,9 @@ abstract class _$DeliveryHistoryCopyWith<$Res>
       Duration durationToPickup,
       BasicTextField<double?> distanceToPickup,
       Rider rider,
-      Sender sender,
+      User sender,
+      Store store,
+      User receiver,
       DateTime? orderActiveAt,
       DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
@@ -370,7 +365,11 @@ abstract class _$DeliveryHistoryCopyWith<$Res>
   @override
   $RiderCopyWith<$Res> get rider;
   @override
-  $SenderCopyWith<$Res> get sender;
+  $UserCopyWith<$Res> get sender;
+  @override
+  $StoreCopyWith<$Res> get store;
+  @override
+  $UserCopyWith<$Res> get receiver;
 }
 
 /// @nodoc
@@ -390,10 +389,6 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
     Object? pickup = freezed,
     Object? destination = freezed,
     Object? amount = freezed,
-    Object? receiverFullName = freezed,
-    Object? receiverPhone = freezed,
-    Object? receiverEmailAddress = freezed,
-    Object? receiverPhoneAlt = freezed,
     Object? notes = freezed,
     Object? paymentMethod = freezed,
     Object? riderId = freezed,
@@ -402,6 +397,8 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
     Object? distanceToPickup = freezed,
     Object? rider = freezed,
     Object? sender = freezed,
+    Object? store = freezed,
+    Object? receiver = freezed,
     Object? orderActiveAt = freezed,
     Object? orderCancelledAt = freezed,
     Object? riderAcceptedAt = freezed,
@@ -429,22 +426,6 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as AmountField<double?>,
-      receiverFullName: receiverFullName == freezed
-          ? _value.receiverFullName
-          : receiverFullName // ignore: cast_nullable_to_non_nullable
-              as DisplayName,
-      receiverPhone: receiverPhone == freezed
-          ? _value.receiverPhone
-          : receiverPhone // ignore: cast_nullable_to_non_nullable
-              as Phone,
-      receiverEmailAddress: receiverEmailAddress == freezed
-          ? _value.receiverEmailAddress
-          : receiverEmailAddress // ignore: cast_nullable_to_non_nullable
-              as EmailAddress,
-      receiverPhoneAlt: receiverPhoneAlt == freezed
-          ? _value.receiverPhoneAlt
-          : receiverPhoneAlt // ignore: cast_nullable_to_non_nullable
-              as BasicTextField<String?>,
       notes: notes == freezed
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
@@ -476,7 +457,15 @@ class __$DeliveryHistoryCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as Sender,
+              as User,
+      store: store == freezed
+          ? _value.store
+          : store // ignore: cast_nullable_to_non_nullable
+              as Store,
+      receiver: receiver == freezed
+          ? _value.receiver
+          : receiver // ignore: cast_nullable_to_non_nullable
+              as User,
       orderActiveAt: orderActiveAt == freezed
           ? _value.orderActiveAt
           : orderActiveAt // ignore: cast_nullable_to_non_nullable
@@ -525,10 +514,6 @@ class _$_DeliveryHistory extends _DeliveryHistory {
       required this.pickup,
       required this.destination,
       required this.amount,
-      required this.receiverFullName,
-      required this.receiverPhone,
-      required this.receiverEmailAddress,
-      required this.receiverPhoneAlt,
       required this.notes,
       required this.paymentMethod,
       required this.riderId,
@@ -537,6 +522,8 @@ class _$_DeliveryHistory extends _DeliveryHistory {
       required this.distanceToPickup,
       required this.rider,
       required this.sender,
+      required this.store,
+      required this.receiver,
       this.orderActiveAt,
       this.orderCancelledAt,
       this.riderAcceptedAt,
@@ -557,14 +544,6 @@ class _$_DeliveryHistory extends _DeliveryHistory {
   @override
   final AmountField<double?> amount;
   @override
-  final DisplayName receiverFullName;
-  @override
-  final Phone receiverPhone;
-  @override
-  final EmailAddress receiverEmailAddress;
-  @override
-  final BasicTextField<String?> receiverPhoneAlt;
-  @override
   final BasicTextField<String?> notes;
   @override
   final PaymentMethod paymentMethod;
@@ -580,7 +559,11 @@ class _$_DeliveryHistory extends _DeliveryHistory {
   @override //
   final Rider rider;
   @override
-  final Sender sender;
+  final User sender;
+  @override
+  final Store store;
+  @override
+  final User receiver;
   @override //
   final DateTime? orderActiveAt;
   @override
@@ -602,7 +585,7 @@ class _$_DeliveryHistory extends _DeliveryHistory {
 
   @override
   String toString() {
-    return 'DeliveryHistory(id: $id, pickup: $pickup, destination: $destination, amount: $amount, receiverFullName: $receiverFullName, receiverPhone: $receiverPhone, receiverEmailAddress: $receiverEmailAddress, receiverPhoneAlt: $receiverPhoneAlt, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, rider: $rider, sender: $sender, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DeliveryHistory(id: $id, pickup: $pickup, destination: $destination, amount: $amount, notes: $notes, paymentMethod: $paymentMethod, riderId: $riderId, riderLocation: $riderLocation, durationToPickup: $durationToPickup, distanceToPickup: $distanceToPickup, rider: $rider, sender: $sender, store: $store, receiver: $receiver, orderActiveAt: $orderActiveAt, orderCancelledAt: $orderCancelledAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, paymentDepositedAt: $paymentDepositedAt, paymentDepositConfirmedAt: $paymentDepositConfirmedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -615,14 +598,6 @@ class _$_DeliveryHistory extends _DeliveryHistory {
             const DeepCollectionEquality()
                 .equals(other.destination, destination) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
-            const DeepCollectionEquality()
-                .equals(other.receiverFullName, receiverFullName) &&
-            const DeepCollectionEquality()
-                .equals(other.receiverPhone, receiverPhone) &&
-            const DeepCollectionEquality()
-                .equals(other.receiverEmailAddress, receiverEmailAddress) &&
-            const DeepCollectionEquality()
-                .equals(other.receiverPhoneAlt, receiverPhoneAlt) &&
             const DeepCollectionEquality().equals(other.notes, notes) &&
             const DeepCollectionEquality()
                 .equals(other.paymentMethod, paymentMethod) &&
@@ -635,6 +610,8 @@ class _$_DeliveryHistory extends _DeliveryHistory {
                 .equals(other.distanceToPickup, distanceToPickup) &&
             const DeepCollectionEquality().equals(other.rider, rider) &&
             const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality().equals(other.store, store) &&
+            const DeepCollectionEquality().equals(other.receiver, receiver) &&
             const DeepCollectionEquality()
                 .equals(other.orderActiveAt, orderActiveAt) &&
             const DeepCollectionEquality()
@@ -660,10 +637,6 @@ class _$_DeliveryHistory extends _DeliveryHistory {
         const DeepCollectionEquality().hash(pickup),
         const DeepCollectionEquality().hash(destination),
         const DeepCollectionEquality().hash(amount),
-        const DeepCollectionEquality().hash(receiverFullName),
-        const DeepCollectionEquality().hash(receiverPhone),
-        const DeepCollectionEquality().hash(receiverEmailAddress),
-        const DeepCollectionEquality().hash(receiverPhoneAlt),
         const DeepCollectionEquality().hash(notes),
         const DeepCollectionEquality().hash(paymentMethod),
         const DeepCollectionEquality().hash(riderId),
@@ -672,6 +645,8 @@ class _$_DeliveryHistory extends _DeliveryHistory {
         const DeepCollectionEquality().hash(distanceToPickup),
         const DeepCollectionEquality().hash(rider),
         const DeepCollectionEquality().hash(sender),
+        const DeepCollectionEquality().hash(store),
+        const DeepCollectionEquality().hash(receiver),
         const DeepCollectionEquality().hash(orderActiveAt),
         const DeepCollectionEquality().hash(orderCancelledAt),
         const DeepCollectionEquality().hash(riderAcceptedAt),
@@ -695,10 +670,6 @@ abstract class _DeliveryHistory extends DeliveryHistory {
       required RiderLocation pickup,
       required RiderLocation destination,
       required AmountField<double?> amount,
-      required DisplayName receiverFullName,
-      required Phone receiverPhone,
-      required EmailAddress receiverEmailAddress,
-      required BasicTextField<String?> receiverPhoneAlt,
       required BasicTextField<String?> notes,
       required PaymentMethod paymentMethod,
       required UniqueId<String?> riderId,
@@ -706,7 +677,9 @@ abstract class _DeliveryHistory extends DeliveryHistory {
       Duration durationToPickup,
       required BasicTextField<double?> distanceToPickup,
       required Rider rider,
-      required Sender sender,
+      required User sender,
+      required Store store,
+      required User receiver,
       DateTime? orderActiveAt,
       DateTime? orderCancelledAt,
       DateTime? riderAcceptedAt,
@@ -727,14 +700,6 @@ abstract class _DeliveryHistory extends DeliveryHistory {
   @override
   AmountField<double?> get amount;
   @override
-  DisplayName get receiverFullName;
-  @override
-  Phone get receiverPhone;
-  @override
-  EmailAddress get receiverEmailAddress;
-  @override
-  BasicTextField<String?> get receiverPhoneAlt;
-  @override
   BasicTextField<String?> get notes;
   @override
   PaymentMethod get paymentMethod;
@@ -749,7 +714,11 @@ abstract class _DeliveryHistory extends DeliveryHistory {
   @override //
   Rider get rider;
   @override
-  Sender get sender;
+  User get sender;
+  @override
+  Store get store;
+  @override
+  User get receiver;
   @override //
   DateTime? get orderActiveAt;
   @override

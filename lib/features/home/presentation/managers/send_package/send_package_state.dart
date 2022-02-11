@@ -7,17 +7,19 @@ class SendPackageState extends BaseState with _$SendPackageState {
 
   const factory SendPackageState({
     @Default(false) bool isLoading,
+    @Default(false) bool isLoadingSingle,
+    @Default(false) bool isConfirmingPickup,
+    @Default(false) bool isConfirmingDelivery,
     @Default(false) bool validate,
-    required JourneyDetail journey,
-    required SendPackage package,
+    required BasicTextField<String?> code,
+    Logistics? deliverable,
     @Default(true) bool isOtherReason,
     required BasicTextField<String?> cancelReason,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _SendPackageState;
 
   factory SendPackageState.initial() => SendPackageState(
-        package: SendPackage.blank(),
-        journey: JourneyDetail.blank(),
+        code: BasicTextField(null),
         cancelReason: BasicTextField(null),
       );
 }

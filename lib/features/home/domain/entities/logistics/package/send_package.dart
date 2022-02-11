@@ -9,28 +9,27 @@ part 'send_package.freezed.dart';
 
 @freezed
 @immutable
-class SendPackage with _$SendPackage {
+class SendPackage extends Logistics with _$SendPackage {
   const SendPackage._();
 
   const factory SendPackage({
     required UniqueId<String?> id,
-    required RiderLocation pickup,
-    required RiderLocation destination,
+    required UniqueId<String?> riderId,
+    required UserAddress pickup,
+    required UserAddress destination,
     @Default(PackageSize.small) PackageSize packageSize,
+    required LogisticsType type,
     @Default(false) bool isFragile,
-    required AmountField<double?> amount,
-    required DisplayName receiverFullName,
-    required Phone receiverPhone,
-    required EmailAddress receiverEmailAddress,
-    required BasicTextField<String?> receiverPhoneAlt,
+    required AmountField<double> price,
     required BasicTextField<String?> notes,
-    @Default(SendPackageStatus.PENDING) SendPackageStatus status,
+    @Default(ParcelStatus.PENDING) ParcelStatus status,
     PaymentMethod? paymentMethod,
     //
-    required UniqueId<String?> riderId,
     required RiderLocation riderLocation,
+    @Default(false) bool contactlessDelivery,
     @Default(Duration.zero) Duration durationToPickup,
     required BasicTextField<double?> distanceToPickup,
+    //
     DateTime? orderActiveAt,
     DateTime? orderCancelledAt,
     DateTime? riderAcceptedAt,
@@ -38,10 +37,14 @@ class SendPackage with _$SendPackage {
     DateTime? riderDeliveredAt,
     DateTime? paymentDepositedAt,
     DateTime? paymentDepositConfirmedAt,
-    required Sender sender,
+    //
+    required User sender,
+    required User receiver,
+    required JourneyDetail journey,
     //
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? deletedAt,
   }) = _SendPackage;
 
   String? get distanceKM {
@@ -50,28 +53,22 @@ class SendPackage with _$SendPackage {
     return null;
   }
 
+  @override
+  Store get store => Store.blank();
+
   factory SendPackage.blank() => SendPackage(
         id: UniqueId.fromExternal(null),
-        pickup: RiderLocation(
-          lat: BasicTextField(null),
-          lng: BasicTextField(null),
-          address: BasicTextField(null),
-        ),
-        destination: RiderLocation(
-          lat: BasicTextField(null),
-          lng: BasicTextField(null),
-          address: BasicTextField(null),
-        ),
-        amount: AmountField(null),
-        receiverFullName: DisplayName(null),
-        receiverPhone: Phone(null),
-        receiverEmailAddress: EmailAddress(null, validate: false),
-        receiverPhoneAlt: BasicTextField(null, validate: false),
+        pickup: UserAddress.blank(),
+        destination: UserAddress.blank(),
+        type: LogisticsType.package,
+        price: AmountField(0),
+        receiver: User.blank(),
         notes: BasicTextField(null, validate: false),
         distanceToPickup: BasicTextField(null, validate: false),
         durationToPickup: Duration.zero,
         riderId: UniqueId.fromExternal(null),
-        sender: Sender.blank(),
+        sender: User.blank(),
+        journey: JourneyDetail.blank(),
         riderLocation: RiderLocation(
           lat: BasicTextField(null),
           lng: BasicTextField(null),
@@ -82,49 +79,32 @@ class SendPackage with _$SendPackage {
   SendPackage merge(SendPackage? package) => copyWith(
         id: package?.id.value != null ? package!.id : id,
         pickup: package?.pickup != null ? package!.pickup : pickup,
-        destination:
-            package?.destination != null ? package!.destination : destination,
-        amount: package?.amount.isNotNull((it) => it as AmountField<double?>,
-                orElse: (_) => amount) ??
-            amount,
+        destination: package?.destination != null ? package!.destination : destination,
+        price: package?.price.isNotNull((it) => it as AmountField<double>, orElse: (_) => price) ?? price,
         isFragile: package?.isFragile != null ? package!.isFragile : isFragile,
         paymentMethod: package?.paymentMethod ?? paymentMethod,
-        packageSize:
-            package?.packageSize != null ? package!.packageSize : packageSize,
+        packageSize: package?.packageSize != null ? package!.packageSize : packageSize,
+        type: package?.type ?? type,
         status: package?.status != null ? package!.status : status,
-        receiverFullName: package?.receiverFullName.isNotNull(
-                (it) => it as DisplayName,
-                orElse: (_) => receiverFullName) ??
-            receiverFullName,
-        receiverEmailAddress: package?.receiverEmailAddress.isNotNull(
-                (it) => it as EmailAddress,
-                orElse: (_) => receiverEmailAddress) ??
-            receiverEmailAddress,
-        receiverPhone: package?.receiverPhone
-                .isNotNull((it) => it as Phone, orElse: (_) => receiverPhone) ??
-            receiverPhone,
-        receiverPhoneAlt: package?.receiverPhoneAlt.isNotNull(
-                (it) => it as BasicTextField<String?>,
-                orElse: (_) => receiverPhoneAlt) ??
-            receiverPhoneAlt,
-        notes: package?.notes.isNotNull((it) => it as BasicTextField<String?>,
-                orElse: (_) => notes) ??
-            notes,
+        receiver: package?.receiver != null ? package!.receiver : receiver,
+        notes: package?.notes.isNotNull((it) => it as BasicTextField<String?>, orElse: (_) => notes) ?? notes,
         durationToPickup: package?.durationToPickup ?? durationToPickup,
-        distanceToPickup: package?.distanceToPickup.isNotNull(
-                (it) => it as BasicTextField<double?>,
-                orElse: (_) => distanceToPickup) ??
-            distanceToPickup,
+        distanceToPickup:
+            package?.distanceToPickup.isNotNull((it) => it as BasicTextField<double?>, orElse: (_) => distanceToPickup) ?? distanceToPickup,
         riderId: package?.riderId.value != null ? package!.riderId : riderId,
-        riderLocation: package?.riderLocation != null
-            ? package!.riderLocation
-            : riderLocation,
+        riderLocation: package?.riderLocation != null ? package!.riderLocation : riderLocation,
+        paymentDepositedAt: package?.paymentDepositedAt ?? paymentDepositedAt,
+        paymentDepositConfirmedAt: package?.paymentDepositConfirmedAt ?? paymentDepositConfirmedAt,
+        contactlessDelivery: package?.contactlessDelivery ?? contactlessDelivery,
         orderActiveAt: package?.orderActiveAt ?? orderActiveAt,
         riderAcceptedAt: package?.riderAcceptedAt ?? riderAcceptedAt,
         riderReceivedAt: package?.riderReceivedAt ?? riderReceivedAt,
         riderDeliveredAt: package?.riderDeliveredAt ?? riderDeliveredAt,
+        orderCancelledAt: package?.orderCancelledAt ?? orderCancelledAt,
         sender: package?.sender ?? sender,
+        journey: package?.journey ?? journey,
         createdAt: createdAt != null ? package!.createdAt : createdAt,
         updatedAt: updatedAt != null ? package!.updatedAt : updatedAt,
+        deletedAt: deletedAt != null ? package!.deletedAt : deletedAt,
       );
 }

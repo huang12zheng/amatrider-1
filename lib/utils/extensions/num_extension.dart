@@ -1,9 +1,7 @@
 import 'dart:math' as math;
-
 import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/manager/router/export.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension NumX<T extends num> on T {
   T decimal(int places) {
@@ -13,21 +11,17 @@ extension NumX<T extends num> on T {
 
   bool isBtw(num from, num to) => from < this && to > this;
 
-  bool get isInteger => this is int || this == roundToDouble();
+  bool get isInteger => this is int || roundToDouble() == num.parse(toStringAsFixed(1));
+
+  num get roundToIntOrDouble => isInteger ? floor() : num.parse(toStringAsFixed(1));
+
+  double get toTurk => this * Const.defaultConversionRate;
 
   /// Multiple of screen width
-  double get w =>
-      MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!)
-          .size
-          .width *
-      this;
+  double get w => MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!).size.width * this;
 
   /// Multiple of screen height
-  double get h =>
-      MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!)
-          .size
-          .height *
-      this;
+  double get h => MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!).size.height * this;
 
   ///[ScreenUtil.radius]
   double get r => ScreenUtil().radius(this);
@@ -36,16 +30,8 @@ extension NumX<T extends num> on T {
   double get sp => ScreenUtil().setSp(this);
 
   /// Shortest screen-side width
-  double get sw =>
-      MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!)
-          .size
-          .shortestSide *
-      this;
+  double get sw => MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!).size.shortestSide * this;
 
   /// Longest screen-side height
-  double get sh =>
-      MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!)
-          .size
-          .longestSide *
-      this;
+  double get sh => MediaQuery.of(getIt<AppRouter>().navigatorKey.currentContext!).size.longestSide * this;
 }

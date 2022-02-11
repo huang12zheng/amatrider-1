@@ -40,11 +40,9 @@ class UserContactDeliveryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
               child: LimitedBox(
                 maxWidth: 0.065.h,
-                child: ImageBox(
+                child: ImageBox.network(
                   photo: photo,
-                  replacement: Center(
-                    child: Image.asset(AppAssets.unnamed, fit: BoxFit.contain),
-                  ),
+                  replacement: Image.asset(AppAssets.unnamed, fit: BoxFit.contain),
                 ),
               ),
             ),

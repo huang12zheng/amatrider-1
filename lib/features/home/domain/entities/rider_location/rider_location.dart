@@ -32,6 +32,12 @@ class RiderLocation extends LocationBase with _$RiderLocation {
     bool? isMock,
   }) = _RiderLocation;
 
+  factory RiderLocation.blank() => RiderLocation(
+        lat: BasicTextField(null),
+        lng: BasicTextField(null),
+        address: BasicTextField(null),
+      );
+
   factory RiderLocation.fromLocation(LocationData data) {
     return RiderLocation(
       accuracy: data.accuracy,

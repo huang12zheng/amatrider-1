@@ -6,7 +6,6 @@ import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
-import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:dartz/dartz.dart' hide State;
@@ -17,36 +16,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part '../widgets/home_page/send_package_card.dart';
 
 /// A stateless widget to render HomePage.
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  static Future<void> onRefresh(BuildContext c, [DragToRefreshState? controller]) async {
+    await BlocProvider.of<LocationCubit>(c).showPermissionRationale(c, callback: () async {
+      await c.read<RequestCubit>().allActive(c);
+      await c.read<RequestCubit>().allInTransit(c);
+      if (controller != null) controller = controller!..refreshCompleted();
+    });
+  }
+
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   late RequestCubit _cubit;
+
+  DragToRefreshState? controller;
 
   @override
   void initState() {
     super.initState();
-    _cubit = getIt<RequestCubit>()..echo();
-  }
-
-  Future<void> onRefresh(BuildContext c, RefreshController controller) async {
-    await BlocProvider.of<LocationCubit>(c).showPermissionRationale(context, callback: () async {
-      _cubit.clearList();
-      await _cubit.allPackages(c);
-      await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_SENDER);
-      await _cubit.allPackages(c, status: SendPackageStatus.ENROUTE_TO_RECEIVER);
-      await _cubit.allPackages(c, status: SendPackageStatus.RIDER_ACCEPTED);
-      controller.refreshCompleted();
-    });
+    final rider = context.read<AuthWatcherCubit>().state.rider;
+    _cubit = context.read<RequestCubit>()..echo(rider!);
   }
 
   @override
@@ -56,13 +54,17 @@ class _HomePageState extends State<HomePage> {
       child: MultiBlocListener(
         listeners: [
           BlocListener<RequestCubit, RequestState>(
-            listenWhen: (p, c) => p.currentPackage != c.currentPackage,
+            listenWhen: (p, c) => p.current != c.current,
             listener: (c, s) {
-              if (s.currentPackage != null && navigator.current.name != PackageDeliveryAcceptedRoute.name)
-                navigator.navigate(PackageDeliveryAcceptedRoute(sendPackage: s.currentPackage!));
+              if (s.current != null && navigator.current.name != PackageDeliveryAcceptedRoute.name) {
+                navigator.navigate(PackageDeliveryAcceptedRoute(
+                  deliverable: s.current!,
+                  onDelivered: (deliverable) => c.read<RequestCubit>().markAsDelivered(deliverable),
+                ));
+              }
 
               // Reset current package to null
-              c.read<RequestCubit>().setCurrentPackage(null);
+              c.read<RequestCubit>().setCurrent(null);
             },
           ),
           //
@@ -71,17 +73,15 @@ class _HomePageState extends State<HomePage> {
                 p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
                 (c.status.getOrElse(() => null) != null &&
                     (c.status.getOrElse(() => null)!.response.maybeMap(
-                          error: (f) => f.foldCode(orElse: () => false),
+                          error: (f) => f.fold(orElse: () => false),
                           orElse: () => false,
                         ))),
             listener: (c, s) => s.status.fold(
               () => null,
               (it) => it?.response.map(
+                info: (i) => PopupDialog.error(message: i.message).render(c),
                 error: (f) => PopupDialog.error(message: f.message).render(c),
-                success: (res) => PopupDialog.success(
-                  duration: const Duration(seconds: 2),
-                  message: res.message,
-                ).render(c),
+                success: (s) => PopupDialog.success(duration: const Duration(seconds: 2), message: s.message).render(c),
               ),
             ),
           ),
@@ -89,291 +89,287 @@ class _HomePageState extends State<HomePage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: 'Menu',
-            showCustomLeading: true,
-            leadingAction: () {},
-            leadingIcon: Consumer(
-              builder: (_, ref, child) => PlatformIconButton(
+            showCustomLeading: App.platform.material(true),
+            implyLeading: false,
+            cupertinoImplyLeading: false,
+            leadingAction: () => ref.read(scaffoldController.notifier).open,
+            leadingIcon: App.platform.material(
+              PlatformIconButton(
                 materialIcon: const Icon(Icons.menu),
                 cupertinoIcon: const Icon(CupertinoIcons.bars),
                 onPressed: ref.read(scaffoldController.notifier).open,
               ),
             ),
             actions: [
-              Center(
-                child: Consumer(
-                  builder: (_, ref, child) => AppIconButton(
-                    tooltip: 'Menu',
-                    backgroundColor: Colors.transparent,
-                    elevation: 0.0,
-                    onPressed: ref.read(scaffoldController.notifier).open,
-                    padding: EdgeInsets.zero,
-                    child: Center(
-                      child: Icon(
-                        CupertinoIcons.bars,
-                        size: 30,
-                        color: Utils.foldTheme(
-                          light: () => Palette.cardColorDark,
-                          dark: () => Palette.cardColorLight,
+              Utils.platform_(
+                cupertino: Center(
+                  child: Consumer(
+                    builder: (_, ref, child) => AppIconButton(
+                      tooltip: 'Menu',
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                      onPressed: ref.read(scaffoldController.notifier).open,
+                      padding: EdgeInsets.zero,
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.bars,
+                          size: 30,
+                          color: Utils.foldTheme(
+                            light: () => Palette.cardColorDark,
+                            dark: () => Palette.cardColorLight,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
+                material: Utils.nothing,
+              )!,
               //
               const Spacer(),
               //
               const AvailablilityWidget(),
             ],
           ),
-          body: SafeArea(
-            child: DragToRefresh(
-              initialRefresh: true,
-              onRefresh: (controller) => onRefresh(context, controller),
-              child: BlocBuilder<RequestCubit, RequestState>(
-                builder: (c, s) => CustomScrollView(
-                  shrinkWrap: true,
-                  physics: Utils.physics,
-                  scrollDirection: Axis.vertical,
-                  controller: ScrollController(),
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  slivers: [
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: App.sidePadding,
-                      ).copyWith(top: App.longest * 0.01),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate.fixed([
-                          BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
-                            selector: (s) => s.rider,
-                            builder: (c, rider) => AdaptiveText(
-                              '${tr.greeting('${rider?.firstName.getOrEmpty}')}! 👋',
+          body: AdaptiveScaffoldBody(
+            builder: (c) => SafeArea(
+              child: DragToRefresh(
+                initialRefresh: true,
+                onRefresh: (controller) => HomePage.onRefresh(c, controller),
+                child: BlocBuilder<RequestCubit, RequestState>(
+                  builder: (c, s) => CustomScrollView(
+                    shrinkWrap: true,
+                    physics: Utils.physics,
+                    scrollDirection: Axis.vertical,
+                    controller: ScrollController(),
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    slivers: [
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: App.sidePadding,
+                        ).copyWith(top: App.longest * 0.01),
+                        sliver: SliverList(
+                          delegate: SliverChildListDelegate.fixed([
+                            BlocSelector<AuthWatcherCubit, AuthWatcherState, Rider?>(
+                              selector: (s) => s.rider,
+                              builder: (c, rider) => AdaptiveText(
+                                '${tr.greeting('${rider?.firstName.getOrEmpty}')}! 👋',
+                                softWrap: true,
+                                style: TextStyle(
+                                  fontSize: 17.0.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            //
+                            VerticalSpace(height: 0.03.sw),
+                            //
+                            AdaptiveText(
+                              '${tr.homePageTxt2}',
                               softWrap: true,
                               style: TextStyle(
-                                fontSize: 17.0.sp,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 25.0.sp,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: Utils.letterSpacing,
                               ),
                             ),
-                          ),
-                          //
-                          VerticalSpace(height: 0.03.sw),
-                          //
-                          AdaptiveText(
-                            '${tr.homePageTxt2}',
-                            softWrap: true,
-                            style: TextStyle(
-                              fontSize: 25.0.sp,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: Utils.letterSpacing,
-                            ),
-                          ),
-                          //
-                          VerticalSpace(height: 0.05.sw),
-                        ]),
+                            //
+                            VerticalSpace(height: 0.05.sw),
+                          ]),
+                        ),
                       ),
-                    ),
-                    if (s.isLoadingTransitPackages || !s.packagesInTransit.isEmpty())
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: App.sidePadding,
-                        ).copyWith(left: 0.06.sw),
-                        sliver: SliverToBoxAdapter(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Headline('${tr.inTransit}', fontSize: 17.sp),
+                      if (s.isLoadingInTransit || !s.inTransit.isEmpty())
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: App.sidePadding,
+                          ).copyWith(left: 0.06.sw),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  Headline('${tr.inTransit}', fontSize: 17.sp),
+                                  //
+                                  if (!s.inTransit.isEmpty())
+                                    Headline(
+                                      '(${s.inTransit.size})',
+                                      fontSize: 15.5.sp,
+                                      textColorLight: Palette.accentColor,
+                                    ),
+                                ]),
                                 //
-                                if (!s.packagesInTransit.isEmpty())
-                                  Headline(
-                                    '(${s.packagesInTransit.size})',
-                                    fontSize: 15.5.sp,
-                                    textColorLight: Palette.accentColor,
-                                  ),
-                              ]),
-                              //
-                              VerticalSpace(height: 0.02.sw),
-                            ],
-                          ),
-                        ),
-                      ),
-                    //
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: App.sidePadding,
-                      ).copyWith(
-                        top: s.packagesInTransit.isEmpty() ? 0 : 0.02.sw,
-                        bottom: s.packagesInTransit.isEmpty() ? 0 : App.sidePadding,
-                      ),
-                      sliver: SliverToBoxAdapter(
-                        child: WidgetVisibility(
-                          duration: const Duration(milliseconds: 700),
-                          visible: !(s.isLoadingTransitPackages && s.packagesInTransit.isEmpty()),
-                          replacement: WidgetVisibility(
-                            duration: const Duration(milliseconds: 800),
-                            visible: s.isLoadingTransitPackages,
-                            replacement: Utils.nothing,
-                            child: ExpandableShimmer.list(
-                              count: 2,
-                              initialExpanded: (i) => i == 0,
-                              footer: ExpandableShimmerFooter.single,
-                            ),
-                          ),
-                          child: ListView.custom(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            controller: ScrollController(),
-                            physics: const NeverScrollableScrollPhysics(),
-                            semanticChildCount: s.packagesInTransit.size,
-                            clipBehavior: Clip.antiAlias,
-                            childrenDelegate: SliverChildBuilderDelegate(
-                              (_, i) => Column(
-                                key: ValueKey('in-transit-${s.packagesInTransit.getOrNull(i)?.id.value}'),
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (s.packagesInTransit.getOrNull(i) != null)
-                                    Flexible(
-                                      child: _SendPackageCard(
-                                        package: s.packagesInTransit.getOrNull(i)!,
-                                        initialExpanded: s.packagesInTransit.firstOrNull()?.id == s.packagesInTransit.getOrNull(i)?.id,
-                                      ),
-                                    ),
-                                  //
-                                  if (s.packagesInTransit.getOrNull(i) != null)
-                                    if (i != s.packagesInTransit.size - 1) VerticalSpace(height: 0.03.sw)
-                                ],
-                              ),
-                              childCount: s.packagesInTransit.size,
-                              findChildIndexCallback: (key) {
-                                final valueKey = key as ValueKey<String>;
-                                return s.packagesInTransit.dart.indexWhere((it) => 'in-transit-${it.id.value}' == valueKey.value);
-                              },
+                                VerticalSpace(height: 0.02.sw),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    //
-                    //
-                    //
-                    if (s.isLoadingActivePackages || !s.activePackages.isEmpty())
+                      //
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
-                        ).copyWith(left: 0.06.sw),
+                        ).copyWith(
+                          top: s.inTransit.isEmpty() ? 0 : 0.02.sw,
+                          bottom: s.inTransit.isEmpty() ? 0 : App.sidePadding,
+                        ),
                         sliver: SliverToBoxAdapter(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    Headline('${tr.activeRequests}', fontSize: 17.sp),
-                                    //
-                                    if (!s.activePackages.isEmpty())
-                                      Headline(
-                                        '(${s.activePackages.size})',
-                                        fontSize: 15.5.sp,
-                                        textColorLight: Palette.accentColor,
-                                      ),
-                                  ]),
-                                  //
-                                  if (s.isAccepting)
-                                    Center(
-                                      child: CircularProgressBar.adaptive(
-                                        height: 0.05.sw,
-                                        width: 0.05.sw,
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                ],
+                          child: AnimatedVisibility(
+                            duration: const Duration(milliseconds: 700),
+                            visible: !(s.isLoadingInTransit && s.inTransit.isEmpty()),
+                            replacement: AnimatedVisibility(
+                              duration: const Duration(milliseconds: 800),
+                              visible: s.isLoadingInTransit,
+                              replacement: Utils.nothing,
+                              child: ExpandableShimmer.list(
+                                count: 2,
+                                initialExpanded: (i) => i == 0,
+                                footer: ExpandableShimmerFooter.single,
                               ),
-                              //
-                              VerticalSpace(height: 0.02.sw),
-                            ],
-                          ),
-                        ),
-                      ),
-                    //
-                    SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: App.sidePadding,
-                      ).copyWith(top: s.activePackages.isEmpty() ? 0 : 0.02.sw),
-                      sliver: SliverToBoxAdapter(
-                        child: WidgetVisibility(
-                          duration: const Duration(milliseconds: 700),
-                          visible: !(s.isLoadingActivePackages && s.activePackages.isEmpty()),
-                          replacement: WidgetVisibility(
-                            duration: const Duration(milliseconds: 800),
-                            visible: s.isLoadingActivePackages,
-                            replacement: Utils.nothing,
-                            child: ExpandableShimmer.list(
-                              count: 4,
-                              initialExpanded: (i) => i == 0,
                             ),
-                          ),
-                          child: ListView.custom(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            controller: ScrollController(),
-                            physics: const NeverScrollableScrollPhysics(),
-                            semanticChildCount: s.activePackages.size,
-                            clipBehavior: Clip.antiAlias,
-                            childrenDelegate: SliverChildBuilderDelegate(
-                              (_, i) => Column(
-                                key: ValueKey('active-${s.activePackages.getOrNull(i)?.id.value}'),
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (s.activePackages.getOrNull(i) != null)
+                            child: ListView.custom(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              controller: ScrollController(),
+                              physics: const NeverScrollableScrollPhysics(),
+                              semanticChildCount: s.inTransit.size,
+                              clipBehavior: Clip.antiAlias,
+                              childrenDelegate: SliverChildBuilderDelegate(
+                                (_, i) => Column(
+                                  key: ValueKey('in-transit-${s.inTransit.getOrNull(i)?.id.value}'),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
                                     Flexible(
-                                      child: _SendPackageCard(
-                                        package: s.activePackages.getOrNull(i)!,
-                                        initialExpanded: s.activePackages.firstOrNull()?.id == s.activePackages.getOrNull(i)?.id,
+                                      child: _DeliverableCard(
+                                        item: s.inTransit.get(i),
+                                        initialExpanded: s.inTransit.firstOrNull()?.id == s.inTransit.get(i).id,
+                                        onAccept: () => HomePage.onRefresh(c),
+                                        onDecline: () => HomePage.onRefresh(c),
                                       ),
                                     ),
-                                  //
-                                  if (s.activePackages.getOrNull(i) != null)
-                                    if (i != s.activePackages.size - 1) VerticalSpace(height: 0.03.sw)
-                                ],
+                                    //
+                                    if (i != s.inTransit.size - 1) VerticalSpace(height: 0.03.sw)
+                                  ],
+                                ),
+                                childCount: s.inTransit.size,
+                                findChildIndexCallback: (key) {
+                                  final valueKey = key as ValueKey<String>;
+                                  return s.inTransit.dart.indexWhere((it) => 'in-transit-${it.id.value}' == valueKey.value);
+                                },
                               ),
-                              childCount: s.activePackages.size,
-                              findChildIndexCallback: (key) {
-                                final valueKey = key as ValueKey<String>;
-                                return s.activePackages.dart.indexWhere((it) => 'active-${it.id.value}' == valueKey.value);
-                              },
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    //
-                    // SliverPadding(
-                    //   padding: EdgeInsets.symmetric(
-                    //     horizontal: App.sidePadding,
-                    //   ).copyWith(top: s.activePackages.isEmpty() ? 0 : 0.02.sw),
-                    //   sliver: SliverToBoxAdapter(
-                    //     child: ExpandableShimmer.list(
-                    //       count: 2,
-                    //       initialExpanded: (i) => i == 1,
-                    //       footer: ExpandableShimmerFooter.single,
-                    //     ),
-                    //   ),
-                    // ),
-                    if ((!s.isLoadingActivePackages && !s.isLoadingTransitPackages && !s.isLoadingTransitPackages) &&
-                        (s.activePackages.isEmpty() && s.potentialPackages.isEmpty()))
-                      SliverToBoxAdapter(
-                        child: StageOwnerWidget(
-                          asset: right(AppAssets.noRequest),
-                          height: 0.6.h,
-                          useScaffold: false,
-                          title: 'No Request Yet',
-                          description: 'Please check back later.',
+                      //
+                      //
+                      //
+                      if (s.isLoadingActive || !s.active.isEmpty())
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: App.sidePadding,
+                          ).copyWith(left: 0.06.sw),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(children: [
+                                      Headline('${tr.activeRequests}', fontSize: 17.sp),
+                                      //
+                                      if (!s.active.isEmpty())
+                                        Headline(
+                                          '(${s.active.size})',
+                                          fontSize: 15.5.sp,
+                                          textColorLight: Palette.accentColor,
+                                        ),
+                                    ]),
+                                    //
+                                    if (s.isAccepting)
+                                      Center(
+                                        child: CircularProgressBar.adaptive(
+                                          height: 0.05.sw,
+                                          width: 0.05.sw,
+                                          strokeWidth: 2,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                //
+                                VerticalSpace(height: 0.02.sw),
+                              ],
+                            ),
+                          ),
+                        ),
+                      //
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: App.sidePadding,
+                        ).copyWith(top: s.active.isEmpty() ? 0 : 0.02.sw),
+                        sliver: SliverToBoxAdapter(
+                          child: AnimatedVisibility(
+                            duration: const Duration(milliseconds: 700),
+                            visible: !(s.isLoadingActive && s.active.isEmpty()),
+                            replacement: AnimatedVisibility(
+                              duration: const Duration(milliseconds: 800),
+                              visible: s.isLoadingActive,
+                              replacement: Utils.nothing,
+                              child: ExpandableShimmer.list(
+                                count: 4,
+                                initialExpanded: (i) => i == 0,
+                              ),
+                            ),
+                            child: ListView.custom(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              controller: ScrollController(),
+                              physics: const NeverScrollableScrollPhysics(),
+                              semanticChildCount: s.active.size,
+                              clipBehavior: Clip.antiAlias,
+                              childrenDelegate: SliverChildBuilderDelegate(
+                                (_, i) => Column(
+                                  key: ValueKey('active-${s.active.getOrNull(i)?.id.value}'),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (s.active.getOrNull(i) != null)
+                                      Flexible(
+                                        child: _DeliverableCard(
+                                          item: s.active.getOrNull(i)!,
+                                          initialExpanded: s.active.firstOrNull()?.id == s.active.getOrNull(i)?.id,
+                                          onAccept: () => HomePage.onRefresh(c),
+                                          onDecline: () => HomePage.onRefresh(c),
+                                        ),
+                                      ),
+                                    //
+                                    if (s.active.getOrNull(i) != null)
+                                      if (i != s.active.size - 1) VerticalSpace(height: 0.03.sw)
+                                  ],
+                                ),
+                                childCount: s.active.size,
+                                findChildIndexCallback: (key) {
+                                  final valueKey = key as ValueKey<String>;
+                                  return s.active.dart.indexWhere((it) => 'active-${it.id.value}' == valueKey.value);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                  ],
+                      //
+                      if ((!s.isLoadingActive && !s.isLoadingInTransit) && (s.active.isEmpty() && s.potential.isEmpty()))
+                        SliverToBoxAdapter(
+                          child: EmptyStateWidget(
+                            asset: right(AppAssets.noRequest),
+                            height: 0.6.h,
+                            useScaffold: false,
+                            title: 'No Request Yet',
+                            description: 'Please check back later.',
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -30,9 +30,10 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget with AutoRouteWrapper
   static final double _buttonHeight = 0.06.h;
   static final double _totalBottom = _buttonHeight + 0.026.h;
 
-  final SendPackage sendPackage;
+  final Logistics deliverable;
+  final void Function(Logistics)? onDelivered;
 
-  const PackageDeliveryAcceptedScreen({Key? key, required this.sendPackage}) : super(key: key);
+  const PackageDeliveryAcceptedScreen({Key? key, required this.deliverable, this.onDelivered}) : super(key: key);
 
   @override
   State<PackageDeliveryAcceptedScreen> createState() => _PackageDeliveryAcceptedScreenState();
@@ -42,16 +43,14 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget with AutoRouteWrapper
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<MapCubit>()),
-        BlocProvider(
-          create: (_) => getIt<SendPackageCubit>()..init(sendPackage),
-        ),
+        BlocProvider(create: (c) => getIt<SendPackageCubit>()..init(deliverable, c)),
       ],
       child: MultiBlocListener(
         listeners: [
           BlocListener<SendPackageCubit, SendPackageState>(
-            listenWhen: (p, c) => p.package.status != c.package.status,
-            listener: (c, s) => s.package.status.maybeWhen(
-              enrouteToSender: () {},
+            listenWhen: (p, c) => p.deliverable?.status != c.deliverable?.status,
+            listener: (c, s) => s.deliverable?.status.maybeWhen(
+              enrouteToStoreOrSender: () {},
               enrouteToReceiver: () {},
               orElse: () => null,
             ),
@@ -62,21 +61,22 @@ class PackageDeliveryAcceptedScreen extends StatefulWidget with AutoRouteWrapper
                 p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
                 (c.status.getOrElse(() => null) != null &&
                     (c.status.getOrElse(() => null)!.response.maybeMap(
-                          error: (f) => f.foldCode(orElse: () => false),
+                          error: (f) => f.fold(orElse: () => false),
                           orElse: () => false,
                         ))),
             listener: (c, s) => s.status.fold(
               () => null,
               (it) => it?.response.map(
+                info: (i) => PopupDialog.error(message: i.message).render(c),
                 error: (f) => PopupDialog.error(message: f.message).render(c),
                 success: (res) => PopupDialog.success(
                   duration: const Duration(seconds: 2),
                   message: res.message,
                   listener: (val) => val?.fold(dismissed: () async {
-                    if (s.package.status == SendPackageStatus.DELIVERED) {
-                      // c.read<SendPackageCubit>().closeWebsocket();
+                    if (s.deliverable?.status == ParcelStatus.DELIVERED) {
+                      BlocProvider.of<LocationCubit>(context).disableBackgroundLocation();
 
-                      await Future.delayed(const Duration(milliseconds: 600), () {
+                      await Future.delayed(const Duration(milliseconds: 500), () {
                         navigator.popUntil(
                           (route) => route.settings.name == DashboardRoute.name,
                         );
@@ -108,205 +108,319 @@ class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedS
   Widget build(BuildContext context) {
     super.build(context);
 
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      bottom: false,
-      child: AdaptiveScaffold(
-        body: Stack(
-          children: [
-            SlidingUpPanel(
-              controller: panelController,
-              maxHeight: PackageDeliveryAcceptedScreen._panelHeightOpened,
-              minHeight: PackageDeliveryAcceptedScreen._panelHeightClosed,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              parallaxEnabled: true,
-              parallaxOffset: 0.5,
-              defaultPanelState: PanelState.OPEN,
-              body: const _Body(),
-              color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
-              panelBuilder: (controller) => _PanelBuilder(
-                controller,
-                panelController: panelController,
-              ),
-              onPanelSlide: (position) {
-                final panelMaxScrollExtent =
-                    PackageDeliveryAcceptedScreen._panelHeightOpened - PackageDeliveryAcceptedScreen._panelHeightClosed;
+    return WillPopScope(
+      onWillPop: () {
+        App.forceAppUpdate();
+        BlocProvider.of<LocationCubit>(context).disableBackgroundLocation();
+        return Future.value(true);
+      },
+      child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
+        bottom: false,
+        child: AdaptiveScaffold(
+          body: AdaptiveScaffoldBody(
+            body: BlocSelector<SendPackageCubit, SendPackageState, bool>(
+              selector: (s) => s.isLoadingSingle,
+              builder: (c, isLoading) {
+                if (isLoading) return const Center(child: CircularProgressBar.adaptive(height: 25, width: 26, strokeWidth: 2));
 
-                final newFabHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._fabHeightClosed;
-
-                final newTrafficHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._trafficHeightClosed;
-
-                setState(() {
-                  _fabHeight = newFabHeight;
-                  _trafficHeight = newTrafficHeight;
-                });
-              },
-            ),
-            //
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(bottom: PackageDeliveryAcceptedScreen._buttonBottom),
-                  child: BlocBuilder<SendPackageCubit, SendPackageState>(
-                    builder: (c, s) => s.package.status.between(
-                      start: () => AppButton(
-                        text: 'Confirm Pickup',
-                        isLoading: s.isLoading,
-                        loaderHeight: 0.06.h,
-                        onPressed: () {
-                          if (!s.isLoading)
-                            App.showAlertDialog(
-                              context: context,
-                              barrierColor: App.resolveColor(
-                                Colors.grey.shade800.withOpacity(0.55),
-                                dark: Colors.white54,
-                              ),
-                              builder: (_) => AdaptiveAlertdialog(
-                                title: 'Confirm Pickup',
-                                content: 'Confirm that you have received '
-                                    'the package from ${s.package.sender.fullName.getOrEmpty}?',
-                                buttonDirection: Axis.horizontal,
-                                cupertinoFirstButtonText: 'No, Go Back',
-                                isSecondDestructive: true,
-                                secondButtonText: 'Yes, Confirm',
-                                secondSplashColor: Colors.black12,
-                                secondTextStyle: const TextStyle(color: Colors.white),
-                                secondBgColor: Palette.accentColor,
-                                onSecondPressed: () {
-                                  Theme.of(context)
-                                      .platform
-                                      .fold(material: c.read<SendPackageCubit>().confirmPackagePickup, cupertino: navigator.pop);
-                                },
-                                cupertinoSecondButton: CupertinoDialogAction(
-                                  isDefaultAction: true,
-                                  isDestructiveAction: false,
-                                  onPressed: () {
-                                    c.read<SendPackageCubit>().confirmPackagePickup();
-                                    navigator.pop();
-                                  },
-                                  child: const Text('Yes, Confirm'),
-                                ),
-                                materialFirstButton: AppOutlinedButton(
-                                  text: 'No, Go Back',
-                                  textColor: Palette.text100,
-                                  textColorDark: Palette.text100Dark,
-                                  borderColor: Palette.text100,
-                                  borderColorDark: Palette.text100Dark,
-                                  height: 0.045.h,
-                                  cupertinoHeight: 0.028.sh,
-                                  width: 0.3.sw,
-                                  cupertinoWidth: 0.3.sw,
-                                  onPressed: navigator.pop,
-                                ),
-                              ),
-                            );
-                        },
+                return Stack(
+                  children: [
+                    SlidingUpPanel(
+                      controller: panelController,
+                      maxHeight: PackageDeliveryAcceptedScreen._panelHeightOpened,
+                      minHeight: PackageDeliveryAcceptedScreen._panelHeightClosed,
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                      parallaxEnabled: true,
+                      parallaxOffset: 0.5,
+                      defaultPanelState: PanelState.OPEN,
+                      body: const _Body(),
+                      color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
+                      panelBuilder: (controller) => _PanelBuilder(
+                        controller,
+                        panelController: panelController,
                       ),
-                      end: () => AppButton(
-                        text: 'Deliver Package',
-                        isLoading: s.isLoading,
-                        loaderHeight: 0.06.h,
-                        onPressed: () {
-                          if (!s.isLoading)
-                            App.showAlertDialog(
-                              context: context,
-                              barrierColor: App.resolveColor(Colors.grey.shade800.withOpacity(0.55), dark: Colors.white54),
-                              builder: (_) => AdaptiveAlertdialog(
-                                title: 'Confirm Delivery',
-                                content: 'Confirm that you have delivered the package to '
-                                    '${s.package.receiverFullName.getOrEmpty}?',
-                                buttonDirection: Axis.horizontal,
-                                cupertinoFirstButtonText: 'No, Go Back',
-                                isSecondDestructive: true,
-                                secondButtonText: 'Yes, Confirm',
-                                secondSplashColor: Colors.black12,
-                                secondTextStyle: const TextStyle(color: Colors.white),
-                                secondBgColor: Palette.accentColor,
-                                onSecondPressed: () {
-                                  Theme.of(context)
-                                      .platform
-                                      .fold(material: c.read<SendPackageCubit>().confirmPackageDelivery, cupertino: navigator.pop);
+                      onPanelSlide: (position) {
+                        final panelMaxScrollExtent =
+                            PackageDeliveryAcceptedScreen._panelHeightOpened - PackageDeliveryAcceptedScreen._panelHeightClosed;
+
+                        final newFabHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._fabHeightClosed;
+
+                        final newTrafficHeight = (position * panelMaxScrollExtent) + PackageDeliveryAcceptedScreen._trafficHeightClosed;
+
+                        setState(() {
+                          _fabHeight = newFabHeight;
+                          _trafficHeight = newTrafficHeight;
+                        });
+                      },
+                    ),
+                    //
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: App.sidePadding)
+                              .copyWith(bottom: PackageDeliveryAcceptedScreen._buttonBottom),
+                          child: BlocBuilder<SendPackageCubit, SendPackageState>(
+                            builder: (c, s) => s.deliverable!.status.between(
+                              start: () => AppButton(
+                                text: 'Confirm Pickup',
+                                isLoading: s.isConfirmingPickup || s.isLoading,
+                                loaderHeight: 0.06.h,
+                                onPressed: () {
+                                  c.read<SendPackageCubit>().codeChanged(null, true);
+
+                                  if (!s.isConfirmingPickup)
+                                    App.showAlertDialog(
+                                      context: context,
+                                      builder: (_) => BlocProvider.value(
+                                        value: c.read<SendPackageCubit>(),
+                                        child: AdaptiveAlertdialog(
+                                          title: 'Confirm Pickup',
+                                          titleHeight: App.platform.cupertino(0.04.h),
+                                          body: [
+                                            AdaptiveText(
+                                              s.deliverable!.type.when(
+                                                order: () => 'Confirm pickup from ${s.deliverable?.store.name.getOrEmpty}?',
+                                                package: () => 'Confirm that you have received the package from '
+                                                    '${s.deliverable?.sender.fullName.getOrEmpty}?',
+                                              ),
+                                              fontSize: 16.sp,
+                                              minFontSize: 12,
+                                              maxFontSize: 16,
+                                              isDefault: Utils.platform_(cupertino: true),
+                                              fontWeight: FontWeight.w500,
+                                              textAlign: TextAlign.center,
+                                              letterSpacing: Utils.letterSpacing,
+                                            ),
+                                            //
+                                            0.02.verticalh,
+                                            //
+                                            ReactiveTextFormField<SendPackageCubit, SendPackageState>(
+                                              hintText: (s) => 'Enter Confirmation Code',
+                                              // autofocus: true,
+                                              disabled: (s) => s.isConfirmingPickup,
+                                              keyboardType: TextInputType.number,
+                                              capitalization: TextCapitalization.none,
+                                              field: (s) => s.code,
+                                              validate: (s) => s.validate,
+                                              response: (s) => s.status,
+                                              errorField: (s) => s.errors?.bankName,
+                                              onChanged: (cubit, it) => cubit.codeChanged(it),
+                                            ),
+                                            //
+                                            0.01.verticalh,
+                                          ],
+                                          buttonDirection: Axis.horizontal,
+                                          cupertinoFirstButtonText: 'No, Go Back',
+                                          isSecondDestructive: true,
+                                          secondButtonText: 'Yes, Confirm',
+                                          secondSplashColor: Colors.black12,
+                                          secondTextStyle: const TextStyle(color: Colors.white),
+                                          secondBgColor: Palette.accentColor,
+                                          autoPopSecondButton: false,
+                                          onSecondPressed: Utils.platform_(
+                                            material: () => c.read<SendPackageCubit>().confirmPickup(c, navigator.pop),
+                                            cupertino: navigator.pop,
+                                          ),
+                                          cupertinoSecondButton: CupertinoDialogAction(
+                                            isDefaultAction: true,
+                                            isDestructiveAction: false,
+                                            onPressed: () => c.read<SendPackageCubit>().confirmPickup(c, navigator.pop),
+                                            child: const Text('Yes, Confirm'),
+                                          ),
+                                          materialFirstButton: AppOutlinedButton(
+                                            text: 'No, Go Back',
+                                            textColor: Palette.text100,
+                                            textColorDark: Palette.text100Dark,
+                                            borderColor: Palette.text100,
+                                            borderColorDark: Palette.text100Dark,
+                                            height: 0.045.h,
+                                            cupertinoHeight: 0.028.sh,
+                                            width: 0.3.sw,
+                                            cupertinoWidth: 0.3.sw,
+                                            onPressed: navigator.pop,
+                                          ),
+                                        ),
+                                      ),
+                                    );
                                 },
-                                cupertinoSecondButton: CupertinoDialogAction(
-                                  isDefaultAction: true,
-                                  isDestructiveAction: false,
-                                  onPressed: () {
-                                    c.read<SendPackageCubit>().confirmPackageDelivery();
-                                    navigator.pop();
-                                  },
-                                  child: const Text('Yes, Confirm'),
-                                ),
-                                materialFirstButton: AppOutlinedButton(
-                                  text: 'No, Go Back',
-                                  textColor: Palette.text100,
-                                  textColorDark: Palette.text100Dark,
-                                  borderColor: Palette.text100,
-                                  borderColorDark: Palette.text100Dark,
-                                  height: 0.045.h,
-                                  cupertinoHeight: 0.028.sh,
-                                  width: 0.3.sw,
-                                  cupertinoWidth: 0.3.sw,
-                                  onPressed: navigator.pop,
-                                ),
                               ),
-                            );
-                        },
+                              end: () => AppButton(
+                                text: !s.deliverable!.contactlessDelivery ? 'Deliver Package' : 'Leave at door step',
+                                isLoading: s.isConfirmingDelivery || s.isLoading,
+                                loaderHeight: 0.06.h,
+                                onPressed: () {
+                                  c.read<SendPackageCubit>().codeChanged(null, true);
+
+                                  if (!s.isConfirmingDelivery)
+                                    App.showAlertDialog(
+                                      context: context,
+                                      builder: (_) => BlocProvider.value(
+                                        value: c.read<SendPackageCubit>(),
+                                        child: AdaptiveAlertdialog(
+                                          title: !s.deliverable!.contactlessDelivery ? 'Confirm Delivery' : 'Leave at doorstep',
+                                          titleHeight: App.platform.cupertino(0.04.h),
+                                          body: [
+                                            AdaptiveText(
+                                              !s.deliverable!.contactlessDelivery
+                                                  ? 'Confirm that you have delivered the package to '
+                                                      '${s.deliverable?.receiver.fullName.getOrEmpty}?'
+                                                  : 'This is a contactless delivery.\n\n'
+                                                      'Confirm that you have left the package at the doorstep?',
+                                              fontSize: 16.sp,
+                                              minFontSize: 12,
+                                              maxFontSize: 16,
+                                              isDefault: Utils.platform_(cupertino: true),
+                                              fontWeight: FontWeight.w500,
+                                              textAlign: TextAlign.center,
+                                              letterSpacing: Utils.letterSpacing,
+                                            ),
+                                            //
+                                            if (!s.deliverable!.contactlessDelivery) ...[
+                                              0.02.verticalh,
+                                              //
+                                              ReactiveTextFormField<SendPackageCubit, SendPackageState>(
+                                                hintText: (s) => 'Enter Delivery Code',
+                                                // autofocus: true,
+                                                disabled: (s) => s.isConfirmingDelivery,
+                                                keyboardType: TextInputType.number,
+                                                capitalization: TextCapitalization.none,
+                                                field: (s) => s.code,
+                                                validate: (s) => s.validate,
+                                                response: (s) => s.status,
+                                                errorField: (s) => s.errors?.bankName,
+                                                onChanged: (cubit, it) => cubit.codeChanged(it),
+                                              ),
+                                            ],
+                                            //
+                                            0.01.verticalh,
+                                          ],
+                                          buttonDirection: Axis.horizontal,
+                                          cupertinoFirstButtonText: 'No, Go Back',
+                                          isSecondDestructive: true,
+                                          secondButtonText: 'Yes, Confirm',
+                                          secondSplashColor: Colors.black12,
+                                          secondTextStyle: const TextStyle(color: Colors.white),
+                                          secondBgColor: Palette.accentColor,
+                                          autoPopSecondButton: false,
+                                          onSecondPressed: Utils.platform_(
+                                            material: () =>
+                                                c.read<SendPackageCubit>().confirmDelivery(c, navigator.pop, widget.onDelivered),
+                                            cupertino: navigator.pop,
+                                          ),
+                                          cupertinoSecondButton: CupertinoDialogAction(
+                                            isDefaultAction: true,
+                                            isDestructiveAction: false,
+                                            onPressed: () =>
+                                                c.read<SendPackageCubit>().confirmDelivery(c, navigator.pop, widget.onDelivered),
+                                            child: const Text('Yes, Confirm'),
+                                          ),
+                                          materialFirstButton: AppOutlinedButton(
+                                            text: 'No, Go Back',
+                                            textColor: Palette.text100,
+                                            textColorDark: Palette.text100Dark,
+                                            borderColor: Palette.text100,
+                                            borderColorDark: Palette.text100Dark,
+                                            height: 0.045.h,
+                                            cupertinoHeight: 0.028.sh,
+                                            width: 0.3.sw,
+                                            cupertinoWidth: 0.3.sw,
+                                            onPressed: navigator.pop,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
+                    //
+                    if (widget.deliverable.contactlessDelivery)
+                      Positioned(
+                        top: 10,
+                        left: 10,
+                        child: SafeArea(
+                          child: FloatingActionButton(
+                            tooltip: 'This is a Contactless Delivery.',
+                            heroTag: 'contactless-delivery-tag',
+                            elevation: 1.0,
+                            focusElevation: 1.8,
+                            highlightElevation: 1.8,
+                            // shape: RoundedRectangleBorder(
+                            //   borderRadius: BorderRadius.circular(10.0),
+                            // ),
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            mini: true,
+                            backgroundColor: App.resolveColor(Palette.cardColorLight, dark: const Color.fromARGB(255, 6, 20, 39))!,
+                            onPressed: null,
+                            child: Icon(
+                              Utils.platform_(material: Icons.shield, cupertino: CupertinoIcons.location_fill),
+                              color: Palette.infoBlue,
+                              size: 27,
+                            ),
+                          ),
+                        ),
+                      ),
+                    //
+                    Positioned(
+                      right: 0.04.sw,
+                      bottom: _fabHeight,
+                      child: FloatingActionButton(
+                        tooltip: 'Your Location',
+                        heroTag: 'user-location-tag',
+                        elevation: 1.0,
+                        focusElevation: 1.8,
+                        highlightElevation: 1.8,
+                        backgroundColor: App.resolveColor(Palette.cardColorLight, dark: const Color.fromARGB(255, 6, 20, 39))!,
+                        onPressed: () {
+                          context.read<MapCubit>().updateCurrentLocation(c);
+                          context.read<SendPackageCubit>().updateRiderLocation(c);
+                        },
+                        child: Icon(
+                          Utils.platform_(material: Icons.gps_fixed_rounded, cupertino: CupertinoIcons.location_fill),
+                          color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
+                          size: 27,
+                        ),
+                      ),
+                    ),
+                    //
+                    Positioned(
+                      right: 0.04.sw,
+                      bottom: _trafficHeight,
+                      child: FloatingActionButton(
+                        tooltip: 'Toggle Traffic',
+                        heroTag: 'traffic-toggle-tag',
+                        elevation: 1.0,
+                        focusElevation: 1.8,
+                        highlightElevation: 1.8,
+                        backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
+                        onPressed: context.read<MapCubit>().toogleTraffic,
+                        child: BlocBuilder<MapCubit, MapState>(
+                          buildWhen: (p, c) => p.trafficEnabled != c.trafficEnabled,
+                          builder: (c, s) => Icon(
+                            Icons.traffic_outlined,
+                            color: s.trafficEnabled ? App.resolveColor(Palette.accentGreen, dark: Palette.accentDarkGreen) : Colors.grey,
+                            size: 27,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
-            //
-            Positioned(
-              right: 0.04.sw,
-              bottom: _fabHeight,
-              child: FloatingActionButton(
-                tooltip: 'Your Location',
-                heroTag: 'user-location-tag',
-                elevation: 1.0,
-                focusElevation: 1.8,
-                highlightElevation: 1.8,
-                backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
-                onPressed: context.read<MapCubit>().updateCurrentLocation,
-                child: Icon(
-                  Utils.platform_(material: Icons.gps_fixed_rounded, cupertino: CupertinoIcons.location_fill),
-                  color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
-                  size: 27,
-                ),
-              ),
-            ),
-            //
-            Positioned(
-              right: 0.04.sw,
-              bottom: _trafficHeight,
-              child: FloatingActionButton(
-                tooltip: 'Toggle Traffic',
-                heroTag: 'traffic-toggle-tag',
-                elevation: 1.0,
-                focusElevation: 1.8,
-                highlightElevation: 1.8,
-                backgroundColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)!,
-                onPressed: context.read<MapCubit>().toogleTraffic,
-                child: BlocBuilder<MapCubit, MapState>(
-                  buildWhen: (p, c) => p.trafficEnabled != c.trafficEnabled,
-                  builder: (c, s) => Icon(
-                    Icons.traffic_outlined,
-                    color: s.trafficEnabled ? App.resolveColor(Palette.accentGreen, dark: Palette.accentDarkGreen) : Colors.grey,
-                    size: 27,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -318,37 +432,45 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<SendPackageCubit, SendPackageState, SendPackageStatus>(
-      selector: (s) => s.package.status,
-      builder: (c, status) => status.between(
-        start: () {
-          final package = c.read<SendPackageCubit>().state.package;
+    return BlocBuilder<SendPackageCubit, SendPackageState>(
+      // selector: (s) => s.deliverable?.status,
+      builder: (c, s) =>
+          s.deliverable?.status.between(
+            start: () {
+              final deliverable = c.read<SendPackageCubit>().state.deliverable!;
 
-          context.read<MapCubit>().drawPolyline(package.riderLocation, package.pickup);
+              context.read<MapCubit>().drawPolyline(UserAddress.fromLocation(deliverable.riderLocation), deliverable.pickup);
 
-          context.read<MapCubit>().adjustMapBounds(package.riderLocation, package.pickup);
+              context.read<MapCubit>().adjustMapBounds(UserAddress.fromLocation(deliverable.riderLocation), deliverable.pickup);
 
-          return MapWidget(
-            start: package.riderLocation,
-            end: package.pickup,
-            customStartWidget: false,
-          );
-        },
-        end: () {
-          final package = c.read<SendPackageCubit>().state.package;
+              final location =
+                  deliverable.riderLocation.lat.getOrNull == null ? c.read<LocationCubit>().state.position : deliverable.riderLocation;
 
-          context.read<MapCubit>().drawPolyline(package.riderLocation, package.destination);
+              return MapWidget(
+                start: UserAddress.fromLocation(location!),
+                end: deliverable.pickup,
+                customStartWidget: false,
+              );
+            },
+            end: () {
+              final deliverable = c.read<SendPackageCubit>().state.deliverable!;
 
-          context.read<MapCubit>().adjustMapBounds(package.riderLocation, package.destination);
+              context.read<MapCubit>().drawPolyline(UserAddress.fromLocation(deliverable.riderLocation), deliverable.destination);
 
-          return MapWidget(
-            start: package.riderLocation,
-            end: package.destination,
-            refresh: status == SendPackageStatus.ENROUTE_TO_RECEIVER,
-            customStartWidget: false,
-          );
-        },
-      ),
+              context.read<MapCubit>().adjustMapBounds(UserAddress.fromLocation(deliverable.riderLocation), deliverable.destination);
+
+              final location =
+                  deliverable.riderLocation.lat.getOrNull == null ? c.read<LocationCubit>().state.position : deliverable.riderLocation;
+
+              return MapWidget(
+                start: UserAddress.fromLocation(location!),
+                end: deliverable.destination,
+                refresh: s.deliverable?.status == ParcelStatus.ENROUTE_TO_RECEIVER,
+                customStartWidget: false,
+              );
+            },
+          ) ??
+          Utils.nothing,
     );
   }
 }

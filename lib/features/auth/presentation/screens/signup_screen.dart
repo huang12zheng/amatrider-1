@@ -11,7 +11,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 part '../widgets/_signup_forms.dart';
 
@@ -32,16 +31,11 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
               () => false,
               (http) =>
                   http?.response.maybeMap(
-                    error: (f) => f.foldCode(
-                      is4031: () {
-                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToOTPVerification());
+                    error: (f) => f.fold(
+                      orElse: () {
+                        navigator.replaceAll([const DashboardRoute()]);
                         return false;
                       },
-                      is41101: () {
-                        WidgetsBinding.instance?.addPostFrameCallback((_) => navigateToSocials());
-                        return false;
-                      },
-                      orElse: () => false,
                     ),
                     orElse: () => false,
                   ) ??
@@ -49,12 +43,10 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
             ),
         listener: (c, s) => s.status.fold(
           () => null,
-          (th) => th?.response.map(
+          (it) => it?.response.map(
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
-            success: (s) => PopupDialog.success(
-              duration: env.greetingDuration,
-              message: s.message,
-            ).render(c),
+            success: (s) => PopupDialog.success(duration: env.greetingDuration, message: s.message).render(c),
           ),
         ),
         child: this,
@@ -72,7 +64,7 @@ class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClie
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (!navigator.isRoot) return true;
+    if (context.watchRouter.canPopSelfOrChildren && !context.watchRouter.isRoot) return true;
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -81,14 +73,10 @@ class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClie
     _timestampPressed = DateTime.now();
 
     if (_showWarn) {
-      await Fluttertoast.showToast(
-        msg: 'Tap again to exit',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
+      await ToastManager.short('Tap again to exit');
       return Future.value(false);
     } else {
-      await Fluttertoast.cancel();
+      await ToastManager.cancel();
       return Future.value(true);
     }
   }
@@ -102,14 +90,8 @@ class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClie
       child: AdaptiveScaffold(
         adaptiveToolbar: AdaptiveToolbar(
           title: 'Create Account',
-          implyLeading: App.platform.fold(
-            material: () => false,
-            cupertino: () => true,
-          ),
-          showCustomLeading: App.platform.fold(
-            material: () => null,
-            cupertino: () => true,
-          ),
+          implyLeading: Utils.platform_(material: false, cupertino: true)!,
+          showCustomLeading: Utils.platform_(material: null, cupertino: true),
           leadingAction: navigator.pop,
         ),
         body: Theme(

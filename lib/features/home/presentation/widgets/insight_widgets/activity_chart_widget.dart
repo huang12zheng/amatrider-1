@@ -55,19 +55,17 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                               DateFilter.yearly,
                             ],
                             height: 43,
-                            backgroundColorLight: App.resolveColor(Colors.brown,
-                                dark: Palette.cardColorDark),
+                            backgroundColorLight: App.resolveColor(Colors.brown, dark: Palette.cardColorDark),
                             text: (it) => '${it?.label}',
                             minFontSize: 13,
                             selected: s.dateFilter,
-                            onChanged:
-                                c.read<InsightsCubit>().dateFilterChanged,
+                            onChanged: c.read<InsightsCubit>().dateFilterChanged,
                           ),
                         ),
                         //
                         Flexible(
                           flex: 8,
-                          child: WidgetVisibility(
+                          child: AnimatedVisibility(
                             visible: s.dateFilter != DateFilter.all_time,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -77,20 +75,12 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                                 Flexible(
                                   child: AdaptiveListTile(
                                     dense: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    trailing: const Icon(
-                                        Icons.keyboard_arrow_down_rounded),
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                    trailing: const Icon(Icons.keyboard_arrow_down_rounded),
                                     title: s.dateFilter.when(
                                       allTime: null,
-                                      monthly: AdaptiveText(
-                                          '${DateFormat.MMMM().format(s.selectedDate!)}',
-                                          maxLines: 1,
-                                          fontSize: 16.sp),
-                                      yearly: AdaptiveText(
-                                          '${DateFormat.y().format(s.selectedDate!)}',
-                                          maxLines: 1,
-                                          fontSize: 16.sp),
+                                      monthly: AdaptiveText('${DateFormat.MMMM().format(s.selectedDate!)}', maxLines: 1, fontSize: 16.sp),
+                                      yearly: AdaptiveText('${DateFormat.y().format(s.selectedDate!)}', maxLines: 1, fontSize: 16.sp),
                                     ),
                                     horizontalTitleGap: 0,
                                     minVerticalPadding: 5,
@@ -106,8 +96,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                                         selectedDate: s.selectedDate,
                                         firstDate: DispatchActivity.firstDate,
                                         lastDate: DispatchActivity.lastDate,
-                                        initialDatePickerMode:
-                                            s.dateFilter.when(
+                                        initialDatePickerMode: s.dateFilter.when(
                                           allTime: DatePickerMode.day,
                                           monthly: DatePickerMode.day,
                                           yearly: DatePickerMode.year,
@@ -118,19 +107,15 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
                                         builder: (ctx, child) => Theme(
                                           data: Theme.of(ctx).copyWith(
                                             primaryColor: Palette.accent20,
-                                            colorScheme:
-                                                const ColorScheme.light(
+                                            colorScheme: const ColorScheme.light(
                                               primary: Palette.accentColor,
                                               secondary: Palette.accent20,
                                             ),
-                                            buttonTheme: const ButtonThemeData(
-                                                textTheme:
-                                                    ButtonTextTheme.primary),
+                                            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
                                           ),
                                           child: child!,
                                         ),
-                                        onChanged:
-                                            c.read<InsightsCubit>().dateChanged,
+                                        onChanged: c.read<InsightsCubit>().dateChanged,
                                       );
                                     },
                                   ),
@@ -155,8 +140,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
             constraints: BoxConstraints(maxHeight: 0.4.h),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child:
-                  BlocSelector<InsightsCubit, InsightsState, DispatchActivity?>(
+              child: BlocSelector<InsightsCubit, InsightsState, DispatchActivity?>(
                 selector: (s) => s.insight.activities,
                 builder: (_, activities) {
                   if (activities != null)
@@ -200,9 +184,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
         ),
         touchCallback: (event, barTouchResponse) {
           setState(() {
-            if (!event.isInterestedForInteractions ||
-                barTouchResponse == null ||
-                barTouchResponse.spot == null) {
+            if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
               touchedIndex = -1;
               return;
             }
@@ -217,11 +199,8 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
         leftTitles: SideTitles(
           showTitles: true,
           reservedSize: 35,
-          checkToShowTitle:
-              (minValue, maxValue, sideTitles, appliedInterval, value) =>
-                  value % 10 == 0,
-          getTitles: (value) =>
-              value == 0 ? '${value.toInt()}' : '${'$value'.asCurrency()}',
+          checkToShowTitle: (minValue, maxValue, sideTitles, appliedInterval, value) => value % 10 == 0,
+          getTitles: (value) => value == 0 ? '${value.toInt()}' : '${'$value'.asCurrency()}',
           getTextStyles: (_, value) => TextStyle(
             color: const Color(0xff4C5862),
             fontSize: 14.sp,

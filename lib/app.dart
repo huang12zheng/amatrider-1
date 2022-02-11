@@ -31,6 +31,7 @@ class AmatRider extends StatelessWidget {
         BlocProvider(create: (_) => getIt<OnboardingCubit>()),
         BlocProvider(create: (_) => getIt<AuthWatcherCubit>()),
         BlocProvider(create: (_) => getIt<LocationCubit>()),
+        BlocProvider(create: (_) => getIt<TabNavigationCubit>()),
         BlocProvider(create: (_) => getIt<NotificationCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, AppTheme>(
@@ -41,21 +42,9 @@ class AmatRider extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             color: Palette.accentColor,
             material: (_, __) => MaterialAppRouterData(
-              theme: env.flavor.fold(
-                dev: () => app.themeData(),
-                // prod: () => AppTheme.light().themeData(),
-                prod: () => app.themeData(),
-              ),
-              darkTheme: env.flavor.fold(
-                dev: () => AppTheme.dark().themeData(),
-                // prod: () => AppTheme.light().themeData(),
-                prod: () => AppTheme.dark().themeData(),
-              ),
-              themeMode: env.flavor.fold(
-                dev: () => ThemeMode.system,
-                prod: () => ThemeMode.system,
-                // prod: () => ThemeMode.light,
-              ),
+              theme: app.themeData(),
+              darkTheme: AppTheme.dark().themeData(),
+              themeMode: ThemeMode.system,
             ),
             cupertino: (_, __) => CupertinoAppRouterData(
               theme: app.cupertinoThemeData(_),
@@ -78,6 +67,7 @@ class AmatRider extends StatelessWidget {
               _router,
               navigatorObservers: () => <NavigatorObserver>[
                 if (env.flavor == BuildFlavor.prod) FirebaseAnalyticsObserver(analytics: getIt<FirebaseAnalytics>()),
+                HomePageObserver(),
               ],
             ),
             supportedLocales: S.delegate.supportedLocales,

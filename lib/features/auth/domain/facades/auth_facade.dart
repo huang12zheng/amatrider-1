@@ -29,7 +29,7 @@ abstract class AuthFacade {
     RiderDTO? registered,
   });
 
-  Future<AppHttpResponse> createAccount({
+  Future<AppHttpResponse?> createAccount({
     required DisplayName firstName,
     required DisplayName lastName,
     required EmailAddress emailAddress,
@@ -44,20 +44,13 @@ abstract class AuthFacade {
     File? image,
   });
 
-  Future<AppHttpResponse> updatePhone(Phone phone);
-
-  Future<AppHttpResponse> confirmUpdatePhone({
-    required Phone phone,
-    required OTPCode code,
-  });
-
   Future<AppHttpResponse> updatePassword({
     required Password current,
     required Password newPassword,
     required Password confirmation,
   });
 
-  Future<AppHttpResponse> resendVerificationEmail(Phone phone);
+  Future<AppHttpResponse> updatePhone(Phone phone);
 
   Future<AppHttpResponse> verifyPhoneNumber({
     required Phone phone,
@@ -77,20 +70,19 @@ abstract class AuthFacade {
 
   Future<Option<AppHttpResponse?>> googleAuthentication([bool notify = false]);
 
-  Future<AppHttpResponse> updateSocialsProfile({
+  Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]);
+
+  Future<Option<AppHttpResponse?>> updateSocialsProfile({
     DisplayName? firstName,
     DisplayName? lastName,
+    EmailAddress? email,
     Phone? phone,
   });
 
-  Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]);
-
-  Future<void> signOut(
-    bool? notify, {
-    bool email = true,
+  Future<void> signOut({
+    bool notify = true,
+    bool regular = true,
     bool google = true,
-    bool facebook = true,
-    bool twitter = true,
     bool apple = true,
   });
 
@@ -140,10 +132,10 @@ abstract class AuthFacade {
           ),
         );
 
-        // Log the Rider of if access token has expired
-        return await e.foldCode(
+        // Log the rider of if access token has expired
+        return await e.fold(
           is401: () async {
-            await signOut(true);
+            await signOut(notify: notify);
             return e;
           },
           orElse: () async {

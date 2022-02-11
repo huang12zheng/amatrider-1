@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class _Const {
-  static final _global =
-      GlobalKey<InnerDrawerState>(debugLabel: '_DashboardDrawerState');
-}
+final _global = GlobalKey<InnerDrawerState>(debugLabel: '_DashboardDrawerState');
 
 // var scaffoldController = StateNotifierProvider.autoDispose<ScaffoldController,
 //     GlobalKey<ScaffoldState>>((ref) => ScaffoldController(_Const._global));
 
-var scaffoldController = StateNotifierProvider.autoDispose<ScaffoldController,
-    GlobalKey<InnerDrawerState>>((ref) => ScaffoldController(_Const._global));
+var scaffoldController =
+    StateNotifierProvider.autoDispose<ScaffoldController, GlobalKey<InnerDrawerState>>((ref) => ScaffoldController(_global));
 
 // Define StateNotifier for the app
 class ScaffoldController extends StateNotifier<GlobalKey<InnerDrawerState>> {

@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
-import 'package:amatrider/core/presentation/index.dart';
+import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
@@ -28,8 +28,13 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   final AuthFacade _auth;
   final UtilitiesRepository _utils;
   final PreferenceRepository _preferences;
+  Rider? _temp;
 
-  AuthCubit(this._auth, this._preferences, this._utils) : super(AuthState.initial());
+  AuthCubit(
+    this._auth,
+    this._utils,
+    this._preferences,
+  ) : super(AuthState.initial());
 
   @override
   Future<void> close() {
@@ -38,23 +43,32 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   }
 
   void init({bool loader = false}) async {
-    if (loader) toggleLoading();
+    if (loader) toggleLoading(true, none());
 
     // Retrieve stored / cached user data
-    final _user = await _auth.rider;
+    final _cached = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
-    final _phone = await _preferences.getString(Const.kPhoneNumberPrefKey);
+    final _phoneNumberData = await _cached?.let((it) async => await PhoneNumber.getRegionInfoFromPhoneNumber(it));
 
-    (_user.getOrElse(() => null) ?? state.rider).let((it) => emit(state.copyWith(
-          rider: it.copyWith(
-            phone: _phone?.let(
-                  (number) => Phone(number, country: _mapCountry()),
-                ) ??
-                it.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone),
-          ),
-        )));
+    countryChanged(
+      CountryCode(code: _phoneNumberData?.isoCode, dialCode: _phoneNumberData?.dialCode),
+      onlyCountry: true,
+    );
 
-    if (loader) toggleLoading();
+    final _phoneNumber = _phoneNumberData?.let((it) => Phone(_cached, country: _mapCountry(null, _phoneNumberData)));
+
+    final _rider = (await _auth.rider)
+        .getOrElse(() => state.rider)
+        ?.let((it) => it.copyWith(phone: _phoneNumber ?? it.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone)));
+
+    _temp = _rider;
+
+    emit(state.copyWith(
+      rider: _rider!,
+      phoneTextController: state.phoneTextController..text = _phoneNumber?.noDialCode?.getOrNull ?? '',
+    ));
+
+    if (loader) toggleLoading(false);
   }
 
   void initSocials() async {
@@ -64,21 +78,24 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
 
     _value.fold(
       () => null,
-      (rider) {
+      (user) {
         // full name
-        final fullName = rider?.firstName.getOrNull?.split(' ');
+        final fullName = user?.firstName.getOrNull?.split(' ');
         // first name
-        final firstName = fullName != null && fullName.isNotEmpty ? DisplayName(fullName[0]) : rider?.firstName;
-        final lastName = fullName != null && fullName.length > 1 ? DisplayName(fullName[1]) : rider?.lastName;
+        final firstName = fullName != null && fullName.isNotEmpty ? DisplayName(fullName[0]) : user?.firstName;
+        final lastName = fullName != null && fullName.length > 1 ? DisplayName(fullName[1]) : user?.lastName;
 
-        emit(state.copyWith(
-          rider: rider?.copyWith(firstName: firstName!, lastName: lastName!) ?? state.rider,
-        ));
+        if (!isClosed)
+          emit(state.copyWith(
+            rider: user?.copyWith(firstName: firstName!, lastName: lastName!) ?? state.rider,
+          ));
       },
     );
 
-    toggleLoading(false);
+    if (!isClosed) toggleLoading(false);
   }
+
+  bool get isDirty => _temp != null && _temp != state.rider;
 
   void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
@@ -95,7 +112,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
 
   void emailChanged(String value) => emit(state.copyWith.rider.call(email: EmailAddress(value.trim())));
 
-  void oldPasswordChanged(String value) => emit(state.copyWith(oldPassword: Password(value, false)));
+  void oldPasswordChanged(String value) => emit(state.copyWith(oldPassword: Password(value)));
 
   void passwordChanged(String value) {
     var strength = estimatePasswordStrength(value);
@@ -129,9 +146,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
               ..text = _parsed
               ..value = TextEditingValue(
                 text: _parsed,
-                selection: TextSelection.fromPosition(
-                  TextPosition(offset: _parsed.length),
-                ),
+                selection: TextSelection.fromPosition(TextPosition(offset: _parsed.length)),
               ),
           ));
         }
@@ -142,9 +157,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
           ..text = value
           ..value = TextEditingValue(
             text: value,
-            selection: TextSelection.fromPosition(
-              TextPosition(offset: value.length),
-            ),
+            selection: TextSelection.fromPosition(TextPosition(offset: value.length)),
           ),
       ));
     }
@@ -156,13 +169,18 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     ));
   }
 
-  Country _mapCountry([CountryCode? country]) => Country(
-        dialCode: BasicTextField((country ?? state.selectedCountry)?.dialCode),
-        iso: BasicTextField((country ?? state.selectedCountry)?.code),
+  Country _mapCountry([CountryCode? country, PhoneNumber? phone]) => Country(
+        dialCode: BasicTextField((country ?? state.selectedCountry)?.dialCode ?? (phone?.dialCode != null ? '+${phone?.dialCode}' : null)),
+        iso: BasicTextField((country ?? state.selectedCountry)?.code ?? phone?.isoCode),
         name: BasicTextField((country ?? state.selectedCountry)?.name),
       );
 
-  void countryChanged(CountryCode? country) {
+  void countryChanged(CountryCode? country, {bool onlyCountry = false}) {
+    if (onlyCountry) {
+      emit(state.copyWith(selectedCountry: country));
+      return;
+    }
+
     phoneNumberChanged('');
 
     emit(state.copyWith(
@@ -189,19 +207,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   void createAccount() async {
     toggleLoading(true, none());
 
-    AppHttpResponse result;
-
-    // var unique = UniqueId<int>.int(58938706, 300000000).value;
-
-    // emit(state.copyWith(
-    //   rider: Rider.blank(
-    //     firstName: DisplayName('Brendan'),
-    //     lastName: DisplayName('Ejike'),
-    //     email: EmailAddress('${UniqueId.v4().value}@mail.com'),
-    //     phone: Phone('$unique', country: _mapCountry()),
-    //     password: Password('password'),
-    //   ),
-    // ));
+    AppHttpResponse? result;
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -217,18 +223,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
       );
 
       // emit status
-      emit(state.copyWith(
-        status: optionOf(
-          result.copyWith(
-            response: result.response.maybeMap(
-              orElse: () => result.response,
-              success: (s) => s.copyWith(
-                messageTxt: 'Welcome ${state.rider.fullName.getOrEmpty}!',
-              ),
-            ),
-          ),
-        ),
-      ));
+      emit(state.copyWith(status: optionOf(result)));
     }
 
     toggleLoading(false);
@@ -237,7 +232,17 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   void login() async {
     toggleLoading(true, none());
 
-    AppHttpResponse result;
+    AppHttpResponse? result;
+
+    env.flavor.fold(
+      dev: () {
+        if (state.rider.login.isSome()) {
+          emailChanged('brendan.degea@forx.anonaddy.com');
+          passwordChanged('password');
+        }
+      },
+      prod: () => null,
+    );
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -250,32 +255,13 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
       );
 
       emit(state.copyWith(
-        status: optionOf(
-          result.copyWith(
-            response: result.response.maybeMap(
-              success: (s) => s.copyWith(pop: true),
-              orElse: () => result.response,
-            ),
+        status: optionOf(result.copyWith(
+          response: result.response.maybeMap(
+            success: (s) => s.copyWith(pop: true),
+            orElse: () => result!.response,
           ),
-        ),
+        )),
       ));
-    }
-
-    toggleLoading(false);
-  }
-
-  Future<void> resendPhoneOTP() async {
-    toggleLoading(true, none());
-
-    AppHttpResponse result;
-
-    // Enable form validation
-    emit(state.copyWith(validate: true, status: none()));
-
-    if (state.rider.phone.isValid) {
-      result = await _auth.resendVerificationEmail(state.rider.phone);
-
-      emit(state.copyWith(status: optionOf(result)));
     }
 
     toggleLoading(false);
@@ -289,10 +275,15 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.code.isValid) {
+    if (state.rider.phone.isValid && state.code.isValid) {
       result = await _auth.verifyPhoneNumber(
-        phone: state.rider.phone,
+        phone: state.rider.phone.formatted!,
         token: state.code,
+      );
+
+      await result.response.maybeMap(
+        orElse: () async => null,
+        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
       );
 
       emit(state.copyWith(
@@ -346,6 +337,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     toggleLoading(false);
 
     return result?.response.map(
+          info: (_) => false,
           error: (_) => false,
           success: (_) => true,
         ) ??
@@ -449,40 +441,6 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     toggleLoading(false);
   }
 
-  void confirmPhoneUpdate() async {
-    toggleLoading(true, none());
-
-    AppHttpResponse result;
-
-    // Enable form validation
-    emit(state.copyWith(validate: true, status: none()));
-
-    if (state.rider.phone.isValid && state.code.isValid) {
-      result = await _auth.confirmUpdatePhone(
-        phone: state.rider.phone.formatted!,
-        code: state.code,
-      );
-
-      await result.response.maybeMap(
-        orElse: () async => null,
-        success: (s) async => await _preferences.remove(Const.kPhoneNumberPrefKey),
-      );
-
-      emit(state.copyWith(
-        status: optionOf(
-          result.copyWith(
-            response: result.response.maybeMap(
-              success: (s) => s.copyWith(pop: true),
-              orElse: () => result.response,
-            ),
-          ),
-        ),
-      ));
-    }
-
-    toggleLoading(false);
-  }
-
   void sleep() async {
     toggleLoading();
     // Enable form validation
@@ -514,7 +472,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   void updateSocialsProfile() async {
     toggleLoading(true, none());
 
-    AppHttpResponse result;
+    Option<AppHttpResponse?> result;
 
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
@@ -523,10 +481,13 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
       result = await _auth.updateSocialsProfile(
         firstName: state.rider.firstName,
         lastName: state.rider.lastName,
+        email: state.rider.email,
         phone: state.rider.phone.formatted,
       );
 
-      emit(state.copyWith(status: optionOf(result)));
+      emit(state.copyWith(status: result));
+
+      await _auth.sink();
     }
 
     toggleLoading(false);
@@ -540,7 +501,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     // Enable form validation
     emit(state.copyWith(validate: true, status: none()));
 
-    if (state.rider.password.isValid && state.confirmPassword.isValid && state.passwordMatches) {
+    if (state.oldPassword.isValid && state.rider.password.isValid && state.confirmPassword.isValid && state.passwordMatches) {
       result = await _auth.updatePassword(
         current: state.oldPassword,
         newPassword: state.rider.password,
@@ -615,11 +576,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
         emit(state.copyWith(
           status: some(AppHttpResponse.successful(
             'Toggled ${value ? 'On' : 'Off'}',
-          ).response.mapOrNull(
-                success: (s) => AppHttpResponse(s.copyWith(
-                  uuid: UniqueId<String>.v4().value,
-                )),
-              )),
+          ).response.mapOrNull(success: (s) => AppHttpResponse(s))),
         ));
       },
     );

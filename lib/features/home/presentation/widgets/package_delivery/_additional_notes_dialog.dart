@@ -2,7 +2,7 @@ part of package_delivery_accepted_screen.dart;
 
 /// A stateless widget to render _AdditionalNotesDialog.
 class _AdditionalNotesDialog extends StatelessWidget {
-  final BasicTextField<String?>? altPhone;
+  final Phone? altPhone;
   final BasicTextField<String?> notes;
 
   const _AdditionalNotesDialog(
@@ -14,75 +14,87 @@ class _AdditionalNotesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: App.sidePadding,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
       child: AdaptiveAlertdialog(
         width: 0.75.w,
         title: 'Additional Notes',
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            AdaptiveText(
-              '${notes.getOrEmpty}',
-              softWrap: true,
-              wrapWords: true,
-              minFontSize: 14.0,
-              textAlign: TextAlign.center,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-              isDefault: Utils.platform_(cupertino: true),
-            ),
-            //
-            if (altPhone != null && altPhone!.isValid)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormInputLabel(
-                    text: 'Alt. Phone: ',
-                    useDefaultText: Utils.platform_(
-                      material: false,
-                      cupertino: true,
-                    )!,
-                  ),
-                  //
-                  AdaptiveText(
-                    '${altPhone?.getOrEmpty}',
-                    softWrap: true,
-                    wrapWords: true,
-                    minFontSize: 14.0,
-                    textAlign: TextAlign.center,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    isDefault: Utils.platform_(cupertino: true),
-                  ),
-                  //
-                  HorizontalSpace(width: 0.04.sw),
-                  //
-                  Flexible(
-                    child: GestureDetector(
-                      onTap: () =>
-                          ClipboardManager.copy('${altPhone?.getOrEmpty}'),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(Utils.buttonRadius),
-                          color: Palette.accent20,
+        body: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                child: AdaptiveText(
+                  '${notes.getOrEmpty}',
+                  softWrap: true,
+                  wrapWords: true,
+                  minFontSize: 14.0,
+                  textAlign: TextAlign.center,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                  isDefault: Utils.platform_(cupertino: true),
+                ),
+              ),
+              //
+              0.01.verticalh,
+              //
+              if (altPhone != null && altPhone!.isValid)
+                Flexible(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: TextFormInputLabel(
+                          text: 'Alt. Phone: ',
+                          minFontSize: 11,
+                          maxFontSize: Utils.platform_(material: 18, cupertino: 15)!,
+                          fontSize: Utils.platform_(material: null, cupertino: 13.sp),
+                          fontWeight: Utils.platform_(material: FontWeight.w600),
+                          useDefaultText: Utils.platform_(cupertino: true),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.copy_rounded,
-                            color: Palette.accentColor,
+                      ),
+                      //
+                      Flexible(
+                        flex: 7,
+                        child: GestureDetector(
+                          onTap: () => ClipboardManager.copy('${altPhone?.getOrEmpty}'),
+                          child: AdaptiveText(
+                            '${altPhone?.getOrEmpty}',
+                            softWrap: true,
+                            wrapWords: true,
+                            minFontSize: 11,
+                            textAlign: TextAlign.center,
+                            fontSize: 15.sp,
+                            maxFontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            isDefault: Utils.platform_(cupertino: true),
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
-                    ),
+                      //
+                      HorizontalSpace(width: 0.04.sw),
+                      //
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () => ClipboardManager.copy('${altPhone?.getOrEmpty}'),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(Utils.buttonRadius),
+                            child: const Icon(
+                              Icons.content_copy,
+                              color: Palette.accentColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-          ],
-        ),
+                ),
+            ],
+          )
+        ],
         isSecondDestructive: false,
         isSecondDefaultAction: true,
         secondButtonText: 'Close',

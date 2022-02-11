@@ -29,6 +29,19 @@
       ],
       "internalConsoleOptions": "openOnFirstSessionStart",
       "showMemoryUsage": true
-    }
+    },
+    {
+      "name": "profile",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [
+        "--flavor",
+        "prod"
+      ],
+      "showMemoryUsage": true,
+      "openDevTools": "performance",
+    },
   ]
 }

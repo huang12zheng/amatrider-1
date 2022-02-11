@@ -23,8 +23,7 @@ class LogisticsRepository extends BaseRepository {
     this._historyRemote,
   );
 
-  Future<Either<AppHttpResponse, SendPackageListDTO>> allRequests({
-    SendPackageStatus status = SendPackageStatus.ACTIVE,
+  Future<Either<AppHttpResponse, KtList<Logistics>>> allInTransit({
     required String lat,
     required String lng,
   }) async {
@@ -34,10 +33,9 @@ class LogisticsRepository extends BaseRepository {
       (f) async => left(f),
       (r) async {
         try {
-          final result =
-              await _logisticsRemote.all(status: status, lat: lat, lng: lng);
+          final result = await _logisticsRemote.allInTransit(lat: lat, lng: lng);
 
-          return right(result);
+          return right(result.domain);
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {
@@ -47,8 +45,54 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<AppHttpResponse> acceptPackageDelivery(
-    String id, {
+  Future<Either<AppHttpResponse, KtList<Logistics>>> allActive({
+    required String lat,
+    required String lng,
+  }) async {
+    final _conn = await checkConnectivity();
+
+    return await _conn.fold(
+      (f) async => left(f),
+      (r) async {
+        try {
+          final result = await _logisticsRemote.allActive(lat: lat, lng: lng);
+
+          return right(result.domain);
+        } on AppHttpResponse catch (e) {
+          return left(e);
+        } on AppNetworkException catch (e) {
+          return left(e.asResponse());
+        }
+      },
+    );
+  }
+
+  Future<Either<AppHttpResponse, Logistics>> single(
+    Logistics deliverable, {
+    required String lat,
+    required String lng,
+  }) async {
+    final _conn = await checkConnectivity();
+
+    return await _conn.fold(
+      (f) async => left(f),
+      (r) async {
+        try {
+          return await deliverable.type.when(
+            order: () async => right((await _logisticsRemote.singleOrder('${deliverable.id.value}', lat: lat, lng: lng)).domain),
+            package: () async => right((await _logisticsRemote.singlePackage('${deliverable.id.value}', lat: lat, lng: lng)).domain),
+          );
+        } on AppHttpResponse catch (e) {
+          return left(e);
+        } on AppNetworkException catch (e) {
+          return left(e.asResponse());
+        }
+      },
+    );
+  }
+
+  Future<AppHttpResponse> acceptDeliverable(
+    Logistics item, {
     required String lat,
     required String lng,
   }) async {
@@ -58,10 +102,10 @@ class LogisticsRepository extends BaseRepository {
       (f) async => f,
       (r) async {
         try {
-          final result = await _logisticsRemote.acceptPackageDelivery(id,
-              lat: lat, lng: lng);
-
-          return result;
+          return await item.type.when(
+            order: () async => await _logisticsRemote.acceptOrderDelivery('${item.id.value}', lat: lat, lng: lng),
+            package: () async => await _logisticsRemote.acceptPackageDelivery('${item.id.value}', lat: lat, lng: lng),
+          );
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -71,8 +115,8 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<AppHttpResponse> declinePackageDelivery(
-    String id, {
+  Future<AppHttpResponse> declineDeliverable(
+    Logistics item, {
     required String lat,
     required String lng,
   }) async {
@@ -82,10 +126,10 @@ class LogisticsRepository extends BaseRepository {
       (f) async => f,
       (r) async {
         try {
-          final result = await _logisticsRemote.declinePackageDelivery(id,
-              lat: lat, lng: lng);
-
-          return result;
+          return await item.type.when(
+            order: () async => await _logisticsRemote.declineOrderDelivery('${item.id.value}', lat: lat, lng: lng),
+            package: () async => await _logisticsRemote.declinePackageDelivery('${item.id.value}', lat: lat, lng: lng),
+          );
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -96,8 +140,8 @@ class LogisticsRepository extends BaseRepository {
   }
 
   Future<AppHttpResponse> updateLocation(
-    String id, {
-    required RiderLocationDTO location,
+    Logistics item, {
+    required RiderLocation location,
   }) async {
     final _conn = await checkConnectivity();
 
@@ -105,10 +149,18 @@ class LogisticsRepository extends BaseRepository {
       (f) async => f,
       (r) async {
         try {
-          final result =
-              await _logisticsRemote.updateLocation(id, location: location);
-
-          return result;
+          return await item.type.when(
+            order: () async => await _logisticsRemote.updateOrderLocation(
+              '${item.id.value}',
+              lat: '${location.lat.getOrNull}',
+              lng: '${location.lng.getOrNull}',
+            ),
+            package: () async => await _logisticsRemote.updatePackageLocation(
+              '${item.id.value}',
+              lat: '${location.lat.getOrNull}',
+              lng: '${location.lng.getOrNull}',
+            ),
+          );
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -118,10 +170,11 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<AppHttpResponse> confirmPackageReceived(
-    String id, {
+  Future<AppHttpResponse> confirmPickup(
+    Logistics item, {
     required String lat,
     required String lng,
+    required String token,
   }) async {
     final _conn = await checkConnectivity();
 
@@ -129,10 +182,10 @@ class LogisticsRepository extends BaseRepository {
       (f) async => f,
       (r) async {
         try {
-          final result = await _logisticsRemote.confirmPackageReceived(id,
-              lat: lat, lng: lng);
-
-          return result;
+          return await item.type.when(
+            order: () async => await _logisticsRemote.confirmOrderPickup('${item.id.value}', lat: lat, lng: lng, token: token),
+            package: () async => await _logisticsRemote.confirmPackagePickup('${item.id.value}', lat: lat, lng: lng, token: token),
+          );
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -142,10 +195,11 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<AppHttpResponse> confirmPackageDelivered(
-    String id, {
+  Future<AppHttpResponse> confirmDelivery(
+    Logistics item, {
     required String lat,
     required String lng,
+    required String token,
   }) async {
     final _conn = await checkConnectivity();
 
@@ -153,10 +207,32 @@ class LogisticsRepository extends BaseRepository {
       (f) async => f,
       (r) async {
         try {
-          final result = await _logisticsRemote.confirmPackageDelivered(id,
-              lat: lat, lng: lng);
+          return await item.type.when(
+            order: () async => await _logisticsRemote.confirmOrderDelivery('${item.id.value}', lat: lat, lng: lng, token: token),
+            package: () async => await _logisticsRemote.confirmPackageDelivery('${item.id.value}', lat: lat, lng: lng, token: token),
+          );
+        } on AppHttpResponse catch (e) {
+          return e;
+        } on AppNetworkException catch (e) {
+          return e.asResponse();
+        }
+      },
+    );
+  }
 
-          return result;
+  Future<AppHttpResponse> alertArrival(Logistics item, [String? name]) async {
+    final _conn = await checkConnectivity();
+
+    return await _conn.fold(
+      (f) async => f,
+      (r) async {
+        try {
+          await item.type.when(
+            order: () async => await _logisticsRemote.alertOrderArrival('${item.id.value}'),
+            package: () async => await _logisticsRemote.alertPackageArrival('${item.id.value}'),
+          );
+
+          return AppHttpResponse.successful('We have notified $name of your arrival.', pop: false);
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {

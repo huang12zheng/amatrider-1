@@ -1,9 +1,9 @@
 import 'package:amatrider/manager/theme/theme.dart';
+import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:amatrider/utils/utils.dart';
-import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Normal = Cupertino Form with Cupertino Form Row & prefix
@@ -68,11 +68,15 @@ class AdaptiveTextFormInput extends StatefulWidget {
   final CupertinoFormType? _formType;
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
+  final Color cupertinoBorderColorLight;
+  final Color cupertinoBorderColorDark;
 
   final TextAlign textAlign;
   final TextSelectionControls? selectionControls;
   final TextAlignVertical? textAlignVertical;
   final TextDirection? textDirection;
+  final bool autoDisposeController;
+  final Brightness? keyboardAppearance;
 
   AdaptiveTextFormInput({
     Key? key,
@@ -134,12 +138,24 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.textAlignVertical,
     this.textDirection,
     this.onEditingComplete,
-  })  : cupertinoPadding = Utils.inputPadding.copyWith(top: 10.0, bottom: 10.0).merge(cupertinoPadding ?? materialPadding),
+    this.autoDisposeController = true,
+    Color? cupertinoBorderColorLight,
+    Color? cupertinoBorderColorDark,
+    Brightness? keyboardAppearance,
+  })  : cupertinoPadding = cupertinoPadding ??
+            (prefixIcon != null && (prefixMode == OverlayVisibilityMode.always || prefixMode == OverlayVisibilityMode.editing)
+                    ? const EdgeInsets.symmetric(horizontal: 0)
+                    : Utils.inputPadding)
+                .copyWith(top: 10.0, bottom: 10.0)
+                .merge(materialPadding),
         borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(Utils.inputBorderRadius)),
         _formType = cupertinoFormType ?? CupertinoFormType.textfield,
         _prefixMode = prefixMode ?? OverlayVisibilityMode.editing,
         _suffixMode = suffixMode ?? OverlayVisibilityMode.editing,
         _clearButtonMode = clearButtonMode ?? OverlayVisibilityMode.never,
+        cupertinoBorderColorLight = cupertinoBorderColorLight ?? CupertinoColors.lightBackgroundGray,
+        cupertinoBorderColorDark = cupertinoBorderColorDark ?? CupertinoColors.darkBackgroundGray.withOpacity(0.4),
+        keyboardAppearance = keyboardAppearance ?? Utils.foldTheme(light: () => Brightness.light, dark: () => Brightness.dark),
         super(key: key);
 
   AdaptiveTextFormInput.flat({
@@ -201,12 +217,24 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.textAlignVertical,
     this.textDirection,
     this.onEditingComplete,
-  })  : cupertinoPadding = Utils.inputPadding.copyWith(top: 10.0, bottom: 10.0).merge(cupertinoPadding ?? materialPadding),
+    this.autoDisposeController = true,
+    Color? cupertinoBorderColorLight,
+    Color? cupertinoBorderColorDark,
+    Brightness? keyboardAppearance,
+  })  : cupertinoPadding = cupertinoPadding ??
+            (prefixIcon != null && (prefixMode == OverlayVisibilityMode.always || prefixMode == OverlayVisibilityMode.editing)
+                    ? const EdgeInsets.symmetric(horizontal: 0)
+                    : Utils.inputPadding)
+                .copyWith(top: 10.0, bottom: 10.0)
+                .merge(materialPadding),
         borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(Utils.inputBorderRadius)),
         _formType = CupertinoFormType.flat,
         _prefixMode = prefixMode ?? OverlayVisibilityMode.editing,
         _suffixMode = suffixMode ?? OverlayVisibilityMode.editing,
         _clearButtonMode = clearButtonMode ?? OverlayVisibilityMode.never,
+        cupertinoBorderColorLight = cupertinoBorderColorLight ?? CupertinoColors.lightBackgroundGray,
+        cupertinoBorderColorDark = cupertinoBorderColorDark ?? CupertinoColors.darkBackgroundGray.withOpacity(0.4),
+        keyboardAppearance = keyboardAppearance ?? Utils.foldTheme(light: () => Brightness.light, dark: () => Brightness.dark),
         super(key: key);
 
   AdaptiveTextFormInput.row({
@@ -268,12 +296,24 @@ class AdaptiveTextFormInput extends StatefulWidget {
     this.textAlignVertical,
     this.textDirection,
     this.onEditingComplete,
-  })  : cupertinoPadding = Utils.inputPadding.copyWith(top: 10.0, bottom: 10.0).merge(cupertinoPadding ?? materialPadding),
+    this.autoDisposeController = true,
+    Color? cupertinoBorderColorLight,
+    Color? cupertinoBorderColorDark,
+    Brightness? keyboardAppearance,
+  })  : cupertinoPadding = cupertinoPadding ??
+            (prefixIcon != null && (prefixMode == OverlayVisibilityMode.always || prefixMode == OverlayVisibilityMode.editing)
+                    ? const EdgeInsets.symmetric(horizontal: 0)
+                    : Utils.inputPadding)
+                .copyWith(top: 10.0, bottom: 10.0)
+                .merge(materialPadding),
         borderRadius = borderRadius ?? const BorderRadius.all(Radius.circular(Utils.inputBorderRadius)),
         _formType = CupertinoFormType.row,
         _prefixMode = prefixMode ?? OverlayVisibilityMode.editing,
         _suffixMode = suffixMode ?? OverlayVisibilityMode.editing,
         _clearButtonMode = clearButtonMode ?? OverlayVisibilityMode.never,
+        cupertinoBorderColorLight = cupertinoBorderColorLight ?? CupertinoColors.lightBackgroundGray,
+        cupertinoBorderColorDark = cupertinoBorderColorDark ?? CupertinoColors.darkBackgroundGray.withOpacity(0.4),
+        keyboardAppearance = keyboardAppearance ?? Utils.foldTheme(light: () => Brightness.light, dark: () => Brightness.dark),
         super(key: key);
 
   @override
@@ -286,7 +326,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    if (widget.autoDisposeController) _textEditingController.dispose();
     super.dispose();
   }
 
@@ -366,6 +406,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
         cursorColor: widget.cursorColor ?? CupertinoColors.systemGrey.resolveFrom(context),
         controller: _textEditingController,
         enableInteractiveSelection: widget.enableInteractiveSelection,
+        keyboardAppearance: widget.keyboardAppearance,
         focusNode: widget.focus,
         readOnly: widget.readOnly ?? widget.disabled,
         enabled: !widget.disabled,
@@ -390,125 +431,145 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
         onEditingComplete: widget.onEditingComplete,
       );
 
-  Widget _cupertinoTextField(BuildContext c) => Theme(
-        data: Theme.of(context).copyWith(
-          cupertinoOverrideTheme: (() {
-            final theme = c.read<ThemeCubit>().state.cupertinoThemeData(c);
-            return theme.copyWith(
-              brightness: Utils.foldTheme(
-                light: () => null,
-                dark: () => widget.disabled ? Brightness.light : null,
-              ),
-            );
-          })(),
-        ),
-        child: CupertinoTextField.borderless(
-          decoration: BoxDecoration(
-            borderRadius: widget.borderRadius,
-            color: (widget.fillColor ?? App.resolveColor(CupertinoColors.extraLightBackgroundGray)),
-            border: Border.all(color: CupertinoColors.lightBackgroundGray, width: 1.5),
+  Widget _cupertinoTextField(BuildContext c) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 300),
+        opacity: widget.disabled ? 0.7 : 1,
+        curve: Curves.easeInOutCubic,
+        alwaysIncludeSemantics: true,
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            cupertinoOverrideTheme: (() {
+              final theme = c.read<ThemeCubit>().state.cupertinoThemeData(c);
+              return theme.copyWith(
+                brightness: Utils.foldTheme(
+                  light: () => null,
+                  dark: () => widget.disabled ? Brightness.light : null,
+                ),
+              );
+            })(),
           ),
-          maxLines: widget.minLines == null ? widget.maxLines : null,
-          minLines: widget.minLines,
-          expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
-          maxLength: widget.showMaxLength ? widget.maxLength : null,
-          maxLengthEnforcement: widget.showMaxLength ? widget.maxLengthEnforcement : null,
-          enableSuggestions: widget.enableSuggestions,
-          obscureText: widget.obscureText,
-          autofocus: widget.autoFocus,
-          autocorrect: widget.autoCorrect,
-          autofillHints: _autoFillHints,
-          showCursor: widget.showCursor,
-          keyboardType: widget.keyboardType,
-          textCapitalization: widget.capitalization,
-          textInputAction: widget.next == null ? (widget.action ?? TextInputAction.done) : (widget.action ?? TextInputAction.next),
-          cursorColor: widget.cursorColor ?? CupertinoColors.systemGrey.resolveFrom(context),
-          controller: _textEditingController,
-          enableInteractiveSelection: widget.enableInteractiveSelection,
-          focusNode: widget.focus,
-          readOnly: widget.readOnly ?? widget.disabled,
-          enabled: !widget.disabled,
-          clearButtonMode: widget._clearButtonMode,
-          prefix: widget.prefixIcon,
-          prefixMode: widget._prefixMode,
-          suffix: widget.suffix,
-          suffixMode: widget._suffixMode,
-          onTap: widget.onTap,
-          padding: widget.cupertinoPadding!,
-          inputFormatters: [
-            if (widget.maxLength != null) LengthLimitingTextInputFormatter(widget.maxLength),
-            ...widget.inputFormatters,
-          ],
-          style: TextStyle(color: Utils.platform_(cupertino: App.resolveColor(Palette.text100, dark: Colors.black87))).merge(widget.style),
-          placeholder: widget.hintText,
-          placeholderStyle: TextStyle(color: App.resolveColor(Palette.text60)).merge(widget.hintStyle),
-          toolbarOptions: widget.toolbarOptions,
-          textAlign: widget.textAlign,
-          selectionControls: widget.selectionControls,
-          textAlignVertical: widget.textAlignVertical,
-          textDirection: widget.textDirection,
-          onChanged: widget.onChanged,
-          onSubmitted: (_) => widget.next == null ? FocusScope.of(c).unfocus() : FocusScope.of(c).requestFocus(widget.next),
-          onEditingComplete: widget.onEditingComplete,
-        ),
-      );
-
-  Widget _materialTextFormField(BuildContext c) => Material(
-        type: MaterialType.transparency,
-        elevation: 0,
-        child: Center(
-          child: TextFormField(
+          child: CupertinoTextField.borderless(
+            decoration: BoxDecoration(
+              borderRadius: widget.borderRadius,
+              color: (widget.fillColor ?? App.resolveColor(Palette.inputBgColor, dark: Palette.cardColorDark)),
+              border: Border.all(
+                color: App.resolveColor(widget.cupertinoBorderColorLight, dark: widget.cupertinoBorderColorDark)!,
+                width: 1.5,
+              ),
+            ),
             maxLines: widget.minLines == null ? widget.maxLines : null,
             minLines: widget.minLines,
             expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
             maxLength: widget.showMaxLength ? widget.maxLength : null,
             maxLengthEnforcement: widget.showMaxLength ? widget.maxLengthEnforcement : null,
             enableSuggestions: widget.enableSuggestions,
-            enableInteractiveSelection: widget.enableInteractiveSelection,
             obscureText: widget.obscureText,
-            autocorrect: widget.autoCorrect,
             autofocus: widget.autoFocus,
-            controller: _textEditingController,
+            autocorrect: widget.autoCorrect,
+            autofillHints: _autoFillHints,
             showCursor: widget.showCursor,
-            cursorColor: widget.cursorColor ?? Utils.foldTheme(light: () => Palette.accentColor, dark: () => Colors.white70),
             keyboardType: widget.keyboardType,
             textCapitalization: widget.capitalization,
-            textInputAction: widget.next == null ? widget.action ?? TextInputAction.done : widget.action ?? TextInputAction.next,
+            textInputAction: widget.next == null ? (widget.action ?? TextInputAction.done) : (widget.action ?? TextInputAction.next),
+            cursorColor: widget.cursorColor ?? CupertinoColors.systemGrey.resolveFrom(context),
+            controller: _textEditingController,
+            enableInteractiveSelection: widget.enableInteractiveSelection,
+            keyboardAppearance: widget.keyboardAppearance,
             focusNode: widget.focus,
             readOnly: widget.readOnly ?? widget.disabled,
             enabled: !widget.disabled,
+            clearButtonMode: widget._clearButtonMode,
+            prefix: widget.prefixIcon,
+            prefixMode: widget._prefixMode,
+            suffix: widget.suffix,
+            suffixMode: widget._suffixMode,
             onTap: widget.onTap,
-            decoration: InputDecoration(
-              hintText: widget.hintText,
-              hintStyle: widget.hintStyle,
-              labelText: widget.label,
-              labelStyle: widget.labelStyle,
-              border: widget.border,
-              focusedErrorBorder: widget.focusedErrorBorder,
-              errorBorder: widget.errorBorder,
-              filled: widget.filled,
-              contentPadding: widget.materialPadding,
-              focusedBorder: widget.focusBorder ?? widget.border,
-              prefixIcon: widget.prefixIcon,
-              suffixIcon: widget.suffix,
-              enabled: !widget.disabled,
-            ).merge(widget.decoration),
-            autofillHints: _autoFillHints,
+            padding: widget.cupertinoPadding!,
             inputFormatters: [
               if (widget.maxLength != null) LengthLimitingTextInputFormatter(widget.maxLength),
               ...widget.inputFormatters,
             ],
+            style: TextStyle(color: App.resolveColor(Palette.text100, dark: Palette.text100Dark)).merge(widget.style),
+            placeholder: widget.hintText,
+            placeholderStyle: TextStyle(color: App.resolveColor(Palette.text60)).merge(widget.hintStyle),
+            toolbarOptions: widget.toolbarOptions,
             textAlign: widget.textAlign,
             selectionControls: widget.selectionControls,
             textAlignVertical: widget.textAlignVertical,
             textDirection: widget.textDirection,
-            toolbarOptions: widget.toolbarOptions,
-            style: widget.style,
-            autovalidateMode: widget.validate ? AutovalidateMode.always : AutovalidateMode.disabled,
             onChanged: widget.onChanged,
-            validator: (value) => widget.errorText,
-            onFieldSubmitted: (_) => widget.next == null ? FocusScope.of(c).unfocus() : FocusScope.of(c).requestFocus(widget.next),
+            onSubmitted: (_) => widget.next == null ? FocusScope.of(c).unfocus() : FocusScope.of(c).requestFocus(widget.next),
             onEditingComplete: widget.onEditingComplete,
+          ),
+        ),
+      );
+
+  Widget _materialTextFormField(BuildContext c) => AnimatedOpacity(
+        duration: const Duration(milliseconds: 300),
+        opacity: widget.disabled ? 0.7 : 1,
+        curve: Curves.easeInOutCubic,
+        alwaysIncludeSemantics: true,
+        child: Material(
+          type: MaterialType.transparency,
+          elevation: 0,
+          child: Center(
+            child: TextFormField(
+              maxLines: widget.minLines == null ? widget.maxLines : null,
+              minLines: widget.minLines,
+              expands: widget.minLines == null && widget.maxLines == null ? widget.expands : false,
+              maxLength: widget.showMaxLength ? widget.maxLength : null,
+              maxLengthEnforcement: widget.showMaxLength ? widget.maxLengthEnforcement : null,
+              enableSuggestions: widget.enableSuggestions,
+              enableInteractiveSelection: widget.enableInteractiveSelection,
+              obscureText: widget.obscureText,
+              autocorrect: widget.autoCorrect,
+              autofocus: widget.autoFocus,
+              controller: _textEditingController,
+              showCursor: widget.showCursor,
+              cursorColor: widget.cursorColor ?? Utils.foldTheme(light: () => Palette.accentColor, dark: () => Colors.white70),
+              keyboardType: widget.keyboardType,
+              textCapitalization: widget.capitalization,
+              keyboardAppearance: widget.keyboardAppearance,
+              textInputAction: widget.next == null ? widget.action ?? TextInputAction.done : widget.action ?? TextInputAction.next,
+              focusNode: widget.focus,
+              readOnly: widget.readOnly ?? widget.disabled,
+              enabled: !widget.disabled,
+              onTap: widget.onTap,
+              decoration: InputDecoration(
+                hintText: widget.hintText,
+                hintStyle: widget.hintStyle,
+                labelText: widget.label,
+                labelStyle: widget.labelStyle,
+                border: widget.border,
+                focusedErrorBorder: widget.focusedErrorBorder,
+                errorBorder: widget.errorBorder,
+                filled: widget.filled,
+                fillColor: widget.fillColor,
+                contentPadding: widget.materialPadding,
+                focusedBorder: widget.focusBorder ?? widget.border,
+                prefixIcon: widget.prefixIcon,
+                suffixIcon: widget.suffix,
+                enabled: !widget.disabled,
+              ).merge(widget.decoration),
+              autofillHints: _autoFillHints,
+              inputFormatters: [
+                if (widget.maxLength != null) LengthLimitingTextInputFormatter(widget.maxLength),
+                ...widget.inputFormatters,
+              ],
+              textAlign: widget.textAlign,
+              selectionControls: widget.selectionControls,
+              textAlignVertical: widget.textAlignVertical,
+              textDirection: widget.textDirection,
+              toolbarOptions: widget.toolbarOptions,
+              style: TextStyle(
+                color: widget.disabled ? App.resolveColor(Palette.text60, dark: Palette.text100Dark.withOpacity(0.5)) : null,
+              ).merge(widget.style),
+              autovalidateMode: widget.validate ? AutovalidateMode.always : AutovalidateMode.disabled,
+              onChanged: widget.onChanged,
+              validator: (value) => widget.errorText,
+              onFieldSubmitted: (_) => widget.next == null ? FocusScope.of(c).unfocus() : FocusScope.of(c).requestFocus(widget.next),
+              onEditingComplete: widget.onEditingComplete,
+            ),
           ),
         ),
       );

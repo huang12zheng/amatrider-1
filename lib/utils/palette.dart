@@ -109,7 +109,7 @@ class Palette {
   });
 
   static const Color cardColorLight = Colors.white;
-  static const Color cardColorDark = Color(0xff20252c);
+  static const Color cardColorDark = Color(0xff363B41);
 
   static const Color accentYellow = Color(0xFFF5CB4C);
   static const Color accentGreen = Color(0xFF33CC3C);
@@ -153,13 +153,16 @@ class Palette {
 
   // Dark Mode Colors
   static const Color accentDark = Color(0xFFD27D7D);
-  static const Color text100Dark = Color(0xFFC1c1c3);
+  static const Color text100Dark = Color(0xFFBFBFBF);
   static const Color headingDark = Color(0xFFE2E2E2);
   static const Color inputTextDark = Color(0xFF212121);
   static const Color toggleDark = Color(0xFF393938);
+  static const Color iconLight = Color(0xFFB7BCC2);
   static const Color iconDark = Color(0xFFACACAC);
-  static const Color neutralMoonDark = neutralFA;
+  static const Color neutralMoonDark = Color(0xFF8D8D93);
   static const Color neutralLabelDark = Color(0xFFACACAC);
+  static const Color darkInputChip = Color(0xFF181818);
+  static const Color darkChip = Color(0xFF292929);
 
   static const Color accentDarkPurple = Color(0xFF3B003B);
   static const Color accentDarkYellow = Color(0xFFD8AA1C);

@@ -1,8 +1,6 @@
-import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -12,53 +10,56 @@ enum _AdaptiveListTileType { normal, switchType }
 class AdaptiveListTile extends StatelessWidget {
   @override
   final Key? key;
+
+  final _AdaptiveListTileType _type;
+
+  final void Function(bool?)? onChanged;
+  final Color? activeColor;
+  final ImageProvider<Object>? activeThumbImage;
+  final Color? activeTrackColor;
   final bool autofocus;
+  final BorderSide border;
+  final BorderRadius borderRadius;
   final EdgeInsets? contentPadding;
+  final ListTileControlAffinity? controlAffinity;
+  final bool cupertino;
+  final ShapeBorder? cupertinoBorder;
+  final Color cupertinoPressedColor;
   final bool? dense;
+  final DragStartBehavior? dragStartBehavior;
   final bool? enableFeedback;
   final bool enabled;
   final Color? focusColor;
   final FocusNode? focusNode;
   final double? horizontalTitleGap;
   final Color? hoverColor;
-  final bool isThreeLine;
-  final Widget? leading;
-  final double? minLeadingWidth;
-  final double? minVerticalPadding;
-  final MouseCursor? mouseCursor;
-  final VoidCallback? onLongPress;
-  final VoidCallback? onTap;
-  final bool selected;
-  final Color cupertinoPressedColor;
-  final Color? selectedTileColor;
-  final ShapeBorder? shape;
-  final ShapeBorder? cupertinoBorder;
-  final Widget? subtitle;
-  final Color? tileColor;
-  final Widget? title;
-  final Widget? trailing;
-  final VisualDensity? visualDensity;
-  final BorderRadius borderRadius;
-  final BorderSide border;
-  final _AdaptiveListTileType _type;
-
-  // Switch
-  final bool value;
-  final void Function(bool?)? onChanged;
-  final Color? activeColor;
-  final ImageProvider<Object>? activeThumbImage;
-  final Color? activeTrackColor;
-  final ListTileControlAffinity? controlAffinity;
   final Color? inactiveThumbColor;
   final ImageProvider<Object>? inactiveThumbImage;
   final Color? inactiveTrackColor;
-  final Widget? secondary;
-  final DragStartBehavior? dragStartBehavior;
-  final Color? trackColor;
-
+  final bool isThreeLine;
+  final Widget? leading;
   // List tile type
   final bool material;
-  final bool cupertino;
+
+  final double? minLeadingWidth;
+  final double? minVerticalPadding;
+  final MouseCursor? mouseCursor;
+  final bool noCupertinoBorder;
+  final VoidCallback? onLongPress;
+  final VoidCallback? onTap;
+  final Widget? secondary;
+  final bool selected;
+  final Color? selectedTileColor;
+  final ShapeBorder? shape;
+  final Widget? subtitle;
+  final Color? tileColor;
+  final Widget? title;
+  final Color? trackColor;
+  final Widget? trailing;
+  // Switch
+  final bool value;
+
+  final VisualDensity? visualDensity;
 
   const AdaptiveListTile({
     this.key,
@@ -92,6 +93,7 @@ class AdaptiveListTile extends StatelessWidget {
     this.cupertinoBorder,
     this.material = false,
     this.cupertino = false,
+    this.noCupertinoBorder = false,
   })  : _type = _AdaptiveListTileType.normal,
         value = false,
         onChanged = null,
@@ -136,6 +138,7 @@ class AdaptiveListTile extends StatelessWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.material = false,
     this.cupertino = false,
+    this.noCupertinoBorder = false,
   })  : _type = _AdaptiveListTileType.switchType,
         enableFeedback = null,
         enabled = true,
@@ -156,31 +159,62 @@ class AdaptiveListTile extends StatelessWidget {
         assert((material && !cupertino) || (!material || cupertino) || (!material || !cupertino)),
         super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    if (material)
-      return ClipRRect(
-        borderRadius: borderRadius,
-        child: Material(
-          elevation: 0.0,
-          type: MaterialType.transparency,
-          shape: RoundedRectangleBorder(
-            borderRadius: borderRadius,
-            side: border,
+  Widget get cupertinoTiles => _type.fold(
+        normal: () => CupertinoListTile(
+          key: key,
+          autofocus: autofocus,
+          contentPadding: contentPadding,
+          dense: dense,
+          enabled: enabled,
+          focusColor: focusColor,
+          focusNode: focusNode,
+          hoverColor: hoverColor,
+          isThreeLine: isThreeLine,
+          leading: leading,
+          mouseCursor: mouseCursor,
+          onLongPress: onLongPress,
+          onTap: onTap,
+          selected: selected,
+          subtitle: subtitle,
+          title: title,
+          trailing: trailing,
+          border: noCupertinoBorder ? const Border.fromBorderSide(BorderSide.none) : cupertinoBorder,
+          pressColor: cupertinoPressedColor,
+        ),
+        switchType: () => CupertinoFormRow(
+          padding: EdgeInsets.zero,
+          child: MergeSemantics(
+            child: CupertinoListTile(
+              key: key,
+              autofocus: autofocus,
+              contentPadding: contentPadding,
+              dense: dense,
+              enabled: enabled,
+              focusColor: focusColor,
+              focusNode: focusNode,
+              hoverColor: hoverColor,
+              isThreeLine: isThreeLine,
+              leading: leading ?? secondary,
+              selected: selected,
+              subtitle: subtitle,
+              title: title,
+              border: noCupertinoBorder ? const Border.fromBorderSide(BorderSide.none) : cupertinoBorder,
+              onTap: onTap,
+              mouseCursor: mouseCursor,
+              onLongPress: onLongPress,
+              pressColor: cupertinoPressedColor,
+              trailing: CupertinoSwitch(
+                key: key,
+                value: value,
+                onChanged: onChanged!,
+                activeColor: activeColor,
+                trackColor: trackColor,
+                dragStartBehavior: dragStartBehavior!,
+              ),
+            ),
           ),
-          child: materialTiles,
         ),
       );
-    if (cupertino) return Theme.of(context).platform.cupertino(cupertinoTiles)!;
-
-    return PlatformBuilder(
-      material: (_) => ClipRRect(
-        borderRadius: borderRadius,
-        child: materialTiles,
-      ),
-      cupertino: (_) => cupertinoTiles,
-    );
-  }
 
   Widget get materialTiles => _type.fold(
         normal: () => ListTile(
@@ -235,62 +269,31 @@ class AdaptiveListTile extends StatelessWidget {
         ),
       );
 
-  Widget get cupertinoTiles => _type.fold(
-        normal: () => CupertinoListTile(
-          key: key,
-          autofocus: autofocus,
-          contentPadding: contentPadding,
-          dense: dense,
-          enabled: enabled,
-          focusColor: focusColor,
-          focusNode: focusNode,
-          hoverColor: hoverColor,
-          isThreeLine: isThreeLine,
-          leading: leading,
-          mouseCursor: mouseCursor,
-          onLongPress: onLongPress,
-          onTap: onTap,
-          selected: selected,
-          subtitle: subtitle,
-          title: title,
-          trailing: trailing,
-          border: cupertinoBorder,
-          pressColor: cupertinoPressedColor,
-        ),
-        switchType: () => CupertinoFormRow(
-          padding: EdgeInsets.zero,
-          child: MergeSemantics(
-            child: CupertinoListTile(
-              key: key,
-              autofocus: autofocus,
-              contentPadding: contentPadding,
-              dense: dense,
-              enabled: enabled,
-              focusColor: focusColor,
-              focusNode: focusNode,
-              hoverColor: hoverColor,
-              isThreeLine: isThreeLine,
-              leading: leading ?? secondary,
-              selected: selected,
-              subtitle: subtitle,
-              title: title,
-              border: cupertinoBorder,
-              onTap: onTap,
-              mouseCursor: mouseCursor,
-              onLongPress: onLongPress,
-              pressColor: cupertinoPressedColor,
-              trailing: CupertinoSwitch(
-                key: key,
-                value: value,
-                onChanged: onChanged!,
-                activeColor: activeColor,
-                trackColor: trackColor,
-                dragStartBehavior: dragStartBehavior!,
-              ),
-            ),
+  @override
+  Widget build(BuildContext context) {
+    if (material)
+      return ClipRRect(
+        borderRadius: borderRadius,
+        child: Material(
+          elevation: 0.0,
+          type: MaterialType.transparency,
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: border,
           ),
+          child: materialTiles,
         ),
       );
+    if (cupertino) return cupertinoTiles;
+
+    return PlatformBuilder(
+      material: (_) => ClipRRect(
+        borderRadius: borderRadius,
+        child: materialTiles,
+      ),
+      cupertino: (_) => cupertinoTiles,
+    );
+  }
 }
 
 extension on _AdaptiveListTileType {

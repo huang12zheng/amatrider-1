@@ -22,7 +22,9 @@ const Pattern datePattern = r'(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.
 
 enum FIELD_VALIDATION { NONE, BASIC, DEEP }
 
-typedef StringValidator<U> = Either<FieldObjectException<String>, U?>;
+typedef StringValidator<U> = Either<FieldObjectException<String>, U>;
+
+// typedef IOERJE = Function([num? other, String? msg]);
 
 class Validator with _CreditCardValidator {
   Validator._();
@@ -99,6 +101,7 @@ class Validator with _CreditCardValidator {
       case FIELD_VALIDATION.DEEP:
       default:
         if (clean.isEmpty) return left(FieldObjectException.empty());
+        if (phone.length < 5) return left(FieldObjectException.exceedsLength(message: 'Phone number must be at least 5 digits'));
         if (!formattedPhoneNumber) return left(FieldObjectException.invalid(message: INVALID_PHONE));
         break;
     }
@@ -139,18 +142,43 @@ class Validator with _CreditCardValidator {
     return right(date);
   }
 
-  static StringValidator<U?> amount<U>(U? input, {num? check, bool min = true, String? msg}) {
-    if (check == null) return left(FieldObjectException.invalid(message: 'Invalid "check" ($check) passed to validator!'));
+  static Either<FieldObjectException<String>, String?> validUrl(String? url) {
+    if (url == null) return left(FieldObjectException.empty());
 
+    var isValid = RegExp(r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.'
+            '[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))'
+            '[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})')
+        .hasMatch(url);
+
+    if (!isValid) return left(FieldObjectException.invalid(message: INVALID_URL));
+
+    return right(url);
+  }
+
+  static StringValidator<U> mustBeGreaterThan<U>(U input, {num? other, String? msg}) {
     if (input == null) return left(FieldObjectException.empty());
 
-    if (input is num) {
-      if (min) {
-        if (input < check) return left(FieldObjectException.exceedsLength(message: msg ?? 'Amount cannot be less than $check'));
-      } else {
-        if (input > check) return left(FieldObjectException.exceedsLength(message: msg ?? 'Amount cannot be more than $check'));
-      }
-    }
+    if (other == null) return left(FieldObjectException.invalid(message: 'FATAL: "Other" cannot be null!'));
+
+    if (input is num && input <= other) return left(FieldObjectException.exceedsLength(message: msg ?? 'Must be greater than $other'));
+
+    return right(input);
+  }
+
+  static StringValidator<U> mustBeLessThan<U>(U input, {num? other, String? msg}) {
+    if (input == null) return left(FieldObjectException.empty());
+
+    if (other == null) return left(FieldObjectException.invalid(message: 'FATAL: "Other" cannot be null!'));
+
+    if (input is num && input >= other) return left(FieldObjectException.exceedsLength(message: msg ?? 'Must be less than $other'));
+
+    return right(input);
+  }
+
+  static StringValidator<U> amount<U>(U input) {
+    if (input == null) return left(FieldObjectException.empty());
+
+    if (input is num && input < 0) return left(FieldObjectException.invalid(message: 'Amount cannot be negative'));
 
     return right(input);
   }

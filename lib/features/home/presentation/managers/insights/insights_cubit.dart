@@ -36,33 +36,26 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
   @override
   Future<void> close() {
     if (riderId != null) {
-      _echoRepository.stopListening(
-          InsightEvents.channel('$riderId'), InsightEvents.event);
+      _echoRepository.stopListening(InsightEvents.channel('$riderId'), InsightEvents.event);
       _echoRepository.close(InsightEvents.channel('$riderId'));
     }
     return super.close();
   }
 
-  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
-      emit(state.copyWith(
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
         isLoading: isLoading ?? !state.isLoading,
         status: status ?? state.status,
       ));
 
-  void claimBonusLoading(bool loading) =>
-      emit(state.copyWith(claimBonusLoading: loading));
+  void claimBonusLoading(bool loading) => emit(state.copyWith(claimBonusLoading: loading));
 
-  void cashDepositLoading(bool loading) =>
-      emit(state.copyWith(depositCashLoading: loading));
+  void cashDepositLoading(bool loading) => emit(state.copyWith(depositCashLoading: loading));
 
-  void setCashDepositVisible(bool isOpen) =>
-      emit(state.copyWith(depositDialogOpen: isOpen));
+  void setCashDepositVisible(bool isOpen) => emit(state.copyWith(depositDialogOpen: isOpen));
 
-  void dateFilterChanged(DateFilter? filter) =>
-      emit(state.copyWith(dateFilter: filter!));
+  void dateFilterChanged(DateFilter? filter) => emit(state.copyWith(dateFilter: filter!));
 
-  void dateChanged(DateTime? date) =>
-      emit(state.copyWith(selectedDate: date ?? state.selectedDate));
+  void dateChanged(DateTime? date) => emit(state.copyWith(selectedDate: date ?? state.selectedDate));
 
   void echo() async {
     final _result = await _auth.rider;
@@ -78,11 +71,9 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
           onData: (data, _) {
             final json = jsonDecode(data) as Map<String, dynamic>;
 
-            final insight =
-                InsightDTO.fromJson(json['insight'] as Map<String, dynamic>);
+            final insight = InsightDTO.fromJson(json['insight'] as Map<String, dynamic>);
 
-            if (insight.insightData?.cashAtHand == 0 && state.depositDialogOpen)
-              emit(state.copyWith(depositConfirmed: true));
+            if (insight.insightData?.cashAtHand == 0 && state.depositDialogOpen) emit(state.copyWith(depositConfirmed: true));
 
             emit(state.copyWith(
               insight: insight.insightData?.domain ?? state.insight,
@@ -126,9 +117,7 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
   void cancelDeposit() {
     setCashDepositVisible(false);
     cashDepositLoading(false);
-    _echoRepository.stopListening(
-        InsightEvents.depositChannel('${state.account?.id.value}'),
-        InsightEvents.depositEvent);
+    _echoRepository.stopListening(InsightEvents.depositChannel('${state.account?.id.value}'), InsightEvents.depositEvent);
   }
 
   void depositEcho(BankAccount account) {
@@ -147,9 +136,7 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
         emit(state.copyWith(depositConfirmed: true));
 
         if (state.depositConfirmed) {
-          _this.leaveChannel(
-              InsightEvents.depositChannel('${state.account?.id.value}'),
-              event: InsightEvents.depositEvent);
+          _this.leaveChannel(InsightEvents.depositChannel('${state.account?.id.value}'), event: InsightEvents.depositEvent);
         }
       },
     );

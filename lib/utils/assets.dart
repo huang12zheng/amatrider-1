@@ -40,6 +40,7 @@ mixin AppAssets {
   // Lottie Json
   static const String checkAnimation = '$RAW_DIR/check_anim.json';
   static const String hoorayAnimation = '$RAW_DIR/hooray_lottie_anim.json';
+  static const String test01 = '$RAW_DIR/test01.json';
 
   /// USER
   static const String user = '$IMAGES_DIR/user.png';
@@ -86,6 +87,8 @@ mixin AppAssets {
   static const String _folderColored = '$DASHBOARD_SVG_DIR/folder_colored.svg';
   static const String _galleryOutlined = '$DASHBOARD_SVG_DIR/gallery_outlined.svg';
   static const String _galleryColored = '$DASHBOARD_SVG_DIR/gallery_colored.svg';
+  static const String _arrived = '$DASHBOARD_SVG_DIR/arrived.svg';
+  static const String _arrived1 = '$DASHBOARD_SVG_DIR/arrived-1.svg';
 
   static const String _thumbLove = '$DASHBOARD_SVG_DIR/thumb_love.svg';
   static const String _groupEllipse = '$DASHBOARD_SVG_DIR/group_ellipse.svg';
@@ -155,6 +158,8 @@ mixin AppAssets {
     _warningFill,
     _packageOutlined,
     _dishOutlined,
+    _arrived,
+    _arrived1,
   ];
 
   static SvgPicture google = SvgPicture.asset(
@@ -335,6 +340,20 @@ mixin AppAssets {
 
   static SvgPicture cameraColored = SvgPicture.asset(
     _cameraColored,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture arrived = SvgPicture.asset(
+    _arrived,
+    height: 25,
+    width: 25,
+    fit: BoxFit.contain,
+  );
+
+  static SvgPicture arrived1 = SvgPicture.asset(
+    _arrived1,
     height: 25,
     width: 25,
     fit: BoxFit.contain,

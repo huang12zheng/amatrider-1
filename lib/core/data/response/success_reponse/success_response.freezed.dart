@@ -22,19 +22,15 @@ class _$SuccessResponseTearOff {
   const _$SuccessResponseTearOff();
 
   _SuccessResponse call(
-      {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(defaultValue: 'success') String? status,
+      {@JsonKey(defaultValue: 'success') String? status,
       @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
-      @JsonKey(ignore: true) bool pop = false,
-      @JsonKey(ignore: true) bool show = true}) {
+      @JsonKey(ignore: true) bool pop = false}) {
     return _SuccessResponse(
-      uuid: uuid,
       status: status,
       message: message,
       details: details,
       pop: pop,
-      show: show,
     );
   }
 
@@ -48,8 +44,6 @@ const $SuccessResponse = _$SuccessResponseTearOff();
 
 /// @nodoc
 mixin _$SuccessResponse {
-  @JsonKey(ignore: true)
-  String? get uuid => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: 'success')
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(defaultValue: '')
@@ -58,8 +52,6 @@ mixin _$SuccessResponse {
   String? get details => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   bool get pop => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  bool get show => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -73,12 +65,10 @@ abstract class $SuccessResponseCopyWith<$Res> {
           SuccessResponse value, $Res Function(SuccessResponse) then) =
       _$SuccessResponseCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(defaultValue: 'success') String? status,
+      {@JsonKey(defaultValue: 'success') String? status,
       @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
-      @JsonKey(ignore: true) bool pop,
-      @JsonKey(ignore: true) bool show});
+      @JsonKey(ignore: true) bool pop});
 }
 
 /// @nodoc
@@ -92,18 +82,12 @@ class _$SuccessResponseCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? uuid = freezed,
     Object? status = freezed,
     Object? message = freezed,
     Object? details = freezed,
     Object? pop = freezed,
-    Object? show = freezed,
   }) {
     return _then(_value.copyWith(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -120,10 +104,6 @@ class _$SuccessResponseCopyWithImpl<$Res>
           ? _value.pop
           : pop // ignore: cast_nullable_to_non_nullable
               as bool,
-      show: show == freezed
-          ? _value.show
-          : show // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -136,12 +116,10 @@ abstract class _$SuccessResponseCopyWith<$Res>
       __$SuccessResponseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(defaultValue: 'success') String? status,
+      {@JsonKey(defaultValue: 'success') String? status,
       @JsonKey(defaultValue: '') String message,
       @JsonKey(ignore: true) String? details,
-      @JsonKey(ignore: true) bool pop,
-      @JsonKey(ignore: true) bool show});
+      @JsonKey(ignore: true) bool pop});
 }
 
 /// @nodoc
@@ -157,18 +135,12 @@ class __$SuccessResponseCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? uuid = freezed,
     Object? status = freezed,
     Object? message = freezed,
     Object? details = freezed,
     Object? pop = freezed,
-    Object? show = freezed,
   }) {
     return _then(_SuccessResponse(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -185,10 +157,6 @@ class __$SuccessResponseCopyWithImpl<$Res>
           ? _value.pop
           : pop // ignore: cast_nullable_to_non_nullable
               as bool,
-      show: show == freezed
-          ? _value.show
-          : show // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -197,20 +165,15 @@ class __$SuccessResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_SuccessResponse extends _SuccessResponse {
   const _$_SuccessResponse(
-      {@JsonKey(ignore: true) this.uuid,
-      @JsonKey(defaultValue: 'success') this.status,
+      {@JsonKey(defaultValue: 'success') this.status,
       @JsonKey(defaultValue: '') required this.message,
       @JsonKey(ignore: true) this.details,
-      @JsonKey(ignore: true) this.pop = false,
-      @JsonKey(ignore: true) this.show = true})
+      @JsonKey(ignore: true) this.pop = false})
       : super._();
 
   factory _$_SuccessResponse.fromJson(Map<String, dynamic> json) =>
       _$$_SuccessResponseFromJson(json);
 
-  @override
-  @JsonKey(ignore: true)
-  final String? uuid;
   @override
   @JsonKey(defaultValue: 'success')
   final String? status;
@@ -223,13 +186,10 @@ class _$_SuccessResponse extends _SuccessResponse {
   @override
   @JsonKey(ignore: true)
   final bool pop;
-  @override
-  @JsonKey(ignore: true)
-  final bool show;
 
   @override
   String toString() {
-    return 'SuccessResponse(uuid: $uuid, status: $status, message: $message, details: $details, pop: $pop, show: $show)';
+    return 'SuccessResponse(status: $status, message: $message, details: $details, pop: $pop)';
   }
 
   @override
@@ -237,23 +197,19 @@ class _$_SuccessResponse extends _SuccessResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SuccessResponse &&
-            const DeepCollectionEquality().equals(other.uuid, uuid) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.message, message) &&
             const DeepCollectionEquality().equals(other.details, details) &&
-            const DeepCollectionEquality().equals(other.pop, pop) &&
-            const DeepCollectionEquality().equals(other.show, show));
+            const DeepCollectionEquality().equals(other.pop, pop));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(uuid),
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(message),
       const DeepCollectionEquality().hash(details),
-      const DeepCollectionEquality().hash(pop),
-      const DeepCollectionEquality().hash(show));
+      const DeepCollectionEquality().hash(pop));
 
   @JsonKey(ignore: true)
   @override
@@ -268,20 +224,15 @@ class _$_SuccessResponse extends _SuccessResponse {
 
 abstract class _SuccessResponse extends SuccessResponse {
   const factory _SuccessResponse(
-      {@JsonKey(ignore: true) String? uuid,
-      @JsonKey(defaultValue: 'success') String? status,
+      {@JsonKey(defaultValue: 'success') String? status,
       @JsonKey(defaultValue: '') required String message,
       @JsonKey(ignore: true) String? details,
-      @JsonKey(ignore: true) bool pop,
-      @JsonKey(ignore: true) bool show}) = _$_SuccessResponse;
+      @JsonKey(ignore: true) bool pop}) = _$_SuccessResponse;
   const _SuccessResponse._() : super._();
 
   factory _SuccessResponse.fromJson(Map<String, dynamic> json) =
       _$_SuccessResponse.fromJson;
 
-  @override
-  @JsonKey(ignore: true)
-  String? get uuid;
   @override
   @JsonKey(defaultValue: 'success')
   String? get status;
@@ -294,9 +245,6 @@ abstract class _SuccessResponse extends SuccessResponse {
   @override
   @JsonKey(ignore: true)
   bool get pop;
-  @override
-  @JsonKey(ignore: true)
-  bool get show;
   @override
   @JsonKey(ignore: true)
   _$SuccessResponseCopyWith<_SuccessResponse> get copyWith =>

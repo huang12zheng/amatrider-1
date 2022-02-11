@@ -2,20 +2,20 @@ library profile_page.dart;
 
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
-import 'package:amatrider/features/auth/presentation/screens/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:enough_platform_widgets/platform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 part '../widgets/edit_profile_bottom_sheet.dart';
-part '../widgets/phone_update_bottom_sheet.dart';
 part '../widgets/profile_page_widgets.dart';
 
 /// A stateless widget to render ProfilePage.
@@ -41,11 +41,57 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
 
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
-        showCustomLeading: false,
+        showCustomLeading: App.platform.material(true),
         title: '${tr.profile}',
-        centerTitle: false,
+        centerTitle: true,
+        implyLeading: false,
+        cupertinoImplyLeading: false,
         elevation: 0.0,
         titleStyle: App.titleStyle,
+        leadingIcon: App.platform.material(Consumer(
+          builder: (_, ref, child) => PlatformIconButton(
+            materialIcon: const Icon(Icons.menu),
+            cupertinoIcon: const Icon(CupertinoIcons.bars),
+            onPressed: ref.read(scaffoldController.notifier).open,
+          ),
+        )),
+        actions: [
+          Utils.platform_(
+            cupertino: Expanded(
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Consumer(
+                      builder: (_, ref, child) => AppIconButton(
+                        tooltip: 'Menu',
+                        backgroundColor: Colors.transparent,
+                        elevation: 0.0,
+                        onPressed: ref.read(scaffoldController.notifier).open,
+                        padding: EdgeInsets.zero,
+                        child: Center(
+                          child: Icon(
+                            CupertinoIcons.bars,
+                            size: 30,
+                            color: App.resolveColor(Palette.cardColorDark, dark: Palette.cardColorLight),
+                          ),
+                        ),
+                      ),
+                    ),
+                    //
+                    const Spacer(),
+                    //
+                    AdaptiveText('${tr.profile}', style: App.titleStyle),
+                    //
+                    const Spacer(),
+                  ],
+                ),
+              ),
+            ),
+            material: Utils.nothing,
+          )!,
+        ],
       ),
       body: BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
         builder: (c, s) => SafeArea(
@@ -134,11 +180,11 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                       //
                       Visibility(
                         visible: s.isAuthenticated,
-                        child: Hero(
+                        child: MyHero(
                           tag: Const.profileLogoutBtnHerotag,
                           child: AppButton(
                             text: '${tr.logout}',
-                            isLoading: s.isLoading,
+                            isLoading: s.isLoggingOut,
                             onPressed: () async {
                               // Cleanup
                               c.read<NotificationCubit>().reset();

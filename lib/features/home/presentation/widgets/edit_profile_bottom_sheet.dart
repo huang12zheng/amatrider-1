@@ -13,12 +13,13 @@ class _EditProfileBottomSheet extends StatelessWidget {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
@@ -55,7 +56,7 @@ class _EditProfileBottomSheet extends StatelessWidget {
                       Positioned(
                         top: 5,
                         right: App.sidePadding,
-                        child: WidgetVisibility(
+                        child: AnimatedVisibility(
                           visible: c.select(
                             (AuthCubit it) => it.state.isLoading && it.state.rider.profile.isSome(),
                           ),
@@ -237,7 +238,7 @@ class _EditProfileBottomSheet extends StatelessWidget {
                                     onPressed: () => App.showAdaptiveBottomSheet(
                                       c,
                                       elevation: 2.0,
-                                      builder: (_) => const _PhoneUpdateBottomSheet(),
+                                      builder: (_) => const PhoneUpdateBottomSheet(),
                                     ),
                                   ),
                                 ),

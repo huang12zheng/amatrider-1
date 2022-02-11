@@ -18,7 +18,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part '../widgets/insight_widgets/activity_chart_widget.dart';
 part '../widgets/insight_widgets/claim_bonus_dialog_builder.dart';
@@ -41,7 +40,7 @@ class _InsightsPageState extends State<InsightsPage> {
     _cubit = getIt<InsightsCubit>()..echo();
   }
 
-  void onRefresh(BuildContext c, RefreshController controller) async {
+  void onRefresh(BuildContext c, DragToRefreshState controller) async {
     await BlocProvider.of<InsightsCubit>(c).fetchInsights();
     controller.refreshCompleted();
   }
@@ -55,12 +54,13 @@ class _InsightsPageState extends State<InsightsPage> {
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
                 (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.foldCode(orElse: () => false),
+                      error: (f) => f.fold(orElse: () => false),
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
+            info: (i) => PopupDialog.error(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
@@ -68,37 +68,42 @@ class _InsightsPageState extends State<InsightsPage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: '${context.tr.menu}',
-            showCustomLeading: true,
+            showCustomLeading: App.platform.material(true),
+            implyLeading: false,
+            cupertinoImplyLeading: false,
             leadingAction: () {},
-            leadingIcon: Consumer(
+            leadingIcon: App.platform.material(Consumer(
               builder: (_, ref, child) => PlatformIconButton(
                 materialIcon: const Icon(Icons.menu),
                 cupertinoIcon: const Icon(CupertinoIcons.bars),
                 onPressed: ref.read(scaffoldController.notifier).open,
               ),
-            ),
+            )),
             actions: [
-              Center(
-                child: Consumer(
-                  builder: (_, ref, child) => AppIconButton(
-                    tooltip: 'Menu',
-                    backgroundColor: Colors.transparent,
-                    elevation: 0.0,
-                    onPressed: ref.read(scaffoldController.notifier).open,
-                    padding: EdgeInsets.zero,
-                    child: Center(
-                      child: Icon(
-                        CupertinoIcons.bars,
-                        size: 30,
-                        color: Utils.foldTheme(
-                          light: () => Palette.cardColorDark,
-                          dark: () => Palette.cardColorLight,
+              Utils.platform_(
+                cupertino: Center(
+                  child: Consumer(
+                    builder: (_, ref, child) => AppIconButton(
+                      tooltip: 'Menu',
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                      onPressed: ref.read(scaffoldController.notifier).open,
+                      padding: EdgeInsets.zero,
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.bars,
+                          size: 30,
+                          color: Utils.foldTheme(
+                            light: () => Palette.cardColorDark,
+                            dark: () => Palette.cardColorLight,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
+                material: Utils.nothing,
+              )!,
               //
               const Spacer(),
               //
@@ -306,7 +311,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.only(left: 0.03.sw),
-                                        child: WidgetVisibility(
+                                        child: AnimatedVisibility(
                                           visible: s.insight.extraDeliveries > 0,
                                           replacement: AdaptiveText(
                                             'You do not have any extra deliveries for this month.',
@@ -379,7 +384,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                             ),
                                             borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                                           ),
-                                          child: WidgetVisibility(
+                                          child: AnimatedVisibility(
                                             visible: s.insight.canClaimBonus,
                                             child: Padding(
                                               padding: EdgeInsets.symmetric(
@@ -430,10 +435,6 @@ class _InsightsPageState extends State<InsightsPage> {
                                                   else {
                                                     await App.showAlertDialog(
                                                       context: c,
-                                                      barrierColor: App.resolveColor(
-                                                        Colors.grey.shade800.withOpacity(0.55),
-                                                        dark: Colors.white54,
-                                                      ),
                                                       builder: (_) => _ClaimBonusDialogBuilder(
                                                         cubit: c.read<InsightsCubit>(),
                                                         cash: s.insight.cashAtHand,

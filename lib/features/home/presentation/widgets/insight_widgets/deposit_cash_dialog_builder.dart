@@ -44,88 +44,89 @@ class _DepositCashDialogBuilder extends StatelessWidget {
             child: AdaptiveAlertdialog(
               width: 0.75.w,
               title: '${tr.insightDepositCash}',
-              body: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AdaptiveText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        // text: '${tr.insightDepositAlertContent(
-                        //   '${cash.getOrEmpty}'.asCurrency(),
-                        // )}',
-                        text: '${cubit.state.account?.transferNote.getOrEmpty}',
-                      ),
-                    ]),
-                    fontSize: 18.sp,
-                    isDefault: Utils.platform_(cupertino: true),
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: Utils.letterSpacing,
-                    textAlign: TextAlign.center,
-                  ),
-                  //
-                  VerticalSpace(height: 0.04.sw),
-                  //
-                  ...details(cubit.state.account).map(
-                    (e) => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: TextFormInputLabel(
-                            text: e.title,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w500,
-                            textAlign: TextAlign.end,
-                            useDefaultText: Utils.platform_(
-                              cupertino: true,
-                              material: false,
-                            )!,
-                          ),
+              body: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AdaptiveText.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                          // text: '${tr.insightDepositAlertContent(
+                          //   '${cash.getOrEmpty}'.asCurrency(),
+                          // )}',
+                          text: '${cubit.state.account?.transferNote.getOrEmpty}',
                         ),
-                        //
-                        HorizontalSpace(width: 0.03.sw),
-                        //
-                        Expanded(
-                          flex: 3,
-                          child: AdaptiveText(
-                            e.value,
-                            fontSize: 18.sp,
-                            maxLines: 1,
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: Utils.letterSpacing,
-                            textAlign: TextAlign.start,
-                            isDefault: Utils.platform_(cupertino: true),
-                          ),
-                        ),
-                        //
-                        if (e.icon != null)
+                      ]),
+                      fontSize: 18.sp,
+                      isDefault: Utils.platform_(cupertino: true),
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: Utils.letterSpacing,
+                      textAlign: TextAlign.center,
+                    ),
+                    //
+                    VerticalSpace(height: 0.04.sw),
+                    //
+                    ...details(cubit.state.account).map(
+                      (e) => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Flexible(
-                            child: GestureDetector(
-                              onTap: () => ClipboardManager.copy(e.value),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        Utils.buttonRadius),
-                                    color: Palette.accent20,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Icon(
-                                      e.icon,
-                                      color: e.iconColor,
+                            flex: 2,
+                            child: TextFormInputLabel(
+                              text: e.title,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w500,
+                              textAlign: TextAlign.end,
+                              useDefaultText: Utils.platform_(
+                                cupertino: true,
+                                material: false,
+                              )!,
+                            ),
+                          ),
+                          //
+                          HorizontalSpace(width: 0.03.sw),
+                          //
+                          Expanded(
+                            flex: 3,
+                            child: AdaptiveText(
+                              e.value,
+                              fontSize: 18.sp,
+                              maxLines: 1,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: Utils.letterSpacing,
+                              textAlign: TextAlign.start,
+                              isDefault: Utils.platform_(cupertino: true),
+                            ),
+                          ),
+                          //
+                          if (e.icon != null)
+                            Flexible(
+                              child: GestureDetector(
+                                onTap: () => ClipboardManager.copy(e.value),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(Utils.buttonRadius),
+                                      color: Palette.accent20,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Icon(
+                                        e.icon,
+                                        color: e.iconColor,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                )
+              ],
               isSecondDestructive: true,
               isSecondDefaultAction: true,
               cupertinoSecondButtonText: '${tr.cancel}',
@@ -133,7 +134,7 @@ class _DepositCashDialogBuilder extends StatelessWidget {
               //   listener: (c, s) {
               //     if (s.depositConfirmed) navigator.popUntilRoot();
               //   },
-              //   builder: (c, s) => WidgetVisibility(
+              //   builder: (c, s) => AnimatedVisibility(
               //     visible: !s.depositCashLoading,
               //     replacement: Center(
               //       child: Padding(
@@ -151,7 +152,7 @@ class _DepositCashDialogBuilder extends StatelessWidget {
               // ),
               // materialFirstButton: BlocConsumer<InsightsCubit, InsightsState>(
 
-              //   builder: (c, s) => WidgetVisibility(
+              //   builder: (c, s) => AnimatedVisibility(
               //     visible: !s.depositCashLoading,
               //     replacement: Padding(
               //       padding: const EdgeInsets.all(8.0),
@@ -182,8 +183,7 @@ class _DepositCashDialogBuilder extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              materialSecondButton:
-                  BlocSelector<InsightsCubit, InsightsState, bool>(
+              materialSecondButton: BlocSelector<InsightsCubit, InsightsState, bool>(
                 selector: (s) => s.isLoading,
                 builder: (c, isLoading) => AdaptiveButton(
                   text: '${tr.cancel}',

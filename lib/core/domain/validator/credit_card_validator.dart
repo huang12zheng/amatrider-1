@@ -33,7 +33,7 @@ mixin _CreditCardValidator {
     });
   }
 
-  static Either<FieldObjectException<String>, String?> validateCardExpiryDate(
+  static StringValidator<String> validateCardExpiryDate(
     String? input,
   ) {
     if (input == null) return left(FieldObjectException.empty());
@@ -74,8 +74,7 @@ mixin _CreditCardValidator {
       ));
 
     var fourDigitsYear = _convertYearTo4Digits(year);
-    if (fourDigitsYear != null &&
-        ((fourDigitsYear < 1) || (fourDigitsYear > 2099))) {
+    if (fourDigitsYear != null && ((fourDigitsYear < 1) || (fourDigitsYear > 2099))) {
       // We are assuming a valid year should be between 1 and 2099.
       // Note that, it's valid doesn't mean that it has not expired.
       return left(FieldObjectException.invalid(
@@ -100,17 +99,14 @@ mixin _CreditCardValidator {
   }) {
     var clean = input.trim();
 
-    var containsOnlyDigits =
-        RegExp(pattern, multiLine: multiline).hasMatch(clean);
+    var containsOnlyDigits = RegExp(pattern, multiLine: multiline).hasMatch(clean);
 
-    if (!containsOnlyDigits)
-      return left(FieldObjectException.invalid(message: message));
+    if (!containsOnlyDigits) return left(FieldObjectException.invalid(message: message));
 
     return right(input);
   }
 
-  static Either<FieldObjectException<String>, String>
-      _validateWithLuhnAlgorithm(String input) {
+  static Either<FieldObjectException<String>, String> _validateWithLuhnAlgorithm(String input) {
     var clean = input.trim();
 
     var sum = 0;
@@ -170,8 +166,7 @@ mixin _CreditCardValidator {
     // 1. The year is in the past. In that case, we just assume that the month
     // has passed
     // 2. Card's month (plus another month) is less than current month.
-    return _hasYearPassed(year) ||
-        _convertYearTo4Digits(year) == now.year && (month < now.month + 1);
+    return _hasYearPassed(year) || _convertYearTo4Digits(year) == now.year && (month < now.month + 1);
   }
 
   static bool _hasYearPassed(int year) {

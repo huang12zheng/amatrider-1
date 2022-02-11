@@ -59,8 +59,7 @@ class CircularProgressBar extends StatelessWidget {
   }
 
   Widget _progressIndicator() {
-    if (_type == _CircularProgressBarType.adaptive &&
-        (Platform.isIOS || forceShowIOS)) {
+    if (_type == _CircularProgressBarType.adaptive && (Platform.isIOS || forceShowIOS)) {
       return CupertinoActivityIndicator(
         animating: isAnimating,
         radius: radius,

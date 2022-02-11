@@ -16,16 +16,13 @@ class InAppNotificationDTO with _$InAppNotificationDTO {
 
   const factory InAppNotificationDTO({
     String? title,
-    @JsonKey(name: 'amat_notification_type')
-    @WebsocketResponseTypeSerializer()
-        WebsocketResponseType? type,
+    @JsonKey(name: 'amat_notification_type') @WebsocketResponseTypeSerializer() WebsocketResponseType? type,
     dynamic meta,
     @JsonKey(name: 'date') @TimestampConverter() DateTime? createdAt,
   }) = _InAppNotificationDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory InAppNotificationDTO.fromJson(Map<String, dynamic> json) =>
-      _$InAppNotificationDTOFromJson(json);
+  factory InAppNotificationDTO.fromJson(Map<String, dynamic> json) => _$InAppNotificationDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a InAppNotification Object.
   InAppNotification get domain => InAppNotification(

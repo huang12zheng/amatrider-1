@@ -1,6 +1,6 @@
 library map_widget.dart;
 
-import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,8 +10,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 /// A stateless widget to render MapWidget.
 class MapWidget extends StatefulWidget {
-  final RiderLocation? end;
-  final RiderLocation? start;
+  final UserAddress? end;
+  final UserAddress? start;
   final Widget? startWidget;
   final Widget? endWidget;
   final MarkerPainter? startPainter;
@@ -43,8 +43,7 @@ class MapWidget extends StatefulWidget {
   State<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapWidgetState extends State<MapWidget>
-    with AutomaticKeepAliveClientMixin<MapWidget> {
+class _MapWidgetState extends State<MapWidget> with AutomaticKeepAliveClientMixin<MapWidget> {
   @override
   bool get wantKeepAlive => true;
 
@@ -58,10 +57,10 @@ class _MapWidgetState extends State<MapWidget>
           listenWhen: (p, c) => p.mapController != c.mapController,
           listener: (c, s) {
             if (s.mapController != null) {
-              print('REFRESGINGING MAP WIDGET');
+              // print('REFRESGINGING MAP WIDGET');
 
               c.read<MapCubit>().init(
-                    ctx: c,
+                    c,
                     start: widget.start,
                     end: widget.end,
                     startWidget: widget.startWidget,
@@ -71,8 +70,7 @@ class _MapWidgetState extends State<MapWidget>
                     customStartWidget: widget.customStartWidget,
                     customEndWidget: widget.customEndWidget,
                   );
-              if (widget.start == null && widget.end == null)
-                c.read<MapCubit>().updateCurrentLocation();
+              if (widget.start == null && widget.end == null) c.read<MapCubit>().updateCurrentLocation(c);
             }
           },
         ),
