@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.16.0-134.5.beta <3.0.0"
@@ -123,7 +123,7 @@ dependencies:
   # Wraps platform-specific persistent storage for simple data
   shared_preferences: ^2.0.12
   # A Flutter plugin for finding commonly used locations on the filesystem.
-  path_provider: ^2.0.8
+  path_provider: ^2.0.9
   # A port of Kotlin's Kotlin Standard library for Dart/Flutter projects.
   kt_dart: ^0.10.0
   # A port of the Rails/ActiveSupport inflector library to Dart.
@@ -135,7 +135,7 @@ dependencies:
   json_annotation: ^4.4.0
   # retrofit.dart is a type conversion dio client generator
   # using source_gen and inspired by Chopper and Retrofit.
-  retrofit: ^3.0.1
+  retrofit: ^3.0.1+1
   # Floor provides a neat SQLite abstraction for your Flutter applications
   # inspired by the Room persistence library.
   floor: ^1.2.0
@@ -160,14 +160,14 @@ dependencies:
   showcaseview: ^1.1.4
   # A flutter plugin for adapting screen and font size.Let your UI
   # display a reasonable layout on different screen sizes!
-  flutter_screenutil: ^5.1.1
+  flutter_screenutil: ^5.2.0
   # A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
-  video_player: ^2.2.10
+  video_player: ^2.2.18
   # A video player for Flutter with Cupertino and Material play controls
   chewie: ^1.2.2
   # A Flutter plugin for iOS and Android for picking images from the image library,
   # and taking new pictures with the camera.
-  image_picker: ^0.8.4+5
+  image_picker: ^0.8.4+8
   # A package that allows you to use the native file explorer to pick
   # single or multiple files, with extensions filtering support.
   file_picker: ^4.3.3
@@ -238,9 +238,9 @@ dependencies:
   # supporting any fraction of rating.
   flutter_rating_bar: ^4.0.0
   # A powerful Flutter chart library, currently supporting Line Chart, Bar Chart and Pie Chart.
-  fl_chart: ^0.40.6
+  fl_chart: ^0.41.0
   # Flutter plugin for launching a URL. Supports web, phone, SMS, and email schemes.
-  url_launcher: ^6.0.18
+  url_launcher: ^6.0.20
   # Photo View provides a gesture sensitive zoomable widget.
   # Photo View is largely used to show interactive images and other stuff such as SVG.
   photo_view: ^0.13.0

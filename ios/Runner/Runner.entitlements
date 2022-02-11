@@ -6,12 +6,12 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:app.manuelsnr.design</string>
 		<string>applinks:app.amatnow.com</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.com.amatnow.app.amatrider</string>
+		<string>iCloud.com.amatnow.app.amatrider.dev</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>

@@ -358,7 +358,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                       ),
                       //
-                      if ((!s.isLoadingActive && !s.isLoadingInTransit) && (s.active.isEmpty() && s.potential.isEmpty()))
+                      if ((!s.isLoadingActive && !s.isLoadingInTransit) &&
+                          (s.active.isEmpty() && s.inTransit.isEmpty() && s.potential.isEmpty()))
                         SliverToBoxAdapter(
                           child: EmptyStateWidget(
                             asset: right(AppAssets.noRequest),

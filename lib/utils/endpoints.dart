@@ -51,7 +51,8 @@ mixin EndPoints {
   static const String GET_ALL_IN_TRANSIT = '/rider/deliverable/transit'; // (GET)
 
   /// .......///////...// HISTORY ENDPOINTS .......///////./....//
-  static const String GET_ALL_HISTORY = '/rider/history'; // (GET)
+  //static const String GET_ALL_HISTORY = '/rider/history'; // (GET)
+  static const String GET_ALL_HISTORY = '/rider/deliverable/history'; // (GET)
 
   /// .......///////...// NOTIFICATION ENDPOINTS .......///////./....//
   static const String ALL_NOTIFICATIONS = '/rider/notifications'; // (GET)
