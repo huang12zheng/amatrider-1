@@ -30,7 +30,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               duration: const Duration(seconds: 3),
@@ -52,7 +52,7 @@ class ContactSupportScreen extends StatelessWidget with AutoRouteWrapper {
     if (!isLoading)
       await App.showAdaptiveBottomSheet(
         ctx,
-        topRadius: Radius.zero,
+        radius: Radius.zero,
         builder: (_) => DocumentPickerSheet(
           pickers: [
             DocumentPicker(
