@@ -42,6 +42,7 @@ class DashboardScreen extends ConsumerStatefulWidget with AutoRouteWrapper {
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> with AutomaticKeepAliveClientMixin<DashboardScreen> {
   final AsyncMemoizer<dynamic> _memoizer = AsyncMemoizer();
+  late TabNavigationCubit _navCubit;
   DateTime _timestampPressed = DateTime.now();
 
   @override
@@ -63,6 +64,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> with Automati
       await ToastManager.cancel();
       return Future.value(true);
     }
+  }
+
+  @override
+  void initState() {
+    _navCubit = context.read<TabNavigationCubit>();
+    super.initState();
   }
 
   Widget guestUserImage(int currentIndex, Destination i) => CircleAvatar(
@@ -141,71 +148,73 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> with Automati
         curve: Curves.easeInOutCubic,
         builder: (context, child, animation) {
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-            if (context.read<TabNavigationCubit>().state.isInit) {
-              context.read<TabNavigationCubit>().updateTabsRouter(context.tabsRouter);
-              context.read<TabNavigationCubit>().init(context);
+            if (_navCubit.state.isInit) {
+              _navCubit.updateTabsRouter(context.tabsRouter);
+              _navCubit.init(context);
             }
           });
 
           return BlocBuilder<TabNavigationCubit, TabNavigationState>(
-            buildWhen: (p, c) => p.currentIndex != c.currentIndex,
+            buildWhen: (p, c) => p.currentIndex != c.currentIndex || p.isInit != c.isInit,
             builder: (c, s) {
               final currentIndex = s.currentIndex;
 
-              return InnerDrawer(
-                key: ref.watch(scaffoldController),
-                onTapClose: true,
-                swipe: false,
-                offset: const IDOffset.horizontal(0.5),
-                proportionalChildArea: true,
-                borderRadius: 0,
-                leftAnimationType: InnerDrawerAnimation.static,
-                leftChild: const SideDrawerWidget(),
-                scaffold: FutureBuilder(
-                  future: _memoizer.runOnce(
-                    () async {
-                      final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
-                      await cubit.subscribeUserChanges();
+              return s.isInit
+                  ? LottieBox.amatLoader
+                  : InnerDrawer(
+                      key: ref.watch(scaffoldController),
+                      onTapClose: true,
+                      swipe: false,
+                      offset: const IDOffset.horizontal(0.5),
+                      proportionalChildArea: true,
+                      borderRadius: 0,
+                      leftAnimationType: InnerDrawerAnimation.static,
+                      leftChild: const SideDrawerWidget(),
+                      scaffold: FutureBuilder(
+                        future: _memoizer.runOnce(
+                          () async {
+                            final cubit = BlocProvider.of<AuthWatcherCubit>(App.context);
+                            await cubit.subscribeUserChanges();
 
-                      cubit.subscribeToProfileUpdate();
+                            cubit.subscribeToProfileUpdate();
 
-                      // Start laravel echo (notifications) & Fetch latest notifications
-                      BlocProvider.of<NotificationCubit>(context).echo();
-                    },
-                  ),
-                  builder: (_, snapshot) => AdaptiveScaffold(
-                    cupertinoTabBuilder: (_, i) => s.tabs.toList()[i].values.first,
-                    body: FadeTransition(opacity: animation, child: child),
-                    adaptiveBottomNav: PlatformNavBar(
-                      items: navItems(currentIndex),
-                      currentIndex: currentIndex,
-                      material: (_, __) => MaterialNavBarData(
-                        elevation: 0.0,
-                        type: BottomNavigationBarType.fixed,
-                        unselectedItemColor: Colors.grey,
-                        selectedItemColor: App.resolveColor(Palette.accentColor, dark: Palette.accentColor.shade100),
+                            // Start laravel echo (notifications) & Fetch latest notifications
+                            BlocProvider.of<NotificationCubit>(context).echo();
+                          },
+                        ),
+                        builder: (_, snapshot) => AdaptiveScaffold(
+                          cupertinoTabBuilder: (_, i) => _navCubit.state.tabs.toList()[i].values.first,
+                          body: FadeTransition(opacity: animation, child: child),
+                          adaptiveBottomNav: PlatformNavBar(
+                            items: navItems(currentIndex),
+                            currentIndex: currentIndex,
+                            material: (_, __) => MaterialNavBarData(
+                              elevation: 0.0,
+                              type: BottomNavigationBarType.fixed,
+                              unselectedItemColor: Colors.grey,
+                              selectedItemColor: App.resolveColor(Palette.accentColor, dark: Palette.accentColor.shade100),
+                            ),
+                            cupertino: (_, __) => CupertinoTabBarData(
+                              iconSize: 20,
+                              backgroundColor: App.resolveColor(
+                                CupertinoColors.lightBackgroundGray.withAlpha(254),
+                                dark: CupertinoColors.quaternarySystemFill,
+                              )!,
+                              // border: Border.symmetric(
+                              //   vertical: BorderSide(
+                              //     color: Colors.grey,
+                              //     width: 0,
+                              //   ),
+                              // ),
+                              inactiveColor: Colors.grey,
+                              currentIndex: currentIndex,
+                              activeColor: App.resolveColor(Palette.accentColor, dark: Palette.accentColor.shade100),
+                            ),
+                            itemChanged: (i) => c.read<TabNavigationCubit>().setCurrentIndex(context, i),
+                          ),
+                        ),
                       ),
-                      cupertino: (_, __) => CupertinoTabBarData(
-                        iconSize: 20,
-                        backgroundColor: App.resolveColor(
-                          CupertinoColors.lightBackgroundGray.withAlpha(254),
-                          dark: CupertinoColors.quaternarySystemFill,
-                        )!,
-                        // border: Border.symmetric(
-                        //   vertical: BorderSide(
-                        //     color: Colors.grey,
-                        //     width: 0,
-                        //   ),
-                        // ),
-                        inactiveColor: Colors.grey,
-                        currentIndex: currentIndex,
-                        activeColor: App.resolveColor(Palette.accentColor, dark: Palette.accentColor.shade100),
-                      ),
-                      itemChanged: (i) => c.read<TabNavigationCubit>().setCurrentIndex(context, i),
-                    ),
-                  ),
-                ),
-              );
+                    );
             },
           );
         },

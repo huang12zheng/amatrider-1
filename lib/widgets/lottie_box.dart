@@ -63,6 +63,13 @@ class LottieBox extends StatefulWidget {
         lottie = null,
         super(key: key);
 
+  static Widget get amatLoader => LottieBox.asset(
+        lottie: AppAssets.amatCircularLoader,
+        height: 0.5.h,
+        width: 0.5.h,
+        duration: const Duration(milliseconds: 2500),
+      );
+
   @override
   _LottieBoxState createState() => _LottieBoxState();
 }

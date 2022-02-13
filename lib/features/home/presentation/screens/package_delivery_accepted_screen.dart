@@ -104,13 +104,6 @@ class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedS
   @override
   bool get wantKeepAlive => true;
 
-  Widget get loader => LottieBox.asset(
-        lottie: AppAssets.amatCircularLoader,
-        height: 0.5.h,
-        width: 0.5.h,
-        duration: const Duration(milliseconds: 2500),
-      );
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -132,7 +125,7 @@ class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedS
             body: BlocSelector<SendPackageCubit, SendPackageState, bool>(
               selector: (s) => s.isLoadingSingle,
               builder: (c, isLoading) {
-                if (isLoading) return Center(child: loader);
+                if (isLoading) return Center(child: LottieBox.amatLoader);
 
                 return Stack(
                   children: [

@@ -86,7 +86,8 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
               cupertino: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
             ),
             elevation: 0.0,
-            title: Text(
+            iconTheme: IconThemeData(color: Utils.platform_(cupertino: Palette.accentColor)),
+            title: AdaptiveText(
               'Choose a country',
               style: TextStyle(
                 color: Utils.platform_(
@@ -96,9 +97,6 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
                   ),
                 ),
               ),
-            ),
-            iconTheme: IconThemeData(
-              color: Utils.platform_(cupertino: Palette.accentColor),
             ),
           ),
           pickerBuilder: (_, country) => Builder(builder: (_) {

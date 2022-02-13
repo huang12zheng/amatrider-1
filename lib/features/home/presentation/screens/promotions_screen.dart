@@ -10,7 +10,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart' show right;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:kt_dart/collection.dart';
 
 /// A stateless widget to render PromotionsScreen.
