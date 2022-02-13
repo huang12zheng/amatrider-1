@@ -1,6 +1,5 @@
 library notification_screen.dart;
 
-import 'package:amatrider/core/data/websocket_response_type.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
@@ -21,7 +20,7 @@ class NotificationScreen extends StatefulWidget with AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider.value(
-      value: BlocProvider.of<NotificationCubit>(context)..echo(),
+      value: BlocProvider.of<NotificationCubit>(context),
       child: BlocListener<NotificationCubit, NotificationState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
@@ -33,7 +32,7 @@ class NotificationScreen extends StatefulWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
@@ -48,19 +47,43 @@ class NotificationScreen extends StatefulWidget with AutoRouteWrapper {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  late NotificationCubit _cubit;
+
+  @override
+  void initState() {
+    _cubit = context.read<NotificationCubit>();
+    super.initState();
+  }
+
   void onRefresh(BuildContext c, [DragToRefreshState? controller]) async {
-    if (c.read<NotificationCubit>().state.inAppNotifications.isEmpty()) await BlocProvider.of<NotificationCubit>(c).inAppNotifications();
+    await _cubit.inAppNotifications();
     controller?.refreshCompleted();
+  }
+
+  void onLoadMore(DragToRefreshState refresh, {bool nextPage = true, int? perPage}) async {
+    if (!_cubit.state.isLoading) {
+      await _cubit.inAppNotifications(nextPage: nextPage, perPage: perPage);
+      refresh.loadComplete();
+    } else
+      refresh.loadComplete();
+
+    Future.delayed(const Duration(seconds: 30), () {
+      if (refresh.controller.isLoading) refresh.loadComplete();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AppSliverScrollView.scaffold(
+      initialRefresh: _cubit.state.inAppNotifications.isEmpty(),
+      enablePullDown: _cubit.state.inAppNotifications.isEmpty(),
+      enablePullUp: true,
       isPaginated: true,
-      enablePullDown: true,
       useSafeArea: true,
+      implyMiddle: false,
       title: '${tr.notifications}',
       onRefresh: (controller) => onRefresh(context, controller),
+      onLoading: (refresh) => onLoadMore(refresh),
       slivers: [
         BlocBuilder<NotificationCubit, NotificationState>(
           builder: (c, s) {
@@ -73,9 +96,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           dateTime: entry.key,
                           count: entry.value.size,
                           verticalGap: 0.04.sw,
-                          layout: (i) => _mapType(
-                            entry.value.getOrNull(i),
-                          ),
+                          layout: (i) => _mapType(entry.value.getOrNull(i)),
                         ))
                     .iter,
               ]),
@@ -103,11 +124,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget _mapType(InAppNotification? notification) {
     if (notification == null) return Utils.nothing;
 
-    return notification.type.when(
-          packageDelivered: () {
-            final meta = notification.meta.value as NotificationMeta<SendPackage?>;
-            return SendPackageNotificationCard(package: meta.value!);
-          },
+    return notification.meta?.maybeMap(
+          order: (o) => NotificationCard(deliverable: o.order, notification: notification),
+          package: (o) => NotificationCard(deliverable: o.package, notification: notification),
           orElse: () => Utils.nothing,
         ) ??
         Utils.nothing;

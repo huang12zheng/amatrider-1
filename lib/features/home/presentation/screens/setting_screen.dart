@@ -19,9 +19,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
   const SettingScreen({Key? key}) : super(key: key);
 
   @override
-  Widget wrappedRoute(BuildContext context) {
-    return this;
-  }
+  Widget wrappedRoute(BuildContext context) => this;
 
   TextStyle get listTileTextStyle => TextStyle(
         fontWeight: FontWeight.w700,
@@ -32,7 +30,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
   @override
   Widget build(BuildContext context) {
     return AdaptiveScaffold(
-      adaptiveToolbar: const AdaptiveToolbar(implyMiddle: true),
+      adaptiveToolbar: AdaptiveToolbar(title: App.platform.cupertino('Settings')),
       body: BlocBuilder<AuthWatcherCubit, AuthWatcherState>(
         builder: (c, s) => SafeArea(
           child: CupertinoScrollbar(
@@ -90,7 +88,7 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                 fontSize: 17.0.sp,
                               ),
                             ),
-                            tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
+                            // tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
                             contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                             value: true,
                             inactiveThumbColor: Palette.text40,
@@ -98,32 +96,40 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                               light: () => Colors.black12,
                               dark: () => Palette.secondaryColor.shade300,
                             ),
-                            secondary: const Icon(AmatNow.notification_bell),
+                            secondary: Icon(
+                              AmatNow.notification_bell,
+                              color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
+                            ),
                             onChanged: (value) {},
                           ),
                         ),
                         //
-                        AdaptiveListTile.adaptiveSwitch(
-                          title: AdaptiveText(
-                            context.watch<ThemeCubit>().isDarkMode ? 'Light Mode' : 'Dark Mode',
-                            style: listTileTextStyle,
+                        if (MediaQuery.of(context).platformBrightness != Brightness.dark)
+                          AdaptiveListTile.adaptiveSwitch(
+                            title: AdaptiveText(
+                              context.watch<ThemeCubit>().isDarkMode ? 'Light Mode' : 'Dark Mode',
+                              style: listTileTextStyle,
+                            ),
+                            // tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
+                            contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                            value: context.watch<ThemeCubit>().isDarkMode,
+                            inactiveThumbColor: Palette.text40,
+                            inactiveTrackColor: Utils.foldTheme(
+                              light: () => Colors.black12,
+                              dark: () => Palette.secondaryColor.shade300,
+                            ),
+                            secondary: Icon(
+                              Utils.foldTheme(
+                                light: () => AmatNow.moon,
+                                dark: () => Utils.platform_(
+                                  material: Icons.light_mode_rounded,
+                                  cupertino: CupertinoIcons.light_max,
+                                ),
+                              ),
+                              color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
+                            ),
+                            onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
                           ),
-                          tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
-                          contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                          value: context.watch<ThemeCubit>().isDarkMode,
-                          inactiveThumbColor: Palette.text40,
-                          inactiveTrackColor: Utils.foldTheme(
-                            light: () => Colors.black12,
-                            dark: () => Palette.secondaryColor.shade300,
-                          ),
-                          secondary: Icon(Utils.foldTheme(
-                              light: () => AmatNow.moon,
-                              dark: () => Utils.platform_(
-                                    material: Icons.light_mode_rounded,
-                                    cupertino: CupertinoIcons.light_max,
-                                  ))),
-                          onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
-                        ),
                         //
                         VerticalSpace(height: 0.07.sw),
                         //
@@ -146,11 +152,12 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                                     'Manage Password',
                                     style: listTileTextStyle,
                                   ),
-                                  tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
+                                  // tileColor: App.resolveColor(null, dark: Palette.cardColorDark),
                                   contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                                  leading: const Icon(
+                                  leading: Icon(
                                     AmatNow.key_password,
                                     semanticLabel: 'Manage Password',
+                                    color: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
                                   ),
                                   onTap: () => App.showAdaptiveBottomSheet(
                                     context,
@@ -163,8 +170,8 @@ class SettingScreen extends StatelessWidget with AutoRouteWrapper {
                               AdaptiveListTile(
                                 title: AdaptiveText(
                                   'Delete Account',
-                                  textColor: Palette.accentColor,
-                                  textColorDark: Palette.accentDark,
+                                  textColor: App.resolveColor(Palette.accentColor, dark: Palette.accentDark),
+                                  // textColorDark: Palette.accentDark,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 17.0.sp,
                                 ),

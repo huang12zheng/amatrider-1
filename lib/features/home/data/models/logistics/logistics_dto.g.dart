@@ -40,10 +40,15 @@ _$_LogisticsListDTO _$$_LogisticsListDTOFromJson(Map<String, dynamic> json) =>
               ?.map((e) => SendPackageDTO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      potentialOrders: (json['potential'] as List<dynamic>?)
+              ?.map((e) => UserOrderDTO.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_LogisticsListDTOToJson(_$_LogisticsListDTO instance) =>
     <String, dynamic>{
       'orders': instance.orders.map((e) => e.toJson()).toList(),
       'packages': instance.packages.map((e) => e.toJson()).toList(),
+      'potential': instance.potentialOrders.map((e) => e.toJson()).toList(),
     };

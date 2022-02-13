@@ -4,7 +4,7 @@ enum FeedbackType { suggestion, inquiry }
 
 @freezed
 @immutable
-class GlobalPreferenceState with _$GlobalPreferenceState {
+class GlobalPreferenceState extends BaseState with _$GlobalPreferenceState {
   static final FocusNode supportMsgFocus = FocusNode();
 
   const factory GlobalPreferenceState({

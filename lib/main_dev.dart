@@ -22,14 +22,19 @@ void main() async {
   final storage = await HydratedStorage.build(storageDirectory: await Utils.cacheDir);
 
   await HydratedBlocOverrides.runZoned(
-    () async => await runZonedGuarded(
+    () async => await runZonedGuarded<Future<void>>(
       () async {
+        WidgetsFlutterBinding.ensureInitialized();
+
         // Setup Environmental variables & Service provider
         await BuildEnvironment.init(flavor: BuildFlavor.dev);
 
         runApp(const ProviderScope(child: AmatRider()));
       },
-      (error, stackTrace) => log.wtf(error.toString(), error, stackTrace),
+      (error, trace) {
+        log.e(error.toString(), error, trace);
+        App.report(exception: error, stack: trace);
+      },
     ),
     storage: storage,
   );

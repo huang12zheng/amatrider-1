@@ -13,6 +13,7 @@ import 'package:amatrider/widgets/widgets.dart';
 import 'package:async/async.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
@@ -169,10 +170,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> with Automati
                       cubit.subscribeToProfileUpdate();
 
                       // Start laravel echo (notifications) & Fetch latest notifications
-                      BlocProvider.of<NotificationCubit>(context)
-                        // ignore: unawaited_futures
-                        ..inAppNotifications()
-                        ..echo();
+                      BlocProvider.of<NotificationCubit>(context).echo();
                     },
                   ),
                   builder: (_, snapshot) => AdaptiveScaffold(
@@ -189,7 +187,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> with Automati
                       ),
                       cupertino: (_, __) => CupertinoTabBarData(
                         iconSize: 20,
-                        // backgroundColor: Palette.transparent,
+                        backgroundColor: App.resolveColor(
+                          CupertinoColors.lightBackgroundGray.withAlpha(254),
+                          dark: CupertinoColors.quaternarySystemFill,
+                        )!,
                         // border: Border.symmetric(
                         //   vertical: BorderSide(
                         //     color: Colors.grey,

@@ -144,80 +144,96 @@ class AdaptiveText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _type == _AutoSizeTextType.standard
-        ? isDefault != null && isDefault!
-            ? Text(
-                data,
-                key: key,
-                locale: locale,
-                maxLines: maxLines,
-                overflow: overflow,
-                semanticsLabel: semanticsLabel,
-                softWrap: softWrap,
-                strutStyle: strutStyle,
-                textAlign: textAlign,
-                textDirection: textDirection,
-                textScaleFactor: textScaleFactor,
-                style: _style(context)?.merge(style),
-              )
-            : AutoSizeText(
-                data,
-                key: key,
-                group: group,
-                locale: locale,
-                maxFontSize: maxFontSize,
-                maxLines: maxLines,
-                minFontSize: minFontSize,
-                overflow: overflow,
-                overflowReplacement: overflowReplacement,
-                presetFontSizes: presetFontSizes,
-                semanticsLabel: semanticsLabel,
-                softWrap: softWrap,
-                stepGranularity: stepGranularity,
-                strutStyle: strutStyle,
-                style: _style(context)?.merge(style),
-                textAlign: textAlign,
-                textDirection: textDirection,
-                textKey: textKey,
-                textScaleFactor: textScaleFactor,
-                wrapWords: wrapWords,
-              )
-        : isDefault != null && isDefault!
-            ? Text.rich(
-                textSpan,
-                key: key,
-                locale: locale,
-                maxLines: maxLines,
-                overflow: overflow,
-                semanticsLabel: semanticsLabel,
-                softWrap: softWrap,
-                strutStyle: strutStyle,
-                textAlign: textAlign,
-                textDirection: textDirection,
-                textScaleFactor: textScaleFactor,
-                style: _style(context)?.merge(style),
-              )
-            : AutoSizeText.rich(
-                textSpan,
-                key: key,
-                group: group,
-                locale: locale,
-                maxFontSize: maxFontSize,
-                maxLines: maxLines,
-                minFontSize: minFontSize,
-                overflow: overflow,
-                overflowReplacement: overflowReplacement,
-                presetFontSizes: presetFontSizes,
-                semanticsLabel: semanticsLabel,
-                softWrap: softWrap,
-                stepGranularity: stepGranularity,
-                strutStyle: strutStyle,
-                style: _style(context)?.merge(style),
-                textAlign: textAlign,
-                textDirection: textDirection,
-                textKey: textKey,
-                textScaleFactor: textScaleFactor,
-                wrapWords: wrapWords,
-              );
+    return _type.when(
+      standard: isDefault != null && isDefault!
+          ? Text(
+              data,
+              key: key,
+              locale: locale,
+              maxLines: maxLines,
+              overflow: overflow,
+              semanticsLabel: semanticsLabel,
+              softWrap: softWrap,
+              strutStyle: strutStyle,
+              textAlign: textAlign,
+              textDirection: textDirection,
+              textScaleFactor: textScaleFactor,
+              style: _style(context)?.merge(style),
+            )
+          : AutoSizeText(
+              data,
+              key: key,
+              group: group,
+              locale: locale,
+              maxFontSize: maxFontSize,
+              maxLines: maxLines,
+              minFontSize: minFontSize,
+              overflow: overflow,
+              overflowReplacement: overflowReplacement,
+              presetFontSizes: presetFontSizes,
+              semanticsLabel: semanticsLabel,
+              softWrap: softWrap,
+              stepGranularity: stepGranularity,
+              strutStyle: strutStyle,
+              style: _style(context)?.merge(style),
+              textAlign: textAlign,
+              textDirection: textDirection,
+              textKey: textKey,
+              textScaleFactor: textScaleFactor,
+              wrapWords: wrapWords,
+            ),
+      rich: isDefault != null && isDefault!
+          ? Text.rich(
+              textSpan,
+              key: key,
+              locale: locale,
+              maxLines: maxLines,
+              overflow: overflow,
+              semanticsLabel: semanticsLabel,
+              softWrap: softWrap,
+              strutStyle: strutStyle,
+              textAlign: textAlign,
+              textDirection: textDirection,
+              textScaleFactor: textScaleFactor,
+              style: _style(context)?.merge(style),
+            )
+          : AutoSizeText.rich(
+              textSpan,
+              key: key,
+              group: group,
+              locale: locale,
+              maxFontSize: maxFontSize,
+              maxLines: maxLines,
+              minFontSize: minFontSize,
+              overflow: overflow,
+              overflowReplacement: overflowReplacement,
+              presetFontSizes: presetFontSizes,
+              semanticsLabel: semanticsLabel,
+              softWrap: softWrap,
+              stepGranularity: stepGranularity,
+              strutStyle: strutStyle,
+              style: _style(context)?.merge(style),
+              textAlign: textAlign,
+              textDirection: textDirection,
+              textKey: textKey,
+              textScaleFactor: textScaleFactor,
+              wrapWords: wrapWords,
+            ),
+    );
+  }
+}
+
+extension on _AutoSizeTextType {
+  T when<T>({
+    required T standard,
+    required T rich,
+  }) {
+    switch (this) {
+      case _AutoSizeTextType.rich:
+        return rich;
+      case _AutoSizeTextType.standard:
+      default:
+        return standard;
+    }
   }
 }

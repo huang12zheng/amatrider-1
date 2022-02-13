@@ -31,8 +31,11 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 				<string>com.googleusercontent.apps.838162874368-cs77ec84piln8cqg9tbi610d8l6glltf</string>
 			</array>
 		</dict>

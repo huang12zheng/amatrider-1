@@ -42,7 +42,10 @@ abstract class UtilitiesRemote {
   Future<ReviewDTO> getReviews();
 
   @GET(EndPoints.ALL_NOTIFICATIONS)
-  Future<GenericPaginatedListDTO<InAppNotificationDTO>> inAppNotifications();
+  Future<InAppNotificationListDTO> inAppNotifications({
+    @Query('page') int? page,
+    @Query('per_page') int? perPage,
+  });
 
   @POST(EndPoints.CONTACT_SUPPORT)
   @MultiPart()
@@ -50,5 +53,18 @@ abstract class UtilitiesRemote {
     @Part(name: 'type') required String type,
     @Part(name: 'message') required String message,
     @Part(name: 'images[]') List<File> images = const [],
+  });
+
+  @GET(EndPoints.GET_PROMOTIONS)
+  Future<GenericPaginatedListDTO<PromotionDTO>> allAdminPromotions({
+    @Query('page') int? page,
+    @Query('per_page') int? perPage,
+    @Query('admin_created') bool admin = true,
+  });
+
+  @POST(EndPoints.REGISTER_USER_DEVICE)
+  Future<void> registerDevice({
+    @Field('device') required String deviceType,
+    @Field('device_token') required String deviceId,
   });
 }

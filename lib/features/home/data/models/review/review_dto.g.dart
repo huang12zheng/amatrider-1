@@ -13,7 +13,7 @@ _$_ReviewDTO _$$_ReviewDTOFromJson(Map<String, dynamic> json) => _$_ReviewDTO(
               CustomerFeedbackDTO.fromJson(value as Map<String, dynamic>)),
       totalReviews: json['totalReviews'] as int?,
       avgRating: (json['avgRating'] as num?)?.toDouble(),
-      reviewGroups: (json['review_groups'] as List<dynamic>?)
+      reviewGroups: (json['reviewGroups'] as List<dynamic>?)
               ?.map((e) => ReviewGroupDTO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -34,7 +34,7 @@ Map<String, dynamic> _$$_ReviewDTOToJson(_$_ReviewDTO instance) {
 
   writeNotNull('totalReviews', instance.totalReviews);
   writeNotNull('avgRating', instance.avgRating);
-  val['review_groups'] = instance.reviewGroups.map((e) => e.toJson()).toList();
+  val['reviewGroups'] = instance.reviewGroups.map((e) => e.toJson()).toList();
   return val;
 }
 

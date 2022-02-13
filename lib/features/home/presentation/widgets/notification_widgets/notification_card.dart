@@ -6,19 +6,21 @@ import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-/// A stateless widget to render SendPackageNotificationCard.
-class SendPackageNotificationCard extends StatelessWidget {
-  final SendPackage package;
+/// A stateless widget to render NotificationCard.
+class NotificationCard extends StatelessWidget {
+  final InAppNotification notification;
+  final Logistics deliverable;
 
-  const SendPackageNotificationCard({Key? key, required this.package}) : super(key: key);
+  const NotificationCard({
+    Key? key,
+    required this.notification,
+    required this.deliverable,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: App.resolveColor(
-        Palette.cardColorLight,
-        dark: Palette.cardColorDark,
-      ),
+      color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
       elevation: 0.0,
       margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(borderRadius: Utils.cardBorderRadius),
@@ -37,7 +39,10 @@ class SendPackageNotificationCard extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.all(0.03.sw),
-                child: AppAssets.packageOutlined,
+                child: deliverable.type.when(
+                  order: () => AppAssets.dishOutlined,
+                  package: () => AppAssets.packageOutlined,
+                ),
               ),
             ),
             //
@@ -57,7 +62,7 @@ class SendPackageNotificationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AdaptiveText(
-                            'You delivered a package.',
+                            '${notification.title.getOrEmpty}',
                             maxLines: 1,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w400,
@@ -67,46 +72,49 @@ class SendPackageNotificationCard extends StatelessWidget {
                           VerticalSpace(height: 0.02.sw),
                           //
                           AdaptiveText(
-                            '${package.receiver.fullName.getOrEmpty}',
-                            maxLines: 1,
+                            '${deliverable.receiver.fullName.getOrEmpty}',
+                            maxLines: 2,
+                            minFontSize: 15,
                             fontSize: 16.sp,
                             textColor: Palette.neutralLabel,
                             textColorDark: Palette.neutralLabelDark,
                             fontWeight: FontWeight.w400,
                             letterSpacing: Utils.letterSpacing,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           //
                           VerticalSpace(height: 0.02.sw),
                           //
-                          Material(
-                            type: MaterialType.transparency,
-                            child: RawMaterialButton(
-                              onPressed: () {},
-                              elevation: 0.0,
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                              fillColor: Palette.accent20,
-                              focusElevation: 0.0,
-                              highlightElevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  Utils.cardRadius,
+                          if (1 != 1)
+                            Material(
+                              type: MaterialType.transparency,
+                              child: RawMaterialButton(
+                                onPressed: () {},
+                                elevation: 0.0,
+                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                fillColor: Palette.accent20,
+                                focusElevation: 0.0,
+                                highlightElevation: 0.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    Utils.cardRadius,
+                                  ),
+                                ),
+                                child: AdaptiveText(
+                                  'View Details',
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  textColor: Palette.accentColor,
                                 ),
                               ),
-                              child: AdaptiveText(
-                                'View Details',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w400,
-                                textColor: Palette.accentColor,
-                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
                     //
                     Flexible(
                       child: AdaptiveText(
-                        '${DateFormat('hh:mm a').format(package.riderDeliveredAt!)}',
+                        '${DateFormat('hh:mm a').format(deliverable.riderDeliveredAt!)}',
                         maxLines: 1,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,

@@ -62,7 +62,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> ex
                   ).future) ??
               App.getImageDimensions(const AssetImage(AppAssets.unnamed)).future,
           builder: (_, snapshot) {
-            if (!snapshot.hasData) return const Center(child: CircularProgressBar.adaptive());
+            if (!snapshot.hasData && !isLoading.call(s)) return const Center(child: CircularProgressBar.adaptive());
 
             final _height = height?.call(s) ?? width?.call(s) ?? snapshot.data?.height.toDouble();
 
@@ -87,31 +87,26 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> ex
                               ),
                             //
                             if (selected?.call(s) == null)
-                              url?.call(s)?.let(
-                                        (it) => Flexible(
-                                          child: CachedNetworkImage(
-                                            imageUrl: '$it',
-                                            fit: networkFit,
-                                            height: _height,
-                                            width: _width,
-                                            progressIndicatorBuilder: (_, url, download) => Center(
-                                              child: CircularProgressBar.adaptive(
-                                                value: download.progress,
-                                                strokeWidth: 2,
-                                              ),
-                                            ),
-                                            errorWidget: (_, __, ___) =>
-                                                Image.asset(AppAssets.unnamed, fit: localFit, height: _height, width: _width),
-                                          ),
-                                        ),
-                                      ) ??
-                                  Image.asset(AppAssets.unnamed, fit: localFit, height: _height, width: _width),
+                              Flexible(
+                                child: ImageBox.network(
+                                  photo: url?.call(s),
+                                  fit: networkFit,
+                                  height: _height ?? 0.2.w,
+                                  width: _width ?? 0.2.w,
+                                  replacement: Image.asset(
+                                    AppAssets.unnamed,
+                                    fit: localFit,
+                                    height: _height,
+                                    width: _width,
+                                  ),
+                                ),
+                              ),
                           ],
                         ),
                       ),
                       //
                       Positioned(
-                        child: Visibility(
+                        child: AnimatedVisibility(
                           visible: showCenterIcon,
                           child: Center(
                             child: Material(
@@ -143,7 +138,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> ex
                             if (!isLoading.call(s))
                               await App.showAdaptiveBottomSheet(
                                 c,
-                                topRadius: Radius.zero,
+                                radius: Radius.zero,
                                 builder: (_) => DocumentPickerSheet(
                                   pickers: [
                                     DocumentPicker(
@@ -159,7 +154,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> ex
                                           light: () => AppAssets.galleryColored,
                                           dark: () => AppAssets.galleryOutlined,
                                         ),
-                                        onPressed: () => onCameraClicked?.call(c.read<Reactive>(), ImageSource.gallery)),
+                                        onPressed: () => onGalleryClicked?.call(c.read<Reactive>(), ImageSource.gallery)),
                                   ],
                                 ),
                               );
@@ -171,7 +166,7 @@ class ImageUploadWidget<Reactive extends Cubit<ReactiveState>, ReactiveState> ex
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: Visibility(
+                        child: AnimatedVisibility(
                           visible: onClosePressed != null,
                           child: Material(
                             elevation: 0,

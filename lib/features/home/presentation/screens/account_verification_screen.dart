@@ -17,7 +17,7 @@ part 'account_verification_screen.part.dart';
 
 /// A stateless widget to render AccountVerificationScreen.
 class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
-  const AccountVerificationScreen({Key? key}) : super(key: key);
+  const AccountVerificationScreen();
 
   @override
   Widget wrappedRoute(BuildContext context) {
@@ -34,7 +34,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (res) => navigator.pushAndPopUntil(
               SuccessRoute(
@@ -104,24 +104,15 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
             //
             DecoratedBox(
               decoration: BoxDecoration(
-                color: Utils.foldTheme(
-                  light: () => Palette.pastelYellow,
-                  dark: () => Palette.pastelYellow2,
-                ),
+                color: App.resolveColor(Palette.pastelYellow, dark: Palette.pastelYellow2),
                 borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 0.035.sw,
-                  vertical: 0.03.sw,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 0.035.sw, vertical: 0.03.sw),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
-                      Icons.info,
-                      color: Palette.accentYellow,
-                    ),
+                    const Icon(Icons.info, color: Palette.accentYellow),
                     //
                     Expanded(
                       child: Padding(
@@ -172,19 +163,16 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                 title: BlocBuilder<VerificationCubit, VerificationState>(
                   builder: (c, s) => CountryListPick(
                     appBar: AppBar(
-                      backgroundColor: Utils.foldTheme(
-                        light: () => Palette.cardColorLight,
-                        dark: () => Palette.cardColorDark,
+                      backgroundColor: Utils.platform_(
+                        material: Theme.of(c).appBarTheme.backgroundColor,
+                        cupertino: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
                       ),
                       elevation: 0.0,
                       title: Text(
                         'Choose a country',
                         style: TextStyle(
                           color: Utils.platform_(
-                            cupertino: Utils.foldTheme(
-                              light: () => Palette.text100,
-                              dark: () => Palette.text100Dark,
-                            ),
+                            cupertino: App.resolveColor(Palette.text100, dark: Palette.text100Dark),
                           ),
                         ),
                       ),
@@ -279,10 +267,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                               ),
                               tileColor: s.documentID == e
                                   ? Palette.accent20
-                                  : App.resolveColor(
-                                      Palette.neutralF5,
-                                      dark: Palette.secondaryColor.shade400,
-                                    ),
+                                  : App.resolveColor(Palette.neutralF5, dark: Palette.secondaryColor.shade400),
                               horizontalTitleGap: 0.01.sw,
                               onTap: () => c.read<VerificationCubit>().documentTypeChanged(e),
                             ),

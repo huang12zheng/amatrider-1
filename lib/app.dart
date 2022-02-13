@@ -1,5 +1,6 @@
 library app.dart;
 
+import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
@@ -34,57 +35,80 @@ class AmatRider extends StatelessWidget {
         BlocProvider(create: (_) => getIt<TabNavigationCubit>()),
         BlocProvider(create: (_) => getIt<NotificationCubit>()),
       ],
-      child: BlocBuilder<ThemeCubit, AppTheme>(
-        builder: (_, app) => BlocSelector<GlobalAppPreferenceCubit, GlobalPreferenceState, Locale>(
-          selector: (s) => s.currentLocale,
-          builder: (c, currentLocale) => PlatformApp.router(
-            title: Const.appName.capitalizeFirst(),
-            debugShowCheckedModeBanner: false,
-            color: Palette.accentColor,
-            material: (_, __) => MaterialAppRouterData(
-              theme: app.themeData(),
-              darkTheme: AppTheme.dark().themeData(),
-              themeMode: ThemeMode.system,
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthWatcherCubit, AuthWatcherState>(
+            listenWhen: (p, c) =>
+                p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
+                (c.status.getOrElse(() => null) != null &&
+                    (c.status.getOrElse(() => null)!.response.maybeMap(
+                          error: (f) => f.fold(orElse: () => false),
+                          orElse: () => false,
+                        ))),
+            listener: (c, s) => s.status.fold(
+              () => null,
+              (th) => th?.response.mapOrNull(
+                error: (f) => th.reason.fold(timeoutNoInternet: () async {
+                  await ToastManager.cancel();
+                  await ToastManager.long('${f.message}');
+                  return null;
+                }),
+              ),
             ),
-            cupertino: (_, __) => CupertinoAppRouterData(
-              theme: app.cupertinoThemeData(_),
+          ),
+        ],
+        child: BlocBuilder<ThemeCubit, AppTheme>(
+          builder: (_, app) => BlocSelector<GlobalAppPreferenceCubit, GlobalPreferenceState, Locale>(
+            selector: (s) => s.currentLocale,
+            builder: (c, currentLocale) => PlatformApp.router(
+              title: Const.appName.capitalizeFirst(),
+              debugShowCheckedModeBanner: false,
               color: Palette.accentColor,
-            ),
-            locale: currentLocale,
-            useInheritedMediaQuery: true,
-            localizationsDelegates: [
-              S.delegate,
-              RefreshLocalizations.delegate,
-              DefaultMaterialLocalizations.delegate,
-              DefaultWidgetsLocalizations.delegate,
-              DefaultCupertinoLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            routeInformationParser: _router.defaultRouteParser(),
-            routerDelegate: AutoRouterDelegate(
-              _router,
-              navigatorObservers: () => <NavigatorObserver>[
-                if (env.flavor == BuildFlavor.prod) FirebaseAnalyticsObserver(analytics: getIt<FirebaseAnalytics>()),
-                HomePageObserver(),
+              material: (_, __) => MaterialAppRouterData(
+                theme: app.themeData(),
+                darkTheme: AppTheme.dark().themeData(),
+                themeMode: ThemeMode.system,
+              ),
+              cupertino: (c, __) => CupertinoAppRouterData(
+                theme: app.cupertinoThemeData(c),
+                color: Palette.accentColor,
+              ),
+              locale: currentLocale,
+              useInheritedMediaQuery: true,
+              localizationsDelegates: [
+                S.delegate,
+                RefreshLocalizations.delegate,
+                DefaultMaterialLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+                DefaultCupertinoLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
-            ),
-            supportedLocales: S.delegate.supportedLocales,
-            localeResolutionCallback: (locale, supportedLocales) {
-              for (var supportedLocale in supportedLocales) {
-                if (supportedLocale.languageCode == locale!.languageCode && supportedLocale.countryCode == locale.countryCode) {
-                  return supportedLocale;
+              routeInformationParser: _router.defaultRouteParser(),
+              routerDelegate: AutoRouterDelegate(
+                _router,
+                navigatorObservers: () => <NavigatorObserver>[
+                  if (env.flavor == BuildFlavor.prod) FirebaseAnalyticsObserver(analytics: getIt<FirebaseAnalytics>()),
+                  // HomePageObserver(),
+                ],
+              ),
+              supportedLocales: S.delegate.supportedLocales,
+              localeResolutionCallback: (locale, supportedLocales) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale!.languageCode && supportedLocale.countryCode == locale.countryCode) {
+                    return supportedLocale;
+                  }
                 }
-              }
-              return supportedLocales.first;
-            },
-            builder: (context, widget) => Utils.setup(
-              context,
-              _router,
-              ScreenUtilInit(
-                designSize: const Size(375, 812),
-                builder: () => widget!,
+                return supportedLocales.first;
+              },
+              builder: (context, widget) => Utils.setup(
+                context,
+                _router,
+                ScreenUtilInit(
+                  designSize: const Size(375, 812),
+                  builder: () => widget!,
+                ),
               ),
             ),
           ),

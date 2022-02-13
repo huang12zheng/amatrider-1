@@ -50,6 +50,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
 
   void toggleLogoutLoading([bool? value]) => emit(state.copyWith(isLoggingOut: value ?? !state.isLoggingOut));
 
+
   Future<void> subscribeToAuthChanges(Task actions) async {
     toggleLoading(true);
 
@@ -151,6 +152,7 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     emit(state.copyWith(
       isAuthenticated: false,
       subscribedToChannel: false,
+      isVerifyingOTP: false,
       rider: null,
       option: none(),
       status: none(),

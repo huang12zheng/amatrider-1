@@ -4,6 +4,7 @@ part of home_page.dart;
 class _DeliverableCard extends StatefulWidget {
   final Logistics item;
   final bool initialExpanded;
+  final bool isPotential;
   final void Function() onAccept;
   final void Function() onDecline;
 
@@ -11,6 +12,7 @@ class _DeliverableCard extends StatefulWidget {
     Key? key,
     required this.item,
     this.initialExpanded = false,
+    this.isPotential = false,
     required this.onAccept,
     required this.onDecline,
   }) : super(key: key);
@@ -94,13 +96,9 @@ class __DeliverableCardState extends State<_DeliverableCard> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(Utils.inputBorderRadius),
-      ),
+      borderRadius: Utils.inputBorderRadius.br,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: App.resolveColor(Colors.white, dark: Palette.cardColorDark),
-        ),
+        decoration: BoxDecoration(color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)),
         child: ExpandableTheme(
           data: ExpandableThemeData(
             hasIcon: false,
@@ -110,45 +108,36 @@ class __DeliverableCardState extends State<_DeliverableCard> {
             iconPadding: const EdgeInsets.symmetric(vertical: 8).copyWith(right: 10),
             useInkWell: Utils.platform_(material: true, cupertino: false),
             headerAlignment: ExpandablePanelHeaderAlignment.center,
-            inkWellBorderRadius: const BorderRadius.all(
-              Radius.circular(Utils.inputBorderRadius),
-            ),
+            inkWellBorderRadius: Utils.inputBorderRadius.br,
           ),
           child: ExpandableNotifier(
             controller: controller,
             child: ScrollOnExpand(
               child: ExpandablePanel(
                 header: header,
-                collapsed: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 1.sw,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                    ).copyWith(bottom: 10.0),
-                    child: widget.item.status.maybeWhen(
-                      active: () => _ActionButtons(
-                        onAccept: onAccept,
-                        onDecline: onDecline,
-                      ),
-                      orElse: () => AdaptiveButton(
-                        text: '${tr.continueTxt}',
-                        disabled: context.select((RequestCubit el) => el.state.isLoading),
-                        textColor: Colors.white,
-                        backgroundColor: Palette.accentColor,
-                        splashColor: Colors.white24,
-                        height: 0.05.h,
-                        cupertinoHeight: 0.05.h,
-                        onPressed: onContinue,
-                      ),
-                    ),
-                  ),
-                ),
+                collapsed: !widget.isPotential
+                    ? ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 1.sw),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0).copyWith(bottom: 10.0),
+                          child: widget.item.status.maybeWhen(
+                            active: () => _ActionButtons(onAccept: onAccept, onDecline: onDecline),
+                            orElse: () => AdaptiveButton(
+                              text: '${tr.continueTxt}',
+                              disabled: context.select((RequestCubit el) => el.state.isLoading),
+                              textColor: Colors.white,
+                              backgroundColor: Palette.accentColor,
+                              splashColor: Colors.white24,
+                              height: 0.05.h,
+                              cupertinoHeight: 0.05.h,
+                              onPressed: onContinue,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Utils.nothing,
                 expanded: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 0.04.sw,
-                  ).copyWith(bottom: 0.02.sw),
+                  padding: EdgeInsets.symmetric(horizontal: 0.04.sw).copyWith(bottom: 0.02.sw),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -174,22 +163,20 @@ class __DeliverableCardState extends State<_DeliverableCard> {
                       //
                       VerticalSpace(height: 0.007.sw),
                       //
-                      widget.item.status.maybeWhen(
-                        active: () => _ActionButtons(
-                          onAccept: onAccept,
-                          onDecline: onDecline,
+                      if (!widget.isPotential)
+                        widget.item.status.maybeWhen(
+                          active: () => _ActionButtons(onAccept: onAccept, onDecline: onDecline),
+                          orElse: () => AdaptiveButton(
+                            text: '${tr.continueTxt}',
+                            disabled: context.select((RequestCubit el) => el.state.isLoading),
+                            textColor: Colors.white,
+                            backgroundColor: Palette.accentColor,
+                            splashColor: Colors.white24,
+                            height: 0.05.h,
+                            cupertinoHeight: 0.05.h,
+                            onPressed: onContinue,
+                          ),
                         ),
-                        orElse: () => AdaptiveButton(
-                          text: '${tr.continueTxt}',
-                          disabled: context.select((RequestCubit el) => el.state.isLoading),
-                          textColor: Colors.white,
-                          backgroundColor: Palette.accentColor,
-                          splashColor: Colors.white24,
-                          height: 0.05.h,
-                          cupertinoHeight: 0.05.h,
-                          onPressed: onContinue,
-                        ),
-                      ),
                     ],
                   ),
                 ),

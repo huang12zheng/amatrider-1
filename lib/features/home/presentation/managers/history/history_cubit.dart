@@ -6,7 +6,7 @@ import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/websocket_event.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
-import 'package:amatrider/features/home/data/models/history/index.dart';
+import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
@@ -61,7 +61,7 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
           ),
         );
 
-    emit(state.copyWith(historyCollection: _sorted));
+    emit(state.copyWith(collection: _sorted));
   }
 
   void echo() async {
@@ -76,14 +76,13 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
           HistoryEvents.channel('$riderId'),
           HistoryEvents.event,
           onData: (data, _) {
+            emit(state.copyWith(status: none()));
+
             final json = jsonDecode(data) as Map<String, dynamic>;
 
-            final history = DeliveryHistoryDTO.fromJson(json['package'] as Map<String, dynamic>);
+            final history = LogisticsDTO.fromJson(json);
 
-            emit(state.copyWith(
-              status: none(),
-              histories: state.histories.plusElement(history.domain).asList().unique((val) => val.id).toImmutableList(),
-            ));
+            emit(state.copyWith(histories: state.histories.plusElementIfAbsent(history.deliverable!)));
 
             // Update collection
             _updateCollection();
@@ -93,15 +92,20 @@ class HistoryCubit extends Cubit<HistoryState> with BaseCubit<HistoryState> {
     );
   }
 
-  Future<void> getHistory() async {
+  Future<void> getHistory({int? perPage, bool nextPage = false}) async {
+    if (state.status.getOrNull == AppHttpResponse.endOfList && nextPage) return;
+
     toggleLoading(true);
 
-    final response = await _repository.allHistory();
+    final response = await _repository.allHistory(nextPage: nextPage, perPage: perPage);
 
     response.fold(
       (failure) => emit(state.copyWith(status: some(failure))),
       (history) {
-        emit(state.copyWith(status: none(), histories: history));
+        emit(state.copyWith(
+          status: none(),
+          histories: nextPage ? state.histories.plusIfAbsent(history) : history,
+        ));
         // Update collection
         _updateCollection();
       },

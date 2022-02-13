@@ -4,7 +4,6 @@ import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +27,13 @@ class GroupedLayoutCard extends StatelessWidget {
 
   String get formattedDate {
     final isToday = DateTime.now().difference(dateTime!).inDays == 0;
-    return isToday ? 'Today' : '${DateFormat.yMMMEd().format(dateTime!)}';
+    final isYesterday = DateTime.now().difference(dateTime!).inDays == 1;
+
+    if (isToday) return 'Today';
+    if (isYesterday)
+      return 'Yesterday';
+    else
+      return '${DateFormat.yMMMEd().format(dateTime!)}';
   }
 
   @override

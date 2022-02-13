@@ -7,7 +7,6 @@ import 'package:amatrider/core/data/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
-import 'package:amatrider/features/home/domain/repositories/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
 import 'package:amatrider/utils/utils.dart';
@@ -32,9 +31,7 @@ class MapCubit extends Cubit<MapState> with BaseCubit<MapState> {
 
   StreamSubscription<FutureOr<Either<AnyResponse, RiderLocation?>>>? _locationSubscription;
 
-  final LocationService _service;
-
-  MapCubit(this._service) : super(MapState.initial());
+  MapCubit() : super(MapState.initial());
 
   @override
   Future<void> close() {

@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 /// A stateless widget to render AdaptiveBottomSheet.
 class AdaptiveBottomSheet extends StatelessWidget {
   final Widget child;
+  final Color? backgroundColor;
 
-  const AdaptiveBottomSheet({Key? key, required this.child}) : super(key: key);
+  const AdaptiveBottomSheet({
+    Key? key,
+    required this.child,
+    this.backgroundColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

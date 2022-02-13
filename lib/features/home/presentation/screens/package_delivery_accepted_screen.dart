@@ -104,6 +104,13 @@ class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedS
   @override
   bool get wantKeepAlive => true;
 
+  Widget get loader => LottieBox.asset(
+        lottie: AppAssets.amatCircularLoader,
+        height: 0.5.h,
+        width: 0.5.h,
+        duration: const Duration(milliseconds: 2500),
+      );
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -120,11 +127,12 @@ class _PackageDeliveryAcceptedScreenState extends State<PackageDeliveryAcceptedS
         right: false,
         bottom: false,
         child: AdaptiveScaffold(
+          adaptiveToolbar: App.platform.cupertino(const AdaptiveToolbar(implyMiddle: false, previousPageTitle: 'Home')),
           body: AdaptiveScaffoldBody(
             body: BlocSelector<SendPackageCubit, SendPackageState, bool>(
               selector: (s) => s.isLoadingSingle,
               builder: (c, isLoading) {
-                if (isLoading) return const Center(child: CircularProgressBar.adaptive(height: 25, width: 26, strokeWidth: 2));
+                if (isLoading) return Center(child: loader);
 
                 return Stack(
                   children: [

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:amatrider/core/data/response/index.dart';
-import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart' hide PermissionStatus;

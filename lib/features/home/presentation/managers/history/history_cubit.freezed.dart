@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of history_cubit.dart;
@@ -20,14 +21,13 @@ class _$HistoryStateTearOff {
   _HistoryState call(
       {bool isLoading = false,
       bool validate = false,
-      KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection =
-          const KtMap.empty(),
-      KtList<DeliveryHistory> histories = const KtList.empty(),
+      KtMap<DateTime?, KtList<Logistics>> collection = const KtMap.empty(),
+      KtList<Logistics> histories = const KtList.empty(),
       Option<AppHttpResponse?> status = const None()}) {
     return _HistoryState(
       isLoading: isLoading,
       validate: validate,
-      historyCollection: historyCollection,
+      collection: collection,
       histories: histories,
       status: status,
     );
@@ -41,9 +41,9 @@ const $HistoryState = _$HistoryStateTearOff();
 mixin _$HistoryState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
-  KtMap<DateTime?, KtList<DeliveryHistory>> get historyCollection =>
+  KtMap<DateTime?, KtList<Logistics>> get collection =>
       throw _privateConstructorUsedError;
-  KtList<DeliveryHistory> get histories => throw _privateConstructorUsedError;
+  KtList<Logistics> get histories => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -59,8 +59,8 @@ abstract class $HistoryStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       bool validate,
-      KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection,
-      KtList<DeliveryHistory> histories,
+      KtMap<DateTime?, KtList<Logistics>> collection,
+      KtList<Logistics> histories,
       Option<AppHttpResponse?> status});
 }
 
@@ -76,7 +76,7 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? historyCollection = freezed,
+    Object? collection = freezed,
     Object? histories = freezed,
     Object? status = freezed,
   }) {
@@ -89,14 +89,14 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
-      historyCollection: historyCollection == freezed
-          ? _value.historyCollection
-          : historyCollection // ignore: cast_nullable_to_non_nullable
-              as KtMap<DateTime?, KtList<DeliveryHistory>>,
+      collection: collection == freezed
+          ? _value.collection
+          : collection // ignore: cast_nullable_to_non_nullable
+              as KtMap<DateTime?, KtList<Logistics>>,
       histories: histories == freezed
           ? _value.histories
           : histories // ignore: cast_nullable_to_non_nullable
-              as KtList<DeliveryHistory>,
+              as KtList<Logistics>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -115,8 +115,8 @@ abstract class _$HistoryStateCopyWith<$Res>
   $Res call(
       {bool isLoading,
       bool validate,
-      KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection,
-      KtList<DeliveryHistory> histories,
+      KtMap<DateTime?, KtList<Logistics>> collection,
+      KtList<Logistics> histories,
       Option<AppHttpResponse?> status});
 }
 
@@ -134,7 +134,7 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? validate = freezed,
-    Object? historyCollection = freezed,
+    Object? collection = freezed,
     Object? histories = freezed,
     Object? status = freezed,
   }) {
@@ -147,14 +147,14 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
           ? _value.validate
           : validate // ignore: cast_nullable_to_non_nullable
               as bool,
-      historyCollection: historyCollection == freezed
-          ? _value.historyCollection
-          : historyCollection // ignore: cast_nullable_to_non_nullable
-              as KtMap<DateTime?, KtList<DeliveryHistory>>,
+      collection: collection == freezed
+          ? _value.collection
+          : collection // ignore: cast_nullable_to_non_nullable
+              as KtMap<DateTime?, KtList<Logistics>>,
       histories: histories == freezed
           ? _value.histories
           : histories // ignore: cast_nullable_to_non_nullable
-              as KtList<DeliveryHistory>,
+              as KtList<Logistics>,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -169,7 +169,7 @@ class _$_HistoryState extends _HistoryState {
   const _$_HistoryState(
       {this.isLoading = false,
       this.validate = false,
-      this.historyCollection = const KtMap.empty(),
+      this.collection = const KtMap.empty(),
       this.histories = const KtList.empty(),
       this.status = const None()})
       : super._();
@@ -182,17 +182,17 @@ class _$_HistoryState extends _HistoryState {
   final bool validate;
   @JsonKey()
   @override
-  final KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection;
+  final KtMap<DateTime?, KtList<Logistics>> collection;
   @JsonKey()
   @override
-  final KtList<DeliveryHistory> histories;
+  final KtList<Logistics> histories;
   @JsonKey()
   @override
   final Option<AppHttpResponse?> status;
 
   @override
   String toString() {
-    return 'HistoryState(isLoading: $isLoading, validate: $validate, historyCollection: $historyCollection, histories: $histories, status: $status)';
+    return 'HistoryState(isLoading: $isLoading, validate: $validate, collection: $collection, histories: $histories, status: $status)';
   }
 
   @override
@@ -203,7 +203,7 @@ class _$_HistoryState extends _HistoryState {
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality().equals(other.validate, validate) &&
             const DeepCollectionEquality()
-                .equals(other.historyCollection, historyCollection) &&
+                .equals(other.collection, collection) &&
             const DeepCollectionEquality().equals(other.histories, histories) &&
             const DeepCollectionEquality().equals(other.status, status));
   }
@@ -213,7 +213,7 @@ class _$_HistoryState extends _HistoryState {
       runtimeType,
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(validate),
-      const DeepCollectionEquality().hash(historyCollection),
+      const DeepCollectionEquality().hash(collection),
       const DeepCollectionEquality().hash(histories),
       const DeepCollectionEquality().hash(status));
 
@@ -227,8 +227,8 @@ abstract class _HistoryState extends HistoryState {
   const factory _HistoryState(
       {bool isLoading,
       bool validate,
-      KtMap<DateTime?, KtList<DeliveryHistory>> historyCollection,
-      KtList<DeliveryHistory> histories,
+      KtMap<DateTime?, KtList<Logistics>> collection,
+      KtList<Logistics> histories,
       Option<AppHttpResponse?> status}) = _$_HistoryState;
   const _HistoryState._() : super._();
 
@@ -237,9 +237,9 @@ abstract class _HistoryState extends HistoryState {
   @override
   bool get validate;
   @override
-  KtMap<DateTime?, KtList<DeliveryHistory>> get historyCollection;
+  KtMap<DateTime?, KtList<Logistics>> get collection;
   @override
-  KtList<DeliveryHistory> get histories;
+  KtList<Logistics> get histories;
   @override
   Option<AppHttpResponse?> get status;
   @override

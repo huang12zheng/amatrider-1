@@ -16,57 +16,64 @@ class LanguageScreen extends StatelessWidget {
     return BlocSelector<GlobalAppPreferenceCubit, GlobalPreferenceState, Locale>(
       selector: (s) => s.currentLocale,
       builder: (_, currentLocale) => AdaptiveScaffold(
-        adaptiveToolbar: const AdaptiveToolbar(),
+        adaptiveToolbar: AdaptiveToolbar(title: App.platform.cupertino('Language')),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.02.sw),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AdaptiveText(
-                'Language',
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w600,
-              ),
-              //
-              VerticalSpace(height: 0.03.sw),
-              //
-              ...Language.languages
-                  .map(
-                    (e) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipRRect(
-                          borderRadius: Utils.cardBorderRadius,
-                          child: Material(
-                            type: MaterialType.transparency,
-                            elevation: App.platform.fold(material: () => 2.0, cupertino: () => 0.0),
-                            child: AdaptiveListTile(
-                              title: AdaptiveText(
-                                '${e.languageName}',
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w400,
+          child: SafeArea(
+            left: false,
+            right: false,
+            bottom: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!App.platform.isIOS) ...[
+                  AdaptiveText(
+                    'Language',
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  //
+                  VerticalSpace(height: 0.03.sw),
+                ],
+                //
+                ...Language.languages
+                    .map(
+                      (e) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipRRect(
+                            borderRadius: Utils.cardBorderRadius,
+                            child: Material(
+                              type: MaterialType.transparency,
+                              elevation: App.platform.fold(material: () => 2.0, cupertino: () => 0.0),
+                              child: AdaptiveListTile(
+                                title: AdaptiveText(
+                                  '${e.languageName}',
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                tileColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
+                                trailing: currentLocale == e.locale || currentLocale.toString() == e.locale.toString()
+                                    ? Icon(
+                                        Icons.check,
+                                        color: App.resolveColor(Palette.accentGreen),
+                                      )
+                                    : Utils.nothing,
+                                onTap: () async {
+                                  await S.load(e.locale);
+                                  context.read<GlobalAppPreferenceCubit>().changeLocale(e.locale);
+                                },
                               ),
-                              tileColor: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
-                              trailing: currentLocale == e.locale || currentLocale.toString() == e.locale.toString()
-                                  ? Icon(
-                                      Icons.check,
-                                      color: App.resolveColor(Palette.accentGreen),
-                                    )
-                                  : Utils.nothing,
-                              onTap: () async {
-                                await S.load(e.locale);
-                                context.read<GlobalAppPreferenceCubit>().changeLocale(e.locale);
-                              },
                             ),
                           ),
-                        ),
-                        //
-                        VerticalSpace(height: 0.03.sw),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ],
+                          //
+                          VerticalSpace(height: 0.03.sw),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
           ),
         ),
       ),

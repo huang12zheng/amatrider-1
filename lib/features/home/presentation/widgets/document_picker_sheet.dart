@@ -4,69 +4,62 @@ import 'package:flutter/material.dart';
 
 class DocumentPickerSheet extends StatelessWidget {
   final List<DocumentPicker> pickers;
+  final bool pop;
 
-  const DocumentPickerSheet({Key? key, this.pickers = const []}) : super(key: key);
+  const DocumentPickerSheet({Key? key, this.pickers = const [], this.pop = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
-      child: Container(
-        height: 0.18.sh,
-        child: SafeArea(
-          top: false,
-          left: false,
-          right: false,
-          child: LayoutBuilder(
-            builder: (_, constraints) => Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ...ListTile.divideTiles(
-                  context: context,
-                  tiles: pickers.map(
-                    (p) => AdaptiveInkWell(
-                      onTap: () {
-                        p.onPressed.call();
-                        navigator.pop();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
-                        child: SizedBox(
-                          height: constraints.maxHeight / pickers.length,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                flex: 4,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(child: p.asset ?? Utils.nothing),
-                                    //
-                                    HorizontalSpace(width: 0.04.sw),
-                                    //
-                                    Flexible(
-                                      child: AdaptiveText(
-                                        p.name,
-                                        style: TextStyle(fontSize: 17.sp),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+    return AdaptiveBottomSheet(
+      child: SafeArea(
+        top: false,
+        left: false,
+        right: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: ListTile.divideTiles(
+            context: context,
+            tiles: pickers.map(
+              (p) => AdaptiveListTile(
+                noCupertinoBorder: true,
+                contentPadding: EdgeInsets.zero,
+                onTap: () {
+                  p.onPressed.call();
+                  if (pop) navigator.pop();
+                },
+                title: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0.05.sw),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 4,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Flexible(child: p.asset ?? Utils.nothing),
+                            //
+                            HorizontalSpace(width: 0.04.sw),
+                            //
+                            Flexible(
+                              child: AdaptiveText(
+                                p.name,
+                                style: TextStyle(fontSize: 17.sp),
                               ),
-                              //
-                              const Spacer(),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                      //
+                      const Spacer(),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ).toList(),
         ),
       ),
     );

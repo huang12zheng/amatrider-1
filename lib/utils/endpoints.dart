@@ -72,4 +72,6 @@ mixin EndPoints {
   static const String CLAIM_BONUS = '/rider/claim-bonus'; // (GET)
   static const String GET_REVIEWS = '/rider/reviews'; // (GET)
   static const String CONTACT_SUPPORT = '/rider/contact-support'; // (GET)
+  static const String GET_PROMOTIONS = '/utilities/promotions';
+  static const String REGISTER_USER_DEVICE = '/rider/register-device';
 }

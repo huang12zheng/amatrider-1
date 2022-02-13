@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of request_cubit.dart;
@@ -62,13 +63,7 @@ mixin _$RequestState {
   Logistics? get current => throw _privateConstructorUsedError;
   KtList<Logistics> get inTransit => throw _privateConstructorUsedError;
   KtList<Logistics> get active => throw _privateConstructorUsedError;
-  KtList<Logistics> get potential =>
-      throw _privateConstructorUsedError; // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
-// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
-// @Default(KtList.empty()) KtList<SendPackage> activePackages,
-// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
-// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
-// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
+  KtList<Logistics> get potential => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -323,12 +318,7 @@ class _$_RequestState extends _RequestState with DiagnosticableTreeMixin {
   @override
   final KtList<Logistics> potential;
   @JsonKey()
-  @override // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
-// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
-// @Default(KtList.empty()) KtList<SendPackage> activePackages,
-// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
-// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
-// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
+  @override
   final Option<AppHttpResponse?> status;
 
   @override
@@ -439,12 +429,7 @@ abstract class _RequestState extends RequestState {
   KtList<Logistics> get active;
   @override
   KtList<Logistics> get potential;
-  @override // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
-// @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
-// @Default(KtList.empty()) KtList<SendPackage> activePackages,
-// @Default(KtList.empty()) KtList<UserOrder> activeOrders,
-// @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
-// @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
+  @override
   Option<AppHttpResponse?> get status;
   @override
   @JsonKey(ignore: true)

@@ -1,5 +1,6 @@
 library auth_cubit.dart;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:amatrider/core/data/response/index.dart';
@@ -42,24 +43,37 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
     return super.close();
   }
 
+  Future<Phone?> _parsePhoneNumber(String? phone) async {
+    try {
+      final _phoneNumberData = await phone?.let((it) async => await PhoneNumber.getRegionInfoFromPhoneNumber(it));
+
+      _phoneNumberData?.let((it) => countryChanged(CountryCode(code: it.isoCode, dialCode: it.dialCode), onlyCountry: true));
+
+      return _phoneNumberData?.let((it) => Phone(it.phoneNumber, country: _mapCountry(null, it)));
+    } catch (e, tr) {
+      await App.report(exception: e, stack: tr);
+      return null;
+    }
+  }
+
   void init({bool loader = false}) async {
     if (loader) toggleLoading(true, none());
 
     // Retrieve stored / cached user data
     final _cached = await _preferences.getString(Const.kPhoneNumberPrefKey);
 
-    final _phoneNumberData = await _cached?.let((it) async => await PhoneNumber.getRegionInfoFromPhoneNumber(it));
+    Rider? _rider = state.rider;
 
-    countryChanged(
-      CountryCode(code: _phoneNumberData?.isoCode, dialCode: _phoneNumberData?.dialCode),
-      onlyCountry: true,
-    );
+    Phone? _phoneNumber;
 
-    final _phoneNumber = _phoneNumberData?.let((it) => Phone(_cached, country: _mapCountry(null, _phoneNumberData)));
+    if (_cached != null) {
+      _phoneNumber = await _parsePhoneNumber(_cached);
+    } else {
+      _rider = (await _auth.rider).getOrElse(() => state.rider);
+      _phoneNumber = await _parsePhoneNumber(_rider?.phone.getOrNull);
+    }
 
-    final _rider = (await _auth.rider)
-        .getOrElse(() => state.rider)
-        ?.let((it) => it.copyWith(phone: _phoneNumber ?? it.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone)));
+    _rider = _rider?.copyWith(phone: _phoneNumber ?? _rider.phone.ensure((p0) => (p0 as Phone), orElse: (_) => state.rider.phone));
 
     _temp = _rider;
 
@@ -134,38 +148,26 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   void phoneNumberChanged(String value) async {
     final country = state.selectedCountry;
 
+    var phoneNumber = value;
+
     try {
       if (value.length > 2) {
         var number = await PhoneNumber.getRegionInfoFromPhoneNumber(value, country?.code ?? '');
-
         var _parsed = await PhoneNumber.getParsableNumber(number);
-
-        if (_parsed.isNotEmpty) {
-          emit(state.copyWith(
-            phoneTextController: state.phoneTextController
-              ..text = _parsed
-              ..value = TextEditingValue(
-                text: _parsed,
-                selection: TextSelection.fromPosition(TextPosition(offset: _parsed.length)),
-              ),
-          ));
-        }
+        if (_parsed.isNotEmpty) phoneNumber = _parsed;
       }
-    } catch (e) {
-      emit(state.copyWith(
-        phoneTextController: state.phoneTextController
-          ..text = value
-          ..value = TextEditingValue(
-            text: value,
-            selection: TextSelection.fromPosition(TextPosition(offset: value.length)),
-          ),
-      ));
+    } catch (e, tr) {
+      await App.report(exception: e, stack: tr);
     }
 
     emit(state.copyWith(
-      rider: state.rider.copyWith(
-        phone: Phone(value.trim(), country: _mapCountry()),
-      ),
+      rider: state.rider.copyWith(phone: Phone(value.trim(), country: _mapCountry())),
+      phoneTextController: state.phoneTextController
+        ..text = phoneNumber
+        ..value = TextEditingValue(
+          text: phoneNumber,
+          selection: TextSelection.fromPosition(TextPosition(offset: phoneNumber.length)),
+        ),
     ));
   }
 
@@ -181,7 +183,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
       return;
     }
 
-    phoneNumberChanged('');
+    phoneNumberChanged(state.phoneTextController.text);
 
     emit(state.copyWith(
       selectedCountry: country,

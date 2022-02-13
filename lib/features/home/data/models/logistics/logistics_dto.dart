@@ -45,6 +45,7 @@ class LogisticsListDTO with _$LogisticsListDTO {
   const factory LogisticsListDTO({
     @Default([]) List<UserOrderDTO> orders,
     @Default([]) List<SendPackageDTO> packages,
+    @JsonKey(name: 'potential') @Default([]) List<UserOrderDTO> potentialOrders,
   }) = _LogisticsListDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
@@ -55,4 +56,7 @@ class LogisticsListDTO with _$LogisticsListDTO {
         ...orders.map((e) => e.domain),
         ...packages.map((e) => e.domain),
       ]);
+
+  /// Maps the Data Transfer Object to a KtList<DomainEntity> Object.
+  KtList<Logistics> get potential => KtList.from(potentialOrders.map((e) => e.domain));
 }

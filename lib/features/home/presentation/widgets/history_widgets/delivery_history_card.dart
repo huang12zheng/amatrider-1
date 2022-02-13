@@ -2,7 +2,7 @@ part of grouped_history_card.dart;
 
 /// A stateless widget to render DeliveryHistoryCard.
 class DeliveryHistoryCard extends StatefulWidget {
-  final DeliveryHistory history;
+  final Logistics history;
   final bool initialExpanded;
 
   const DeliveryHistoryCard({
@@ -24,10 +24,13 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
     super.initState();
   }
 
-  Duration get totalDeliveryTime {
+  Duration? get totalDeliveryTime {
     final start = widget.history.riderAcceptedAt;
     final end = widget.history.riderDeliveredAt;
-    return end!.difference(start!);
+
+    if (start == null || end == null) return null;
+
+    return end.difference(start);
   }
 
   @override
@@ -37,12 +40,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
         Radius.circular(Utils.inputBorderRadius),
       ),
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: App.resolveColor(
-            Colors.white,
-            dark: Palette.secondaryColor,
-          ),
-        ),
+        decoration: BoxDecoration(color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark)),
         child: ExpandableTheme(
           data: ExpandableThemeData(
             hasIcon: false,
@@ -70,20 +68,20 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                     children: [
                       TimelineStatusWidget(
                         padding: EdgeInsets.zero,
-                        itemHeight: (_, __) => 0.07.h,
+                        itemHeight: (_, __) => 0.08.h,
                         statuses: [
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentBlue,
                             title: '${tr.pickupLocationText}',
-                            subtitle: '${widget.history.pickup.address.getOrEmpty}',
+                            subtitle: '${widget.history.pickup.fullAddress.getOrEmpty}',
                           ),
                           //
                           TimelineStatus(
                             asset: AppAssets.timelinePinAsset,
                             assetColor: Palette.accentGreen,
                             title: '${tr.deliveryLocationText}',
-                            subtitle: '${widget.history.destination.address.getOrEmpty}',
+                            subtitle: '${widget.history.destination.fullAddress.getOrEmpty}',
                           ),
                         ],
                       ),
@@ -101,13 +99,14 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                             fontWeight: FontWeight.w400,
                           ),
                           //
-                          Headline(
-                            '${Utils.hoursAndMins(totalDeliveryTime)}',
-                            fontSize: 17.sp,
-                            textColor: Colors.black,
-                            textColorDark: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          if (totalDeliveryTime != null)
+                            Headline(
+                              '${Utils.hoursAndMins(totalDeliveryTime!)}',
+                              fontSize: 17.sp,
+                              textColor: Colors.black,
+                              textColorDark: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                         ],
                       ),
                     ],
@@ -130,28 +129,18 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
           child: ListTile(
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
-              child: widget.history.sender.photo.ensure(
-                (it) => CachedNetworkImage(
-                  imageUrl: '${it.getOrEmpty}',
+              child: (widget.history.type.when(
+                order: () => widget.history.store.image,
+                package: () => widget.history.sender.photo,
+              )).ensure(
+                (it) => ImageBox.network(
                   fit: BoxFit.cover,
                   width: 0.14.sw,
-                  height: double.infinity,
-                  progressIndicatorBuilder: (_, url, download) => Center(
-                    child: CircularProgressBar.adaptive(
-                      value: download.progress,
-                      strokeWidth: 1.5,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                  errorWidget: (_, __, ___) => Image.asset(
-                    AppAssets.slider1,
-                    width: 0.14.sw,
-                    height: double.infinity,
-                    fit: BoxFit.contain,
-                  ),
+                  height: double.maxFinite,
+                  photo: '${it.getOrEmpty}',
+                  replacement: Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.maxFinite, fit: BoxFit.cover),
                 ),
-                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.infinity, fit: BoxFit.cover),
+                orElse: (_) => Image.asset(AppAssets.slider1, width: 0.14.sw, height: double.maxFinite, fit: BoxFit.cover),
               ),
             ),
             title: Center(
@@ -160,18 +149,27 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 5,
                     child: AdaptiveText(
-                      '${widget.history.receiver.fullName.getOrEmpty}',
+                      widget.history.type.when(
+                        order: () => '${widget.history.store.name.getOrEmpty}',
+                        package: () => '${widget.history.sender.fullName.getOrNull ?? widget.history.receiver.fullName.getOrNull}',
+                      ),
                       fontWeight: FontWeight.w600,
+                      maxLines: 2,
+                      minFontSize: 13,
+                      maxFontSize: 18,
                       fontSize: 16.sp,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   //
                   Flexible(
+                    flex: 2,
                     child: AdaptiveText(
-                      '${widget.history.amount.getOrEmpty}'.asCurrency(),
-                      minFontSize: 14,
+                      '${widget.history.price.getOrEmpty}'.asCurrency(),
+                      maxLines: 1,
+                      minFontSize: 13,
                       maxFontSize: 17,
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
@@ -192,12 +190,21 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                       scrollMargin: EdgeInsets.only(right: 0.02.sw),
                       wrapped: false,
                       tags: [
-                        HorizontalChip(
-                          label: '${tr.package}',
-                          maxFontSize: 13,
-                          labelColor: Palette.accentDarkYellow2,
-                          backgroundColor: Palette.pastelYellow,
-                          type: HorizontalChipType.none,
+                        widget.history.type.when(
+                          order: () => HorizontalChip(
+                            label: 'Order',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentDarkBlue,
+                            backgroundColor: Palette.pastelBlue,
+                            type: HorizontalChipType.none,
+                          ),
+                          package: () => HorizontalChip(
+                            label: '${tr.package}',
+                            maxFontSize: 13,
+                            labelColor: Palette.accentDarkYellow,
+                            backgroundColor: Palette.pastelYellow,
+                            type: HorizontalChipType.none,
+                          ),
                         ),
                       ],
                     ),
@@ -205,7 +212,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                     Flexible(
                       flex: 2,
                       child: AdaptiveText(
-                        '${widget.history.paymentMethod.formatted}',
+                        '${widget.history.paymentMethod?.formatted}',
                         minFontSize: 12,
                         maxLines: 1,
                         softWrap: true,
@@ -221,10 +228,7 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
             dense: false,
             horizontalTitleGap: 8.0,
             minVerticalPadding: 8.0,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 0.01.sw,
-              horizontal: 0.03.sw,
-            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 0.01.sw, horizontal: 0.03.sw),
           ),
         ),
       );

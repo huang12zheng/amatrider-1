@@ -16,5 +16,8 @@ abstract class HistoryRemote {
   factory HistoryRemote(AppHttpClient dio) = _HistoryRemote;
 
   @GET(EndPoints.GET_ALL_HISTORY)
-  Future<DeliveryHistoryListDTO> all();
+  Future<LogisticsListDTO> all({
+    @Query('page') int? page,
+    @Query('per_page') int? perPage,
+  });
 }

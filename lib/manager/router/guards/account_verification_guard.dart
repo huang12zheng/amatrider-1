@@ -13,19 +13,21 @@ class AccountVerificationGuard extends AutoRouteGuard {
       final status = BlocProvider.of<AuthWatcherCubit>(context).state.rider?.verificationStatus;
 
       status?.maybeWhen(
-        verified: () => navigator.popAndPush(SuccessRoute(
-          title: 'Verfication Successful!',
-          description: 'Your account has been verified\nsuccessfully!',
-          lottieJson: AppAssets.checkAnimation,
-          onInitState: () async {
-            await Future.delayed(
-              const Duration(seconds: 3),
-              () {
-                if (navigator.current.name != DashboardRoute.name) navigator.pop();
-              },
-            );
-          },
-        )),
+        verified: () {
+          navigator.popAndPush(SuccessRoute(
+            title: 'Verfication Successful!',
+            description: 'Your account has been verified\nsuccessfully!',
+            lottieJson: AppAssets.checkAnimation,
+            onInitState: () async {
+              await Future.delayed(
+                const Duration(seconds: 3),
+                () {
+                  if (navigator.current.name != DashboardRoute.name) navigator.pop();
+                },
+              );
+            },
+          ));
+        },
         orElse: () => resolver.next(true),
       );
     } else

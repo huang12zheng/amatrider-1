@@ -3,14 +3,13 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class AdaptiveToolbar {
   final Key? key;
-  final String title;
+  final String? title;
   final Widget headline;
   final Widget? leadingIcon;
   final TextStyle? titleStyle;
@@ -45,7 +44,7 @@ class AdaptiveToolbar {
 
   const AdaptiveToolbar({
     this.key,
-    this.title = '',
+    this.title,
     this.titleWidget,
     this.headline = const SizedBox.shrink(),
     this.leadingIcon,
@@ -77,11 +76,13 @@ class AdaptiveToolbar {
     this.cupertino,
   });
 
+  String get _titleText => title ?? '';
+
   Widget get _title => Visibility(
-        visible: !title.isNullOrBlank,
+        visible: !_titleText.isNullOrBlank,
         replacement: headline,
         child: AdaptiveText(
-          title,
+          _titleText,
           style: fontSize != null && fontSize! >= 0.0
               ? TextStyle(
                   fontWeight: FontWeight.w600,
@@ -115,10 +116,7 @@ class AdaptiveToolbar {
             child: IconButton(
               icon: leadingIcon ?? const Icon(Icons.keyboard_backspace_rounded),
               onPressed: leadingAction ?? navigator.pop,
-              color: buttonColor ??
-                  Utils.computeLuminance(
-                    Theme.of(App.context).scaffoldBackgroundColor,
-                  ),
+              color: buttonColor ?? Utils.computeLuminance(Theme.of(App.context).scaffoldBackgroundColor),
             ),
           ),
         )

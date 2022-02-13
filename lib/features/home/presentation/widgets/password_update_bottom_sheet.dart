@@ -19,7 +19,7 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
@@ -29,12 +29,7 @@ class _PasswordUpdateBottomSheet extends StatelessWidget {
             ).render(c),
           ),
         ),
-        child: SingleChildScrollView(
-          clipBehavior: Clip.antiAlias,
-          controller: ScrollController(),
-          physics: Utils.physics,
-          scrollDirection: Axis.vertical,
-          padding: MediaQuery.of(context).viewInsets,
+        child: AdaptiveBottomSheet(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

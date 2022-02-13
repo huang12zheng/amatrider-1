@@ -19,19 +19,7 @@ class _ProfileCardWidget extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: Utils.cardBorderRadius,
-          color: App.platform.fold(
-            material: () => Utils.foldTheme(
-              light: () => Colors.white,
-              dark: () => Palette.secondaryColor.shade400,
-            ),
-            cupertino: () => CupertinoDynamicColor.resolve(
-              CupertinoDynamicColor.withBrightness(
-                color: Colors.white,
-                darkColor: Palette.secondaryColor.shade400,
-              ),
-              context,
-            ),
-          ),
+          color: App.resolveColor(Palette.primaryColor.shade400, dark: Palette.cardColorDark),
         ),
         child: isGuest ? _GuestCard(showLoader) : _AuthenticatedCard(rider: rider),
       ),
@@ -96,32 +84,37 @@ class _AuthenticatedCard extends StatelessWidget {
                     children: [
                       Flexible(
                         child: AdaptiveText(
-                          '${rider?.fullName.getOrError}',
-                          style: TextStyle(
-                            fontSize: 18.0.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          '${rider?.fullName.getOrEmpty}',
+                          maxLines: 1,
+                          minFontSize: 15,
+                          fontSize: 18.0.sp,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       //
                       Flexible(
+                        flex: 2,
                         child: AdaptiveText(
-                          '${rider?.email.getOrError}',
-                          style: TextStyle(
-                            fontSize: 16.0.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          '${rider?.email.getOrEmpty}',
+                          maxLines: 2,
+                          minFontSize: 15,
+                          maxFontSize: 17,
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w400,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       //
                       if (rider != null && rider!.phone.isValid)
                         Flexible(
                           child: AdaptiveText(
-                            '${rider?.phone.getOrError}',
-                            style: TextStyle(
-                              fontSize: 17.0.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            '${rider?.phone.getOrEmpty}',
+                            maxLines: 1,
+                            minFontSize: 13,
+                            fontSize: 17.0.sp,
+                            fontWeight: FontWeight.w400,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                     ],
@@ -137,10 +130,7 @@ class _AuthenticatedCard extends StatelessWidget {
           right: 3,
           child: Material(
             borderRadius: BorderRadius.circular(100.0),
-            color: App.resolveColor(
-              Palette.primaryColor,
-              dark: Palette.secondaryColor.shade300,
-            ),
+            color: App.resolveColor(Palette.cardColorLight, dark: Palette.cardColorDark),
             child: AdaptiveInkWell(
               onTap: () => App.showAdaptiveBottomSheet(
                 context,

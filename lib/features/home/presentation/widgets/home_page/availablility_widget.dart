@@ -27,7 +27,7 @@ class AvailablilityWidget extends StatelessWidget {
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(duration: const Duration(seconds: 1), message: s.message).render(c),
           ),

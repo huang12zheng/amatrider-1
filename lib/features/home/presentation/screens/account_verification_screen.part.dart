@@ -1,16 +1,63 @@
 part of account_verification_screen.dart;
 
 /// A stateless widget to render DocumentUploadScreen.
-class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
+class DocumentUploadScreen extends StatefulWidget with AutoRouteWrapper {
   final VerificationCubit cubit;
 
-  const DocumentUploadScreen({Key? key, required this.cubit}) : super(key: key);
+  const DocumentUploadScreen({required this.cubit});
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider.value(
-      value: cubit,
-      child: this,
+    return BlocProvider.value(value: cubit, child: this);
+  }
+
+  @override
+  State<DocumentUploadScreen> createState() => _DocumentUploadScreenState();
+}
+
+class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
+  DateTime _timestampPressed = DateTime.now();
+
+  Future<bool> maybePop() async {
+    final now = DateTime.now();
+    final difference = now.difference(_timestampPressed);
+    final _showWarn = difference >= Utils.willPopTimeout;
+
+    setState(() => _timestampPressed = DateTime.now());
+
+    if (_showWarn) {
+      await ToastManager.short('Tap again to exit');
+      return Future.value(false);
+    } else {
+      await ToastManager.cancel();
+      return Future.value(true);
+    }
+  }
+
+  void showPicker(BuildContext context, IdSection section) {
+    App.showAdaptiveBottomSheet(
+      context,
+      radius: Radius.zero,
+      builder: (_) => DocumentPickerSheet(
+        pickers: [
+          DocumentPicker(
+            name: 'Camera',
+            asset: Utils.foldTheme(
+              light: () => AppAssets.cameraColored,
+              dark: () => AppAssets.cameraOutlined,
+            ),
+            onPressed: () => context.read<VerificationCubit>().pickCamera(section),
+          ),
+          DocumentPicker(
+            name: 'File Explorer',
+            asset: Utils.foldTheme(
+              light: () => AppAssets.folderColored,
+              dark: () => AppAssets.folderOutlined,
+            ),
+            onPressed: () => context.read<VerificationCubit>().pickFileExplorer(section),
+          ),
+        ],
+      ),
     );
   }
 
@@ -37,10 +84,8 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     selector: (s) => s.documentID,
                     builder: (c, type) => AdaptiveText(
                       '${type?.name}',
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   //
@@ -58,71 +103,33 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     borderType: BorderType.RRect,
                     padding: const EdgeInsets.all(5.0),
                     radius: const Radius.circular(Utils.buttonRadius),
-                    color: Utils.computeLuminance(Theme.of(context).scaffoldBackgroundColor),
+                    color: Utils.computeLuminance(Theme.of(context).canvasColor),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: App.shortest * 0.5,
-                        maxWidth: double.infinity,
-                      ),
+                      constraints: BoxConstraints(maxHeight: App.shortest * 0.5, maxWidth: double.infinity),
                       child: BlocBuilder<VerificationCubit, VerificationState>(
                         builder: (c, s) => Material(
                           child: AdaptiveInkWell(
-                            onTap: () async {
-                              if (!s.isLoading)
-                                await App.showAdaptiveBottomSheet(
-                                  context,
-                                  builder: (_) => DocumentPickerSheet(
-                                    pickers: [
-                                      DocumentPicker(
-                                        name: 'Camera',
-                                        asset: Utils.foldTheme(
-                                          light: () => AppAssets.cameraColored,
-                                          dark: () => AppAssets.cameraOutlined,
-                                        ),
-                                        onPressed: () => c.read<VerificationCubit>().pickCamera(IdSection.front),
-                                      ),
-                                      DocumentPicker(
-                                        name: 'File Explorer',
-                                        asset: Utils.foldTheme(
-                                          light: () => AppAssets.folderColored,
-                                          dark: () => AppAssets.folderOutlined,
-                                        ),
-                                        onPressed: () => c.read<VerificationCubit>().pickFileExplorer(IdSection.front),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                            onTap: () {
+                              if (!s.isLoading) showPicker(c, IdSection.front);
                             },
-                            child: Container(
-                              color: Utils.foldTheme(
-                                light: () => Palette.inputBgColor,
-                                dark: () => Palette.secondaryColor.shade400,
-                              ),
+                            child: Material(
+                              color: App.resolveColor(Palette.inputBgColor, dark: Palette.secondaryColor.shade400),
                               child: Center(
                                 child: s.frontMimeType == null
                                     ? Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Icon(
-                                            Theme.of(context).platform.fold(
-                                                  material: () => Icons.photo_camera,
-                                                  cupertino: () => CupertinoIcons.camera,
-                                                ),
+                                            Utils.platform_(material: Icons.photo_camera, cupertino: CupertinoIcons.camera),
                                             color: Colors.grey,
                                             size: 30.0,
                                           ),
                                           //
-                                          AdaptiveText(
-                                            'Upload Front Page',
-                                            fontSize: 16.sp,
-                                          ),
+                                          AdaptiveText('Upload Front Page', fontSize: 16.sp),
                                         ],
                                       )
                                     : s.frontMimeType?.fold(
-                                        img: Image.file(
-                                          s.frontID!,
-                                          fit: BoxFit.cover,
-                                        ),
+                                        img: ImageBox.file(photo: s.frontID!.path, fit: BoxFit.cover),
                                         doc: (a) => Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
@@ -152,71 +159,33 @@ class DocumentUploadScreen extends StatelessWidget with AutoRouteWrapper {
                     borderType: BorderType.RRect,
                     padding: const EdgeInsets.all(5.0),
                     radius: const Radius.circular(Utils.buttonRadius),
-                    color: Utils.computeLuminance(Theme.of(context).scaffoldBackgroundColor),
+                    color: Utils.computeLuminance(Theme.of(context).canvasColor),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: App.shortest * 0.5,
-                        maxWidth: double.infinity,
-                      ),
+                      constraints: BoxConstraints(maxHeight: App.shortest * 0.5, maxWidth: double.infinity),
                       child: BlocBuilder<VerificationCubit, VerificationState>(
                         builder: (c, s) => Material(
                           child: AdaptiveInkWell(
-                            onTap: () async {
-                              if (!s.isLoading)
-                                await App.showAdaptiveBottomSheet(
-                                  context,
-                                  builder: (_) => DocumentPickerSheet(
-                                    pickers: [
-                                      DocumentPicker(
-                                        name: 'Camera',
-                                        asset: Utils.foldTheme(
-                                          light: () => AppAssets.cameraColored,
-                                          dark: () => AppAssets.cameraOutlined,
-                                        ),
-                                        onPressed: () => c.read<VerificationCubit>().pickCamera(IdSection.back),
-                                      ),
-                                      DocumentPicker(
-                                        name: 'File Explorer',
-                                        asset: Utils.foldTheme(
-                                          light: () => AppAssets.folderColored,
-                                          dark: () => AppAssets.folderOutlined,
-                                        ),
-                                        onPressed: () => c.read<VerificationCubit>().pickFileExplorer(IdSection.back),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                            onTap: () {
+                              if (!s.isLoading) showPicker(c, IdSection.back);
                             },
-                            child: Container(
-                              color: Utils.foldTheme(
-                                light: () => Palette.inputBgColor,
-                                dark: () => Palette.secondaryColor.shade400,
-                              ),
+                            child: Material(
+                              color: App.resolveColor(Palette.inputBgColor, dark: Palette.secondaryColor.shade400),
                               child: Center(
                                 child: s.backMimeType == null
                                     ? Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Icon(
-                                            Theme.of(context).platform.fold(
-                                                  material: () => Icons.photo_camera,
-                                                  cupertino: () => CupertinoIcons.camera,
-                                                ),
+                                            Utils.platform_(material: Icons.photo_camera, cupertino: CupertinoIcons.camera),
                                             color: Colors.grey,
                                             size: 30.0,
                                           ),
                                           //
-                                          AdaptiveText(
-                                            'Upload Back Page',
-                                            fontSize: 16.sp,
-                                          ),
+                                          AdaptiveText('Upload Back Page', fontSize: 16.sp),
                                         ],
                                       )
                                     : s.backMimeType?.fold(
-                                        img: Image.file(
-                                          s.backID!,
-                                          fit: BoxFit.cover,
-                                        ),
+                                        img: ImageBox.file(photo: s.backID!.path, fit: BoxFit.cover),
                                         doc: (a) => Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [

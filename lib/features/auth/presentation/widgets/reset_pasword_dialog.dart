@@ -27,7 +27,7 @@ class ResetPaswordDialog extends StatelessWidget {
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
@@ -73,36 +73,39 @@ class ResetPaswordDialog extends StatelessWidget {
             ).copyWith(top: 0.0),
             content: _ResetPasswordMaterialContent(width: kMaxWidth),
           ),
-          cupertino: (_) => CupertinoAlertDialog(
-            scrollController: ScrollController(),
-            title: SizedBox(
-              width: kMaxWidth,
-              height: 0.06.sw,
-              child: AdaptiveText(
-                'Reset Password',
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-                textColor: Palette.accentColor.shade400,
-              ),
-            ),
-            content: const _ResetPasswordCupertinoContent(),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                onPressed: _.read<AuthCubit>().resetPassword,
-                child: Visibility(
-                  visible: !_.watch<AuthCubit>().state.isLoading,
-                  replacement: App.loadingSpinningLines,
-                  child: const Text('Confirm Password Reset'),
+          cupertino: (_) => Theme(
+            data: App.isDarkMode(_) ? ThemeData.dark() : ThemeData.light(),
+            child: CupertinoAlertDialog(
+              scrollController: ScrollController(),
+              title: SizedBox(
+                width: kMaxWidth,
+                height: 0.06.sw,
+                child: AdaptiveText(
+                  'Reset Password',
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w600,
+                  textColor: Palette.accentColor.shade400,
                 ),
               ),
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                isDestructiveAction: true,
-                onPressed: navigator.pop,
-                child: const Text('Close'),
-              ),
-            ],
+              content: const _ResetPasswordCupertinoContent(),
+              actions: [
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  onPressed: _.read<AuthCubit>().resetPassword,
+                  child: Visibility(
+                    visible: !_.watch<AuthCubit>().state.isLoading,
+                    replacement: App.loadingSpinningLines,
+                    child: const Text('Confirm Password Reset'),
+                  ),
+                ),
+                CupertinoDialogAction(
+                  isDefaultAction: true,
+                  isDestructiveAction: true,
+                  onPressed: navigator.pop,
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

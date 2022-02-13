@@ -19,12 +19,11 @@ class ReviewDTO with _$ReviewDTO {
     required GenericListDTO<CustomerFeedbackDTO> data,
     @JsonKey(name: 'totalReviews') int? totalReviews,
     @JsonKey(name: 'avgRating') double? avgRating,
-    @Default([]) List<ReviewGroupDTO> reviewGroups,
+    @JsonKey(name: 'reviewGroups') @Default([]) List<ReviewGroupDTO> reviewGroups,
   }) = _ReviewDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory ReviewDTO.fromJson(Map<String, dynamic> json) =>
-      _$ReviewDTOFromJson(json);
+  factory ReviewDTO.fromJson(Map<String, dynamic> json) => _$ReviewDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a Review Object.
   Review get domain => Review(
@@ -52,8 +51,7 @@ class CustomerFeedbackDTO with _$CustomerFeedbackDTO {
   }) = _CustomerFeedbackDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory CustomerFeedbackDTO.fromJson(Map<String, dynamic> json) =>
-      _$CustomerFeedbackDTOFromJson(json);
+  factory CustomerFeedbackDTO.fromJson(Map<String, dynamic> json) => _$CustomerFeedbackDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a CustomerFeedback Object.
   CustomerFeedback get domain => CustomerFeedback(
@@ -76,10 +74,8 @@ class ReviewGroupDTO with _$ReviewGroupDTO {
   const factory ReviewGroupDTO({int? group, int? count}) = _ReviewGroupDTO;
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory ReviewGroupDTO.fromJson(Map<String, dynamic> json) =>
-      _$ReviewGroupDTOFromJson(json);
+  factory ReviewGroupDTO.fromJson(Map<String, dynamic> json) => _$ReviewGroupDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a ReviewGroup Object.
-  ReviewGroup get domain =>
-      ReviewGroup(group: BasicTextField(group), count: BasicTextField(count));
+  ReviewGroup get domain => ReviewGroup(group: BasicTextField(group), count: BasicTextField(count));
 }

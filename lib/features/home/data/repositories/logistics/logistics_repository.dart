@@ -7,6 +7,7 @@ import 'package:amatrider/features/home/data/sources/history_remote/history_remo
 import 'package:amatrider/features/home/data/sources/insight_remote/insight_remote.dart';
 import 'package:amatrider/features/home/data/sources/logistics_remote/logistics_remote.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
@@ -22,6 +23,8 @@ class LogisticsRepository extends BaseRepository {
     this._insightRemote,
     this._historyRemote,
   );
+
+  MetaField _historyMeta = MetaField.blank;
 
   Future<Either<AppHttpResponse, KtList<Logistics>>> allInTransit({
     required String lat,
@@ -45,7 +48,7 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<Either<AppHttpResponse, KtList<Logistics>>> allActive({
+  Future<Either<AppHttpResponse, Tuple2<KtList<Logistics>, KtList<Logistics>>>> allActive({
     required String lat,
     required String lng,
   }) async {
@@ -57,7 +60,7 @@ class LogisticsRepository extends BaseRepository {
         try {
           final result = await _logisticsRemote.allActive(lat: lat, lng: lng);
 
-          return right(result.domain);
+          return right(Tuple2(result.domain, result.potential));
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {
@@ -242,16 +245,34 @@ class LogisticsRepository extends BaseRepository {
     );
   }
 
-  Future<Either<AppHttpResponse, KtList<DeliveryHistory>>> allHistory() async {
+  Future<Either<AppHttpResponse, KtList<Logistics>>> allHistory({int? perPage, bool nextPage = false}) async {
+    final _perPage = perPage ?? Const.kPerPage;
     final _conn = await checkConnectivity();
 
     return await _conn.fold(
       (f) async => left(f),
       (r) async {
-        try {
-          final result = await _historyRemote.all();
+        final LogisticsListDTO listDTO;
 
-          return right(result.domain);
+        try {
+          if (nextPage) {
+            if (_historyMeta.currentPage != _historyMeta.lastPage) {
+              listDTO = await _historyRemote.all(page: _historyMeta.currentPage! + 1, perPage: perPage);
+
+              // Save new meta data
+              if (listDTO.orders.isEmpty && listDTO.packages.isEmpty) {
+                _historyMeta = _historyMeta.copyWith(currentPage: _historyMeta.currentPage, lastPage: _historyMeta.currentPage);
+              } else {
+                _historyMeta = _historyMeta.copyWith(currentPage: _historyMeta.currentPage! + 1);
+              }
+            } else
+              return left(AppHttpResponse.endOfList);
+          } else {
+            final _perPageValue = _historyMeta.currentPage != null ? _historyMeta.currentPage! * _perPage : _perPage;
+            listDTO = await _historyRemote.all(perPage: _perPageValue);
+          }
+
+          return right(listDTO.domain);
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {

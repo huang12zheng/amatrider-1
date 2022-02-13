@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of auth_watcher_cubit.dart;
@@ -24,6 +25,7 @@ class _$AuthWatcherStateTearOff {
       bool isListeningForAuthChanges = false,
       bool isListeningForUserChanges = false,
       bool subscribedToChannel = false,
+      bool isVerifyingOTP = false,
       Rider? rider,
       Option<Rider?> option = const None(),
       Option<AppHttpResponse?> status = const None()}) {
@@ -34,6 +36,7 @@ class _$AuthWatcherStateTearOff {
       isListeningForAuthChanges: isListeningForAuthChanges,
       isListeningForUserChanges: isListeningForUserChanges,
       subscribedToChannel: subscribedToChannel,
+      isVerifyingOTP: isVerifyingOTP,
       rider: rider,
       option: option,
       status: status,
@@ -52,6 +55,7 @@ mixin _$AuthWatcherState {
   bool get isListeningForAuthChanges => throw _privateConstructorUsedError;
   bool get isListeningForUserChanges => throw _privateConstructorUsedError;
   bool get subscribedToChannel => throw _privateConstructorUsedError;
+  bool get isVerifyingOTP => throw _privateConstructorUsedError;
   Rider? get rider => throw _privateConstructorUsedError;
   Option<Rider?> get option => throw _privateConstructorUsedError;
   Option<AppHttpResponse?> get status => throw _privateConstructorUsedError;
@@ -73,6 +77,7 @@ abstract class $AuthWatcherStateCopyWith<$Res> {
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
       bool subscribedToChannel,
+      bool isVerifyingOTP,
       Rider? rider,
       Option<Rider?> option,
       Option<AppHttpResponse?> status});
@@ -97,6 +102,7 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
     Object? subscribedToChannel = freezed,
+    Object? isVerifyingOTP = freezed,
     Object? rider = freezed,
     Object? option = freezed,
     Object? status = freezed,
@@ -125,6 +131,10 @@ class _$AuthWatcherStateCopyWithImpl<$Res>
       subscribedToChannel: subscribedToChannel == freezed
           ? _value.subscribedToChannel
           : subscribedToChannel // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isVerifyingOTP: isVerifyingOTP == freezed
+          ? _value.isVerifyingOTP
+          : isVerifyingOTP // ignore: cast_nullable_to_non_nullable
               as bool,
       rider: rider == freezed
           ? _value.rider
@@ -167,6 +177,7 @@ abstract class _$AuthWatcherStateCopyWith<$Res>
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
       bool subscribedToChannel,
+      bool isVerifyingOTP,
       Rider? rider,
       Option<Rider?> option,
       Option<AppHttpResponse?> status});
@@ -194,6 +205,7 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
     Object? isListeningForAuthChanges = freezed,
     Object? isListeningForUserChanges = freezed,
     Object? subscribedToChannel = freezed,
+    Object? isVerifyingOTP = freezed,
     Object? rider = freezed,
     Object? option = freezed,
     Object? status = freezed,
@@ -223,6 +235,10 @@ class __$AuthWatcherStateCopyWithImpl<$Res>
           ? _value.subscribedToChannel
           : subscribedToChannel // ignore: cast_nullable_to_non_nullable
               as bool,
+      isVerifyingOTP: isVerifyingOTP == freezed
+          ? _value.isVerifyingOTP
+          : isVerifyingOTP // ignore: cast_nullable_to_non_nullable
+              as bool,
       rider: rider == freezed
           ? _value.rider
           : rider // ignore: cast_nullable_to_non_nullable
@@ -249,6 +265,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
       this.isListeningForAuthChanges = false,
       this.isListeningForUserChanges = false,
       this.subscribedToChannel = false,
+      this.isVerifyingOTP = false,
       this.rider,
       this.option = const None(),
       this.status = const None()})
@@ -272,6 +289,9 @@ class _$_AuthWatcherState extends _AuthWatcherState {
   @JsonKey()
   @override
   final bool subscribedToChannel;
+  @JsonKey()
+  @override
+  final bool isVerifyingOTP;
   @override
   final Rider? rider;
   @JsonKey()
@@ -283,7 +303,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
 
   @override
   String toString() {
-    return 'AuthWatcherState(isLoading: $isLoading, isLoggingOut: $isLoggingOut, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, subscribedToChannel: $subscribedToChannel, rider: $rider, option: $option, status: $status)';
+    return 'AuthWatcherState(isLoading: $isLoading, isLoggingOut: $isLoggingOut, isAuthenticated: $isAuthenticated, isListeningForAuthChanges: $isListeningForAuthChanges, isListeningForUserChanges: $isListeningForUserChanges, subscribedToChannel: $subscribedToChannel, isVerifyingOTP: $isVerifyingOTP, rider: $rider, option: $option, status: $status)';
   }
 
   @override
@@ -302,6 +322,8 @@ class _$_AuthWatcherState extends _AuthWatcherState {
                 other.isListeningForUserChanges, isListeningForUserChanges) &&
             const DeepCollectionEquality()
                 .equals(other.subscribedToChannel, subscribedToChannel) &&
+            const DeepCollectionEquality()
+                .equals(other.isVerifyingOTP, isVerifyingOTP) &&
             const DeepCollectionEquality().equals(other.rider, rider) &&
             const DeepCollectionEquality().equals(other.option, option) &&
             const DeepCollectionEquality().equals(other.status, status));
@@ -316,6 +338,7 @@ class _$_AuthWatcherState extends _AuthWatcherState {
       const DeepCollectionEquality().hash(isListeningForAuthChanges),
       const DeepCollectionEquality().hash(isListeningForUserChanges),
       const DeepCollectionEquality().hash(subscribedToChannel),
+      const DeepCollectionEquality().hash(isVerifyingOTP),
       const DeepCollectionEquality().hash(rider),
       const DeepCollectionEquality().hash(option),
       const DeepCollectionEquality().hash(status));
@@ -334,6 +357,7 @@ abstract class _AuthWatcherState extends AuthWatcherState {
       bool isListeningForAuthChanges,
       bool isListeningForUserChanges,
       bool subscribedToChannel,
+      bool isVerifyingOTP,
       Rider? rider,
       Option<Rider?> option,
       Option<AppHttpResponse?> status}) = _$_AuthWatcherState;
@@ -351,6 +375,8 @@ abstract class _AuthWatcherState extends AuthWatcherState {
   bool get isListeningForUserChanges;
   @override
   bool get subscribedToChannel;
+  @override
+  bool get isVerifyingOTP;
   @override
   Rider? get rider;
   @override

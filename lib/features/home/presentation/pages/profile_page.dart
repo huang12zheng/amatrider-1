@@ -41,11 +41,12 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
 
     return AdaptiveScaffold(
       adaptiveToolbar: AdaptiveToolbar(
-        showCustomLeading: App.platform.material(true),
+        showCustomLeading: Utils.platform_(material: true, cupertino: false),
         title: '${tr.profile}',
         centerTitle: true,
         implyLeading: false,
         cupertinoImplyLeading: false,
+        cupertinoTitleAlignment: Alignment.centerLeft,
         elevation: 0.0,
         titleStyle: App.titleStyle,
         leadingIcon: App.platform.material(Consumer(
@@ -132,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                                   color: Utils.platform_(
                                     cupertino: App.resolveColor(
                                       Colors.white,
-                                      dark: Palette.secondaryColor.shade400,
+                                      dark: Palette.secondaryColor.shade600,
                                     ),
                                   ),
                                   child: AdaptiveListTile(
@@ -182,6 +183,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                         visible: s.isAuthenticated,
                         child: MyHero(
                           tag: Const.profileLogoutBtnHerotag,
+                          type: MaterialType.transparency,
                           child: AppButton(
                             text: '${tr.logout}',
                             isLoading: s.isLoggingOut,

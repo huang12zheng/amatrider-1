@@ -128,22 +128,22 @@ class _UtilitiesRemote implements UtilitiesRemote {
   }
 
   @override
-  Future<GenericPaginatedListDTO<InAppNotificationDTO>>
-      inAppNotifications() async {
+  Future<InAppNotificationListDTO> inAppNotifications({page, perPage}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'per_page': perPage
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GenericPaginatedListDTO<InAppNotificationDTO>>(
+        _setStreamType<InAppNotificationListDTO>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/rider/notifications',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = GenericPaginatedListDTO<InAppNotificationDTO>.fromJson(
-      _result.data!,
-      (json) => InAppNotificationDTO.fromJson(json as Map<String, dynamic>),
-    );
+    final value = InAppNotificationListDTO.fromJson(_result.data!);
     return value;
   }
 
@@ -165,6 +165,45 @@ class _UtilitiesRemote implements UtilitiesRemote {
     await _dio.fetch<void>(_setStreamType<void>(
         Options(method: 'POST', headers: _headers, extra: _extra)
             .compose(_dio.options, '/rider/contact-support',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
+  }
+
+  @override
+  Future<GenericPaginatedListDTO<PromotionDTO>> allAdminPromotions(
+      {page, perPage, admin = true}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'per_page': perPage,
+      r'admin_created': admin
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<GenericPaginatedListDTO<PromotionDTO>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/utilities/promotions',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GenericPaginatedListDTO<PromotionDTO>.fromJson(
+      _result.data!,
+      (json) => PromotionDTO.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<void> registerDevice({required deviceType, required deviceId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'device': deviceType, 'device_token': deviceId};
+    await _dio.fetch<void>(_setStreamType<void>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/rider/register-device',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;

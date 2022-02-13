@@ -40,8 +40,7 @@ class TimelineStatusWidget extends StatelessWidget {
       builder: TimelineTileBuilder.connected(
         indicatorBuilder: (context, i) => Indicator.widget(
           position: 0.5,
-          child: statuses[i].asset?.let((it) => SvgPicture.asset(it,
-                  fit: BoxFit.contain, color: statuses[i].assetColor)) ??
+          child: statuses[i].asset?.let((it) => SvgPicture.asset(it, fit: BoxFit.contain, color: statuses[i].assetColor)) ??
               statuses[i].icon ??
               AppAssets.timelinePin(),
         ),
@@ -51,8 +50,7 @@ class TimelineStatusWidget extends StatelessWidget {
           color: connectorColor ?? Palette.accent20,
           thickness: 0.8,
         ),
-        contentsBuilder: (_, i) =>
-            builder?.call(context, statuses[i]) ?? _ContentBuilder(statuses[i]),
+        contentsBuilder: (_, i) => builder?.call(context, statuses[i]) ?? _ContentBuilder(statuses[i]),
         itemExtentBuilder: itemHeight ?? (_, __) => 0.13.sw,
         itemCount: statuses.length,
       ),
@@ -90,9 +88,7 @@ class _ContentBuilder extends StatelessWidget {
                   fontSize: status.titleFontSize,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
-                  style: DefaultTextStyle.of(context)
-                      .style
-                      .copyWith(color: Palette.neutralLabel),
+                  style: DefaultTextStyle.of(context).style.copyWith(color: Palette.neutralLabel),
                 ),
               //
               if (!status.subtitle.isNullOrBlank)
@@ -102,13 +98,10 @@ class _ContentBuilder extends StatelessWidget {
                     minFontSize: 13,
                     maxFontSize: 16,
                     maxLines: 2,
-                    fontSize: status.subtitleFontSize,
+                    fontSize: status.subtitleFontSize ?? 16.5.sp,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
-                    style: DefaultTextStyle.of(context).style.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.5.sp,
-                        ),
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
             ],

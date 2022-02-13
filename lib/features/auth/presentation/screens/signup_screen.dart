@@ -64,7 +64,7 @@ class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClie
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (context.watchRouter.canPopSelfOrChildren && !context.watchRouter.isRoot) return true;
+    if (context.watchRouter.canPopSelfOrChildren) return Future.value(true);
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -94,103 +94,95 @@ class _SignupScreenState extends State<SignupScreen> with AutomaticKeepAliveClie
           showCustomLeading: Utils.platform_(material: null, cupertino: true),
           leadingAction: navigator.pop,
         ),
-        body: Theme(
-          data: Theme.of(context).copyWith(
-            scaffoldBackgroundColor: App.resolveColor(
-              Palette.cardColorLight,
-              dark: Palette.cardColorDark,
-            ),
-          ),
-          child: CustomScrollView(
-            shrinkWrap: true,
-            clipBehavior: Clip.antiAlias,
-            controller: ScrollController(),
-            physics: Utils.physics,
-            scrollDirection: Axis.vertical,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            slivers: [
-              SliverPadding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: App.sidePadding,
-                ).copyWith(top: App.longest * 0.02),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate.fixed(
-                    [
-                      Form(
-                        key: AuthState.signupFormKey,
-                        onChanged: () => Form.of(primaryFocus!.context!)?.save(),
-                        child: const SafeArea(child: AutofillGroup(child: _FormLayout())),
-                      ),
-                      //
-                      VerticalSpace(height: 0.04.sw),
-                      //
-                      BlocBuilder<AuthCubit, AuthState>(
-                        builder: (c, s) => Hero(
-                          tag: Const.authButtonHeroTag,
-                          child: AppButton(
-                            text: 'Create Account',
-                            isLoading: s.isLoading,
-                            onPressed: () {
-                              TextInput.finishAutofillContext();
-                              c.read<AuthCubit>().createAccount();
-                            },
-                          ),
+        body: CustomScrollView(
+          shrinkWrap: true,
+          clipBehavior: Clip.antiAlias,
+          controller: ScrollController(),
+          physics: Utils.physics,
+          scrollDirection: Axis.vertical,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.symmetric(
+                horizontal: App.sidePadding,
+              ).copyWith(top: App.longest * 0.02),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed(
+                  [
+                    Form(
+                      key: AuthState.signupFormKey,
+                      onChanged: () => Form.of(primaryFocus!.context!)?.save(),
+                      child: const SafeArea(child: AutofillGroup(child: _FormLayout())),
+                    ),
+                    //
+                    VerticalSpace(height: 0.04.sw),
+                    //
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (c, s) => Hero(
+                        tag: Const.authButtonHeroTag,
+                        child: AppButton(
+                          text: 'Create Account',
+                          isLoading: s.isLoading,
+                          onPressed: () {
+                            TextInput.finishAutofillContext();
+                            c.read<AuthCubit>().createAccount();
+                          },
                         ),
                       ),
-                      //
-                      VerticalSpace(height: 0.07.sw),
-                      //
-                      const OrWidget(),
-                      //
-                      VerticalSpace(height: 0.06.sw),
-                      //
-                      Hero(
-                        tag: Const.oauthBtnHeroTag,
-                        child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
-                      ),
-                      //
-                      VerticalSpace(height: 0.05.sw),
-                      //
-                      Hero(
-                        tag: Const.loginAndSignupSwitchTag,
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: AdaptiveText.rich(
-                                TextSpan(children: [
-                                  const TextSpan(text: 'Already have an account? '),
-                                  TextSpan(
-                                    text: 'Log In',
-                                    recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const LoginRoute()),
-                                    style: TextStyle(
-                                      color: Utils.foldTheme(
-                                        context: context,
-                                        light: () => Palette.accentColor,
-                                        dark: () => Palette.accentColor.shade100,
-                                      ),
-                                      fontWeight: FontWeight.w600,
+                    ),
+                    //
+                    VerticalSpace(height: 0.07.sw),
+                    //
+                    const OrWidget(),
+                    //
+                    VerticalSpace(height: 0.06.sw),
+                    //
+                    Hero(
+                      tag: Const.oauthBtnHeroTag,
+                      child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
+                    ),
+                    //
+                    VerticalSpace(height: 0.05.sw),
+                    //
+                    Hero(
+                      tag: Const.loginAndSignupSwitchTag,
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: AdaptiveText.rich(
+                              TextSpan(children: [
+                                const TextSpan(text: 'Already have an account? '),
+                                TextSpan(
+                                  text: 'Log In',
+                                  recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const LoginRoute()),
+                                  style: TextStyle(
+                                    color: Utils.foldTheme(
+                                      context: context,
+                                      light: () => Palette.accentColor,
+                                      dark: () => Palette.accentColor.shade100,
                                     ),
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ]),
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: Utils.labelLetterSpacing,
-                                textAlign: TextAlign.center,
-                              ),
+                                ),
+                              ]),
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: Utils.labelLetterSpacing,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
                       ),
-                      //
-                      VerticalSpace(height: 0.1.sw),
-                    ],
-                  ),
+                    ),
+                    //
+                    VerticalSpace(height: 0.1.sw),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

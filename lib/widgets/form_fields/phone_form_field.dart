@@ -43,6 +43,7 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
   final FocusNode? next;
   final String? prefix;
   final Widget? prefixWidget;
+  final bool autoDisposeController;
 
   PhoneFormField({
     Key? key,
@@ -73,6 +74,7 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
     this.hideCountryPicker,
     this.onPickerBuilder,
     this.onEditingComplete,
+    this.autoDisposeController = true,
   }) : super(key: key);
 
   Widget countryWidget(BuildContext c, ReactiveState s) => ConstrainedBox(
@@ -100,7 +102,9 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
             ),
           ),
           pickerBuilder: (_, country) => Builder(builder: (_) {
-            onPickerBuilder?.call(c.read<Reactive>(), country);
+            WidgetsBinding.instance!.endOfFrame.then((_) {
+              onPickerBuilder?.call(c.read<Reactive>(), country);
+            });
 
             return Row(
               children: [
@@ -170,6 +174,7 @@ class PhoneFormField<Reactive extends BlocBase<ReactiveState>, ReactiveState> ex
           border: border,
           errorBorder: errorBorder,
           focusedErrorBorder: focusedErrorBorder,
+          autoDisposeController: autoDisposeController,
           inputFormatters: [FilteringTextInputFormatter.allow(RegExp('$phonePattern'))],
           autoFillHints: [AutofillHints.telephoneNumberLocal],
           focus: focus,

@@ -96,6 +96,34 @@ class AppTheme extends HiveObject {
         ),
       );
 
+  static InputDecoration get lightInputDecoration => InputDecoration(
+        alignLabelWithHint: true,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        isDense: true,
+        filled: true,
+        hintStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Colors.grey),
+        errorStyle: const TextStyle(color: Palette.errorRed),
+        fillColor: Palette.inputBgColor,
+        contentPadding: Utils.inputPadding,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: const BorderSide(color: Palette.errorRed, width: 2.0),
+          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: const BorderSide(color: Palette.errorRed, width: 1.3),
+          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+        ),
+      );
+
   /// Light Theme Configurations
   static AppTheme light() {
     return AppTheme._(
@@ -130,6 +158,37 @@ class AppTheme extends HiveObject {
         materialTapTargetSize: MaterialTapTargetSize.padded,
       ),
       inputTheme: InputDecorationTheme(
+        alignLabelWithHint: lightInputDecoration.alignLabelWithHint!,
+        floatingLabelBehavior: lightInputDecoration.floatingLabelBehavior!,
+        isDense: lightInputDecoration.isDense!,
+        filled: lightInputDecoration.filled!,
+        hintStyle: lightInputDecoration.hintStyle!,
+        labelStyle: lightInputDecoration.labelStyle!,
+        errorStyle: lightInputDecoration.errorStyle!,
+        fillColor: lightInputDecoration.fillColor!,
+        contentPadding: lightInputDecoration.contentPadding!,
+        focusedBorder: lightInputDecoration.focusedBorder!,
+        focusedErrorBorder: lightInputDecoration.focusedErrorBorder!,
+        border: lightInputDecoration.border!,
+        errorBorder: lightInputDecoration.errorBorder!,
+      ),
+      textTheme: const TextTheme(
+        headline1: TextStyle(),
+        headline2: TextStyle(),
+        headline3: TextStyle(),
+        headline4: TextStyle(),
+        headline5: TextStyle(),
+        headline6: TextStyle(),
+        bodyText1: TextStyle(),
+        bodyText2: TextStyle(),
+      ).apply(
+        displayColor: Palette.text100, // For headline 1 - 6
+        bodyColor: Palette.text100, // For every other text style
+      ),
+    );
+  }
+
+  static InputDecoration get darkInputDecoration => InputDecoration(
         alignLabelWithHint: true,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         isDense: true,
@@ -137,7 +196,7 @@ class AppTheme extends HiveObject {
         hintStyle: const TextStyle(color: Colors.grey),
         labelStyle: const TextStyle(color: Colors.grey),
         errorStyle: const TextStyle(color: Palette.errorRed),
-        fillColor: Palette.inputBgColor,
+        fillColor: Palette.secondaryColor.shade400,
         contentPadding: Utils.inputPadding,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide.none,
@@ -155,22 +214,7 @@ class AppTheme extends HiveObject {
           borderSide: const BorderSide(color: Palette.errorRed, width: 1.3),
           borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
         ),
-      ),
-      textTheme: const TextTheme(
-        headline1: TextStyle(),
-        headline2: TextStyle(),
-        headline3: TextStyle(),
-        headline4: TextStyle(),
-        headline5: TextStyle(),
-        headline6: TextStyle(),
-        bodyText1: TextStyle(),
-        bodyText2: TextStyle(),
-      ).apply(
-        displayColor: Palette.text100, // For headline 1 - 6
-        bodyColor: Palette.text100, // For every other text style
-      ),
-    );
-  }
+      );
 
   /// Dark Theme Configurations
   static AppTheme dark() {
@@ -206,31 +250,19 @@ class AppTheme extends HiveObject {
         selectionHandleColor: Palette.accentColor,
       ),
       inputTheme: InputDecorationTheme(
-        alignLabelWithHint: true,
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
-        isDense: true,
-        filled: true,
-        hintStyle: const TextStyle(color: Colors.grey),
-        labelStyle: const TextStyle(color: Colors.grey),
-        errorStyle: const TextStyle(color: Palette.errorRed),
-        fillColor: Palette.secondaryColor.shade400,
-        contentPadding: Utils.inputPadding,
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
-          borderSide: const BorderSide(color: Palette.errorRed, width: 2.0),
-          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-        ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-        ),
-        errorBorder: UnderlineInputBorder(
-          borderSide: const BorderSide(color: Palette.errorRed, width: 1.3),
-          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-        ),
+        alignLabelWithHint: darkInputDecoration.alignLabelWithHint!,
+        floatingLabelBehavior: darkInputDecoration.floatingLabelBehavior!,
+        isDense: darkInputDecoration.isDense!,
+        filled: darkInputDecoration.filled!,
+        hintStyle: darkInputDecoration.hintStyle!,
+        labelStyle: darkInputDecoration.labelStyle!,
+        errorStyle: darkInputDecoration.errorStyle!,
+        fillColor: darkInputDecoration.fillColor!,
+        contentPadding: darkInputDecoration.contentPadding!,
+        focusedBorder: darkInputDecoration.focusedBorder!,
+        focusedErrorBorder: darkInputDecoration.focusedErrorBorder!,
+        border: darkInputDecoration.border!,
+        errorBorder: darkInputDecoration.errorBorder!,
       ),
       textTheme: const TextTheme(
         headline1: TextStyle(),
@@ -242,8 +274,8 @@ class AppTheme extends HiveObject {
         bodyText1: TextStyle(),
         bodyText2: TextStyle(),
       ).apply(
-        displayColor: Colors.white, // For headline 1 - 6
-        bodyColor: Colors.white, // For every other text style
+        displayColor: const Color(0xFFBFBFBF), // For headline 1 - 6
+        bodyColor: const Color(0xFFBFBFBF), // For every other text styler every other text style
       ),
     );
   }

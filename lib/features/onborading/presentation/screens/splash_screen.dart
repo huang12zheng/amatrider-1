@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/onborading/presentation/managers/index.dart';
 import 'package:amatrider/manager/settings/index.dart';
@@ -26,18 +28,18 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
   static void _navigateUser(BuildContext c, bool isFirstLaunch) {
     final isAuthenticated = c.read<AuthWatcherCubit>().state.isAuthenticated;
 
-    final playbackEnded = c.read<OnboardingCubit>().state.playbackEnded;
-
-    // if (playbackEnded) {
-    if (!isFirstLaunch) {
-      if (isAuthenticated)
-        navigator.replaceAll([const DashboardRoute()]);
-      else
-        navigator.replaceAll([const GetStartedRoute()]);
-    } else {
-      navigator.replaceAll([const OnboardingRoute()]);
-      // }
-    }
+    c.read<OnboardingCubit>().subscribeToPlayback(
+      after: () async {
+        if (!isFirstLaunch) {
+          if (isAuthenticated)
+            unawaited(navigator.replaceAll([const DashboardRoute()]));
+          else
+            unawaited(navigator.replaceAll([const GetStartedRoute()]));
+        } else {
+          unawaited(navigator.replaceAll([const OnboardingRoute()]));
+        }
+      },
+    );
   }
 
   @override
@@ -95,29 +97,16 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (_, __) => AnimatedVisibility(
                   visible: s.isVideoPlaying,
                   replacement: SizedBox.square(
-                    dimension: Theme.of(context).platform.fold(
-                          material: () => 1.5.sw,
-                          cupertino: () => 2.sw,
-                        ),
+                    dimension: Utils.platform_(material: 1.5.sw, cupertino: 2.sw),
                     child: Center(
-                      child: Utils.circularLoader(
-                        stroke: 2.5,
-                        color: Palette.accentColor,
-                      ),
+                      child: Utils.circularLoader(stroke: 2.5, color: Palette.accentColor),
                     ),
                   ),
                   child: SizedBox(
                     width: 1.w,
                     height: 1.h,
                     child: Center(
-                      child: controller == null
-                          ? const SizedBox.shrink()
-                          : OrientationBuilder(
-                              builder: (_, orientation) => AspectRatio(
-                                aspectRatio: orientation.index == Orientation.portrait.index ? 0.49 : 1.91,
-                                child: VideoPlayer(controller),
-                              ),
-                            ),
+                      child: controller == null ? const SizedBox.shrink() : VideoPlayer(controller),
                     ),
                   ),
                 ),

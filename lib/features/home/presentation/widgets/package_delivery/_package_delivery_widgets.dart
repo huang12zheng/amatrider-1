@@ -186,7 +186,7 @@ class _PanelBuilderState extends State<_PanelBuilder> {
                                   end: () => '${s.receiver.phone.getOrEmpty}',
                                 ),
                                 package: () => s.status.between(
-                                  start: () => '${s.sender.phone.getOrEmpty}',
+                                  start: () => null,
                                   end: () => '${s.receiver.phone.getOrEmpty}',
                                 ),
                               ),

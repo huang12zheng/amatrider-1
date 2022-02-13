@@ -64,9 +64,7 @@ mixin SocialAuthMixin on AuthFacade {
   @override
   Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]) async {
     try {
-      return some(AppHttpResponse(AnyResponse.fromFailure(
-        FailureResponse.unImplemented('Signin with Apple not implemented!'),
-      )));
+      return some(const AppHttpResponse(AnyResponse.info(messageTxt: 'Coming soon')));
     } on AppHttpResponse catch (e) {
       log.e(e);
       return some(e);

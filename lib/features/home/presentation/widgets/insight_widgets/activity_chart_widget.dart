@@ -168,6 +168,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
             '${group.x.toDouble().label}\n',
             const TextStyle(
               fontWeight: FontWeight.bold,
+              color: Palette.text100,
               fontSize: 18,
             ),
             children: <TextSpan>[
@@ -202,7 +203,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           checkToShowTitle: (minValue, maxValue, sideTitles, appliedInterval, value) => value % 10 == 0,
           getTitles: (value) => value == 0 ? '${value.toInt()}' : '${'$value'.asCurrency()}',
           getTextStyles: (_, value) => TextStyle(
-            color: const Color(0xff4C5862),
+            color: App.resolveColor(const Color(0xff4C5862), dark: Palette.text100Dark),
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
           ),

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of review_dto.dart;
@@ -23,9 +24,12 @@ class _$ReviewDTOTearOff {
 
   _ReviewDTO call(
       {required GenericListDTO<CustomerFeedbackDTO> data,
-      @JsonKey(name: 'totalReviews') int? totalReviews,
-      @JsonKey(name: 'avgRating') double? avgRating,
-      List<ReviewGroupDTO> reviewGroups = const []}) {
+      @JsonKey(name: 'totalReviews')
+          int? totalReviews,
+      @JsonKey(name: 'avgRating')
+          double? avgRating,
+      @JsonKey(name: 'reviewGroups')
+          List<ReviewGroupDTO> reviewGroups = const []}) {
     return _ReviewDTO(
       data: data,
       totalReviews: totalReviews,
@@ -50,6 +54,7 @@ mixin _$ReviewDTO {
   int? get totalReviews => throw _privateConstructorUsedError;
   @JsonKey(name: 'avgRating')
   double? get avgRating => throw _privateConstructorUsedError;
+  @JsonKey(name: 'reviewGroups')
   List<ReviewGroupDTO> get reviewGroups => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,7 +71,7 @@ abstract class $ReviewDTOCopyWith<$Res> {
       {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
-      List<ReviewGroupDTO> reviewGroups});
+      @JsonKey(name: 'reviewGroups') List<ReviewGroupDTO> reviewGroups});
 }
 
 /// @nodoc
@@ -115,7 +120,7 @@ abstract class _$ReviewDTOCopyWith<$Res> implements $ReviewDTOCopyWith<$Res> {
       {GenericListDTO<CustomerFeedbackDTO> data,
       @JsonKey(name: 'totalReviews') int? totalReviews,
       @JsonKey(name: 'avgRating') double? avgRating,
-      List<ReviewGroupDTO> reviewGroups});
+      @JsonKey(name: 'reviewGroups') List<ReviewGroupDTO> reviewGroups});
 }
 
 /// @nodoc
@@ -162,7 +167,7 @@ class _$_ReviewDTO extends _ReviewDTO {
       {required this.data,
       @JsonKey(name: 'totalReviews') this.totalReviews,
       @JsonKey(name: 'avgRating') this.avgRating,
-      this.reviewGroups = const []})
+      @JsonKey(name: 'reviewGroups') this.reviewGroups = const []})
       : super._();
 
   factory _$_ReviewDTO.fromJson(Map<String, dynamic> json) =>
@@ -176,8 +181,8 @@ class _$_ReviewDTO extends _ReviewDTO {
   @override
   @JsonKey(name: 'avgRating')
   final double? avgRating;
-  @JsonKey()
   @override
+  @JsonKey(name: 'reviewGroups')
   final List<ReviewGroupDTO> reviewGroups;
 
   @override
@@ -219,10 +224,11 @@ class _$_ReviewDTO extends _ReviewDTO {
 
 abstract class _ReviewDTO extends ReviewDTO {
   const factory _ReviewDTO(
-      {required GenericListDTO<CustomerFeedbackDTO> data,
-      @JsonKey(name: 'totalReviews') int? totalReviews,
-      @JsonKey(name: 'avgRating') double? avgRating,
-      List<ReviewGroupDTO> reviewGroups}) = _$_ReviewDTO;
+          {required GenericListDTO<CustomerFeedbackDTO> data,
+          @JsonKey(name: 'totalReviews') int? totalReviews,
+          @JsonKey(name: 'avgRating') double? avgRating,
+          @JsonKey(name: 'reviewGroups') List<ReviewGroupDTO> reviewGroups}) =
+      _$_ReviewDTO;
   const _ReviewDTO._() : super._();
 
   factory _ReviewDTO.fromJson(Map<String, dynamic> json) =
@@ -237,6 +243,7 @@ abstract class _ReviewDTO extends ReviewDTO {
   @JsonKey(name: 'avgRating')
   double? get avgRating;
   @override
+  @JsonKey(name: 'reviewGroups')
   List<ReviewGroupDTO> get reviewGroups;
   @override
   @JsonKey(ignore: true)

@@ -1,5 +1,6 @@
 library phone_update_bottomsheet.dart;
 
+import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
@@ -31,21 +32,17 @@ class PhoneUpdateBottomSheet extends StatelessWidget {
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(
-                dismissed: () => s.pop
-                    ? App.rootRoute == DashboardRoute.name
-                        ? navigator.pop().then((_) => navigator.push(const OTPVerificationRoute()))
-                        : navigator.pushAndPopUntil(const OTPVerificationRoute(), predicate: (_) => false)
+                dismissed: s.pop
+                    ? () {
+                        c.read<TabNavigationCubit>().reset();
+                        navigator.replaceAll([OTPVerificationRoute()]);
+                      }
                     : null,
               ),
             ).render(c),
           ),
         ),
-        child: SingleChildScrollView(
-          clipBehavior: Clip.antiAlias,
-          controller: ScrollController(),
-          physics: Utils.physics,
-          scrollDirection: Axis.vertical,
-          padding: MediaQuery.of(context).viewInsets,
+        child: AdaptiveBottomSheet(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

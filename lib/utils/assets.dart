@@ -27,7 +27,8 @@ mixin AppAssets {
   static const String logo = '$IMAGES_DIR/logo/logo.png';
 
   // ONBOARDING
-  static const String splashVideo = '$VIDEOS_DIR/splash_video.mp4';
+  static const String splashVideo = '$VIDEOS_DIR/splash_video.m4v';
+  static const String splashVideoTablet = '$VIDEOS_DIR/splash_video_tablet.m4v';
   static const String onboarding1 = '$ONBOARDING_IMAGES_DIR/onboarding_1.png';
   static const String onboarding2 = '$ONBOARDING_IMAGES_DIR/onboarding_2.png';
   static const String onboarding3 = '$ONBOARDING_IMAGES_DIR/onboarding_3.png';
@@ -40,7 +41,8 @@ mixin AppAssets {
   // Lottie Json
   static const String checkAnimation = '$RAW_DIR/check_anim.json';
   static const String hoorayAnimation = '$RAW_DIR/hooray_lottie_anim.json';
-  static const String test01 = '$RAW_DIR/test01.json';
+  static const String amatCircularLoader = '$RAW_DIR/amat_circular_loader.json';
+  static const String amatLogoLoader = '$RAW_DIR/amat_logo_loader.json';
 
   /// USER
   static const String user = '$IMAGES_DIR/user.png';

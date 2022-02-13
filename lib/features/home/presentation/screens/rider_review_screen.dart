@@ -33,7 +33,7 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
@@ -77,132 +77,136 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
                 controller: ScrollController(),
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
-                    sliver: SliverToBoxAdapter(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (review.avgRating.getOrNull != null)
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-                                color: App.resolveColor(
-                                  Palette.cardColorLight,
-                                  dark: Palette.cardColorDark,
+                  SliverSafeArea(
+                    left: false,
+                    right: false,
+                    bottom: false,
+                    minimum: EdgeInsets.only(top: 0.02.h),
+                    sliver: SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: App.sidePadding),
+                      sliver: SliverToBoxAdapter(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (review.avgRating.getOrNull != null)
+                              DecoratedBox(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                                  color: App.resolveColor(
+                                    Palette.cardColorLight,
+                                    dark: Palette.cardColorDark,
+                                  ),
                                 ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(0.02.sw),
-                                child: Column(
-                                  children: [
-                                    AdaptiveText.rich(
-                                      TextSpan(children: [
-                                        TextSpan(
-                                          text: '${review.avgRating.getOrNull?.toStringAsFixed(1)}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w600,
+                                child: Padding(
+                                  padding: EdgeInsets.all(0.02.sw),
+                                  child: Column(
+                                    children: [
+                                      AdaptiveText.rich(
+                                        TextSpan(children: [
+                                          TextSpan(
+                                            text: '${review.avgRating.getOrNull?.roundToIntOrDouble}',
+                                            style: const TextStyle(fontWeight: FontWeight.w600),
                                           ),
-                                        ),
-                                        const TextSpan(text: '/'),
-                                        const TextSpan(text: '5')
-                                      ]),
-                                      style: TextStyle(
+                                          const TextSpan(text: '/'),
+                                          const TextSpan(text: '5')
+                                        ]),
                                         fontSize: 32.sp,
+                                        textColor: Palette.text100,
+                                        textColorDark: Palette.text100Dark,
                                       ),
-                                    ),
-                                    //
-                                    VerticalSpace(height: 0.02.sw),
-                                    //
-                                    IgnorePointer(
-                                      ignoring: true,
-                                      child: RatingBar(
-                                        glow: false,
-                                        allowHalfRating: true,
-                                        tapOnlyMode: true,
-                                        initialRating: review.avgRating.getOrEmpty ?? 0.0,
-                                        minRating: 1,
-                                        maxRating: 5,
-                                        itemSize: 0.05.sw,
-                                        direction: Axis.horizontal,
-                                        itemPadding: EdgeInsets.symmetric(horizontal: 0.005.sw),
-                                        ratingWidget: RatingWidget(
-                                          full: const Icon(Icons.star_sharp, color: Colors.amber),
-                                          half: const Icon(Icons.star_half_sharp, color: Colors.amber),
-                                          empty: const Icon(Icons.star_border_sharp, color: Colors.amber),
+                                      //
+                                      VerticalSpace(height: 0.02.sw),
+                                      //
+                                      IgnorePointer(
+                                        ignoring: true,
+                                        child: RatingBar(
+                                          glow: false,
+                                          allowHalfRating: true,
+                                          tapOnlyMode: true,
+                                          initialRating: review.avgRating.getOrNull ?? 0.0,
+                                          minRating: 1,
+                                          maxRating: 5,
+                                          itemSize: 0.05.sw,
+                                          direction: Axis.horizontal,
+                                          itemPadding: EdgeInsets.symmetric(horizontal: 0.005.sw),
+                                          ratingWidget: RatingWidget(
+                                            full: const Icon(Icons.star_sharp, color: Colors.amber),
+                                            half: const Icon(Icons.star_half_sharp, color: Colors.amber),
+                                            empty: const Icon(Icons.star_border_sharp, color: Colors.amber),
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            print(rating);
+                                          },
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                        },
                                       ),
-                                    ),
-                                    //
-                                    VerticalSpace(height: 0.02.sw),
-                                    //
-                                    AdaptiveText(
-                                      '${review.totalReviews.getOrEmpty} ratings',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ],
+                                      //
+                                      VerticalSpace(height: 0.02.sw),
+                                      //
+                                      AdaptiveText(
+                                        '${review.totalReviews.getOrEmpty} ratings',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          //
-                          HorizontalSpace(width: 0.02.sw),
-                          //
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: review.reviewGroups
-                                  .map(
-                                    (it) => SizedBox(
-                                      width: double.infinity,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 0.01.sw,
-                                          vertical: 0.01.sw,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            AdaptiveText(
-                                              '${it.group.getOrEmpty}',
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16.sp,
-                                            ),
-                                            //
-                                            Icon(Icons.star_sharp, color: Colors.amber, size: 0.05.sw),
-                                            //
-                                            AdaptiveText(
-                                              '(${it.count.getOrEmpty})',
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 15.sp,
-                                              textColor: Palette.text40,
-                                              textColorDark: Palette.text100Dark,
-                                              letterSpacing: Utils.letterSpacing,
-                                            ),
-                                            //
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(left: 0.02.sw),
-                                                child: LinearProgressIndicator(
-                                                  value: (it.count.getOrEmpty?.toDouble() ?? 0) / 100,
-                                                  backgroundColor: Palette.neutralF4,
-                                                  valueColor: const AlwaysStoppedAnimation(Palette.accentYellow),
+                            //
+                            HorizontalSpace(width: 0.02.sw),
+                            //
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: review.reviewGroups
+                                    .map(
+                                      (it) => SizedBox(
+                                        width: double.infinity,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 0.01.sw,
+                                            vertical: 0.01.sw,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              AdaptiveText(
+                                                '${it.group.getOrEmpty}',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16.sp,
+                                              ),
+                                              //
+                                              Icon(Icons.star_sharp, color: Colors.amber, size: 0.05.sw),
+                                              //
+                                              AdaptiveText(
+                                                '(${it.count.getOrEmpty})',
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 15.sp,
+                                                textColor: Palette.text40,
+                                                textColorDark: Palette.text100Dark,
+                                                letterSpacing: Utils.letterSpacing,
+                                              ),
+                                              //
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(left: 0.02.sw),
+                                                  child: LinearProgressIndicator(
+                                                    value: (it.count.getOrEmpty?.toDouble() ?? 0) / 100,
+                                                    backgroundColor: Palette.neutralF4,
+                                                    valueColor: const AlwaysStoppedAnimation(Palette.accentYellow),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                  .asList(),
+                                    )
+                                    .asList(),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -248,9 +252,7 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
                               material: true,
                               horizontalTitleGap: 0.03.sw,
                               minVerticalPadding: 0.04.sw,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: App.sidePadding,
-                              ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: App.sidePadding),
                               tileColor: App.resolveColor(
                                 Palette.cardColorLight,
                                 dark: Palette.cardColorDark,
@@ -260,19 +262,21 @@ class RiderReviewScreen extends StatelessWidget with AutoRouteWrapper {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Flexible(
-                                    child: AdaptiveText(
-                                      '${feedback?.review.getOrEmpty}',
-                                      fontSize: 16.sp,
-                                      maxLines: 3,
-                                      maxFontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: Utils.letterSpacing,
-                                      overflow: TextOverflow.ellipsis,
+                                  if (feedback?.review.getOrNull != null) ...[
+                                    Flexible(
+                                      child: AdaptiveText(
+                                        '${feedback?.review.getOrEmpty}',
+                                        fontSize: 16.sp,
+                                        maxLines: 3,
+                                        maxFontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: Utils.letterSpacing,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                  ),
-                                  //
-                                  VerticalSpace(height: 0.02.sw),
+                                    //
+                                    VerticalSpace(height: 0.02.sw),
+                                  ],
                                   //
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

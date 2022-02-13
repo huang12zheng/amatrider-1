@@ -42,10 +42,8 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
     return super.close();
   }
 
-  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
-        isLoading: isLoading ?? !state.isLoading,
-        status: status ?? state.status,
-      ));
+  void toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
+      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading, status: status ?? state.status));
 
   void claimBonusLoading(bool loading) => emit(state.copyWith(claimBonusLoading: loading));
 
@@ -71,13 +69,13 @@ class InsightsCubit extends Cubit<InsightsState> with BaseCubit<InsightsState> {
           onData: (data, _) {
             final json = jsonDecode(data) as Map<String, dynamic>;
 
-            final insight = InsightDTO.fromJson(json['insight'] as Map<String, dynamic>);
+            if (json.containsKey('insight') && (json['insight'] as Map<String, dynamic>).containsKey('meta')) {
+              final insight = InsightDTO.fromJson(json['insight']['meta'] as Map<String, dynamic>);
 
-            if (insight.insightData?.cashAtHand == 0 && state.depositDialogOpen) emit(state.copyWith(depositConfirmed: true));
+              if (insight.cashAtHand == 0 && state.depositDialogOpen) emit(state.copyWith(depositConfirmed: true));
 
-            emit(state.copyWith(
-              insight: insight.insightData?.domain ?? state.insight,
-            ));
+              emit(state.copyWith(insight: insight.domain));
+            }
           },
         );
       },

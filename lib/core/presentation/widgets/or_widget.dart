@@ -1,4 +1,5 @@
 import 'package:amatrider/utils/utils.dart';
+import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -24,12 +25,10 @@ class OrWidget extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
+              child: AdaptiveText(
                 '$text',
-                style: TextStyle(
-                  fontSize: 15.0.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                fontSize: 15.0.sp,
+                fontWeight: FontWeight.w600,
               ),
             ),
             Flexible(

@@ -489,7 +489,12 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
               if (widget.maxLength != null) LengthLimitingTextInputFormatter(widget.maxLength),
               ...widget.inputFormatters,
             ],
-            style: TextStyle(color: App.resolveColor(Palette.text100, dark: Palette.text100Dark)).merge(widget.style),
+            // style: TextStyle(color: App.resolveColor(Palette.text100, dark: Palette.text100Dark)).merge(widget.style),
+            style: TextStyle(
+              color: widget.disabled
+                  ? App.resolveColor(Palette.text60, dark: Colors.black.withOpacity(0.5))
+                  : App.resolveColor(Palette.text100, dark: Palette.text100Dark),
+            ).merge(widget.style),
             placeholder: widget.hintText,
             placeholderStyle: TextStyle(color: App.resolveColor(Palette.text60)).merge(widget.hintStyle),
             toolbarOptions: widget.toolbarOptions,
@@ -526,7 +531,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
               autofocus: widget.autoFocus,
               controller: _textEditingController,
               showCursor: widget.showCursor,
-              cursorColor: widget.cursorColor ?? Utils.foldTheme(light: () => Palette.accentColor, dark: () => Colors.white70),
+              cursorColor: widget.cursorColor ?? App.resolveColor(Palette.accentColor, dark: Colors.white70),
               keyboardType: widget.keyboardType,
               textCapitalization: widget.capitalization,
               keyboardAppearance: widget.keyboardAppearance,
@@ -562,7 +567,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
               textDirection: widget.textDirection,
               toolbarOptions: widget.toolbarOptions,
               style: TextStyle(
-                color: widget.disabled ? App.resolveColor(Palette.text60, dark: Palette.text100Dark.withOpacity(0.5)) : null,
+                color: widget.disabled ? App.resolveColor(Palette.text60, dark: Colors.black.withOpacity(0.5)) : null,
               ).merge(widget.style),
               autovalidateMode: widget.validate ? AutovalidateMode.always : AutovalidateMode.disabled,
               onChanged: widget.onChanged,

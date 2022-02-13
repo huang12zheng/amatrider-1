@@ -62,9 +62,8 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   void _playbackListener() {
-    final hasPlaybackEnded = !playerController!.value.isPlaying &&
-        playerController!.value.position.inSeconds >=
-            playerController!.value.duration.inSeconds;
+    final hasPlaybackEnded =
+        !playerController!.value.isPlaying && playerController!.value.position.inSeconds >= playerController!.value.duration.inSeconds;
 
     _playbackController.sink.add(hasPlaybackEnded);
 
@@ -78,8 +77,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   void _pageControllerListener() {
-    if (state.controller.page != null &&
-        state.controller.page?.round() != state.currentIndex) {
+    if (state.controller.page != null && state.controller.page?.round() != state.currentIndex) {
       emit(state.copyWith(currentIndex: state.controller.page!.round()));
     }
   }

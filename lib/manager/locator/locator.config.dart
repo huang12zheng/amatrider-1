@@ -10,18 +10,18 @@ import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.da
 import 'package:amatrider/features/auth/data/repositories/access_token/access_token_manager.dart'
     as _i3;
 import 'package:amatrider/features/auth/data/repositories/auth/auth_facade_impl.dart'
-    as _i40;
+    as _i41;
 import 'package:amatrider/features/auth/data/sources/local/auth_local_source.dart'
     as _i6;
 import 'package:amatrider/features/auth/data/sources/remote/auth_remote_source.dart'
-    as _i37;
-import 'package:amatrider/features/auth/domain/index.dart' as _i39;
+    as _i38;
+import 'package:amatrider/features/auth/domain/index.dart' as _i40;
 import 'package:amatrider/features/auth/presentation/managers/auth_cubit/auth_cubit.dart'
-    as _i46;
+    as _i47;
 import 'package:amatrider/features/auth/presentation/managers/verification/verification_cubit.dart'
-    as _i45;
+    as _i46;
 import 'package:amatrider/features/auth/presentation/managers/watcher/auth_watcher_cubit.dart'
-    as _i41;
+    as _i42;
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart'
     as _i10;
 import 'package:amatrider/features/home/data/repositories/laravel_notification.dart'
@@ -40,30 +40,32 @@ import 'package:amatrider/features/home/data/sources/logistics_remote/logistics_
     as _i20;
 import 'package:amatrider/features/home/domain/repositories/index.dart' as _i19;
 import 'package:amatrider/features/home/presentation/managers/history/history_cubit.dart'
-    as _i42;
-import 'package:amatrider/features/home/presentation/managers/insights/insights_cubit.dart'
     as _i43;
+import 'package:amatrider/features/home/presentation/managers/insights/insights_cubit.dart'
+    as _i44;
 import 'package:amatrider/features/home/presentation/managers/location/location_cubit.dart'
     as _i34;
 import 'package:amatrider/features/home/presentation/managers/map/map_cubit.dart'
     as _i22;
 import 'package:amatrider/features/home/presentation/managers/notification/notification_cubit.dart'
-    as _i44;
+    as _i45;
+import 'package:amatrider/features/home/presentation/managers/promotion/promotion_cubit.dart'
+    as _i36;
 import 'package:amatrider/features/home/presentation/managers/request/request_cubit.dart'
     as _i26;
 import 'package:amatrider/features/home/presentation/managers/review/reviews_cubit.dart'
-    as _i36;
+    as _i37;
 import 'package:amatrider/features/home/presentation/managers/send_package/send_package_cubit.dart'
     as _i27;
 import 'package:amatrider/features/home/presentation/managers/tab_navigation/tab_navigation_cubit.dart'
     as _i30;
 import 'package:amatrider/features/onborading/presentation/managers/onboarding/onboarding_cubit.dart'
     as _i23;
-import 'package:amatrider/manager/locator/modules/modules.dart' as _i47;
+import 'package:amatrider/manager/locator/modules/modules.dart' as _i48;
 import 'package:amatrider/manager/settings/external/preference_repository.dart'
     as _i35;
 import 'package:amatrider/manager/settings/manager/global_app_preference_cubit.dart'
-    as _i38;
+    as _i39;
 import 'package:amatrider/manager/theme/manager/theme_cubit.dart' as _i31;
 import 'package:amatrider/utils/utils.dart' as _i5;
 import 'package:connectivity_plus/connectivity_plus.dart' as _i7;
@@ -126,7 +128,7 @@ extension GetItInjectableX on _i1.GetIt {
         get<_i20.LogisticsRemote>(),
         get<_i17.InsightRemote>(),
         get<_i16.HistoryRemote>()));
-    gh.factory<_i22.MapCubit>(() => _i22.MapCubit(get<_i19.LocationService>()));
+    gh.factory<_i22.MapCubit>(() => _i22.MapCubit());
     gh.factory<_i23.OnboardingCubit>(() => _i23.OnboardingCubit());
     await gh.factoryAsync<_i24.PaystackPlugin>(
         () => serviceModules.paystackInit,
@@ -152,42 +154,45 @@ extension GetItInjectableX on _i1.GetIt {
         get<_i19.LocationService>(), get<_i25.PlacesRepository>()));
     gh.singleton<_i35.PreferenceRepository>(
         _i35.PreferenceRepository(get<_i28.SharedPreferences>()));
-    gh.factory<_i36.ReviewsCubit>(
-        () => _i36.ReviewsCubit(get<_i33.UtilitiesRepository>()));
-    gh.singleton<_i37.AuthRemoteDatasource>(_i37.AuthRemoteDatasource(
+    gh.factory<_i36.PromotionCubit>(
+        () => _i36.PromotionCubit(get<_i33.UtilitiesRepository>()));
+    gh.factory<_i37.ReviewsCubit>(
+        () => _i37.ReviewsCubit(get<_i33.UtilitiesRepository>()));
+    gh.singleton<_i38.AuthRemoteDatasource>(_i38.AuthRemoteDatasource(
         get<_i4.AppHttpClient>(), get<_i35.PreferenceRepository>()));
-    gh.singleton<_i38.GlobalAppPreferenceCubit>(_i38.GlobalAppPreferenceCubit(
-        get<_i35.PreferenceRepository>(), get<_i33.UtilitiesRepository>()));
-    gh.lazySingleton<_i39.AuthFacade>(() => _i40.AuthFacadeImpl(
-        get<_i37.AuthRemoteDatasource>(),
+    gh.factory<_i39.GlobalAppPreferenceCubit>(() =>
+        _i39.GlobalAppPreferenceCubit(
+            get<_i35.PreferenceRepository>(), get<_i33.UtilitiesRepository>()));
+    gh.lazySingleton<_i40.AuthFacade>(() => _i41.AuthFacadeImpl(
+        get<_i38.AuthRemoteDatasource>(),
         get<_i6.AuthLocalDatasource>(),
         get<_i15.GoogleSignIn>(),
         get<_i11.FirebaseAnalytics>(),
         get<_i35.PreferenceRepository>()));
-    gh.factory<_i41.AuthWatcherCubit>(() => _i41.AuthWatcherCubit(
-        get<_i39.AuthFacade>(), get<_i10.EchoRepository>()));
-    gh.factory<_i42.HistoryCubit>(() => _i42.HistoryCubit(
+    gh.factory<_i42.AuthWatcherCubit>(() => _i42.AuthWatcherCubit(
+        get<_i40.AuthFacade>(), get<_i10.EchoRepository>()));
+    gh.factory<_i43.HistoryCubit>(() => _i43.HistoryCubit(
         get<_i21.LogisticsRepository>(),
         get<_i10.EchoRepository>(),
-        get<_i39.AuthFacade>()));
-    gh.factory<_i43.InsightsCubit>(() => _i43.InsightsCubit(
+        get<_i40.AuthFacade>()));
+    gh.factory<_i44.InsightsCubit>(() => _i44.InsightsCubit(
         get<_i21.LogisticsRepository>(),
         get<_i10.EchoRepository>(),
-        get<_i39.AuthFacade>()));
-    gh.singleton<_i44.NotificationCubit>(_i44.NotificationCubit(
-        get<_i39.AuthFacade>(),
+        get<_i40.AuthFacade>()));
+    gh.singleton<_i45.NotificationCubit>(_i45.NotificationCubit(
+        get<_i40.AuthFacade>(),
         get<_i33.UtilitiesRepository>(),
         get<_i10.EchoRepository>()));
-    gh.factory<_i45.VerificationCubit>(() => _i45.VerificationCubit(
-        get<_i33.UtilitiesRepository>(), get<_i39.AuthFacade>()));
-    gh.factory<_i46.AuthCubit>(() => _i46.AuthCubit(get<_i39.AuthFacade>(),
+    gh.factory<_i46.VerificationCubit>(() => _i46.VerificationCubit(
+        get<_i33.UtilitiesRepository>(), get<_i40.AuthFacade>()));
+    gh.factory<_i47.AuthCubit>(() => _i47.AuthCubit(get<_i40.AuthFacade>(),
         get<_i33.UtilitiesRepository>(), get<_i35.PreferenceRepository>()));
     return this;
   }
 }
 
-class _$Modules extends _i47.Modules {}
+class _$Modules extends _i48.Modules {}
 
-class _$ServiceModules extends _i47.ServiceModules {}
+class _$ServiceModules extends _i48.ServiceModules {}
 
-class _$GPSModules extends _i47.GPSModules {}
+class _$GPSModules extends _i48.GPSModules {}

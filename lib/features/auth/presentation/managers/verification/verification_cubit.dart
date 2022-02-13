@@ -25,16 +25,13 @@ part 'verification_state.dart';
 enum IdSection { front, back }
 
 @injectable
-class VerificationCubit extends Cubit<VerificationState>
-    with BaseCubit<VerificationState>, _ImagePickerMixin {
+class VerificationCubit extends Cubit<VerificationState> with BaseCubit<VerificationState>, _ImagePickerMixin {
   final UtilitiesRepository _repository;
   final AuthFacade _authFacade;
 
-  VerificationCubit(this._repository, this._authFacade)
-      : super(VerificationState.initial());
+  VerificationCubit(this._repository, this._authFacade) : super(VerificationState.initial());
 
-  void toggleLoading([bool? isLoading]) =>
-      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
+  void toggleLoading([bool? isLoading]) => emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
   void countryChanged(CountryCode? code) {
     final country = state.countries.firstOrNull(
@@ -44,8 +41,7 @@ class VerificationCubit extends Cubit<VerificationState>
     emit(state.copyWith(selectedCountry: country));
   }
 
-  void documentTypeChanged(DocumentID value) =>
-      emit(state.copyWith(documentID: value));
+  void documentTypeChanged(DocumentID value) => emit(state.copyWith(documentID: value));
 
   void verifyDocuments() async {
     toggleLoading(true);
@@ -139,105 +135,122 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
   final ImagePicker _picker = ImagePicker();
 
   void pickCamera(IdSection section) async {
-    File? file;
-    String? fileName;
-    var fileSize = 0;
+    try {
+      File? file;
+      String? fileName;
+      var fileSize = 0;
 
-    var _result = await _picker.pickImage(source: ImageSource.camera);
+      var _result = await _picker.pickImage(source: ImageSource.camera);
 
-    if (_result == null) {
-      file = await _attemptImageFileRetrieval(_picker);
-      if (file != null) fileName = p.basenameWithoutExtension(file.path);
-    } else {
-      file = File(_result.path);
-      fileName = p.basenameWithoutExtension(file.path);
-      fileSize = file.lengthSync();
-    }
+      if (_result == null) {
+        file = await _attemptImageFileRetrieval(_picker);
+        if (file != null) fileName = p.basenameWithoutExtension(file.path);
+      } else {
+        file = File(_result.path);
+        fileName = p.basenameWithoutExtension(file.path);
+        fileSize = file.lengthSync();
+      }
 
-    if (fileSize > Const.maxUploadSize) {
-      emit(state.copyWith(
-        status: some(AppHttpResponse.failure(
-          'Max. image upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
-        )),
-      ));
-      return;
-    }
-
-    var mime = _resolveMimeType(file);
-
-    section.fold(
-      front: () {
+      if (fileSize > Const.maxUploadSize) {
         emit(state.copyWith(
-          frontID: file,
-          frontName: BasicTextField(fileName),
-          frontIsImage: true,
-          frontMimeType: mime,
+          status: some(AppHttpResponse.failure(
+            'Max. image upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+          )),
         ));
-      },
-      back: () {
-        emit(state.copyWith(
-          backID: file,
-          backName: BasicTextField(fileName),
-          backIsImage: true,
-          backMimeType: mime,
-        ));
-      },
-    );
+        return;
+      }
+
+      if (file != null) {
+        var mime = _resolveMimeType(file);
+
+        section.fold(
+          front: () {
+            emit(state.copyWith(
+              frontID: file,
+              frontName: BasicTextField(fileName),
+              frontIsImage: true,
+              frontMimeType: mime,
+              status: none(),
+            ));
+          },
+          back: () {
+            emit(state.copyWith(
+              backID: file,
+              backName: BasicTextField(fileName),
+              backIsImage: true,
+              backMimeType: mime,
+              status: none(),
+            ));
+          },
+        );
+      }
+    } catch (e, tr) {
+      log.e(e, tr);
+      await App.report(exception: e, stack: tr);
+    }
   }
 
   void pickFileExplorer(IdSection section) async {
-    File? file;
-    String? fileName;
-    var fileSize = 0;
+    try {
+      File? file;
+      String? fileName;
+      var fileSize = 0;
 
-    var _result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
-      allowCompression: false,
-    );
+      var _result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
+        allowCompression: false,
+      );
 
-    if (_result != null && _result.files.isNotEmpty) {
-      file = File(_result.files.first.path!);
-      fileName = p.basenameWithoutExtension(file.path);
-      fileSize = file.lengthSync();
-    }
+      if (_result != null && _result.files.isNotEmpty) {
+        file = File(_result.files.first.path!);
+        fileName = p.basenameWithoutExtension(file.path);
+        fileSize = file.lengthSync();
+      }
 
-    if (fileSize > Const.maxUploadSize) {
-      emit(state.copyWith(
-        status: some(AppHttpResponse.failure(
-          'Max. document upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
-        )),
-      ));
-      return;
-    }
-
-    var mime = _resolveMimeType(file);
-
-    section.fold(
-      front: () {
+      if (fileSize > Const.maxUploadSize) {
         emit(state.copyWith(
-          frontID: file,
-          frontName: BasicTextField(fileName),
-          frontIsImage: mime == DocumentMimeType.img,
-          frontMimeType: mime,
+          status: some(AppHttpResponse.failure(
+            'Max. document upload size is ${(Const.maxUploadSize / 1e+6).ceil()}MB',
+          )),
         ));
-      },
-      back: () {
-        emit(state.copyWith(
-          backID: file,
-          backName: BasicTextField(fileName),
-          backIsImage: mime == DocumentMimeType.img,
-          backMimeType: mime,
-        ));
-      },
-    );
+        return;
+      }
+
+      if (file != null) {
+        var mime = _resolveMimeType(file);
+
+        section.fold(
+          front: () {
+            emit(state.copyWith(
+              frontID: file,
+              frontName: BasicTextField(fileName),
+              frontIsImage: mime == DocumentMimeType.img,
+              frontMimeType: mime,
+              status: none(),
+            ));
+          },
+          back: () {
+            emit(state.copyWith(
+              backID: file,
+              backName: BasicTextField(fileName),
+              backIsImage: mime == DocumentMimeType.img,
+              backMimeType: mime,
+              status: none(),
+            ));
+          },
+        );
+      }
+    } catch (e, tr) {
+      log.e(e, tr);
+      await App.report(exception: e, stack: tr);
+    }
   }
 
   Future<File?> _attemptImageFileRetrieval(ImagePicker? picker) async {
     if (picker == null) return null;
     final _response = await _picker.retrieveLostData();
-    if (!_response.isEmpty && _response.file != null)
-      return File(_response.file!.path);
+    if (!_response.isEmpty && _response.file != null) return File(_response.file!.path);
     return null;
   }
 

@@ -1,8 +1,5 @@
 library home_page_observer.dart;
 
-import 'package:amatrider/features/home/presentation/pages/index.dart' as p;
-import 'package:amatrider/manager/locator/locator.dart';
-import 'package:amatrider/utils/utils.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 

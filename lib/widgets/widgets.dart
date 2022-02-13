@@ -34,3 +34,5 @@ export 'video_box.dart';
 export 'bottomsheet_close_button.dart';
 export 'media_carousel.dart';
 export 'spinkit_loader.dart';
+export 'lottie_box.dart';
+export 'rate_app/rate_my_app_dialog.dart';

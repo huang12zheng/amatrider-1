@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of logistics_dto.dart;
@@ -221,10 +222,13 @@ class _$LogisticsListDTOTearOff {
 
   _LogisticsListDTO call(
       {List<UserOrderDTO> orders = const [],
-      List<SendPackageDTO> packages = const []}) {
+      List<SendPackageDTO> packages = const [],
+      @JsonKey(name: 'potential')
+          List<UserOrderDTO> potentialOrders = const []}) {
     return _LogisticsListDTO(
       orders: orders,
       packages: packages,
+      potentialOrders: potentialOrders,
     );
   }
 
@@ -240,6 +244,8 @@ const $LogisticsListDTO = _$LogisticsListDTOTearOff();
 mixin _$LogisticsListDTO {
   List<UserOrderDTO> get orders => throw _privateConstructorUsedError;
   List<SendPackageDTO> get packages => throw _privateConstructorUsedError;
+  @JsonKey(name: 'potential')
+  List<UserOrderDTO> get potentialOrders => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -252,7 +258,10 @@ abstract class $LogisticsListDTOCopyWith<$Res> {
   factory $LogisticsListDTOCopyWith(
           LogisticsListDTO value, $Res Function(LogisticsListDTO) then) =
       _$LogisticsListDTOCopyWithImpl<$Res>;
-  $Res call({List<UserOrderDTO> orders, List<SendPackageDTO> packages});
+  $Res call(
+      {List<UserOrderDTO> orders,
+      List<SendPackageDTO> packages,
+      @JsonKey(name: 'potential') List<UserOrderDTO> potentialOrders});
 }
 
 /// @nodoc
@@ -268,6 +277,7 @@ class _$LogisticsListDTOCopyWithImpl<$Res>
   $Res call({
     Object? orders = freezed,
     Object? packages = freezed,
+    Object? potentialOrders = freezed,
   }) {
     return _then(_value.copyWith(
       orders: orders == freezed
@@ -278,6 +288,10 @@ class _$LogisticsListDTOCopyWithImpl<$Res>
           ? _value.packages
           : packages // ignore: cast_nullable_to_non_nullable
               as List<SendPackageDTO>,
+      potentialOrders: potentialOrders == freezed
+          ? _value.potentialOrders
+          : potentialOrders // ignore: cast_nullable_to_non_nullable
+              as List<UserOrderDTO>,
     ));
   }
 }
@@ -289,7 +303,10 @@ abstract class _$LogisticsListDTOCopyWith<$Res>
           _LogisticsListDTO value, $Res Function(_LogisticsListDTO) then) =
       __$LogisticsListDTOCopyWithImpl<$Res>;
   @override
-  $Res call({List<UserOrderDTO> orders, List<SendPackageDTO> packages});
+  $Res call(
+      {List<UserOrderDTO> orders,
+      List<SendPackageDTO> packages,
+      @JsonKey(name: 'potential') List<UserOrderDTO> potentialOrders});
 }
 
 /// @nodoc
@@ -307,6 +324,7 @@ class __$LogisticsListDTOCopyWithImpl<$Res>
   $Res call({
     Object? orders = freezed,
     Object? packages = freezed,
+    Object? potentialOrders = freezed,
   }) {
     return _then(_LogisticsListDTO(
       orders: orders == freezed
@@ -317,6 +335,10 @@ class __$LogisticsListDTOCopyWithImpl<$Res>
           ? _value.packages
           : packages // ignore: cast_nullable_to_non_nullable
               as List<SendPackageDTO>,
+      potentialOrders: potentialOrders == freezed
+          ? _value.potentialOrders
+          : potentialOrders // ignore: cast_nullable_to_non_nullable
+              as List<UserOrderDTO>,
     ));
   }
 }
@@ -324,7 +346,10 @@ class __$LogisticsListDTOCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_LogisticsListDTO extends _LogisticsListDTO {
-  const _$_LogisticsListDTO({this.orders = const [], this.packages = const []})
+  const _$_LogisticsListDTO(
+      {this.orders = const [],
+      this.packages = const [],
+      @JsonKey(name: 'potential') this.potentialOrders = const []})
       : super._();
 
   factory _$_LogisticsListDTO.fromJson(Map<String, dynamic> json) =>
@@ -336,10 +361,13 @@ class _$_LogisticsListDTO extends _LogisticsListDTO {
   @JsonKey()
   @override
   final List<SendPackageDTO> packages;
+  @override
+  @JsonKey(name: 'potential')
+  final List<UserOrderDTO> potentialOrders;
 
   @override
   String toString() {
-    return 'LogisticsListDTO(orders: $orders, packages: $packages)';
+    return 'LogisticsListDTO(orders: $orders, packages: $packages, potentialOrders: $potentialOrders)';
   }
 
   @override
@@ -348,14 +376,17 @@ class _$_LogisticsListDTO extends _LogisticsListDTO {
         (other.runtimeType == runtimeType &&
             other is _LogisticsListDTO &&
             const DeepCollectionEquality().equals(other.orders, orders) &&
-            const DeepCollectionEquality().equals(other.packages, packages));
+            const DeepCollectionEquality().equals(other.packages, packages) &&
+            const DeepCollectionEquality()
+                .equals(other.potentialOrders, potentialOrders));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(orders),
-      const DeepCollectionEquality().hash(packages));
+      const DeepCollectionEquality().hash(packages),
+      const DeepCollectionEquality().hash(potentialOrders));
 
   @JsonKey(ignore: true)
   @override
@@ -370,8 +401,10 @@ class _$_LogisticsListDTO extends _LogisticsListDTO {
 
 abstract class _LogisticsListDTO extends LogisticsListDTO {
   const factory _LogisticsListDTO(
-      {List<UserOrderDTO> orders,
-      List<SendPackageDTO> packages}) = _$_LogisticsListDTO;
+          {List<UserOrderDTO> orders,
+          List<SendPackageDTO> packages,
+          @JsonKey(name: 'potential') List<UserOrderDTO> potentialOrders}) =
+      _$_LogisticsListDTO;
   const _LogisticsListDTO._() : super._();
 
   factory _LogisticsListDTO.fromJson(Map<String, dynamic> json) =
@@ -381,6 +414,9 @@ abstract class _LogisticsListDTO extends LogisticsListDTO {
   List<UserOrderDTO> get orders;
   @override
   List<SendPackageDTO> get packages;
+  @override
+  @JsonKey(name: 'potential')
+  List<UserOrderDTO> get potentialOrders;
   @override
   @JsonKey(ignore: true)
   _$LogisticsListDTOCopyWith<_LogisticsListDTO> get copyWith =>

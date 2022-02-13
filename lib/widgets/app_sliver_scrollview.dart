@@ -95,7 +95,7 @@ class AppSliverScrollView extends StatelessWidget {
         keyboardDismissBehavior: keyboardDismissBehavior ?? ScrollViewKeyboardDismissBehavior.onDrag,
         slivers: [
           if (title != null)
-            if (App.platform.isAndroid || (App.platform.isIOS && !implyMiddle))
+            if (App.platform.isAndroid)
               SliverSafeArea(
                 top: useSafeArea,
                 left: false,
@@ -158,6 +158,7 @@ class AppSliverScrollView extends StatelessWidget {
             adaptiveToolbar: hasAppBar
                 ? AdaptiveToolbar(
                     implyMiddle: implyMiddle,
+                    title: App.platform.cupertino(title),
                     implyLeading: autoImplyLeading ?? true,
                     cupertinoImplyLeading: cupertinoAutoImplyLeading ?? App.platform.isIOS,
                     actions: actions,

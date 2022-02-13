@@ -40,7 +40,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (p0) => PopupDialog.success(
               message: p0.message,
@@ -48,11 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
                 dismissed: () => App.showAlertDialog(
                   context: c,
                   barrierDismissible: false,
-                  barrierColor: Utils.foldTheme(
-                    light: () => Colors.grey.shade800.withOpacity(0.55),
-                    dark: () => Colors.white10,
-                  ),
-                  useRootNavigator: true,
+                  // barrierColor: App.resolveColor(Colors.grey.shade800.withOpacity(0.55), dark: Colors.white54),
                   builder: (_) => const ResetPaswordDialog(),
                 ),
               ),
@@ -64,137 +60,6 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return AdaptiveScaffold(
-      adaptiveToolbar: const AdaptiveToolbar(implyMiddle: true),
-      body: Theme(
-        data: Theme.of(context).copyWith(
-          scaffoldBackgroundColor: App.resolveColor(
-            Palette.cardColorLight,
-            dark: Palette.cardColorDark,
-          ),
-        ),
-        child: CustomScrollView(
-          clipBehavior: Clip.antiAlias,
-          controller: ScrollController(),
-          physics: Utils.physics,
-          slivers: [
-            SliverPadding(
-              padding: EdgeInsets.symmetric(
-                horizontal: App.sidePadding,
-              ).copyWith(top: App.longest * 0.02),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate.fixed(
-                  [
-                    SafeArea(
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 0.04.sw),
-                          child: SvgPicture.asset(
-                            AppAssets.forgotPassword,
-                            width: 0.72.sw,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.05.sw),
-                    //
-                    AdaptiveText(
-                      'Forgot Password?',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 26.sp,
-                      textColor: Palette.accentColor.shade400,
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                    //
-                    AdaptiveText(
-                      'It\'s totally normal to forget your password. '
-                      'Enter your phone number to reset password.',
-                      softWrap: true,
-                      wrapWords: true,
-                      maxLines: 3,
-                      textAlign: TextAlign.left,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 17.sp,
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                    //
-                    App.platform.fold(
-                      material: () => const Hero(
-                        tag: Const.emailLabelHeroTag,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextFormInputLabel(text: 'Phone Number'),
-                        ),
-                      ),
-                      cupertino: () => const SizedBox.shrink(),
-                    ),
-                    //
-                    AutofillGroup(child: Form(child: _phoneInput())),
-                    //
-                    VerticalSpace(height: 0.1.sw),
-                    //
-                    Align(
-                      alignment: Alignment.center,
-                      child: BlocBuilder<AuthCubit, AuthState>(
-                        builder: (c, s) => CountdownWidget(
-                          duration: !s.rider.phone.isValid
-                              ? const Duration(seconds: 0)
-                              : env.flavor.fold(
-                                  dev: () => const Duration(minutes: 1),
-                                  prod: () => const Duration(minutes: 2, seconds: 5),
-                                ),
-                          child: (callback) => Hero(
-                            tag: Const.authButtonHeroTag,
-                            child: AppButton(
-                              text: 'Reset Password',
-                              isLoading: s.isLoading,
-                              onPressed: () async {
-                                final _isSuccessful = await c.read<AuthCubit>().forgotPassword();
-                                if (_isSuccessful) callback();
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.04.sw),
-                    //
-                    AdaptiveButton(
-                      text: 'Login',
-                      textColor: App.resolveColor(
-                        Palette.accentColor,
-                        dark: Palette.accentColor.shade300,
-                      ),
-                      textStyle: const TextStyle(
-                        letterSpacing: Utils.labelLetterSpacing,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      splashColor: App.resolveColor(
-                        Colors.grey.shade300,
-                        dark: Colors.grey.shade700,
-                      ),
-                      onPressed: () => navigator.pop(),
-                    ),
-                    //
-                    VerticalSpace(height: 0.1.sw),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _phoneInput() => PhoneFormField<AuthCubit, AuthState>(
         disabled: (s) => s.isLoading,
         validate: (s) => s.validate,
@@ -202,10 +67,134 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
         controller: (s) => s.phoneTextController,
         response: (s) => s.status,
         errorField: (error) => error.errors?.phone,
+        autoDisposeController: false,
         onPickerBuilder: (cubit, country) {
           if (cubit.state.selectedCountry == null) cubit.countryChanged(country);
         },
         onCountryChanged: (cubit, country) => cubit.countryChanged(country),
         onChanged: (cubit, str) => cubit.phoneNumberChanged(str),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveScaffold(
+      adaptiveToolbar: const AdaptiveToolbar(title: 'Forgot Password'),
+      body: CustomScrollView(
+        clipBehavior: Clip.antiAlias,
+        controller: ScrollController(),
+        physics: Utils.physics,
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.symmetric(
+              horizontal: App.sidePadding,
+            ).copyWith(top: App.longest * 0.02),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate.fixed(
+                [
+                  SafeArea(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 0.04.sw),
+                        child: SvgPicture.asset(
+                          AppAssets.forgotPassword,
+                          width: 0.72.sw,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  //
+                  VerticalSpace(height: 0.05.sw),
+                  //
+                  AdaptiveText(
+                    'Forgot Password?',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26.sp,
+                    textColor: Palette.accentColor.shade400,
+                  ),
+                  //
+                  VerticalSpace(height: 0.03.sw),
+                  //
+                  AdaptiveText(
+                    'It\'s totally normal to forget your password. '
+                    'Enter your phone number to reset password.',
+                    softWrap: true,
+                    wrapWords: true,
+                    maxLines: 3,
+                    textAlign: TextAlign.left,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 17.sp,
+                  ),
+                  //
+                  VerticalSpace(height: 0.03.sw),
+                  //
+                  App.platform.fold(
+                    material: () => const Hero(
+                      tag: Const.emailLabelHeroTag,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextFormInputLabel(text: 'Phone Number'),
+                      ),
+                    ),
+                    cupertino: () => const SizedBox.shrink(),
+                  ),
+                  //
+                  AutofillGroup(child: Form(child: _phoneInput())),
+                  //
+                  VerticalSpace(height: 0.1.sw),
+                  //
+                  Align(
+                    alignment: Alignment.center,
+                    child: BlocBuilder<AuthCubit, AuthState>(
+                      builder: (c, s) => CountdownWidget(
+                        duration: !s.rider.phone.isValid
+                            ? const Duration(seconds: 0)
+                            : env.flavor.fold(
+                                dev: () => const Duration(minutes: 1),
+                                prod: () => const Duration(minutes: 2, seconds: 5),
+                              ),
+                        child: (callback) => Hero(
+                          tag: Const.authButtonHeroTag,
+                          child: AppButton(
+                            text: 'Reset Password',
+                            isLoading: s.isLoading,
+                            onPressed: () async {
+                              final _isSuccessful = await c.read<AuthCubit>().forgotPassword();
+                              if (_isSuccessful) callback();
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //
+                  VerticalSpace(height: 0.04.sw),
+                  //
+                  AdaptiveButton(
+                    text: 'Login',
+                    textColor: App.resolveColor(
+                      Palette.accentColor,
+                      dark: Palette.accentColor.shade300,
+                    ),
+                    textStyle: const TextStyle(
+                      letterSpacing: Utils.labelLetterSpacing,
+                    ),
+                    backgroundColor: Colors.transparent,
+                    splashColor: App.resolveColor(
+                      Colors.grey.shade300,
+                      dark: Colors.grey.shade700,
+                    ),
+                    onPressed: () => navigator.pop(),
+                  ),
+                  //
+                  VerticalSpace(height: 0.1.sw),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

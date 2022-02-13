@@ -29,17 +29,20 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AppAssets.friendship,
+          SafeArea(
+            left: false,
+            right: false,
+            bottom: false,
+            child: AppAssets.friendship,
+          ),
           //
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: App.sidePadding,
-            ).copyWith(top: 0.02.sw),
+            padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.02.sw),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 AdaptiveText(
-                  'Enjoying AmatNow?'
+                  'Enjoying ${Const.appName}?'
                   '\nInvite friends and get exclusive discounts. ',
                   fontSize: 17.sp,
                   softWrap: true,
@@ -78,11 +81,8 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
                         width: 0.115.sw,
                         child: AdaptiveInkWell(
                           onTap: () {},
-                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
-                          child: const Icon(
-                            Icons.copy_outlined,
-                            color: Palette.welcomeGrey,
-                          ),
+                          borderRadius: Utils.inputBorderRadius.br,
+                          child: const Icon(Icons.copy_outlined, color: Palette.welcomeGrey),
                         ),
                       ),
                     ),
@@ -92,21 +92,17 @@ class ReferralScreen extends StatelessWidget with AutoRouteWrapper {
                     DecoratedBox(
                       decoration: BoxDecoration(
                         color: Palette.accent20,
-                        borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                        borderRadius: Utils.inputBorderRadius.br,
                       ),
                       child: SizedBox(
                         height: 0.115.sw,
                         width: 0.115.sw,
                         child: Material(
                           color: App.resolveColor(Colors.transparent),
-                          borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                          borderRadius: Utils.inputBorderRadius.br,
                           child: AdaptiveInkWell(
-                            onTap: () {
-                              Share.share(
-                                'Checkout AmatNow @ https://amatnow.com',
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
+                            onTap: () => Share.share('Checkout AmatNow @ https://amatnow.com'),
+                            borderRadius: Utils.inputBorderRadius.br,
                             child: const Icon(
                               Icons.share,
                               color: Palette.accentColor,

@@ -6,12 +6,12 @@ import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/core/data/models/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/sources/remote/utilities/utilities_remote.dart';
-import 'package:amatrider/core/data/websocket_response_type.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/index.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/manager/settings/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:kt_dart/kt.dart';
@@ -21,6 +21,9 @@ class UtilitiesRepository extends BaseRepository {
   final UtilitiesRemote remote;
 
   UtilitiesRepository(this.remote);
+
+  MetaField? _promotionsMeta;
+  MetaField? _notificationMeta;
 
   Future<Either<AppHttpResponse, KtList<Country>>> countries() async {
     final _conn = await checkConnectivity();
@@ -60,8 +63,7 @@ class UtilitiesRepository extends BaseRepository {
             type: type,
           );
 
-          return AppHttpResponse.successful('Your documents were submitted!',
-              pop: true);
+          return AppHttpResponse.successful('Your documents were submitted!', pop: true);
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -143,12 +145,9 @@ class UtilitiesRepository extends BaseRepository {
       (f) async => f,
       (_) async {
         try {
-          await remote.contactSupport(
-              type: '${type.value}', message: message, images: images);
+          await remote.contactSupport(type: '${type.value}', message: message, images: images);
 
-          return AppHttpResponse.successful(
-            'Thanks for reaching out, we\'ll be in touch',
-          );
+          return AppHttpResponse.successful('Thanks for reaching out, we\'ll be in touch');
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {
@@ -158,20 +157,31 @@ class UtilitiesRepository extends BaseRepository {
     );
   }
 
-  Future<Either<AppHttpResponse, KtList<InAppNotification>>>
-      inAppNotifications() async {
+  Future<Either<AppHttpResponse, KtList<InAppNotification>>> inAppNotifications({int? perPage, bool nextPage = false}) async {
+    final _perPage = perPage ?? Const.kPerPage;
     final _conn = await checkConnectivity();
 
     return _conn.fold(
       (f) async => left(f),
       (_) async {
-        try {
-          final _result = await remote.inAppNotifications();
-          final _notifications = _result.domain(
-            (it) => it.map((e) => mapInAppNotification(e)).toImmutableList(),
-          );
+        final InAppNotificationListDTO listDTO;
 
-          return right(_notifications);
+        try {
+          if (nextPage) {
+            assert(_notificationMeta != null);
+
+            if (_notificationMeta?.currentPage != _notificationMeta?.lastPage)
+              listDTO = await remote.inAppNotifications(page: _notificationMeta!.currentPage! + 1, perPage: perPage);
+            else
+              return left(AppHttpResponse.endOfList);
+          } else {
+            final _perPageValue = _notificationMeta?.currentPage != null ? _notificationMeta!.currentPage! * _perPage : _perPage;
+            listDTO = await remote.inAppNotifications(perPage: _perPageValue);
+          }
+
+          // Save new meta data
+          _notificationMeta = listDTO.meta;
+          return right(listDTO.data.map((e) => e.domain).toImmutableList());
         } on AppHttpResponse catch (e) {
           return left(e);
         } on AppNetworkException catch (e) {
@@ -181,16 +191,36 @@ class UtilitiesRepository extends BaseRepository {
     );
   }
 
-  InAppNotification mapInAppNotification(InAppNotificationDTO dto) {
-    return dto.type!.when(
-      orElse: () => dto.domain,
-      packageDelivered: () {
-        final metaValue =
-            SendPackageDTO.fromJson(dto.meta as Map<String, dynamic>);
+  Future<Either<AppHttpResponse, KtList<Promotion>>> promotions({int? perPage, bool nextPage = false}) async {
+    final _perPage = perPage ?? Const.kPerPage;
+    final _conn = await checkConnectivity();
 
-        return dto
-            .copyWith(meta: NotificationMeta(metaValue.packageData?.domain))
-            .domain;
+    return _conn.fold(
+      (f) async => left(f),
+      (_) async {
+        final GenericPaginatedListDTO<PromotionDTO> promotions;
+
+        try {
+          if (nextPage) {
+            assert(_promotionsMeta != null);
+
+            if (_promotionsMeta?.currentPage != _promotionsMeta?.lastPage)
+              promotions = await remote.allAdminPromotions(page: _promotionsMeta!.currentPage! + 1, perPage: perPage);
+            else
+              return left(AppHttpResponse.endOfList);
+          } else {
+            final _perPageValue = _promotionsMeta?.currentPage != null ? _promotionsMeta!.currentPage! * _perPage : _perPage;
+            promotions = await remote.allAdminPromotions(perPage: _perPageValue);
+          }
+
+          // Save new meta data
+          _promotionsMeta = promotions.meta;
+          return right(promotions.data.map((e) => e.domain).toImmutableList());
+        } on AppHttpResponse catch (e) {
+          return left(e);
+        } on AppNetworkException catch (e) {
+          return left(e.asResponse());
+        }
       },
     );
   }

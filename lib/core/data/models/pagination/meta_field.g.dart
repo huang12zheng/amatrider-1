@@ -13,7 +13,7 @@ _$_MetaField _$$_MetaFieldFromJson(Map<String, dynamic> json) => _$_MetaField(
       links: (json['links'] as List<dynamic>?)
               ?.map((e) => PaginationLinks.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          [],
+          const [],
       path: json['path'] as String?,
       perPage: json['per_page'] as int?,
       to: json['to'] as int?,

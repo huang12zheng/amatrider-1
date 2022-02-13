@@ -21,10 +21,8 @@ class MarkerWidget {
   });
 
   void generate(BuildContext context) {
-    if (SchedulerBinding.instance?.schedulerPhase ==
-        SchedulerPhase.persistentCallbacks) {
-      SchedulerBinding.instance
-          ?.addPostFrameCallback((_) => afterFirstLayout(context));
+    if (SchedulerBinding.instance?.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) => afterFirstLayout(context));
     } else {
       afterFirstLayout(context);
     }
@@ -125,8 +123,7 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
   }
 
   Future<Uint8List?> _getUint8List(GlobalKey markerKey) async {
-    var boundary =
-        markerKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+    var boundary = markerKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     var image = await boundary?.toImage(pixelRatio: widget.pixelRatio);
     final byteData = await image?.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List();
@@ -138,7 +135,7 @@ mixin AfterLayoutMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance!.endOfFrame.then(
       (_) async => await afterFirstLayout(context),
     );
   }

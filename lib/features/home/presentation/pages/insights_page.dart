@@ -60,7 +60,7 @@ class _InsightsPageState extends State<InsightsPage> {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
@@ -68,7 +68,7 @@ class _InsightsPageState extends State<InsightsPage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: '${context.tr.menu}',
-            showCustomLeading: App.platform.material(true),
+            showCustomLeading: Utils.platform_(material: true, cupertino: false),
             implyLeading: false,
             cupertinoImplyLeading: false,
             leadingAction: () {},
@@ -119,11 +119,13 @@ class _InsightsPageState extends State<InsightsPage> {
                       fontWeight: FontWeight.w400,
                     ),
                     //
-                    BlocSelector<AuthWatcherCubit, AuthWatcherState, BasicTextField<double?>?>(
-                      selector: (s) => s.rider?.avgRating,
+                    BlocSelector<InsightsCubit, InsightsState, BasicTextField<double?>>(
+                      selector: (s) => s.insight.avgRating,
                       builder: (_, rating) => Headline(
-                        '${rating?.getOrNull ?? 0.0}',
+                        '${rating.getOrNull ?? 0.0}',
+                        maxLines: 1,
                         fontSize: 15.sp,
+                        maxFontSize: 17,
                       ),
                     ),
                     //
@@ -174,11 +176,9 @@ class _InsightsPageState extends State<InsightsPage> {
                       ),
                     ),
                     //
-                    if (s.insight.daysLeft.isValid)
+                    if (s.insight.daysLeft.getOrNull != null && s.insight.daysLeft.getOrNull! > 0)
                       SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: App.sidePadding,
-                        ).copyWith(top: 0.03.sw),
+                        padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.03.sw),
                         sliver: SliverToBoxAdapter(
                           child: Row(
                             children: [
@@ -194,18 +194,16 @@ class _InsightsPageState extends State<InsightsPage> {
                               DecoratedBox(
                                 decoration: const BoxDecoration(
                                   color: Palette.accent20,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(4),
-                                  ),
+                                  borderRadius: BorderRadius.all(Radius.circular(4)),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                                   child: AdaptiveText(
                                     '${context.tr.insightDaysLeft('${s.insight.daysLeft.getOrEmpty}')}',
-                                    style: TextStyle(
-                                      color: Palette.accentColor,
-                                      fontSize: 15.sp,
-                                    ),
+                                    maxLines: 1,
+                                    fontSize: 15.sp,
+                                    maxFontSize: 17,
+                                    textColor: Palette.accentColor,
                                   ),
                                 ),
                               ),
@@ -260,6 +258,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                     Flexible(
                                       child: _InsightColumn(
                                         title: '${context.tr.progress}',
+                                        crossAxisAlignment: CrossAxisAlignment.end,
                                         subtitle: '${s.insight.progress.getOrEmpty}%',
                                         color: Utils.foldTheme(
                                           light: () => Palette.pastelYellow,
@@ -270,7 +269,6 @@ class _InsightsPageState extends State<InsightsPage> {
                                           light: () => Palette.accentYellow,
                                           dark: () => Palette.accentDarkYellow,
                                         ),
-                                        crossAxisAlignment: CrossAxisAlignment.end,
                                       ),
                                     ),
                                   ],
@@ -291,9 +289,7 @@ class _InsightsPageState extends State<InsightsPage> {
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 color: Palette.pastelYellow,
-                                borderRadius: BorderRadius.circular(
-                                  Utils.inputBorderRadius,
-                                ),
+                                borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -303,10 +299,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Icon(
-                                      Icons.info,
-                                      color: Palette.accentYellow,
-                                    ),
+                                    const Icon(Icons.info, color: Palette.accentYellow),
                                     //
                                     Expanded(
                                       child: Padding(
@@ -346,23 +339,18 @@ class _InsightsPageState extends State<InsightsPage> {
                       SliverPadding(
                         padding: EdgeInsets.symmetric(
                           horizontal: App.sidePadding,
-                        ).copyWith(top: 0.01.sw),
+                        ).copyWith(top: 0.02.h),
                         sliver: SliverToBoxAdapter(
                           child: DecoratedBox(
                             decoration: BoxDecoration(
                               color: App.resolveColor(Colors.white, dark: Palette.secondaryColor.shade700),
-                              borderRadius: BorderRadius.circular(
-                                Utils.inputBorderRadius,
-                              ),
+                              borderRadius: BorderRadius.circular(Utils.inputBorderRadius),
                             ),
                             child: SizedBox(
                               height: 0.16.sh,
                               width: double.infinity,
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 0.035.sw,
-                                  vertical: 0.03.sw,
-                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 0.035.sw, vertical: 0.03.sw),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -395,7 +383,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                                 '${s.insight.currentBonus.getOrEmpty}'.asCurrency(),
                                                 fontSize: 15.sp,
                                                 textColor: Palette.neutralLabel,
-                                                textColorDark: Palette.neutralLabel,
+                                                textColorDark: Colors.white,
                                               ),
                                             ),
                                           ),
@@ -406,7 +394,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                       ),
                                     ),
                                     //
-                                    if (s.insight.canClaimBonus)
+                                    if (s.insight.canClaimBonus && 1 != 1)
                                       Flexible(
                                         flex: 5,
                                         child: BlocProvider(
@@ -429,9 +417,7 @@ class _InsightsPageState extends State<InsightsPage> {
                                                   context.read<InsightsCubit>().claimBonusLoading(false);
 
                                                   if (account.data == null && navigator.current.name != EditBankDetailsRoute.name)
-                                                    unawaited(navigator.navigate(
-                                                      const EditBankDetailsRoute(),
-                                                    ));
+                                                    unawaited(navigator.navigate(const EditBankDetailsRoute()));
                                                   else {
                                                     await App.showAlertDialog(
                                                       context: c,

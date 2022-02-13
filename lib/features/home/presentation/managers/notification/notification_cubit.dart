@@ -11,6 +11,7 @@ import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
+import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -43,13 +44,11 @@ class NotificationCubit extends Cubit<NotificationState> with BaseCubit<Notifica
 
   void reset() {
     if (riderId != null) _echoRepository.close(DispatchRider.notifications('$riderId'));
-    emit(state.copyWith(subscribed: false));
+    emit(NotificationState.initial());
   }
 
-  void _toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) => emit(state.copyWith(
-        isLoading: isLoading ?? !state.isLoading,
-        status: status ?? state.status,
-      ));
+  void _toggleLoading([bool? isLoading, Option<AppHttpResponse?>? status]) =>
+      emit(state.copyWith(isLoading: isLoading ?? !state.isLoading, status: status ?? state.status));
 
   void _updateCollection() {
     // Ensure only unique elements are present
@@ -85,18 +84,13 @@ class NotificationCubit extends Cubit<NotificationState> with BaseCubit<Notifica
 
               final json = jsonDecode(data) as Map<String, dynamic>;
 
-              final _notification = _repository.mapInAppNotification(
-                InAppNotificationDTO.fromJson(json),
-              );
+              final _notification = InAppNotificationDTO.fromJson(json);
 
-              if (_notification.title.isValid)
-                emit(state.copyWith(
-                  status: some(AppHttpResponse.successful(_notification.title.getOrNull, pop: false)),
-                ));
+              final body = _notification.body;
 
               emit(state.copyWith(
-                status: none(),
-                inAppNotifications: state.inAppNotifications.plusElement(_notification).asList().toImmutableList(),
+                status: body != null ? some(AppHttpResponse.successful(_notification.body, pop: false)) : none(),
+                inAppNotifications: state.inAppNotifications.plusElementIfAbsent(_notification.domain),
               ));
 
               // Update collection
@@ -108,15 +102,20 @@ class NotificationCubit extends Cubit<NotificationState> with BaseCubit<Notifica
     }
   }
 
-  Future<void> inAppNotifications() async {
+  Future<void> inAppNotifications({int? perPage, bool nextPage = false}) async {
+    if (state.status.getOrNull == AppHttpResponse.endOfList && nextPage) return;
+
     _toggleLoading(true, none());
 
-    final _resopnse = await _repository.inAppNotifications();
+    final _resopnse = await _repository.inAppNotifications(nextPage: nextPage, perPage: perPage);
 
     _resopnse.fold(
       (failure) => emit(state.copyWith(status: some(failure))),
       (notifications) {
-        emit(state.copyWith(status: none(), inAppNotifications: notifications));
+        emit(state.copyWith(
+          status: none(),
+          inAppNotifications: nextPage ? state.inAppNotifications.plusIfAbsent(notifications) : notifications,
+        ));
         // Update collection
         _updateCollection();
       },

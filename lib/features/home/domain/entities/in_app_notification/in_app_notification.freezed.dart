@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of in_app_notification.dart;
@@ -18,15 +19,21 @@ class _$InAppNotificationTearOff {
   const _$InAppNotificationTearOff();
 
   _InAppNotification call(
-      {required BasicTextField<String?> title,
-      WebsocketResponseType type = WebsocketResponseType.none,
-      required NotificationMeta<dynamic> meta,
-      required DateTime createdAt}) {
+      {required UniqueId<String?> id,
+      required BasicTextField<String?> title,
+      required BasicTextField<String?> description,
+      NotificationMeta? meta,
+      required DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? deletedAt}) {
     return _InAppNotification(
+      id: id,
       title: title,
-      type: type,
+      description: description,
       meta: meta,
       createdAt: createdAt,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
     );
   }
 }
@@ -36,10 +43,13 @@ const $InAppNotification = _$InAppNotificationTearOff();
 
 /// @nodoc
 mixin _$InAppNotification {
+  UniqueId<String?> get id => throw _privateConstructorUsedError;
   BasicTextField<String?> get title => throw _privateConstructorUsedError;
-  WebsocketResponseType get type => throw _privateConstructorUsedError;
-  NotificationMeta<dynamic> get meta => throw _privateConstructorUsedError;
+  BasicTextField<String?> get description => throw _privateConstructorUsedError;
+  NotificationMeta? get meta => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get deletedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InAppNotificationCopyWith<InAppNotification> get copyWith =>
@@ -52,12 +62,15 @@ abstract class $InAppNotificationCopyWith<$Res> {
           InAppNotification value, $Res Function(InAppNotification) then) =
       _$InAppNotificationCopyWithImpl<$Res>;
   $Res call(
-      {BasicTextField<String?> title,
-      WebsocketResponseType type,
-      NotificationMeta<dynamic> meta,
-      DateTime createdAt});
+      {UniqueId<String?> id,
+      BasicTextField<String?> title,
+      BasicTextField<String?> description,
+      NotificationMeta? meta,
+      DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? deletedAt});
 
-  $NotificationMetaCopyWith<dynamic, $Res> get meta;
+  $NotificationMetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -71,34 +84,53 @@ class _$InAppNotificationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? title = freezed,
-    Object? type = freezed,
+    Object? description = freezed,
     Object? meta = freezed,
     Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as WebsocketResponseType,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       meta: meta == freezed
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as NotificationMeta<dynamic>,
+              as NotificationMeta?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: deletedAt == freezed
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 
   @override
-  $NotificationMetaCopyWith<dynamic, $Res> get meta {
-    return $NotificationMetaCopyWith<dynamic, $Res>(_value.meta, (value) {
+  $NotificationMetaCopyWith<$Res>? get meta {
+    if (_value.meta == null) {
+      return null;
+    }
+
+    return $NotificationMetaCopyWith<$Res>(_value.meta!, (value) {
       return _then(_value.copyWith(meta: value));
     });
   }
@@ -112,13 +144,16 @@ abstract class _$InAppNotificationCopyWith<$Res>
       __$InAppNotificationCopyWithImpl<$Res>;
   @override
   $Res call(
-      {BasicTextField<String?> title,
-      WebsocketResponseType type,
-      NotificationMeta<dynamic> meta,
-      DateTime createdAt});
+      {UniqueId<String?> id,
+      BasicTextField<String?> title,
+      BasicTextField<String?> description,
+      NotificationMeta? meta,
+      DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? deletedAt});
 
   @override
-  $NotificationMetaCopyWith<dynamic, $Res> get meta;
+  $NotificationMetaCopyWith<$Res>? get meta;
 }
 
 /// @nodoc
@@ -134,28 +169,43 @@ class __$InAppNotificationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? title = freezed,
-    Object? type = freezed,
+    Object? description = freezed,
     Object? meta = freezed,
     Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
   }) {
     return _then(_InAppNotification(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as WebsocketResponseType,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       meta: meta == freezed
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as NotificationMeta<dynamic>,
+              as NotificationMeta?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: deletedAt == freezed
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -164,25 +214,33 @@ class __$InAppNotificationCopyWithImpl<$Res>
 
 class _$_InAppNotification extends _InAppNotification {
   const _$_InAppNotification(
-      {required this.title,
-      this.type = WebsocketResponseType.none,
-      required this.meta,
-      required this.createdAt})
+      {required this.id,
+      required this.title,
+      required this.description,
+      this.meta,
+      required this.createdAt,
+      this.updatedAt,
+      this.deletedAt})
       : super._();
 
   @override
+  final UniqueId<String?> id;
+  @override
   final BasicTextField<String?> title;
-  @JsonKey()
   @override
-  final WebsocketResponseType type;
+  final BasicTextField<String?> description;
   @override
-  final NotificationMeta<dynamic> meta;
+  final NotificationMeta? meta;
   @override
   final DateTime createdAt;
+  @override
+  final DateTime? updatedAt;
+  @override
+  final DateTime? deletedAt;
 
   @override
   String toString() {
-    return 'InAppNotification(title: $title, type: $type, meta: $meta, createdAt: $createdAt)';
+    return 'InAppNotification(id: $id, title: $title, description: $description, meta: $meta, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -190,19 +248,26 @@ class _$_InAppNotification extends _InAppNotification {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InAppNotification &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.meta, meta) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
+            const DeepCollectionEquality().equals(other.deletedAt, deletedAt));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(meta),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(deletedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -212,20 +277,29 @@ class _$_InAppNotification extends _InAppNotification {
 
 abstract class _InAppNotification extends InAppNotification {
   const factory _InAppNotification(
-      {required BasicTextField<String?> title,
-      WebsocketResponseType type,
-      required NotificationMeta<dynamic> meta,
-      required DateTime createdAt}) = _$_InAppNotification;
+      {required UniqueId<String?> id,
+      required BasicTextField<String?> title,
+      required BasicTextField<String?> description,
+      NotificationMeta? meta,
+      required DateTime createdAt,
+      DateTime? updatedAt,
+      DateTime? deletedAt}) = _$_InAppNotification;
   const _InAppNotification._() : super._();
 
   @override
+  UniqueId<String?> get id;
+  @override
   BasicTextField<String?> get title;
   @override
-  WebsocketResponseType get type;
+  BasicTextField<String?> get description;
   @override
-  NotificationMeta<dynamic> get meta;
+  NotificationMeta? get meta;
   @override
   DateTime get createdAt;
+  @override
+  DateTime? get updatedAt;
+  @override
+  DateTime? get deletedAt;
   @override
   @JsonKey(ignore: true)
   _$InAppNotificationCopyWith<_InAppNotification> get copyWith =>

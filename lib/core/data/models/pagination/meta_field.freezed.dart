@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of meta_field;
@@ -22,12 +23,12 @@ class _$MetaFieldTearOff {
   const _$MetaFieldTearOff();
 
   _MetaField call(
-      {@JsonKey(name: 'current_page') int? currentPage,
+      {int? currentPage,
       int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(defaultValue: []) List<PaginationLinks> links = const [],
+      int? lastPage,
+      List<PaginationLinks> links = const [],
       String? path,
-      @JsonKey(name: 'per_page') int? perPage,
+      int? perPage,
       int? to,
       int? total}) {
     return _MetaField(
@@ -52,15 +53,11 @@ const $MetaField = _$MetaFieldTearOff();
 
 /// @nodoc
 mixin _$MetaField {
-  @JsonKey(name: 'current_page')
   int? get currentPage => throw _privateConstructorUsedError;
   int? get from => throw _privateConstructorUsedError;
-  @JsonKey(name: 'last_page')
   int? get lastPage => throw _privateConstructorUsedError;
-  @JsonKey(defaultValue: [])
   List<PaginationLinks> get links => throw _privateConstructorUsedError;
   String? get path => throw _privateConstructorUsedError;
-  @JsonKey(name: 'per_page')
   int? get perPage => throw _privateConstructorUsedError;
   int? get to => throw _privateConstructorUsedError;
   int? get total => throw _privateConstructorUsedError;
@@ -76,12 +73,12 @@ abstract class $MetaFieldCopyWith<$Res> {
   factory $MetaFieldCopyWith(MetaField value, $Res Function(MetaField) then) =
       _$MetaFieldCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
+      {int? currentPage,
       int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(defaultValue: []) List<PaginationLinks> links,
+      int? lastPage,
+      List<PaginationLinks> links,
       String? path,
-      @JsonKey(name: 'per_page') int? perPage,
+      int? perPage,
       int? to,
       int? total});
 }
@@ -149,12 +146,12 @@ abstract class _$MetaFieldCopyWith<$Res> implements $MetaFieldCopyWith<$Res> {
       __$MetaFieldCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'current_page') int? currentPage,
+      {int? currentPage,
       int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(defaultValue: []) List<PaginationLinks> links,
+      int? lastPage,
+      List<PaginationLinks> links,
       String? path,
-      @JsonKey(name: 'per_page') int? perPage,
+      int? perPage,
       int? to,
       int? total});
 }
@@ -220,12 +217,12 @@ class __$MetaFieldCopyWithImpl<$Res> extends _$MetaFieldCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MetaField extends _MetaField {
   const _$_MetaField(
-      {@JsonKey(name: 'current_page') this.currentPage,
+      {this.currentPage,
       this.from,
-      @JsonKey(name: 'last_page') this.lastPage,
-      @JsonKey(defaultValue: []) this.links = const [],
+      this.lastPage,
+      this.links = const [],
       this.path,
-      @JsonKey(name: 'per_page') this.perPage,
+      this.perPage,
       this.to,
       this.total})
       : super._();
@@ -234,20 +231,17 @@ class _$_MetaField extends _MetaField {
       _$$_MetaFieldFromJson(json);
 
   @override
-  @JsonKey(name: 'current_page')
   final int? currentPage;
   @override
   final int? from;
   @override
-  @JsonKey(name: 'last_page')
   final int? lastPage;
+  @JsonKey()
   @override
-  @JsonKey(defaultValue: [])
   final List<PaginationLinks> links;
   @override
   final String? path;
   @override
-  @JsonKey(name: 'per_page')
   final int? perPage;
   @override
   final int? to;
@@ -300,12 +294,12 @@ class _$_MetaField extends _MetaField {
 
 abstract class _MetaField extends MetaField {
   const factory _MetaField(
-      {@JsonKey(name: 'current_page') int? currentPage,
+      {int? currentPage,
       int? from,
-      @JsonKey(name: 'last_page') int? lastPage,
-      @JsonKey(defaultValue: []) List<PaginationLinks> links,
+      int? lastPage,
+      List<PaginationLinks> links,
       String? path,
-      @JsonKey(name: 'per_page') int? perPage,
+      int? perPage,
       int? to,
       int? total}) = _$_MetaField;
   const _MetaField._() : super._();
@@ -314,20 +308,16 @@ abstract class _MetaField extends MetaField {
       _$_MetaField.fromJson;
 
   @override
-  @JsonKey(name: 'current_page')
   int? get currentPage;
   @override
   int? get from;
   @override
-  @JsonKey(name: 'last_page')
   int? get lastPage;
   @override
-  @JsonKey(defaultValue: [])
   List<PaginationLinks> get links;
   @override
   String? get path;
   @override
-  @JsonKey(name: 'per_page')
   int? get perPage;
   @override
   int? get to;

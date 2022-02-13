@@ -201,14 +201,11 @@ class _OnBoardingItemBuilderState extends State<OnBoardingItemBuilder> {
                                     children: [
                                       Flexible(
                                         child: AppButton(
-                                          text: 'Next',
+                                          text: !c.watch<OnboardingCubit>().isLast(left(widget.item!)) ? 'Next' : 'Get Started',
                                           fontWeight: FontWeight.w600,
                                           onPressed: !c.watch<OnboardingCubit>().isLast(left(widget.item!))
                                               ? c.read<OnboardingCubit>().next
-                                              : () => navigator.pushAndPopUntil(
-                                                    const GetStartedRoute(),
-                                                    predicate: (_) => false,
-                                                  ),
+                                              : () => navigator.pushAndPopUntil(const GetStartedRoute(), predicate: (_) => false),
                                         ),
                                       ),
                                     ],

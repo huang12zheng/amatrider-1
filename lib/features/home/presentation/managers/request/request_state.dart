@@ -17,12 +17,6 @@ class RequestState extends BaseState with _$RequestState {
     @Default(KtList.empty()) KtList<Logistics> inTransit,
     @Default(KtList.empty()) KtList<Logistics> active,
     @Default(KtList.empty()) KtList<Logistics> potential,
-    // @Default(KtList.empty()) KtList<SendPackage> packagesInTransit,
-    // @Default(KtList.empty()) KtList<UserOrder> ordersInTransit,
-    // @Default(KtList.empty()) KtList<SendPackage> activePackages,
-    // @Default(KtList.empty()) KtList<UserOrder> activeOrders,
-    // @Default(KtList.empty()) KtList<SendPackage> potentialPackages,
-    // @Default(KtList.empty()) KtList<UserOrder> potentialOrders,
     @Default(None()) Option<AppHttpResponse?> status,
   }) = _RequestState;
 

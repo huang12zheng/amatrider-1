@@ -38,7 +38,7 @@ class LoginScreen extends StatefulWidget with AutoRouteWrapper {
         listener: (c, s) => s.status.fold(
           () => null,
           (th) => th?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.success(duration: env.greetingDuration, message: s.message).render(c),
           ),
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> with AutomaticKeepAliveClient
   bool get wantKeepAlive => true;
 
   Future<bool> maybePop() async {
-    if (context.watchRouter.canPopSelfOrChildren && !context.watchRouter.isRoot) return true;
+    if (context.watchRouter.canPopSelfOrChildren) return Future.value(true);
 
     final now = DateTime.now();
     final difference = now.difference(_timestampPressed);
@@ -80,137 +80,127 @@ class _LoginScreenState extends State<LoginScreen> with AutomaticKeepAliveClient
     return WillPopScope(
       onWillPop: maybePop,
       child: AdaptiveScaffold(
-        body: Theme(
-          data: Theme.of(context).copyWith(
-            scaffoldBackgroundColor: App.resolveColor(
-              Palette.cardColorLight,
-              dark: Palette.cardColorDark,
-            ),
-          ),
-          child: CustomScrollView(
-            shrinkWrap: true,
-            clipBehavior: Clip.antiAlias,
-            controller: ScrollController(),
-            physics: Utils.physics,
-            scrollDirection: Axis.vertical,
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            slivers: [
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate.fixed([
-                    SafeArea(
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 0.08.sw),
-                          child: SvgPicture.asset(
-                            AppAssets.takeAway,
-                            height: 0.27.h,
-                            fit: BoxFit.contain,
-                          ),
+        body: CustomScrollView(
+          shrinkWrap: true,
+          clipBehavior: Clip.antiAlias,
+          controller: ScrollController(),
+          physics: Utils.physics,
+          scrollDirection: Axis.vertical,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  SafeArea(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 0.08.sw),
+                        child: SvgPicture.asset(
+                          AppAssets.takeAway,
+                          height: 0.27.h,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
-                    //
-                    VerticalSpace(height: 0.05.sw),
-                    //
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 27.sp,
-                      ),
-                    ),
-                    //
-                    VerticalSpace(height: 0.03.sw),
-                  ]),
-                ),
-              ),
-              //
-              SliverList(
-                delegate: SliverChildListDelegate.fixed([
-                  Form(
-                    key: AuthState.loginFormKey,
-                    onChanged: () => Form.of(primaryFocus!.context!)?.save(),
-                    child: const AutofillGroup(child: _FormLayout()),
                   ),
+                  //
+                  VerticalSpace(height: 0.05.sw),
+                  //
+                  AdaptiveText(
+                    'Welcome Back!',
+                    fontSize: 27.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  //
+                  VerticalSpace(height: 0.03.sw),
                 ]),
               ),
-              //
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate.fixed([
-                    App.platform.fold(
-                      material: () => VerticalSpace(height: 0.07.sw),
-                      cupertino: () => VerticalSpace(height: 0.02.sw),
-                    ),
-                    //
-                    BlocSelector<AuthCubit, AuthState, bool>(
-                      selector: (s) => s.isLoading,
-                      builder: (c, isLoading) => Hero(
-                        tag: Const.authButtonHeroTag,
-                        child: AppButton(
-                          text: 'Login',
-                          isLoading: isLoading,
-                          onPressed: c.read<AuthCubit>().login,
-                        ),
+            ),
+            //
+            SliverList(
+              delegate: SliverChildListDelegate.fixed([
+                Form(
+                  key: AuthState.loginFormKey,
+                  onChanged: () => Form.of(primaryFocus!.context!)?.save(),
+                  child: const AutofillGroup(child: _FormLayout()),
+                ),
+              ]),
+            ),
+            //
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: App.longest * 0.02),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  App.platform.fold(
+                    material: () => VerticalSpace(height: 0.07.sw),
+                    cupertino: () => VerticalSpace(height: 0.02.sw),
+                  ),
+                  //
+                  BlocSelector<AuthCubit, AuthState, bool>(
+                    selector: (s) => s.isLoading,
+                    builder: (c, isLoading) => Hero(
+                      tag: Const.authButtonHeroTag,
+                      child: AppButton(
+                        text: 'Login',
+                        isLoading: isLoading,
+                        onPressed: c.read<AuthCubit>().login,
                       ),
                     ),
-                    //
-                    VerticalSpace(height: 0.06.sw),
-                    //
-                    const OrWidget(),
-                    //
-                    VerticalSpace(height: 0.06.sw),
-                    //
-                    Hero(
-                      tag: Const.oauthBtnHeroTag,
-                      child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
-                    ),
-                    //
-                    VerticalSpace(height: 0.05.sw),
-                    //
-                    Hero(
-                      tag: Const.loginAndSignupSwitchTag,
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                            child: AdaptiveText.rich(
-                              TextSpan(children: [
-                                const TextSpan(text: 'Don\'t have an account? '),
-                                TextSpan(
-                                  text: 'Sign Up',
-                                  recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const SignupRoute()),
-                                  style: TextStyle(
-                                    color: Utils.foldTheme(
-                                      context: context,
-                                      light: () => Palette.accentColor,
-                                      dark: () => Palette.accentColor.shade100,
-                                    ),
-                                    fontWeight: FontWeight.w600,
+                  ),
+                  //
+                  VerticalSpace(height: 0.06.sw),
+                  //
+                  const OrWidget(),
+                  //
+                  VerticalSpace(height: 0.06.sw),
+                  //
+                  Hero(
+                    tag: Const.oauthBtnHeroTag,
+                    child: Center(child: OAuthWidgets(cubit: context.read<AuthCubit>())),
+                  ),
+                  //
+                  VerticalSpace(height: 0.05.sw),
+                  //
+                  Hero(
+                    tag: Const.loginAndSignupSwitchTag,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: AdaptiveText.rich(
+                            TextSpan(children: [
+                              const TextSpan(text: 'Don\'t have an account? '),
+                              TextSpan(
+                                text: 'Sign Up',
+                                recognizer: TapGestureRecognizer()..onTap = () => navigator.navigate(const SignupRoute()),
+                                style: TextStyle(
+                                  color: Utils.foldTheme(
+                                    context: context,
+                                    light: () => Palette.accentColor,
+                                    dark: () => Palette.accentColor.shade100,
                                   ),
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ]),
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: Utils.labelLetterSpacing,
-                              textAlign: TextAlign.center,
-                            ),
+                              ),
+                            ]),
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: Utils.labelLetterSpacing,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ),
                     ),
-                    //
-                    VerticalSpace(height: 0.1.sw),
-                  ]),
-                ),
+                  ),
+                  //
+                  VerticalSpace(height: 0.1.sw),
+                ]),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

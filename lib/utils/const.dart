@@ -4,6 +4,7 @@ mixin Const {
   static const String sembastDB = 'amatrider_sembast_db';
   static const String packageNameDev = 'com.amatnow.app.amatrider.dev';
   static const String packageName = 'com.amatnow.app.amatrider';
+  static const String rateMyAppPrefKey = 'rate-amatrider-pref-key';
   static const String minSDKVersion = '21';
   // Hero Tags
   static const String emailLabelHeroTag = 'email-label-hero-tag';
@@ -22,6 +23,7 @@ mixin Const {
   static const String kPhoneNumberPrefKey = 'user-phone-number-pref-key';
 
   static const double maxUploadSize = 1e+7;
+  static const int kPerPage = 5;
 
   static const double defaultConversionRate = 0.032;
 }

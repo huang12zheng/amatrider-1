@@ -36,6 +36,18 @@ class _HistoryPageState extends State<HistoryPage> {
     controller.refreshCompleted();
   }
 
+  void onLoadMore(DragToRefreshState refresh, {bool nextPage = true, int? perPage}) async {
+    if (!_cubit.state.isLoading) {
+      await _cubit.getHistory(nextPage: nextPage, perPage: perPage);
+      refresh.loadComplete();
+    } else
+      refresh.loadComplete();
+
+    Future.delayed(const Duration(seconds: 30), () {
+      if (refresh.controller.isLoading) refresh.loadComplete();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -51,7 +63,7 @@ class _HistoryPageState extends State<HistoryPage> {
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(
-            info: (i) => PopupDialog.error(message: i.message).render(c),
+            info: (i) => PopupDialog.info(message: i.message).render(c),
             error: (f) => PopupDialog.error(message: f.message).render(c),
             success: (s) => PopupDialog.error(message: s.message).render(c),
           ),
@@ -59,7 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: '${tr.menu}',
-            showCustomLeading: App.platform.material(true),
+            showCustomLeading: Utils.platform_(material: true, cupertino: false),
             implyLeading: false,
             cupertinoImplyLeading: false,
             leadingAction: () {},
@@ -105,7 +117,9 @@ class _HistoryPageState extends State<HistoryPage> {
             child: Builder(
               builder: (c) => DragToRefresh(
                 initialRefresh: true,
+                enablePullUp: true,
                 onRefresh: (controller) => onRefresh(c, controller),
+                onLoading: (controller) => onLoadMore(controller),
                 child: BlocBuilder<HistoryCubit, HistoryState>(
                   builder: (c, s) => AnimatedVisibility(
                     visible: !DragToRefresh.of(c).controller.isLoading && !s.isLoading && s.histories.isEmpty(),
@@ -135,7 +149,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         //
                         SliverList(
                           delegate: SliverChildListDelegate.fixed([
-                            ...s.historyCollection
+                            ...s.collection
                                 .map((entry) => GroupedLayoutCard(
                                       dateTime: entry.key,
                                       count: entry.value.size,

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/manager/settings/external/preference_repository.dart';
 import 'package:amatrider/utils/utils.dart';
@@ -19,8 +20,8 @@ import 'package:kt_dart/kt.dart';
 part 'global_app_preference_cubit.freezed.dart';
 part 'global_app_preference_state.dart';
 
-@singleton
-class GlobalAppPreferenceCubit extends HydratedCubit<GlobalPreferenceState> with _ImagePickerMixin {
+@injectable
+class GlobalAppPreferenceCubit extends HydratedCubit<GlobalPreferenceState> with BaseCubit<GlobalPreferenceState>, _ImagePickerMixin {
   static const String _localeLanguageKey = '${Const.appName}-language-code-key';
   static const String _localeCountryKey = '${Const.appName}-country-code-key';
 
@@ -69,17 +70,18 @@ class GlobalAppPreferenceCubit extends HydratedCubit<GlobalPreferenceState> with
   void supportMessageChanged(String value) => emit(state.copyWith(supportMessage: BasicTextField(value)));
 
   void contactSupport() async {
-    toggleLoading(true);
+    emit(state.copyWith(isLoading: true, validate: true, status: none()));
 
-    final response = await _utils.contactSupport(
-      type: state.feedbackType,
-      message: '${state.supportMessage.getOrEmpty}',
-      images: state.supportImages.asList(),
-    );
+    if (state.supportMessage.isValid) {
+      final response = await _utils.contactSupport(
+        type: state.feedbackType,
+        message: '${state.supportMessage.getOrEmpty}',
+        images: state.supportImages.asList(),
+      );
 
-    emit(state.copyWith(status: some(response)));
-
-    toggleLoading(false);
+      emit(state.copyWith(status: some(response), isLoading: false, validate: false));
+    } else
+      toggleLoading(false);
   }
 }
 

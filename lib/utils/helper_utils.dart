@@ -188,13 +188,18 @@ class Utils {
         duration: const Duration(milliseconds: 1100),
       );
 
-  Widget get loadingSpinningLines => SpinKitSpinningLines(
-        color: App.resolveColor(
-          Palette.accentColor,
-          dark: Colors.white70,
-        )!,
-        size: 34.0,
-        itemCount: 6,
+  // Widget get loadingSpinningLines => SpinKitSpinningLines(
+  //       color: App.resolveColor(
+  //         Palette.accentColor,
+  //         dark: Colors.white70,
+  //       )!,
+  //       size: 34.0,
+  //       itemCount: 6,
+  //       duration: const Duration(milliseconds: 900),
+  //     );
+
+  Widget get loadingSpinningLines => SpinKitLoader(
+        color: App.resolveColor(Palette.accentColor, dark: Colors.white70)!,
         duration: const Duration(milliseconds: 900),
       );
 
@@ -297,10 +302,7 @@ class Utils {
     return child;
   }
 
-  static T? platform_<T>({
-    T? material,
-    T? cupertino,
-  }) {
+  static T? platform_<T>({T? material, T? cupertino}) {
     if (Platform.isIOS || Platform.isMacOS)
       return cupertino;
     else
@@ -314,14 +316,21 @@ class Utils {
 
   static DateTime getDate(DateTime d) => DateTime(d.year, d.month, d.day, d.hour, d.minute, d.second);
 
+  // void updateContext(BuildContext context) {
+  //   instance.context = context;
+  // }
+
+  bool isDarkMode([BuildContext? context]) {
+    final _context = context ?? App.context;
+    return BlocProvider.of<ThemeCubit>(_context).isDarkMode || (MediaQuery.of(_context).platformBrightness == Brightness.dark);
+  }
+
   static T foldTheme<T>({
     required T Function() light,
     T Function()? dark,
     BuildContext? context,
   }) {
-    final _context = context ?? App.context;
-
-    var isDarkMode = BlocProvider.of<ThemeCubit>(_context).isDarkMode || (MediaQuery.of(_context).platformBrightness == Brightness.dark);
+    var isDarkMode = App.isDarkMode(context);
 
     if (isDarkMode) {
       if (dark == null) return light.call();
@@ -597,20 +606,19 @@ class Utils {
   Future<T> showAdaptiveBottomSheet<T>(
     BuildContext context, {
     required WidgetBuilder builder,
-    Radius topRadius = const Radius.circular(24),
+    Radius radius = const Radius.circular(24),
     bool isDismissible = true,
     Color? backgroundColor,
     Color? barrierColor,
     double? elevation,
     bool enableDrag = true,
     bool useRootNavigator = true,
-    ShapeBorder shape = const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
     bool expand = false,
     bool bounce = false,
     Duration? duration,
   }) async {
+    final shape = RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: radius));
+
     return await Theme.of(context).platform.fold(
           material: () async => await showMaterialModalBottomSheet(
             context: context,
@@ -637,7 +645,7 @@ class Utils {
             shape: shape,
             expand: expand,
             bounce: bounce,
-            topRadius: topRadius,
+            topRadius: radius,
             duration: duration,
             useRootNavigator: useRootNavigator,
           ) as T,

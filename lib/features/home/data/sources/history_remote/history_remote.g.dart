@@ -14,18 +14,22 @@ class _HistoryRemote implements HistoryRemote {
   String? baseUrl;
 
   @override
-  Future<DeliveryHistoryListDTO> all() async {
+  Future<LogisticsListDTO> all({page, perPage}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'per_page': perPage
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DeliveryHistoryListDTO>(
+        _setStreamType<LogisticsListDTO>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/rider/history',
+                .compose(_dio.options, '/rider/deliverable/history',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DeliveryHistoryListDTO.fromJson(_result.data!);
+    final value = LogisticsListDTO.fromJson(_result.data!);
     return value;
   }
 

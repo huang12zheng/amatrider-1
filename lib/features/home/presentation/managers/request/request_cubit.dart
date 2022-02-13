@@ -39,8 +39,6 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     if (riderId != null) {
       _echoRepository.leave(RequestEvents.newPackageChannel('$riderId'), event: RequestEvents.newPackageEvent);
       _echoRepository.leave(RequestEvents.newOrderChannel('$riderId'), event: RequestEvents.newOrderEvent);
-      // _echoRepository.leave(RequestEvents.packageDeliveredChannel('$riderId'), event: RequestEvents.packageDeliveredEvent);
-      // _echoRepository.leave(RequestEvents.orderDeliveredChannel('$riderId'), event: RequestEvents.packageDeliveredEvent);
     }
     return super.close();
   }
@@ -77,9 +75,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
       ));
   }
 
-  void setCurrent(Logistics? item) {
-    emit(state.copyWith(current: item));
-  }
+  void setCurrent(Logistics? item) => emit(state.copyWith(current: item));
 
   void echo(Rider rider) async {
     riderId = rider.uid.value!;
@@ -132,7 +128,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     );
   }
 
-  Future<void> allActive(BuildContext context, {RiderLocation? location}) async {
+  Future<void> allDeliverables(BuildContext context, {RiderLocation? location}) async {
     emit(state.copyWith(isLoadingActive: true, status: none()));
 
     final _locationCubit = BlocProvider.of<LocationCubit>(context);
@@ -146,12 +142,9 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
         );
 
         _result.fold(
-          (e) => emit(state.copyWith(
-            status: optionOf(e),
-            isLoadingActive: false,
-          )),
+          (e) => emit(state.copyWith(status: optionOf(e), isLoadingActive: false)),
           (list) {
-            final active = list.filter((it) =>
+            final active = list.value1.filter((it) =>
                 !ParcelStatus.packageInTransit.contains(it.status) &&
                 !ParcelStatus.orderWithRider.contains(it.status) &&
                 !ParcelStatus.delivered.contains(it.status));
@@ -159,6 +152,7 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
             emit(state.copyWith(
               isLoadingActive: false,
               active: active.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+              potential: list.value2.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
             ));
           },
         );

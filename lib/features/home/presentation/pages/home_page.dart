@@ -24,10 +24,12 @@ class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static Future<void> onRefresh(BuildContext c, [DragToRefreshState? controller]) async {
-    await BlocProvider.of<LocationCubit>(c).showPermissionRationale(c, callback: () async {
-      await c.read<RequestCubit>().allActive(c);
-      await c.read<RequestCubit>().allInTransit(c);
-      if (controller != null) controller = controller!..refreshCompleted();
+    await c.read<LocationCubit>().showPermissionRationale(c, callback: () async {
+      Future.delayed(const Duration(seconds: 1, milliseconds: 500), () async {
+        await c.read<RequestCubit>().allDeliverables(c);
+        await c.read<RequestCubit>().allInTransit(c);
+        if (controller != null) controller = controller!..refreshCompleted();
+      });
     });
   }
 
@@ -89,7 +91,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: AdaptiveScaffold(
           adaptiveToolbar: AdaptiveToolbar(
             tooltip: 'Menu',
-            showCustomLeading: App.platform.material(true),
+            showCustomLeading: Utils.platform_(material: true, cupertino: false),
             implyLeading: false,
             cupertinoImplyLeading: false,
             leadingAction: () => ref.read(scaffoldController.notifier).open,
@@ -195,7 +197,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     Headline(
                                       '(${s.inTransit.size})',
                                       fontSize: 15.5.sp,
-                                      textColorLight: Palette.accentColor,
+                                      textColor: Palette.accentColor,
                                     ),
                                 ]),
                                 //
@@ -283,7 +285,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         Headline(
                                           '(${s.active.size})',
                                           fontSize: 15.5.sp,
-                                          textColorLight: Palette.accentColor,
+                                          textColor: Palette.accentColor,
                                         ),
                                     ]),
                                     //
@@ -357,6 +359,94 @@ class _HomePageState extends ConsumerState<HomePage> {
                           ),
                         ),
                       ),
+                      //
+                      //
+                      //
+                      if (s.isLoadingActive || !s.potential.isEmpty())
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(left: 0.06.sw),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (s.active.isNotEmpty()) VerticalSpace(height: 0.02.h),
+                                //
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(children: [
+                                      Headline('Potential Requests', fontSize: 17.sp),
+                                      //
+                                      if (!s.potential.isEmpty())
+                                        Headline(
+                                          '(${s.potential.size})',
+                                          fontSize: 15.5.sp,
+                                          textColor: Palette.accentColor,
+                                        ),
+                                    ]),
+                                  ],
+                                ),
+                                //
+                                VerticalSpace(height: 0.01.h),
+                              ],
+                            ),
+                          ),
+                        ),
+                      //
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: App.sidePadding,
+                        ).copyWith(top: s.potential.isEmpty() ? 0 : 0.02.sw),
+                        sliver: SliverToBoxAdapter(
+                          child: AnimatedVisibility(
+                            duration: const Duration(milliseconds: 700),
+                            visible: !(s.isLoadingActive && s.potential.isEmpty()),
+                            replacement: AnimatedVisibility(
+                              duration: const Duration(milliseconds: 800),
+                              visible: s.isLoadingActive,
+                              replacement: Utils.nothing,
+                              child: const ExpandableShimmer.list(count: 2),
+                            ),
+                            child: ListView.custom(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              controller: ScrollController(),
+                              physics: const NeverScrollableScrollPhysics(),
+                              semanticChildCount: s.potential.size,
+                              clipBehavior: Clip.antiAlias,
+                              childrenDelegate: SliverChildBuilderDelegate(
+                                (_, i) => Column(
+                                  key: ValueKey('potential-${s.potential.getOrNull(i)?.id.value}'),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (s.potential.getOrNull(i) != null)
+                                      Flexible(
+                                        child: _DeliverableCard(
+                                          item: s.potential.getOrNull(i)!,
+                                          isPotential: true,
+                                          initialExpanded: false,
+                                          onAccept: () => HomePage.onRefresh(c),
+                                          onDecline: () => HomePage.onRefresh(c),
+                                        ),
+                                      ),
+                                    //
+                                    if (s.potential.getOrNull(i) != null)
+                                      if (i != s.potential.size - 1) VerticalSpace(height: 0.03.sw)
+                                  ],
+                                ),
+                                childCount: s.potential.size,
+                                findChildIndexCallback: (key) {
+                                  final valueKey = key as ValueKey<String>;
+                                  return s.potential.dart.indexWhere((it) => 'potential-${it.id.value}' == valueKey.value);
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //
+                      if (s.isLoadingActive || !s.potential.isEmpty()) SliverToBoxAdapter(child: 0.02.verticalh),
                       //
                       if ((!s.isLoadingActive && !s.isLoadingInTransit) &&
                           (s.active.isEmpty() && s.inTransit.isEmpty() && s.potential.isEmpty()))
