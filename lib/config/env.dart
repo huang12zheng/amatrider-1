@@ -19,11 +19,11 @@ class BuildEnvironment with Secrets {
 
   BuildEnvironment._({this.flavor = BuildFlavor.dev, this.baseUri});
 
-  // String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}');
-  String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}');
+  String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}');
+  // String get domain => env.flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}');
 
-  // String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.PROD_WEB_URL}');
-  String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.DEV_WEB_URL}');
+  String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.PROD_WEB_URL}');
+  // String get httpsDomain => env.flavor.fold(dev: () => '${EndPoints.DEV_WEB_URL}', prod: () => '${EndPoints.DEV_WEB_URL}');
 
   String get packageName => env.flavor.fold(dev: () => '${Const.packageNameDev}', prod: () => '${Const.packageName}');
 
@@ -50,8 +50,8 @@ class BuildEnvironment with Secrets {
     _env ??= BuildEnvironment.factory(
       flavor: flavor,
       uri: Uri.https(
-        // flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}'),
-        flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}'),
+        flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_PROD_DOMAIN}'),
+        // flavor.fold(dev: () => '${EndPoints.APP_DEV_DOMAIN}', prod: () => '${EndPoints.APP_DEV_DOMAIN}'),
         EndPoints.API_ENDPOINT,
       ),
     );
