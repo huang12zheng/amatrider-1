@@ -37,7 +37,7 @@ class RiderDTO with _$RiderDTO {
         lastName: instance?.lastName.getOrNull,
         email: instance?.email.getOrNull,
         password: instance?.password.getOrNull,
-        phone: instance?.phone.getOrNull,
+        phone: instance?.phone.getOrNull?.trim().removeNewLines().trimWhiteSpaces(),
         availability: instance?.availability,
       );
 
