@@ -294,9 +294,7 @@ class AccountVerificationScreen extends StatelessWidget with AutoRouteWrapper {
                       : AppButton(
                           text: 'Continue',
                           disabled: s.isLoading || s.documentID == null || s.countries.isEmpty(),
-                          onPressed: () => navigator.push(DocumentUploadRoute(
-                            cubit: context.read<VerificationCubit>(),
-                          )),
+                          onPressed: () => navigator.push(DocumentUploadRoute(cubit: context.read<VerificationCubit>())),
                         ),
                 ),
               ),

@@ -46,7 +46,15 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
               light: () => AppAssets.cameraColored,
               dark: () => AppAssets.cameraOutlined,
             ),
-            onPressed: () => context.read<VerificationCubit>().pickCamera(section),
+            onPressed: () => context.read<VerificationCubit>().pickImage(section, ImagePickerType.camera),
+          ),
+          DocumentPicker(
+            name: 'Gallery',
+            asset: Utils.foldTheme(
+              light: () => AppAssets.galleryColored,
+              dark: () => AppAssets.galleryOutlined,
+            ),
+            onPressed: () => context.read<VerificationCubit>().pickImage(section, ImagePickerType.gallery),
           ),
           DocumentPicker(
             name: 'File Explorer',
@@ -135,8 +143,14 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                                           children: [
                                             a == DocumentMimeType.pdf ? AppAssets.pdf : AppAssets.docx,
                                             const VerticalSpace(height: 25),
-                                            AdaptiveText(
-                                              '${s.frontName.getOrEmpty}',
+                                            AdaptiveText.rich(
+                                              TextSpan(children: [
+                                                TextSpan(text: '${s.frontName.getOrEmpty}\n'),
+                                                TextSpan(
+                                                  text: 'Size: ${s.frontSize.getOrEmpty} MB',
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                ),
+                                              ]),
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,
                                             ),
@@ -191,8 +205,14 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                                           children: [
                                             a == DocumentMimeType.pdf ? AppAssets.pdf : AppAssets.docx,
                                             const VerticalSpace(height: 25),
-                                            AdaptiveText(
-                                              '${s.backName.getOrEmpty}',
+                                            AdaptiveText.rich(
+                                              TextSpan(children: [
+                                                TextSpan(text: '${s.backName.getOrEmpty}\n'),
+                                                TextSpan(
+                                                  text: 'Size: ${s.backSize.getOrEmpty} MB',
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                ),
+                                              ]),
                                               fontSize: 16.sp,
                                               textAlign: TextAlign.center,
                                             ),

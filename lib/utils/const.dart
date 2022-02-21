@@ -22,7 +22,7 @@ mixin Const {
   static const String kUserDTOPrefKey = 'user-dto-sembest-key';
   static const String kPhoneNumberPrefKey = 'user-phone-number-pref-key';
 
-  static const double maxUploadSize = 1e+7;
+  static const double maxUploadSize = 5e+6;
   static const int kPerPage = 5;
 
   static const double defaultConversionRate = 0.032;

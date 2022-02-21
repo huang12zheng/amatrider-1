@@ -106,6 +106,7 @@ import 'package:amatrider/_404.dart';
       path: 'document-upload-screen',
       guards: [AuthGuard],
     ),
+    //
     AdaptiveRoute(
       fullMatch: true,
       maintainState: true,
@@ -254,9 +255,8 @@ const dashboardRouter = AutoRoute(
       path: 'home',
       name: 'HomeRouter',
       page: EmptyRouterPage,
-      guards: [AuthGuard, IncompleteKYCGuard],
       children: [
-        AutoRoute(path: '', page: HomePage, guards: [AuthGuard, IncompleteKYCGuard]),
+        AutoRoute(path: '', page: HomePage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -266,7 +266,7 @@ const dashboardRouter = AutoRoute(
       name: 'HistoryRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: HistoryPage, guards: [AuthGuard, IncompleteKYCGuard]),
+        AutoRoute(path: '', page: HistoryPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -276,7 +276,7 @@ const dashboardRouter = AutoRoute(
       name: 'InsightRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: InsightsPage, guards: [AuthGuard, IncompleteKYCGuard]),
+        AutoRoute(path: '', page: InsightsPage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),
@@ -286,7 +286,7 @@ const dashboardRouter = AutoRoute(
       name: 'ProfileRouter',
       page: EmptyRouterPage,
       children: [
-        AutoRoute(path: '', page: ProfilePage, guards: [AuthGuard, IncompleteKYCGuard]),
+        AutoRoute(path: '', page: ProfilePage),
         RedirectRoute(path: '*', redirectTo: ''),
       ],
     ),

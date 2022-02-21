@@ -27,7 +27,7 @@ class _$UserOrderDTOTearOff {
       String? reference,
       String? note,
       @DoubleSerializer()
-          double? price,
+          double? totalPrice,
       @DoubleSerializer()
           double? riderTip,
       @JsonKey(name: 'address')
@@ -97,7 +97,7 @@ class _$UserOrderDTOTearOff {
       id: id,
       reference: reference,
       note: note,
-      price: price,
+      totalPrice: totalPrice,
       riderTip: riderTip,
       deliveryAddress: deliveryAddress,
       status: status,
@@ -142,7 +142,7 @@ mixin _$UserOrderDTO {
   String? get reference => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
   @DoubleSerializer()
-  double? get price => throw _privateConstructorUsedError;
+  double? get totalPrice => throw _privateConstructorUsedError;
   @DoubleSerializer()
   double? get riderTip => throw _privateConstructorUsedError;
   @JsonKey(name: 'address')
@@ -225,7 +225,7 @@ abstract class $UserOrderDTOCopyWith<$Res> {
       String? reference,
       String? note,
       @DoubleSerializer()
-          double? price,
+          double? totalPrice,
       @DoubleSerializer()
           double? riderTip,
       @JsonKey(name: 'address')
@@ -312,7 +312,7 @@ class _$UserOrderDTOCopyWithImpl<$Res> implements $UserOrderDTOCopyWith<$Res> {
     Object? id = freezed,
     Object? reference = freezed,
     Object? note = freezed,
-    Object? price = freezed,
+    Object? totalPrice = freezed,
     Object? riderTip = freezed,
     Object? deliveryAddress = freezed,
     Object? status = freezed,
@@ -354,9 +354,9 @@ class _$UserOrderDTOCopyWithImpl<$Res> implements $UserOrderDTOCopyWith<$Res> {
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: price == freezed
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      totalPrice: totalPrice == freezed
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
               as double?,
       riderTip: riderTip == freezed
           ? _value.riderTip
@@ -537,7 +537,7 @@ abstract class _$UserOrderDTOCopyWith<$Res>
       String? reference,
       String? note,
       @DoubleSerializer()
-          double? price,
+          double? totalPrice,
       @DoubleSerializer()
           double? riderTip,
       @JsonKey(name: 'address')
@@ -631,7 +631,7 @@ class __$UserOrderDTOCopyWithImpl<$Res> extends _$UserOrderDTOCopyWithImpl<$Res>
     Object? id = freezed,
     Object? reference = freezed,
     Object? note = freezed,
-    Object? price = freezed,
+    Object? totalPrice = freezed,
     Object? riderTip = freezed,
     Object? deliveryAddress = freezed,
     Object? status = freezed,
@@ -673,9 +673,9 @@ class __$UserOrderDTOCopyWithImpl<$Res> extends _$UserOrderDTOCopyWithImpl<$Res>
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      price: price == freezed
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
+      totalPrice: totalPrice == freezed
+          ? _value.totalPrice
+          : totalPrice // ignore: cast_nullable_to_non_nullable
               as double?,
       riderTip: riderTip == freezed
           ? _value.riderTip
@@ -797,7 +797,7 @@ class _$_UserOrderDTO extends _UserOrderDTO {
       this.reference,
       this.note,
       @DoubleSerializer()
-          this.price,
+          this.totalPrice,
       @DoubleSerializer()
           this.riderTip,
       @JsonKey(name: 'address')
@@ -876,7 +876,7 @@ class _$_UserOrderDTO extends _UserOrderDTO {
   final String? note;
   @override
   @DoubleSerializer()
-  final double? price;
+  final double? totalPrice;
   @override
   @DoubleSerializer()
   final double? riderTip;
@@ -975,7 +975,7 @@ class _$_UserOrderDTO extends _UserOrderDTO {
 
   @override
   String toString() {
-    return 'UserOrderDTO(id: $id, reference: $reference, note: $note, price: $price, riderTip: $riderTip, deliveryAddress: $deliveryAddress, status: $status, type: $type, deliveryCost: $deliveryCost, paymentMethod: $paymentMethod, deliveryMode: $deliveryMode, timeToCancelThreshold: $timeToCancelThreshold, contactlessDelivery: $contactlessDelivery, conversionRate: $conversionRate, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, storeAcceptedAt: $storeAcceptedAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, store: $store, receiver: $receiver, journey: $journey, time: $time, distance: $distance, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, orderData: $orderData)';
+    return 'UserOrderDTO(id: $id, reference: $reference, note: $note, totalPrice: $totalPrice, riderTip: $riderTip, deliveryAddress: $deliveryAddress, status: $status, type: $type, deliveryCost: $deliveryCost, paymentMethod: $paymentMethod, deliveryMode: $deliveryMode, timeToCancelThreshold: $timeToCancelThreshold, contactlessDelivery: $contactlessDelivery, conversionRate: $conversionRate, riderId: $riderId, riderLat: $riderLat, riderLng: $riderLng, orderActiveAt: $orderActiveAt, storeAcceptedAt: $storeAcceptedAt, riderAcceptedAt: $riderAcceptedAt, riderReceivedAt: $riderReceivedAt, riderDeliveredAt: $riderDeliveredAt, store: $store, receiver: $receiver, journey: $journey, time: $time, distance: $distance, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, orderData: $orderData)';
   }
 
   @override
@@ -986,7 +986,8 @@ class _$_UserOrderDTO extends _UserOrderDTO {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.reference, reference) &&
             const DeepCollectionEquality().equals(other.note, note) &&
-            const DeepCollectionEquality().equals(other.price, price) &&
+            const DeepCollectionEquality()
+                .equals(other.totalPrice, totalPrice) &&
             const DeepCollectionEquality().equals(other.riderTip, riderTip) &&
             const DeepCollectionEquality()
                 .equals(other.deliveryAddress, deliveryAddress) &&
@@ -1034,7 +1035,7 @@ class _$_UserOrderDTO extends _UserOrderDTO {
         const DeepCollectionEquality().hash(id),
         const DeepCollectionEquality().hash(reference),
         const DeepCollectionEquality().hash(note),
-        const DeepCollectionEquality().hash(price),
+        const DeepCollectionEquality().hash(totalPrice),
         const DeepCollectionEquality().hash(riderTip),
         const DeepCollectionEquality().hash(deliveryAddress),
         const DeepCollectionEquality().hash(status),
@@ -1081,7 +1082,7 @@ abstract class _UserOrderDTO extends UserOrderDTO {
       String? reference,
       String? note,
       @DoubleSerializer()
-          double? price,
+          double? totalPrice,
       @DoubleSerializer()
           double? riderTip,
       @JsonKey(name: 'address')
@@ -1160,7 +1161,7 @@ abstract class _UserOrderDTO extends UserOrderDTO {
   String? get note;
   @override
   @DoubleSerializer()
-  double? get price;
+  double? get totalPrice;
   @override
   @DoubleSerializer()
   double? get riderTip;

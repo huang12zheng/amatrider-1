@@ -152,7 +152,6 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
     emit(state.copyWith(
       isAuthenticated: false,
       subscribedToChannel: false,
-      isVerifyingOTP: false,
       rider: null,
       option: none(),
       status: none(),

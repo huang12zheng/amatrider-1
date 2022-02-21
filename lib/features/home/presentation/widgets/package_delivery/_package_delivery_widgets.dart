@@ -406,7 +406,10 @@ class _BottomSheetItem {
               c,
               title: 'Arrival Alert',
               message: 'Inform ${deliverable?.sender.fullName.getOrEmpty} of your arrival?',
-              onPressed: () => c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.sender.fullName.getOrEmpty),
+              onPressed: () {
+                c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.sender.fullName.getOrEmpty);
+                navigator.pop();
+              },
             ),
           ),
         //
@@ -419,7 +422,10 @@ class _BottomSheetItem {
               c,
               title: 'Arrival Alert',
               message: 'Inform ${deliverable?.receiver.fullName.getOrEmpty} of your arrival?',
-              onPressed: () => c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.receiver.fullName.getOrEmpty),
+              onPressed: () {
+                c.read<SendPackageCubit>().alertArrival(deliverable!, deliverable.receiver.fullName.getOrEmpty);
+                navigator.pop();
+              },
             ),
           ),
       ];

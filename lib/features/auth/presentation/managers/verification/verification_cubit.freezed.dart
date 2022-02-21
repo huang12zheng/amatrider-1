@@ -29,6 +29,8 @@ class _$VerificationStateTearOff {
       bool backIsImage = false,
       required BasicTextField<String?> frontName,
       required BasicTextField<String?> backName,
+      required BasicTextField<String?> frontSize,
+      required BasicTextField<String?> backSize,
       DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries = const KtList.empty(),
@@ -44,6 +46,8 @@ class _$VerificationStateTearOff {
       backIsImage: backIsImage,
       frontName: frontName,
       backName: backName,
+      frontSize: frontSize,
+      backSize: backSize,
       documentID: documentID,
       selectedCountry: selectedCountry,
       countries: countries,
@@ -67,6 +71,8 @@ mixin _$VerificationState {
   bool get backIsImage => throw _privateConstructorUsedError;
   BasicTextField<String?> get frontName => throw _privateConstructorUsedError;
   BasicTextField<String?> get backName => throw _privateConstructorUsedError;
+  BasicTextField<String?> get frontSize => throw _privateConstructorUsedError;
+  BasicTextField<String?> get backSize => throw _privateConstructorUsedError;
   DocumentID? get documentID => throw _privateConstructorUsedError;
   Country? get selectedCountry => throw _privateConstructorUsedError;
   KtList<Country> get countries => throw _privateConstructorUsedError;
@@ -93,6 +99,8 @@ abstract class $VerificationStateCopyWith<$Res> {
       bool backIsImage,
       BasicTextField<String?> frontName,
       BasicTextField<String?> backName,
+      BasicTextField<String?> frontSize,
+      BasicTextField<String?> backSize,
       DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
@@ -122,6 +130,8 @@ class _$VerificationStateCopyWithImpl<$Res>
     Object? backIsImage = freezed,
     Object? frontName = freezed,
     Object? backName = freezed,
+    Object? frontSize = freezed,
+    Object? backSize = freezed,
     Object? documentID = freezed,
     Object? selectedCountry = freezed,
     Object? countries = freezed,
@@ -167,6 +177,14 @@ class _$VerificationStateCopyWithImpl<$Res>
       backName: backName == freezed
           ? _value.backName
           : backName // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
+      frontSize: frontSize == freezed
+          ? _value.frontSize
+          : frontSize // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
+      backSize: backSize == freezed
+          ? _value.backSize
+          : backSize // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
       documentID: documentID == freezed
           ? _value.documentID
@@ -217,6 +235,8 @@ abstract class _$VerificationStateCopyWith<$Res>
       bool backIsImage,
       BasicTextField<String?> frontName,
       BasicTextField<String?> backName,
+      BasicTextField<String?> frontSize,
+      BasicTextField<String?> backSize,
       DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
@@ -249,6 +269,8 @@ class __$VerificationStateCopyWithImpl<$Res>
     Object? backIsImage = freezed,
     Object? frontName = freezed,
     Object? backName = freezed,
+    Object? frontSize = freezed,
+    Object? backSize = freezed,
     Object? documentID = freezed,
     Object? selectedCountry = freezed,
     Object? countries = freezed,
@@ -295,6 +317,14 @@ class __$VerificationStateCopyWithImpl<$Res>
           ? _value.backName
           : backName // ignore: cast_nullable_to_non_nullable
               as BasicTextField<String?>,
+      frontSize: frontSize == freezed
+          ? _value.frontSize
+          : frontSize // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
+      backSize: backSize == freezed
+          ? _value.backSize
+          : backSize // ignore: cast_nullable_to_non_nullable
+              as BasicTextField<String?>,
       documentID: documentID == freezed
           ? _value.documentID
           : documentID // ignore: cast_nullable_to_non_nullable
@@ -329,6 +359,8 @@ class _$_VerificationState extends _VerificationState {
       this.backIsImage = false,
       required this.frontName,
       required this.backName,
+      required this.frontSize,
+      required this.backSize,
       this.documentID,
       this.selectedCountry,
       this.countries = const KtList.empty(),
@@ -360,6 +392,10 @@ class _$_VerificationState extends _VerificationState {
   @override
   final BasicTextField<String?> backName;
   @override
+  final BasicTextField<String?> frontSize;
+  @override
+  final BasicTextField<String?> backSize;
+  @override
   final DocumentID? documentID;
   @override
   final Country? selectedCountry;
@@ -372,7 +408,7 @@ class _$_VerificationState extends _VerificationState {
 
   @override
   String toString() {
-    return 'VerificationState(isLoading: $isLoading, validate: $validate, frontID: $frontID, backID: $backID, frontMimeType: $frontMimeType, backMimeType: $backMimeType, frontIsImage: $frontIsImage, backIsImage: $backIsImage, frontName: $frontName, backName: $backName, documentID: $documentID, selectedCountry: $selectedCountry, countries: $countries, status: $status)';
+    return 'VerificationState(isLoading: $isLoading, validate: $validate, frontID: $frontID, backID: $backID, frontMimeType: $frontMimeType, backMimeType: $backMimeType, frontIsImage: $frontIsImage, backIsImage: $backIsImage, frontName: $frontName, backName: $backName, frontSize: $frontSize, backSize: $backSize, documentID: $documentID, selectedCountry: $selectedCountry, countries: $countries, status: $status)';
   }
 
   @override
@@ -394,6 +430,8 @@ class _$_VerificationState extends _VerificationState {
                 .equals(other.backIsImage, backIsImage) &&
             const DeepCollectionEquality().equals(other.frontName, frontName) &&
             const DeepCollectionEquality().equals(other.backName, backName) &&
+            const DeepCollectionEquality().equals(other.frontSize, frontSize) &&
+            const DeepCollectionEquality().equals(other.backSize, backSize) &&
             const DeepCollectionEquality()
                 .equals(other.documentID, documentID) &&
             const DeepCollectionEquality()
@@ -415,6 +453,8 @@ class _$_VerificationState extends _VerificationState {
       const DeepCollectionEquality().hash(backIsImage),
       const DeepCollectionEquality().hash(frontName),
       const DeepCollectionEquality().hash(backName),
+      const DeepCollectionEquality().hash(frontSize),
+      const DeepCollectionEquality().hash(backSize),
       const DeepCollectionEquality().hash(documentID),
       const DeepCollectionEquality().hash(selectedCountry),
       const DeepCollectionEquality().hash(countries),
@@ -438,6 +478,8 @@ abstract class _VerificationState extends VerificationState {
       bool backIsImage,
       required BasicTextField<String?> frontName,
       required BasicTextField<String?> backName,
+      required BasicTextField<String?> frontSize,
+      required BasicTextField<String?> backSize,
       DocumentID? documentID,
       Country? selectedCountry,
       KtList<Country> countries,
@@ -464,6 +506,10 @@ abstract class _VerificationState extends VerificationState {
   BasicTextField<String?> get frontName;
   @override
   BasicTextField<String?> get backName;
+  @override
+  BasicTextField<String?> get frontSize;
+  @override
+  BasicTextField<String?> get backSize;
   @override
   DocumentID? get documentID;
   @override

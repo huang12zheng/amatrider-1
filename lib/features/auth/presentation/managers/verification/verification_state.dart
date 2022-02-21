@@ -15,6 +15,8 @@ class VerificationState extends BaseState with _$VerificationState {
     @Default(false) bool backIsImage,
     required BasicTextField<String?> frontName,
     required BasicTextField<String?> backName,
+    required BasicTextField<String?> frontSize,
+    required BasicTextField<String?> backSize,
     DocumentID? documentID,
     Country? selectedCountry,
     @Default(KtList.empty()) KtList<Country> countries,
@@ -24,7 +26,11 @@ class VerificationState extends BaseState with _$VerificationState {
   const VerificationState._();
 
   factory VerificationState.initial() => VerificationState(
-      backName: BasicTextField(null), frontName: BasicTextField(null));
+        backName: BasicTextField(null),
+        frontName: BasicTextField(null),
+        frontSize: BasicTextField(null),
+        backSize: BasicTextField(null),
+      );
 }
 
 extension XDocumentMimeType on DocumentMimeType {

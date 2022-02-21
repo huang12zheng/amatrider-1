@@ -16,9 +16,10 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
   State<SplashScreen> createState() => _SplashScreenState();
 
   static void navigateIfNotAuthenticated() {
-    if (navigator.current.name == DashboardRoute.name)
-      navigator.replaceAll([const GetStartedRoute()]);
-    else {
+    if (navigator.current.name == DashboardRoute.name) {
+      if (App.currentRoute != DashboardRoute.name && !navigator.stackData.map((e) => e.name).contains(DashboardRoute.name))
+        navigator.replaceAll([const GetStartedRoute()]);
+    } else {
       final isFirstAppLaunch = App.context.read<GlobalAppPreferenceCubit>().isFirstAppLaunch;
 
       _navigateUser(App.context, isFirstAppLaunch);
@@ -31,10 +32,12 @@ class SplashScreen extends StatefulWidget with AutoRouteWrapper {
     c.read<OnboardingCubit>().subscribeToPlayback(
       after: () async {
         if (!isFirstLaunch) {
-          if (isAuthenticated)
-            unawaited(navigator.replaceAll([const DashboardRoute()]));
-          else
+          if (isAuthenticated) {
+            if (App.currentRoute != DashboardRoute.name && !navigator.stackData.map((e) => e.name).contains(DashboardRoute.name))
+              unawaited(navigator.replaceAll([const DashboardRoute()]));
+          } else {
             unawaited(navigator.replaceAll([const GetStartedRoute()]));
+          }
         } else {
           unawaited(navigator.replaceAll([const OnboardingRoute()]));
         }
@@ -85,7 +88,11 @@ class _SplashScreenState extends State<SplashScreen> {
                             WidgetsBinding.instance!.addPostFrameCallback(
                               (_) async => await Future.delayed(
                                 env.greetingDuration,
-                                () async => await navigator.replaceAll([const DashboardRoute()]),
+                                () async {
+                                  if (App.currentRoute != DashboardRoute.name &&
+                                      !navigator.stackData.map((e) => e.name).contains(DashboardRoute.name))
+                                    await navigator.replaceAll([const DashboardRoute()]);
+                                },
                               ),
                             );
                           }

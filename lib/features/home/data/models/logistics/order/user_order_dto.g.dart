@@ -11,7 +11,7 @@ _$_UserOrderDTO _$$_UserOrderDTOFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       reference: json['reference'] as String?,
       note: json['note'] as String?,
-      price: const DoubleSerializer().fromJson(json['price']),
+      totalPrice: const DoubleSerializer().fromJson(json['total_price']),
       riderTip: const DoubleSerializer().fromJson(json['rider_tip']),
       deliveryAddress: json['address'] == null
           ? null
@@ -80,7 +80,8 @@ Map<String, dynamic> _$$_UserOrderDTOToJson(_$_UserOrderDTO instance) {
   writeNotNull('id', instance.id);
   writeNotNull('reference', instance.reference);
   writeNotNull('note', instance.note);
-  writeNotNull('price', const DoubleSerializer().toJson(instance.price));
+  writeNotNull(
+      'total_price', const DoubleSerializer().toJson(instance.totalPrice));
   writeNotNull('rider_tip', const DoubleSerializer().toJson(instance.riderTip));
   writeNotNull('address', instance.deliveryAddress?.toJson());
   writeNotNull(

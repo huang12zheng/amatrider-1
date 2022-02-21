@@ -184,6 +184,10 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
           token: '${state.code.getOrNull}',
         );
 
+        _result.response.mapOrNull(success: (_) {
+          updateRiderLocation(ctx);
+        });
+
         emit(state.copyWith(status: some(_result), validate: false, isConfirmingPickup: false));
       });
     } else
@@ -214,6 +218,8 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
               order: () => (state.deliverable as UserOrder).copyWith(status: ParcelStatus.DELIVERED),
               package: () => (state.deliverable as SendPackage).copyWith(status: ParcelStatus.DELIVERED),
             );
+
+            updateRiderLocation(ctx);
 
             emit(state.copyWith(deliverable: value));
 

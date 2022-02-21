@@ -76,6 +76,8 @@
 	<string>$(APP_DISPLAY_NAME) needs access to your Photo Library to select/preview photos.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>$(APP_DISPLAY_NAME) would like permission to track you across apps and websites owned by other companies.</string>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

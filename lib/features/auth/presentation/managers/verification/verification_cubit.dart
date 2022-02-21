@@ -24,6 +24,8 @@ part 'verification_state.dart';
 
 enum IdSection { front, back }
 
+enum ImagePickerType { camera, gallery }
+
 @injectable
 class VerificationCubit extends Cubit<VerificationState> with BaseCubit<VerificationState>, _ImagePickerMixin {
   final UtilitiesRepository _repository;
@@ -134,13 +136,13 @@ class VerificationCubit extends Cubit<VerificationState> with BaseCubit<Verifica
 mixin _ImagePickerMixin on Cubit<VerificationState> {
   final ImagePicker _picker = ImagePicker();
 
-  void pickCamera(IdSection section) async {
+  void pickImage(IdSection section, [ImagePickerType type = ImagePickerType.camera]) async {
     try {
       File? file;
       String? fileName;
       var fileSize = 0;
 
-      var _result = await _picker.pickImage(source: ImageSource.camera);
+      var _result = await _picker.pickImage(source: type == ImagePickerType.camera ? ImageSource.camera : ImageSource.gallery);
 
       if (_result == null) {
         file = await _attemptImageFileRetrieval(_picker);
@@ -163,11 +165,14 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
       if (file != null) {
         var mime = _resolveMimeType(file);
 
+        final size = (fileSize * 1e-6).roundToIntOrDouble < 1 ? '<1' : '${(fileSize * 1e-6).roundToIntOrDouble}';
+
         section.fold(
           front: () {
             emit(state.copyWith(
               frontID: file,
               frontName: BasicTextField(fileName),
+              frontSize: BasicTextField(size),
               frontIsImage: true,
               frontMimeType: mime,
               status: none(),
@@ -177,6 +182,7 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
             emit(state.copyWith(
               backID: file,
               backName: BasicTextField(fileName),
+              backSize: BasicTextField(size),
               backIsImage: true,
               backMimeType: mime,
               status: none(),
@@ -220,11 +226,14 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
       if (file != null) {
         var mime = _resolveMimeType(file);
 
+        final size = (fileSize * 1e-6).roundToIntOrDouble < 1 ? '<1' : '${(fileSize * 1e-6).roundToIntOrDouble}';
+
         section.fold(
           front: () {
             emit(state.copyWith(
               frontID: file,
               frontName: BasicTextField(fileName),
+              frontSize: BasicTextField(size),
               frontIsImage: mime == DocumentMimeType.img,
               frontMimeType: mime,
               status: none(),
@@ -234,6 +243,7 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
             emit(state.copyWith(
               backID: file,
               backName: BasicTextField(fileName),
+              backSize: BasicTextField(size),
               backIsImage: mime == DocumentMimeType.img,
               backMimeType: mime,
               status: none(),
