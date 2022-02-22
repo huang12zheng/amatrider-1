@@ -147,7 +147,7 @@ class UtilitiesRepository extends BaseRepository {
         try {
           await remote.contactSupport(type: '${type.value}', message: message, images: images);
 
-          return AppHttpResponse.successful('Thanks for reaching out, we\'ll be in touch');
+          return AppHttpResponse.info('Thanks for reaching out, we\'ll be in touch', true);
         } on AppHttpResponse catch (e) {
           return e;
         } on AppNetworkException catch (e) {

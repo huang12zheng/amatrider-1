@@ -25,13 +25,15 @@ class SocialsAuthScreen extends StatefulWidget with AutoRouteWrapper {
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
             (c.status.getOrElse(() => null) != null &&
-                (c.status.getOrElse(() => null)!.response.maybeMap(
-                      error: (f) => f.fold(
-                        orElse: () {
-                          navigator.replaceAll([const DashboardRoute()]);
-                          return false;
-                        },
-                      ),
+                (c.status.getOrElse(() => null)!.fold(
+                      is4031: () {
+                        if (App.currentRoute != OTPVerificationRoute.name) navigator.replaceAll([OTPVerificationRoute()]);
+                        return false;
+                      },
+                      is41101: () {
+                        if (App.currentRoute != SocialsAuthRoute.name) navigator.replaceAll([const SocialsAuthRoute()]);
+                        return false;
+                      },
                       orElse: () => false,
                     ))),
         listener: (c, s) => s.status.fold(

@@ -21,6 +21,7 @@ class InAppNotificationDTO with _$InAppNotificationDTO {
 
   const factory InAppNotificationDTO({
     String? id,
+    String? riderId,
     String? title,
     String? body,
     NotificationMetaDTO? meta,
@@ -36,6 +37,7 @@ class InAppNotificationDTO with _$InAppNotificationDTO {
   InAppNotification get domain {
     return InAppNotification(
       id: UniqueId.fromExternal(id),
+      riderId: UniqueId.fromExternal(riderId),
       title: BasicTextField(title),
       description: BasicTextField(body),
       meta: meta?.domain,

@@ -14,16 +14,16 @@ class RegisteredRiderDTO with _$RegisteredRiderDTO {
     String? status,
     RiderDTO? data,
     RiderDTO? user,
+    RiderDTO? rider,
   }) = _RegisteredRiderDTO;
 
   const RegisteredRiderDTO._();
 
   /// Maps the incoming Json to a Data Transfer Object (DTO).
-  factory RegisteredRiderDTO.fromJson(Map<String, dynamic> json) =>
-      _$RegisteredRiderDTOFromJson(json);
+  factory RegisteredRiderDTO.fromJson(Map<String, dynamic> json) => _$RegisteredRiderDTOFromJson(json);
 
   /// Maps the Data Transfer Object to a Domain instance.
-  Rider? get domain => data?.domain ?? user?.domain;
+  Rider? get domain => data?.domain ?? user?.domain ?? rider?.domain;
 
-  RiderDTO? get dto => data ?? user;
+  RiderDTO? get dto => data ?? user ?? rider;
 }

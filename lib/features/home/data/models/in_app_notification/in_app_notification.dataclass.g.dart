@@ -10,6 +10,7 @@ _$_InAppNotificationDTO _$$_InAppNotificationDTOFromJson(
         Map<String, dynamic> json) =>
     _$_InAppNotificationDTO(
       id: json['id'] as String?,
+      riderId: json['rider_id'] as String?,
       title: json['title'] as String?,
       body: json['body'] as String?,
       meta: json['meta'] == null
@@ -31,6 +32,7 @@ Map<String, dynamic> _$$_InAppNotificationDTOToJson(
   }
 
   writeNotNull('id', instance.id);
+  writeNotNull('rider_id', instance.riderId);
   writeNotNull('title', instance.title);
   writeNotNull('body', instance.body);
   writeNotNull('meta', instance.meta?.toJson());

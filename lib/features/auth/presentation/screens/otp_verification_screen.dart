@@ -41,13 +41,14 @@ class OTPVerificationScreen extends StatefulWidget with AutoRouteWrapper {
             error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
-              listener: (_) => _?.fold(
-                dismissed: () => s.pop
-                    ? (navigator.stackData.firstOrNone?.name == DashboardRoute.name
-                        ? navigator.popUntil((route) => route.settings.name == DashboardRoute.name)
-                        : navigator.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false))
-                    : null,
-              ),
+              // listener: (_) => _?.fold(dismissed: () {
+              //   // s.pop
+              //   //     ? (navigator.stackData.firstOrNone?.name == DashboardRoute.name
+              //   //         ? navigator.popUntil((route) => route.settings.name == DashboardRoute.name)
+              //   //         : navigator.pushAndPopUntil(const DashboardRoute(), predicate: (_) => false))
+              //   //     : null,
+              //   log.w('Current route ==> ${App.currentRoute}');
+              // }),
             ).render(c),
           ),
         ),

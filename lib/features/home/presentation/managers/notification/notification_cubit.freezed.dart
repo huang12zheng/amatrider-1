@@ -22,6 +22,7 @@ class _$NotificationStateTearOff {
       {bool isLoading = false,
       bool validate = false,
       bool subscribed = false,
+      Rider? currentRider,
       KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection =
           const KtMap.empty(),
       KtList<InAppNotification> inAppNotifications = const KtList.empty(),
@@ -30,6 +31,7 @@ class _$NotificationStateTearOff {
       isLoading: isLoading,
       validate: validate,
       subscribed: subscribed,
+      currentRider: currentRider,
       inAppNotificationCollection: inAppNotificationCollection,
       inAppNotifications: inAppNotifications,
       status: status,
@@ -45,6 +47,7 @@ mixin _$NotificationState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get validate => throw _privateConstructorUsedError;
   bool get subscribed => throw _privateConstructorUsedError;
+  Rider? get currentRider => throw _privateConstructorUsedError;
   KtMap<DateTime?, KtList<InAppNotification>> get inAppNotificationCollection =>
       throw _privateConstructorUsedError;
   KtList<InAppNotification> get inAppNotifications =>
@@ -65,9 +68,12 @@ abstract class $NotificationStateCopyWith<$Res> {
       {bool isLoading,
       bool validate,
       bool subscribed,
+      Rider? currentRider,
       KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection,
       KtList<InAppNotification> inAppNotifications,
       Option<AppHttpResponse?> status});
+
+  $RiderCopyWith<$Res>? get currentRider;
 }
 
 /// @nodoc
@@ -84,6 +90,7 @@ class _$NotificationStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? subscribed = freezed,
+    Object? currentRider = freezed,
     Object? inAppNotificationCollection = freezed,
     Object? inAppNotifications = freezed,
     Object? status = freezed,
@@ -101,6 +108,10 @@ class _$NotificationStateCopyWithImpl<$Res>
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
               as bool,
+      currentRider: currentRider == freezed
+          ? _value.currentRider
+          : currentRider // ignore: cast_nullable_to_non_nullable
+              as Rider?,
       inAppNotificationCollection: inAppNotificationCollection == freezed
           ? _value.inAppNotificationCollection
           : inAppNotificationCollection // ignore: cast_nullable_to_non_nullable
@@ -115,6 +126,17 @@ class _$NotificationStateCopyWithImpl<$Res>
               as Option<AppHttpResponse?>,
     ));
   }
+
+  @override
+  $RiderCopyWith<$Res>? get currentRider {
+    if (_value.currentRider == null) {
+      return null;
+    }
+
+    return $RiderCopyWith<$Res>(_value.currentRider!, (value) {
+      return _then(_value.copyWith(currentRider: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -128,9 +150,13 @@ abstract class _$NotificationStateCopyWith<$Res>
       {bool isLoading,
       bool validate,
       bool subscribed,
+      Rider? currentRider,
       KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection,
       KtList<InAppNotification> inAppNotifications,
       Option<AppHttpResponse?> status});
+
+  @override
+  $RiderCopyWith<$Res>? get currentRider;
 }
 
 /// @nodoc
@@ -149,6 +175,7 @@ class __$NotificationStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? validate = freezed,
     Object? subscribed = freezed,
+    Object? currentRider = freezed,
     Object? inAppNotificationCollection = freezed,
     Object? inAppNotifications = freezed,
     Object? status = freezed,
@@ -166,6 +193,10 @@ class __$NotificationStateCopyWithImpl<$Res>
           ? _value.subscribed
           : subscribed // ignore: cast_nullable_to_non_nullable
               as bool,
+      currentRider: currentRider == freezed
+          ? _value.currentRider
+          : currentRider // ignore: cast_nullable_to_non_nullable
+              as Rider?,
       inAppNotificationCollection: inAppNotificationCollection == freezed
           ? _value.inAppNotificationCollection
           : inAppNotificationCollection // ignore: cast_nullable_to_non_nullable
@@ -190,6 +221,7 @@ class _$_NotificationState extends _NotificationState
       {this.isLoading = false,
       this.validate = false,
       this.subscribed = false,
+      this.currentRider,
       this.inAppNotificationCollection = const KtMap.empty(),
       this.inAppNotifications = const KtList.empty(),
       this.status = const None()})
@@ -204,6 +236,8 @@ class _$_NotificationState extends _NotificationState
   @JsonKey()
   @override
   final bool subscribed;
+  @override
+  final Rider? currentRider;
   @JsonKey()
   @override
   final KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection;
@@ -216,7 +250,7 @@ class _$_NotificationState extends _NotificationState
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'NotificationState(isLoading: $isLoading, validate: $validate, subscribed: $subscribed, inAppNotificationCollection: $inAppNotificationCollection, inAppNotifications: $inAppNotifications, status: $status)';
+    return 'NotificationState(isLoading: $isLoading, validate: $validate, subscribed: $subscribed, currentRider: $currentRider, inAppNotificationCollection: $inAppNotificationCollection, inAppNotifications: $inAppNotifications, status: $status)';
   }
 
   @override
@@ -227,6 +261,7 @@ class _$_NotificationState extends _NotificationState
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('validate', validate))
       ..add(DiagnosticsProperty('subscribed', subscribed))
+      ..add(DiagnosticsProperty('currentRider', currentRider))
       ..add(DiagnosticsProperty(
           'inAppNotificationCollection', inAppNotificationCollection))
       ..add(DiagnosticsProperty('inAppNotifications', inAppNotifications))
@@ -242,6 +277,8 @@ class _$_NotificationState extends _NotificationState
             const DeepCollectionEquality().equals(other.validate, validate) &&
             const DeepCollectionEquality()
                 .equals(other.subscribed, subscribed) &&
+            const DeepCollectionEquality()
+                .equals(other.currentRider, currentRider) &&
             const DeepCollectionEquality().equals(
                 other.inAppNotificationCollection,
                 inAppNotificationCollection) &&
@@ -256,6 +293,7 @@ class _$_NotificationState extends _NotificationState
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(validate),
       const DeepCollectionEquality().hash(subscribed),
+      const DeepCollectionEquality().hash(currentRider),
       const DeepCollectionEquality().hash(inAppNotificationCollection),
       const DeepCollectionEquality().hash(inAppNotifications),
       const DeepCollectionEquality().hash(status));
@@ -271,6 +309,7 @@ abstract class _NotificationState extends NotificationState {
       {bool isLoading,
       bool validate,
       bool subscribed,
+      Rider? currentRider,
       KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection,
       KtList<InAppNotification> inAppNotifications,
       Option<AppHttpResponse?> status}) = _$_NotificationState;
@@ -282,6 +321,8 @@ abstract class _NotificationState extends NotificationState {
   bool get validate;
   @override
   bool get subscribed;
+  @override
+  Rider? get currentRider;
   @override
   KtMap<DateTime?, KtList<InAppNotification>> get inAppNotificationCollection;
   @override

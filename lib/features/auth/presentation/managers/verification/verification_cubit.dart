@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/index.dart';
-import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/repositories/utilities_repository/utilities_repository.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:bloc/bloc.dart';
@@ -29,9 +28,8 @@ enum ImagePickerType { camera, gallery }
 @injectable
 class VerificationCubit extends Cubit<VerificationState> with BaseCubit<VerificationState>, _ImagePickerMixin {
   final UtilitiesRepository _repository;
-  final AuthFacade _authFacade;
 
-  VerificationCubit(this._repository, this._authFacade) : super(VerificationState.initial());
+  VerificationCubit(this._repository) : super(VerificationState.initial());
 
   void toggleLoading([bool? isLoading]) => emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
@@ -54,9 +52,7 @@ class VerificationCubit extends Cubit<VerificationState> with BaseCubit<Verifica
     if (state.selectedCountry == null) {
       emit(state.copyWith(
         isLoading: false,
-        status: some(AppHttpResponse.failure(
-          'Please select a Country from the dropdown!',
-        )),
+        status: some(AppHttpResponse.failure('Please select a Country from the dropdown!')),
       ));
 
       navigator.popUntil(
@@ -68,9 +64,7 @@ class VerificationCubit extends Cubit<VerificationState> with BaseCubit<Verifica
     if (state.frontID == null) {
       emit(state.copyWith(
         isLoading: false,
-        status: some(AppHttpResponse.failure(
-          'Please select a Front ID document',
-        )),
+        status: some(AppHttpResponse.failure('Please select a Front ID document')),
       ));
       return;
     }
@@ -78,9 +72,7 @@ class VerificationCubit extends Cubit<VerificationState> with BaseCubit<Verifica
     if (state.backID == null) {
       emit(state.copyWith(
         isLoading: false,
-        status: some(AppHttpResponse.failure(
-          'Please select a Back ID document',
-        )),
+        status: some(AppHttpResponse.failure('Please select a Back ID document')),
       ));
       return;
     }
@@ -93,16 +85,7 @@ class VerificationCubit extends Cubit<VerificationState> with BaseCubit<Verifica
         country: state.selectedCountry!,
       );
 
-      await result.response.mapOrNull(
-        error: (_) async => emit(state.copyWith(status: some(result))),
-        success: (it) async {
-          // Update user profile
-          final _new = await _authFacade.rider;
-          await _authFacade.update(_new);
-
-          emit(state.copyWith(status: some(result)));
-        },
-      );
+      emit(state.copyWith(status: some(result)));
     }
 
     toggleLoading(false);
@@ -142,7 +125,12 @@ mixin _ImagePickerMixin on Cubit<VerificationState> {
       String? fileName;
       var fileSize = 0;
 
-      var _result = await _picker.pickImage(source: type == ImagePickerType.camera ? ImageSource.camera : ImageSource.gallery);
+      var _result = await _picker.pickImage(
+        source: type == ImagePickerType.camera ? ImageSource.camera : ImageSource.gallery,
+        maxHeight: 480,
+        maxWidth: 640,
+        imageQuality: 30,
+      );
 
       if (_result == null) {
         file = await _attemptImageFileRetrieval(_picker);

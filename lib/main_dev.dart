@@ -15,13 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    FirebaseMessaging.onBackgroundMessage(InAppMessaging.firebaseMessagingBackgroundHandler);
-  } catch (e, tr) {
-    await App.reportFlutterError(e, tr);
-    log.e(e, e, tr);
-  }
-
-  try {
     // Initializes Hive with a valid directory in your app files.
     await Hive.initFlutter();
     await Hive.openBox<String>(Const.kAccessTokenBoxKey);
@@ -45,6 +38,8 @@ void main() async {
 
         // Setup Environmental variables & Service provider
         await BuildEnvironment.init(flavor: BuildFlavor.dev);
+
+        FirebaseMessaging.onBackgroundMessage(InAppMessaging.firebaseMessagingBackgroundHandler);
 
         runApp(const ProviderScope(child: AmatRider()));
       },

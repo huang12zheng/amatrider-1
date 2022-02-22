@@ -34,7 +34,7 @@ class ContactSupportScreen extends StatefulWidget with AutoRouteWrapper {
               message: i.message,
               listener: (status) => status?.fold(
                 dismissed: () {
-                  if (i.pop && navigator.current.name == ContactSupportRoute.name) navigator.pop();
+                  if (App.currentRoute == ContactSupportRoute.name) navigator.pop();
                 },
               ),
             ).render(c),

@@ -27,20 +27,18 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) =>
             p.status.getOrElse(() => null) != c.status.getOrElse(() => null) ||
-            c.status.fold(
-              () => false,
-              (http) =>
-                  http?.response.maybeMap(
-                    error: (f) => f.fold(
-                      orElse: () {
-                        navigator.replaceAll([const DashboardRoute()]);
+            (c.status.getOrElse(() => null) != null &&
+                (c.status.getOrElse(() => null)!.fold(
+                      is4031: () {
+                        if (App.currentRoute != OTPVerificationRoute.name) navigator.replaceAll([OTPVerificationRoute()]);
                         return false;
                       },
-                    ),
-                    orElse: () => false,
-                  ) ??
-                  false,
-            ),
+                      is41101: () {
+                        if (App.currentRoute != SocialsAuthRoute.name) navigator.replaceAll([const SocialsAuthRoute()]);
+                        return false;
+                      },
+                      orElse: () => false,
+                    ))),
         listener: (c, s) => s.status.fold(
           () => null,
           (it) => it?.response.map(

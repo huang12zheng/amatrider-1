@@ -9,6 +9,7 @@ class NotificationState extends BaseState with _$NotificationState {
     @Default(false) bool isLoading,
     @Default(false) bool validate,
     @Default(false) bool subscribed,
+    Rider? currentRider,
     @Default(KtMap.empty()) KtMap<DateTime?, KtList<InAppNotification>> inAppNotificationCollection,
     @Default(KtList.empty()) KtList<InAppNotification> inAppNotifications,
     @Default(None()) Option<AppHttpResponse?> status,

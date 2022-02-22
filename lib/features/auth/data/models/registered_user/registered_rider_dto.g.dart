@@ -16,6 +16,9 @@ _$_RegisteredRiderDTO _$$_RegisteredRiderDTOFromJson(
       user: json['user'] == null
           ? null
           : RiderDTO.fromJson(json['user'] as Map<String, dynamic>),
+      rider: json['rider'] == null
+          ? null
+          : RiderDTO.fromJson(json['rider'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RegisteredRiderDTOToJson(
@@ -31,5 +34,6 @@ Map<String, dynamic> _$$_RegisteredRiderDTOToJson(
   writeNotNull('status', instance.status);
   writeNotNull('data', instance.data?.toJson());
   writeNotNull('user', instance.user?.toJson());
+  writeNotNull('rider', instance.rider?.toJson());
   return val;
 }

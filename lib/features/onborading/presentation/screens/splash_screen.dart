@@ -100,7 +100,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     future: _memoizer.runOnce(() async {
                       await BlocProvider.of<AuthWatcherCubit>(App.context).subscribeToAuthChanges(
                         (either) => either.fold(
-                          (failure) => SplashScreen.navigateIfNotAuthenticated(),
+                          (failure) {
+                            // SplashScreen.navigateIfNotAuthenticated();
+                          },
                           (option) => option.fold(
                             () => SplashScreen.navigateIfNotAuthenticated(),
                             (_) {

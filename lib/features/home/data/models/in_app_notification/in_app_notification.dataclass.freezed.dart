@@ -24,6 +24,7 @@ class _$InAppNotificationDTOTearOff {
 
   _InAppNotificationDTO call(
       {String? id,
+      String? riderId,
       String? title,
       String? body,
       NotificationMetaDTO? meta,
@@ -32,6 +33,7 @@ class _$InAppNotificationDTOTearOff {
       @TimestampConverter() DateTime? deletedAt}) {
     return _InAppNotificationDTO(
       id: id,
+      riderId: riderId,
       title: title,
       body: body,
       meta: meta,
@@ -52,6 +54,7 @@ const $InAppNotificationDTO = _$InAppNotificationDTOTearOff();
 /// @nodoc
 mixin _$InAppNotificationDTO {
   String? get id => throw _privateConstructorUsedError;
+  String? get riderId => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
   NotificationMetaDTO? get meta => throw _privateConstructorUsedError;
@@ -76,6 +79,7 @@ abstract class $InAppNotificationDTOCopyWith<$Res> {
       _$InAppNotificationDTOCopyWithImpl<$Res>;
   $Res call(
       {String? id,
+      String? riderId,
       String? title,
       String? body,
       NotificationMetaDTO? meta,
@@ -98,6 +102,7 @@ class _$InAppNotificationDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? riderId = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? meta = freezed,
@@ -109,6 +114,10 @@ class _$InAppNotificationDTOCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
               as String?,
       title: title == freezed
           ? _value.title
@@ -158,6 +167,7 @@ abstract class _$InAppNotificationDTOCopyWith<$Res>
   @override
   $Res call(
       {String? id,
+      String? riderId,
       String? title,
       String? body,
       NotificationMetaDTO? meta,
@@ -183,6 +193,7 @@ class __$InAppNotificationDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? riderId = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? meta = freezed,
@@ -194,6 +205,10 @@ class __$InAppNotificationDTOCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
               as String?,
       title: title == freezed
           ? _value.title
@@ -228,6 +243,7 @@ class __$InAppNotificationDTOCopyWithImpl<$Res>
 class _$_InAppNotificationDTO extends _InAppNotificationDTO {
   const _$_InAppNotificationDTO(
       {this.id,
+      this.riderId,
       this.title,
       this.body,
       this.meta,
@@ -241,6 +257,8 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
 
   @override
   final String? id;
+  @override
+  final String? riderId;
   @override
   final String? title;
   @override
@@ -260,7 +278,7 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
 
   @override
   String toString() {
-    return 'InAppNotificationDTO(id: $id, title: $title, body: $body, meta: $meta, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'InAppNotificationDTO(id: $id, riderId: $riderId, title: $title, body: $body, meta: $meta, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -269,6 +287,7 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
         (other.runtimeType == runtimeType &&
             other is _InAppNotificationDTO &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality().equals(other.meta, meta) &&
@@ -281,6 +300,7 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(riderId),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
       const DeepCollectionEquality().hash(meta),
@@ -303,6 +323,7 @@ class _$_InAppNotificationDTO extends _InAppNotificationDTO {
 abstract class _InAppNotificationDTO extends InAppNotificationDTO {
   const factory _InAppNotificationDTO(
       {String? id,
+      String? riderId,
       String? title,
       String? body,
       NotificationMetaDTO? meta,
@@ -316,6 +337,8 @@ abstract class _InAppNotificationDTO extends InAppNotificationDTO {
 
   @override
   String? get id;
+  @override
+  String? get riderId;
   @override
   String? get title;
   @override

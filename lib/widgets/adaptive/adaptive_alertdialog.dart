@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:amatrider/manager/theme/theme.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 /// A stateless widget to render AdaptiveAlertdialog.
@@ -380,45 +381,52 @@ class AdaptiveAlertdialog<B extends Object?> extends StatelessWidget {
                         ),
                 ],
               )
-            : PlatformAlertDialog(
-                widgetKey: key,
-                title: _title,
-                content: _content(context),
-                material: (_, __) => _materialAlertDialogData(context),
-                cupertino: (_, __) => CupertinoAlertDialogData(
-                  scrollController: ScrollController(),
-                  insetAnimationCurve: Curves.easeInOutCubic,
-                  insetAnimationDuration: const Duration(milliseconds: 1500),
-                  actions: [
-                    if (cupertinoFirstButton != null) cupertinoFirstButton!,
-                    //
-                    if (cupertinoFirstButtonText != null)
-                      CupertinoDialogAction(
-                        isDefaultAction: isFirstDefaultAction,
-                        isDestructiveAction: isFirstDestructive,
-                        onPressed: () async {
-                          if (autoPopFirstButton)
-                            unawaited(navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue));
-                          else
-                            (await onFirstPressedFuture?.call()) ?? onFirstPressed?.call();
-                        },
-                        child: Text('$cupertinoFirstButtonText'),
-                      ),
-                    //
-                    if (!disableSecondButton)
-                      cupertinoSecondButton ??
-                          CupertinoDialogAction(
-                            isDefaultAction: isSecondDefaultAction,
-                            isDestructiveAction: isSecondDestructive,
-                            onPressed: () async {
-                              if (autoPopSecondButton)
-                                unawaited(navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue));
-                              else
-                                (await onSecondPressedFuture?.call()) ?? onSecondPressed?.call();
-                            },
-                            child: Text('$cupertinoSecondButtonText'),
-                          ),
-                  ],
+            : Theme(
+                data: Utils.platform_(
+                  cupertino: App.isDarkMode(context) ? ThemeData.dark() : ThemeData.light(),
+                  material: context.read<ThemeCubit>().state.themeData(),
+                )!,
+                child: PlatformAlertDialog(
+                  widgetKey: key,
+                  title: _title,
+                  content: _content(context),
+                  material: (_, __) => _materialAlertDialogData(context),
+                  cupertino: (_, __) => CupertinoAlertDialogData(
+                    scrollController: ScrollController(),
+                    insetAnimationCurve: Curves.easeInOutCubic,
+                    insetAnimationDuration: const Duration(milliseconds: 1500),
+                    actions: [
+                      if (cupertinoFirstButton != null) cupertinoFirstButton!,
+                      //
+                      if (cupertinoFirstButtonText != null)
+                        CupertinoDialogAction(
+                          isDefaultAction: isFirstDefaultAction,
+                          isDestructiveAction: isFirstDestructive,
+                          onPressed: () async {
+                            if (autoPopFirstButton)
+                              unawaited(navigator.pop((await onFirstPressedFuture?.call()) ?? onFirstPressed?.call() ?? defaultValue));
+                            else
+                              (await onFirstPressedFuture?.call()) ?? onFirstPressed?.call();
+                          },
+                          child: Text('$cupertinoFirstButtonText'),
+                        ),
+                      //
+                      if (!disableSecondButton)
+                        cupertinoSecondButton ??
+                            CupertinoDialogAction(
+                              isDefaultAction: isSecondDefaultAction,
+                              isDestructiveAction: isSecondDestructive,
+                              onPressed: () async {
+                                if (autoPopSecondButton)
+                                  unawaited(
+                                      navigator.pop((await onSecondPressedFuture?.call()) ?? onSecondPressed?.call() ?? defaultValue));
+                                else
+                                  (await onSecondPressedFuture?.call()) ?? onSecondPressed?.call();
+                              },
+                              child: Text('$cupertinoSecondButtonText'),
+                            ),
+                    ],
+                  ),
                 ),
               ),
       ),

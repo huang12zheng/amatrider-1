@@ -65,92 +65,89 @@ class _InsightsPageState extends State<InsightsPage> {
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
         ),
-        child: AdaptiveScaffold(
-          adaptiveToolbar: AdaptiveToolbar(
-            tooltip: '${context.tr.menu}',
-            showCustomLeading: Utils.platform_(material: true, cupertino: false),
-            implyLeading: false,
-            cupertinoImplyLeading: false,
-            leadingAction: () {},
-            leadingIcon: App.platform.material(Consumer(
-              builder: (_, ref, child) => PlatformIconButton(
-                materialIcon: const Icon(Icons.menu),
-                cupertinoIcon: const Icon(CupertinoIcons.bars),
-                onPressed: ref.read(scaffoldController.notifier).open,
-              ),
-            )),
-            actions: [
-              Utils.platform_(
-                cupertino: Center(
-                  child: Consumer(
-                    builder: (_, ref, child) => AppIconButton(
-                      tooltip: 'Menu',
-                      backgroundColor: Colors.transparent,
-                      elevation: 0.0,
-                      onPressed: ref.read(scaffoldController.notifier).open,
-                      padding: EdgeInsets.zero,
-                      child: Center(
-                        child: Icon(
-                          CupertinoIcons.bars,
-                          size: 30,
-                          color: Utils.foldTheme(
-                            light: () => Palette.cardColorDark,
-                            dark: () => Palette.cardColorLight,
+        child: BlocBuilder<InsightsCubit, InsightsState>(
+          builder: (c, s) => AdaptiveScaffold(
+            adaptiveToolbar: AdaptiveToolbar(
+              tooltip: '${context.tr.menu}',
+              showCustomLeading: Utils.platform_(material: true, cupertino: false),
+              implyLeading: false,
+              cupertinoImplyLeading: false,
+              leadingAction: () {},
+              leadingIcon: App.platform.material(Consumer(
+                builder: (_, ref, child) => PlatformIconButton(
+                  materialIcon: const Icon(Icons.menu),
+                  cupertinoIcon: const Icon(CupertinoIcons.bars),
+                  onPressed: ref.read(scaffoldController.notifier).open,
+                ),
+              )),
+              actions: [
+                Utils.platform_(
+                  cupertino: Center(
+                    child: Consumer(
+                      builder: (_, ref, child) => AppIconButton(
+                        tooltip: 'Menu',
+                        backgroundColor: Colors.transparent,
+                        elevation: 0.0,
+                        onPressed: ref.read(scaffoldController.notifier).open,
+                        padding: EdgeInsets.zero,
+                        child: Center(
+                          child: Icon(
+                            CupertinoIcons.bars,
+                            size: 30,
+                            color: Utils.foldTheme(
+                              light: () => Palette.cardColorDark,
+                              dark: () => Palette.cardColorLight,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                material: Utils.nothing,
-              )!,
-              //
-              const Spacer(),
-              //
-              GestureDetector(
-                onTap: () => navigator.push(const RiderReviewRoute()),
-                child: Row(
-                  children: [
-                    AdaptiveText(
-                      '${tr.rating}: ',
-                      fontSize: 16.sp,
-                      textColor: Palette.text80,
-                      textColorDark: Palette.text100Dark,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    //
-                    BlocSelector<InsightsCubit, InsightsState, BasicTextField<double?>>(
-                      selector: (s) => s.insight.avgRating,
-                      builder: (_, rating) => Headline(
-                        '${rating.getOrNull ?? 0.0}',
+                  material: Utils.nothing,
+                )!,
+                //
+                const Spacer(),
+                //
+                GestureDetector(
+                  onTap: () => navigator.push(const RiderReviewRoute()),
+                  child: Row(
+                    children: [
+                      AdaptiveText(
+                        '${tr.rating}: ',
+                        fontSize: 16.sp,
+                        textColor: Palette.text80,
+                        textColorDark: Palette.text100Dark,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      //
+                      Headline(
+                        '${s.insight.avgRating.getOrNull ?? 0.0}',
                         maxLines: 1,
                         fontSize: 15.sp,
                         maxFontSize: 17,
                       ),
-                    ),
-                    //
-                    Utils.platform_(
-                      cupertino: HorizontalSpace(width: 0.013.sw),
-                      material: Utils.nothing,
-                    )!,
-                    //
-                    Icon(
+                      //
                       Utils.platform_(
-                        material: Icons.stars_rounded,
-                        cupertino: CupertinoIcons.star_circle_fill,
+                        cupertino: HorizontalSpace(width: 0.013.sw),
+                        material: Utils.nothing,
+                      )!,
+                      //
+                      Icon(
+                        Utils.platform_(
+                          material: Icons.stars_rounded,
+                          cupertino: CupertinoIcons.star_circle_fill,
+                        ),
+                        color: Palette.accentYellow,
+                        size: Utils.platform_(cupertino: 20),
                       ),
-                      color: Palette.accentYellow,
-                      size: Utils.platform_(cupertino: 20),
-                    ),
-                    //
-                    HorizontalSpace(width: App.sidePadding),
-                  ],
+                      //
+                      HorizontalSpace(width: App.sidePadding),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          body: BlocBuilder<InsightsCubit, InsightsState>(
-            builder: (c, s) => SafeArea(
+              ],
+            ),
+            body: SafeArea(
               child: DragToRefresh(
                 initialRefresh: true,
                 onRefresh: (controller) => onRefresh(c, controller),

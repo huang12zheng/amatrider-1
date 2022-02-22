@@ -15,6 +15,7 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		C6218A11272AFC500047FDAF /* Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6218A10272AFC500047FDAF /* Info-dev.plist */; };
 		C6218A12272AFC5A0047FDAF /* Info-prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97C147021CF9000F007C117D /* Info-prod.plist */; };
+		C62C4CB327C5244300E91840 /* res_custom_notification.aiff in Resources */ = {isa = PBXBuildFile; fileRef = C62C4CB227C5244300E91840 /* res_custom_notification.aiff */; };
 		C6FC6FF52777A2A5001DC228 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6FC6FF42777A2A5001DC228 /* CloudKit.framework */; };
 		C6FE27382781C26C0076DE71 /* config in Resources */ = {isa = PBXBuildFile; fileRef = C6FE27372781C26C0076DE71 /* config */; };
 		F0D3EE312569ED08687B0953 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BAAD4698DA64DA66797AC26 /* Pods_Runner.framework */; };
@@ -63,6 +64,7 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info-prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-prod.plist"; sourceTree = "<group>"; };
 		C6218A10272AFC500047FDAF /* Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-dev.plist"; sourceTree = "<group>"; };
+		C62C4CB227C5244300E91840 /* res_custom_notification.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = res_custom_notification.aiff; sourceTree = "<group>"; };
 		C68A14AA277D267C007D651C /* AmatRiderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmatRiderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6FC6FF32777A294001DC228 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		C6FC6FF42777A2A5001DC228 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -139,6 +141,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				C62C4CB227C5244300E91840 /* res_custom_notification.aiff */,
 				C6FC6FF32777A294001DC228 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -254,6 +257,7 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				C6FE27382781C26C0076DE71 /* config in Resources */,
+				C62C4CB327C5244300E91840 /* res_custom_notification.aiff in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				C6218A11272AFC500047FDAF /* Info-dev.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,

@@ -22,11 +22,13 @@ RegisteredRiderDTO _$RegisteredRiderDTOFromJson(Map<String, dynamic> json) {
 class _$RegisteredRiderDTOTearOff {
   const _$RegisteredRiderDTOTearOff();
 
-  _RegisteredRiderDTO call({String? status, RiderDTO? data, RiderDTO? user}) {
+  _RegisteredRiderDTO call(
+      {String? status, RiderDTO? data, RiderDTO? user, RiderDTO? rider}) {
     return _RegisteredRiderDTO(
       status: status,
       data: data,
       user: user,
+      rider: rider,
     );
   }
 
@@ -43,6 +45,7 @@ mixin _$RegisteredRiderDTO {
   String? get status => throw _privateConstructorUsedError;
   RiderDTO? get data => throw _privateConstructorUsedError;
   RiderDTO? get user => throw _privateConstructorUsedError;
+  RiderDTO? get rider => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,10 +58,11 @@ abstract class $RegisteredRiderDTOCopyWith<$Res> {
   factory $RegisteredRiderDTOCopyWith(
           RegisteredRiderDTO value, $Res Function(RegisteredRiderDTO) then) =
       _$RegisteredRiderDTOCopyWithImpl<$Res>;
-  $Res call({String? status, RiderDTO? data, RiderDTO? user});
+  $Res call({String? status, RiderDTO? data, RiderDTO? user, RiderDTO? rider});
 
   $RiderDTOCopyWith<$Res>? get data;
   $RiderDTOCopyWith<$Res>? get user;
+  $RiderDTOCopyWith<$Res>? get rider;
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$RegisteredRiderDTOCopyWithImpl<$Res>
     Object? status = freezed,
     Object? data = freezed,
     Object? user = freezed,
+    Object? rider = freezed,
   }) {
     return _then(_value.copyWith(
       status: status == freezed
@@ -88,6 +93,10 @@ class _$RegisteredRiderDTOCopyWithImpl<$Res>
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
+              as RiderDTO?,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
               as RiderDTO?,
     ));
   }
@@ -113,6 +122,17 @@ class _$RegisteredRiderDTOCopyWithImpl<$Res>
       return _then(_value.copyWith(user: value));
     });
   }
+
+  @override
+  $RiderDTOCopyWith<$Res>? get rider {
+    if (_value.rider == null) {
+      return null;
+    }
+
+    return $RiderDTOCopyWith<$Res>(_value.rider!, (value) {
+      return _then(_value.copyWith(rider: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -122,12 +142,14 @@ abstract class _$RegisteredRiderDTOCopyWith<$Res>
           _RegisteredRiderDTO value, $Res Function(_RegisteredRiderDTO) then) =
       __$RegisteredRiderDTOCopyWithImpl<$Res>;
   @override
-  $Res call({String? status, RiderDTO? data, RiderDTO? user});
+  $Res call({String? status, RiderDTO? data, RiderDTO? user, RiderDTO? rider});
 
   @override
   $RiderDTOCopyWith<$Res>? get data;
   @override
   $RiderDTOCopyWith<$Res>? get user;
+  @override
+  $RiderDTOCopyWith<$Res>? get rider;
 }
 
 /// @nodoc
@@ -146,6 +168,7 @@ class __$RegisteredRiderDTOCopyWithImpl<$Res>
     Object? status = freezed,
     Object? data = freezed,
     Object? user = freezed,
+    Object? rider = freezed,
   }) {
     return _then(_RegisteredRiderDTO(
       status: status == freezed
@@ -160,6 +183,10 @@ class __$RegisteredRiderDTOCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as RiderDTO?,
+      rider: rider == freezed
+          ? _value.rider
+          : rider // ignore: cast_nullable_to_non_nullable
+              as RiderDTO?,
     ));
   }
 }
@@ -167,7 +194,8 @@ class __$RegisteredRiderDTOCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
-  const _$_RegisteredRiderDTO({this.status, this.data, this.user}) : super._();
+  const _$_RegisteredRiderDTO({this.status, this.data, this.user, this.rider})
+      : super._();
 
   factory _$_RegisteredRiderDTO.fromJson(Map<String, dynamic> json) =>
       _$$_RegisteredRiderDTOFromJson(json);
@@ -178,10 +206,12 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
   final RiderDTO? data;
   @override
   final RiderDTO? user;
+  @override
+  final RiderDTO? rider;
 
   @override
   String toString() {
-    return 'RegisteredRiderDTO(status: $status, data: $data, user: $user)';
+    return 'RegisteredRiderDTO(status: $status, data: $data, user: $user, rider: $rider)';
   }
 
   @override
@@ -191,7 +221,8 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
             other is _RegisteredRiderDTO &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.data, data) &&
-            const DeepCollectionEquality().equals(other.user, user));
+            const DeepCollectionEquality().equals(other.user, user) &&
+            const DeepCollectionEquality().equals(other.rider, rider));
   }
 
   @override
@@ -199,7 +230,8 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
       runtimeType,
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(data),
-      const DeepCollectionEquality().hash(user));
+      const DeepCollectionEquality().hash(user),
+      const DeepCollectionEquality().hash(rider));
 
   @JsonKey(ignore: true)
   @override
@@ -214,7 +246,10 @@ class _$_RegisteredRiderDTO extends _RegisteredRiderDTO {
 
 abstract class _RegisteredRiderDTO extends RegisteredRiderDTO {
   const factory _RegisteredRiderDTO(
-      {String? status, RiderDTO? data, RiderDTO? user}) = _$_RegisteredRiderDTO;
+      {String? status,
+      RiderDTO? data,
+      RiderDTO? user,
+      RiderDTO? rider}) = _$_RegisteredRiderDTO;
   const _RegisteredRiderDTO._() : super._();
 
   factory _RegisteredRiderDTO.fromJson(Map<String, dynamic> json) =
@@ -226,6 +261,8 @@ abstract class _RegisteredRiderDTO extends RegisteredRiderDTO {
   RiderDTO? get data;
   @override
   RiderDTO? get user;
+  @override
+  RiderDTO? get rider;
   @override
   @JsonKey(ignore: true)
   _$RegisteredRiderDTOCopyWith<_RegisteredRiderDTO> get copyWith =>

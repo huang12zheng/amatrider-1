@@ -106,7 +106,8 @@ class SendPackageCubit extends Cubit<SendPackageState> with BaseCubit<SendPackag
     updateRiderLocation(context);
 
     // Request background location
-    await _locationCubit.request(context, background: true, awaitBackground: true);
+    // await _locationCubit.request(context, background: true, awaitBackground: true);
+    await _locationCubit.request(context);
 
     _locationSubscription ??= (await _locationService.changeSettings()).liveLocation().listen(
       (result) async {

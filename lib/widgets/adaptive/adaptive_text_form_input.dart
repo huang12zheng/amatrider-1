@@ -492,7 +492,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
             // style: TextStyle(color: App.resolveColor(Palette.text100, dark: Palette.text100Dark)).merge(widget.style),
             style: TextStyle(
               color: widget.disabled
-                  ? App.resolveColor(Palette.text60, dark: Colors.black.withOpacity(0.5))
+                  ? App.resolveColor(Palette.text60, dark: Palette.text100Dark)
                   : App.resolveColor(Palette.text100, dark: Palette.text100Dark),
             ).merge(widget.style),
             placeholder: widget.hintText,
@@ -567,7 +567,7 @@ class _AdaptiveTextFormInputState extends State<AdaptiveTextFormInput> with Auto
               textDirection: widget.textDirection,
               toolbarOptions: widget.toolbarOptions,
               style: TextStyle(
-                color: widget.disabled ? App.resolveColor(Palette.text60, dark: Colors.black.withOpacity(0.5)) : null,
+                color: widget.disabled ? App.resolveColor(Palette.text60, dark: Palette.text100Dark) : null,
               ).merge(widget.style),
               autovalidateMode: widget.validate ? AutovalidateMode.always : AutovalidateMode.disabled,
               onChanged: widget.onChanged,

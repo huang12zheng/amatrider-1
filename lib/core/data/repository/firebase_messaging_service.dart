@@ -1,7 +1,5 @@
 library firebase_messaging_service.dart;
 
-import 'dart:convert';
-
 import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/core/data/repository/base_repo.dart';
 import 'package:amatrider/core/data/response/any/app_http_response.dart';
@@ -84,9 +82,6 @@ class InAppMessaging extends MessagingFacade with BaseRepository {
       (_) async {
         try {
           final token = await firebaseMessaging.getToken();
-
-          // log.w('Token ==> $token');
-          // log.w('Device type ==> ${Utils.platform_(material: 'android', cupertino: 'ios')}');
 
           await _utilitiesRemote.registerDevice(
             deviceType: Utils.platform_(material: 'android', cupertino: 'ios')!,
@@ -225,12 +220,8 @@ class InAppMessaging extends MessagingFacade with BaseRepository {
   }
 
   static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-    log.w('Background message received ==> ${message.data}\n'
-        'Notification body ==> Title ==> ${message.notification?.title?.length},, --> BODY => ${message.notification?.body?.length}\n'
-        'Content available ==> ${message.contentAvailable}\n'
-        'Mutable content ==> ${message.mutableContent}');
     // Use this method to automatically convert the push data, in case you gonna use our data standard
-    await AwesomeNotifications().createNotificationFromJsonData(message.data);
+    // await AwesomeNotifications().createNotificationFromJsonData(message.data);
 
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
@@ -249,5 +240,10 @@ class InAppMessaging extends MessagingFacade with BaseRepository {
       },
       callOptions: AnalyticsCallOptions(global: true),
     );
+
+    print('Background message received ==> ${message.data}\n'
+        'Notification body ==> Title ==> ${message.notification?.title?.length},, --> BODY => ${message.notification?.body?.length}\n'
+        'Content available ==> ${message.contentAvailable}\n'
+        'Mutable content ==> ${message.mutableContent}');
   }
 }

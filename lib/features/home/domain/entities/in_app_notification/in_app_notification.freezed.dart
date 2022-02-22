@@ -20,6 +20,7 @@ class _$InAppNotificationTearOff {
 
   _InAppNotification call(
       {required UniqueId<String?> id,
+      required UniqueId<String?> riderId,
       required BasicTextField<String?> title,
       required BasicTextField<String?> description,
       NotificationMeta? meta,
@@ -28,6 +29,7 @@ class _$InAppNotificationTearOff {
       DateTime? deletedAt}) {
     return _InAppNotification(
       id: id,
+      riderId: riderId,
       title: title,
       description: description,
       meta: meta,
@@ -44,6 +46,7 @@ const $InAppNotification = _$InAppNotificationTearOff();
 /// @nodoc
 mixin _$InAppNotification {
   UniqueId<String?> get id => throw _privateConstructorUsedError;
+  UniqueId<String?> get riderId => throw _privateConstructorUsedError;
   BasicTextField<String?> get title => throw _privateConstructorUsedError;
   BasicTextField<String?> get description => throw _privateConstructorUsedError;
   NotificationMeta? get meta => throw _privateConstructorUsedError;
@@ -63,6 +66,7 @@ abstract class $InAppNotificationCopyWith<$Res> {
       _$InAppNotificationCopyWithImpl<$Res>;
   $Res call(
       {UniqueId<String?> id,
+      UniqueId<String?> riderId,
       BasicTextField<String?> title,
       BasicTextField<String?> description,
       NotificationMeta? meta,
@@ -85,6 +89,7 @@ class _$InAppNotificationCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? riderId = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? meta = freezed,
@@ -96,6 +101,10 @@ class _$InAppNotificationCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
               as UniqueId<String?>,
       title: title == freezed
           ? _value.title
@@ -145,6 +154,7 @@ abstract class _$InAppNotificationCopyWith<$Res>
   @override
   $Res call(
       {UniqueId<String?> id,
+      UniqueId<String?> riderId,
       BasicTextField<String?> title,
       BasicTextField<String?> description,
       NotificationMeta? meta,
@@ -170,6 +180,7 @@ class __$InAppNotificationCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? riderId = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? meta = freezed,
@@ -181,6 +192,10 @@ class __$InAppNotificationCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as UniqueId<String?>,
+      riderId: riderId == freezed
+          ? _value.riderId
+          : riderId // ignore: cast_nullable_to_non_nullable
               as UniqueId<String?>,
       title: title == freezed
           ? _value.title
@@ -215,6 +230,7 @@ class __$InAppNotificationCopyWithImpl<$Res>
 class _$_InAppNotification extends _InAppNotification {
   const _$_InAppNotification(
       {required this.id,
+      required this.riderId,
       required this.title,
       required this.description,
       this.meta,
@@ -225,6 +241,8 @@ class _$_InAppNotification extends _InAppNotification {
 
   @override
   final UniqueId<String?> id;
+  @override
+  final UniqueId<String?> riderId;
   @override
   final BasicTextField<String?> title;
   @override
@@ -240,7 +258,7 @@ class _$_InAppNotification extends _InAppNotification {
 
   @override
   String toString() {
-    return 'InAppNotification(id: $id, title: $title, description: $description, meta: $meta, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'InAppNotification(id: $id, riderId: $riderId, title: $title, description: $description, meta: $meta, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -249,6 +267,7 @@ class _$_InAppNotification extends _InAppNotification {
         (other.runtimeType == runtimeType &&
             other is _InAppNotification &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.riderId, riderId) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -262,6 +281,7 @@ class _$_InAppNotification extends _InAppNotification {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(riderId),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(meta),
@@ -278,6 +298,7 @@ class _$_InAppNotification extends _InAppNotification {
 abstract class _InAppNotification extends InAppNotification {
   const factory _InAppNotification(
       {required UniqueId<String?> id,
+      required UniqueId<String?> riderId,
       required BasicTextField<String?> title,
       required BasicTextField<String?> description,
       NotificationMeta? meta,
@@ -288,6 +309,8 @@ abstract class _InAppNotification extends InAppNotification {
 
   @override
   UniqueId<String?> get id;
+  @override
+  UniqueId<String?> get riderId;
   @override
   BasicTextField<String?> get title;
   @override

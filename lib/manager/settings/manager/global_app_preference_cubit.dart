@@ -92,7 +92,12 @@ mixin _ImagePickerMixin on HydratedCubit<GlobalPreferenceState> {
     File? file;
     var fileSize = 0;
 
-    var _result = await _picker.pickImage(source: source);
+    var _result = await _picker.pickImage(
+      source: source,
+      maxHeight: 480,
+      maxWidth: 640,
+      imageQuality: 30,
+    );
 
     if (_result == null)
       file = await _attemptFileRetrieval(_picker);

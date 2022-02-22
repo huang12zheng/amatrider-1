@@ -3,12 +3,12 @@ library auth_watcher_cubit.dart;
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:amatrider/core/data/database/app_database.dart';
 import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/websocket_event.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/domain/response/index.dart';
+import 'package:amatrider/features/auth/data/models/index.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/utils/utils.dart';
@@ -49,7 +49,6 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
   void toggleLoading([bool? isLoading]) => emit(state.copyWith(isLoading: isLoading ?? !state.isLoading));
 
   void toggleLogoutLoading([bool? value]) => emit(state.copyWith(isLoggingOut: value ?? !state.isLoggingOut));
-
 
   Future<void> subscribeToAuthChanges(Task actions) async {
     toggleLoading(true);
@@ -112,21 +111,21 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
       _echoRepository.private(
         DispatchRider.profile('${_rider.uid.value}'),
         DispatchRider.profileEvent,
-        onInit: () {
-          emit(state.copyWith(subscribedToChannel: true));
-        },
+        onInit: () => emit(state.copyWith(subscribedToChannel: true)),
         onData: (data, _) async {
           final json = jsonDecode(data) as Map<String, dynamic>;
-          final dto = RiderDTO.fromJson(json['rider'] as Map<String, dynamic>);
+          final dto = RegisteredRiderDTO.fromJson(json);
 
-          emit(state.copyWith(rider: dto.domain));
+          if (dto.dto?.id == state.rider?.uid.value) {
+            emit(state.copyWith(rider: dto.domain));
 
-          final _storeResult = await _facade.retrieveAndCacheUpdatedRider(dto: dto);
+            final _storeResult = await _facade.retrieveAndCacheUpdatedRider(dto: dto.dto);
 
-          _storeResult.fold(
-            (_) => null,
-            (value) => emit(state.copyWith(option: value)),
-          );
+            _storeResult.fold(
+              (_) => null,
+              (value) => emit(state.copyWith(option: value)),
+            );
+          }
         },
       );
   }

@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/data/websocket_event.dart';
+import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/core/presentation/managers/managers.dart';
 import 'package:amatrider/features/auth/domain/index.dart';
 import 'package:amatrider/features/home/data/models/models.dart';
@@ -86,6 +87,7 @@ class NotificationCubit extends Cubit<NotificationState> with BaseCubit<Notifica
 
               final _notification = InAppNotificationDTO.fromJson(json);
 
+              // if (_notification.riderId == state.currentRider?.uid.value) {
               final body = _notification.body;
 
               emit(state.copyWith(
@@ -95,6 +97,7 @@ class NotificationCubit extends Cubit<NotificationState> with BaseCubit<Notifica
 
               // Update collection
               _updateCollection();
+              // }
             },
           );
         },

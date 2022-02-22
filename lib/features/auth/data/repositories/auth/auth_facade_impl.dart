@@ -111,9 +111,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       );
 
       // Get Data Access Object
-      final _registered = RegisteredRiderDTO.fromJson(
-        _response.data as Map<String, dynamic>,
-      );
+      final _registered = RegisteredRiderDTO.fromJson(_response.data as Map<String, dynamic>);
 
       await phone.getOrEmpty?.let((it) async => await preferences.setString(key: Const.kPhoneNumberPrefKey, value: it));
 
@@ -121,9 +119,7 @@ class AuthFacadeImpl extends AuthFacade with SocialAuthMixin {
       return await login(
         email: emailAddress,
         password: password,
-        registered: _registered.data?.copyWith(
-          password: password.getOrNull,
-        ),
+        registered: _registered.data?.copyWith(password: password.getOrNull),
       );
     } on AppHttpResponse catch (ex, trace) {
       return handleFailure(e: ex, trace: trace);

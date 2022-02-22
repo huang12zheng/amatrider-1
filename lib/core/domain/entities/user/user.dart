@@ -26,7 +26,7 @@ class User extends BaseEntity with _$User {
 
   const User._();
 
-  static KtList<String> _splitFullName(String? fullName) => fullName == null ? KtList.from([]) : KtList.from(fullName.split(' '));
+  // static KtList<String> _splitFullName(String? fullName) => fullName == null ? KtList.from([]) : KtList.from(fullName.split(' '));
 
   factory User.blank({
     String? uid,
@@ -40,8 +40,9 @@ class User extends BaseEntity with _$User {
   }) =>
       User(
         uid: UniqueId.fromExternal(uid),
-        firstName: DisplayName(firstName ?? _splitFullName(fullName).firstOrNull()),
-        lastName: DisplayName(lastName ?? _splitFullName(fullName).lastOrNull()),
+        firstName: DisplayName(firstName ?? fullName),
+        // lastName: DisplayName(lastName ?? _splitFullName(fullName).lastOrNull()),
+        lastName: DisplayName(lastName),
         email: EmailAddress(email),
         phone: Phone(phone),
         phoneAlt: Phone(phoneAlt),

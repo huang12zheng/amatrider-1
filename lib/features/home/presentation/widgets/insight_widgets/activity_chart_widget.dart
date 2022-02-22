@@ -201,7 +201,14 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           showTitles: true,
           reservedSize: 35,
           checkToShowTitle: (minValue, maxValue, sideTitles, appliedInterval, value) => value % 10 == 0,
-          getTitles: (value) => value == 0 ? '${value.toInt()}' : '${'$value'.asCurrency()}',
+          getTitles: (value) {
+            if (value == 0)
+              return '${value.toInt()}';
+            // else if (3000 % 10 >= 10000)
+            //   return '10K+';
+            else
+              return '${'$value'.asCurrency()}';
+          },
           getTextStyles: (_, value) => TextStyle(
             color: App.resolveColor(const Color(0xff4C5862), dark: Palette.text100Dark),
             fontSize: 14.sp,
@@ -213,6 +220,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           getTextStyles: (context, value) => TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 14.sp,
+            color: App.resolveColor(Palette.text100, dark: Palette.text100Dark),
           ),
           margin: 8,
           getTitles: (value) => value.label,

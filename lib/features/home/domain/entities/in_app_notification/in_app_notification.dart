@@ -13,6 +13,7 @@ class InAppNotification extends BaseEntity with _$InAppNotification {
 
   const factory InAppNotification({
     required UniqueId<String?> id,
+    required UniqueId<String?> riderId,
     required BasicTextField<String?> title,
     required BasicTextField<String?> description,
     NotificationMeta? meta,

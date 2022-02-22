@@ -100,35 +100,40 @@ mixin SocialAuthMixin on AuthFacade {
   }) async {
     final response = await callable.call();
 
-    // cache access token
-    await local.cacheRiderAccessToken(response.data);
+    final value = AppHttpResponse.fromDioResponse(response);
 
-    // Get Authenticated Rider account
-    final _rider = await remote.getRider();
+    return value!.response.maybeMap(
+      error: (_) => optionOf(value),
+      orElse: () async {
+        // cache access token
+        await local.cacheRiderAccessToken(response.data);
 
-    final signInError = AppHttpResponse.fromDioResponse(response);
+        // Get Authenticated Rider account
+        final _rider = await remote.getRider();
 
-    return _rider.fold(
-      (failure) async {
-        final _data = failure.data as Map<String, dynamic>;
-        final _socialDto = SocialUserDTO.fromJson(_data);
+        return _rider.fold(
+          (e) async {
+            final _data = e.data as Map<String, dynamic>;
+            final _socialDto = SocialUserDTO.fromJson(_data);
 
-        // Log Firebase Analytics Login event
-        await analytics.logLogin(loginMethod: provider.name);
+            // Log Firebase Analytics Login event
+            await analytics.logLogin(loginMethod: provider.name);
 
-        await retrieveAndCacheUpdatedRider(dto: _socialDto.dto);
+            await retrieveAndCacheUpdatedRider(dto: _socialDto.dto);
 
-        await sink(left(failure));
+            await sink(left(e));
 
-        return some(signInError ?? failure);
-      },
-      (dto) async {
-        // Log Firebase Analytics Login event
-        await analytics.logLogin(loginMethod: provider.name);
+            return some(e);
+          },
+          (dto) async {
+            // Log Firebase Analytics Login event
+            await analytics.logLogin(loginMethod: provider.name);
 
-        await sink(right(optionOf(dto?.domain)));
+            await sink(right(optionOf(dto?.domain)));
 
-        return none();
+            return none();
+          },
+        );
       },
     );
   }

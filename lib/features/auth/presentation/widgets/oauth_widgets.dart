@@ -86,7 +86,7 @@ class OAuthWidgets extends StatelessWidget {
                         child: SignInWithAppleButton(
                           onPressed: context.read<AuthCubit>().appleAuth,
                           borderRadius: Utils.buttonRadius.br,
-                          style: SignInWithAppleButtonStyle.white,
+                          style: SignInWithAppleButtonStyle.black,
                         ),
                       ),
                     ),
