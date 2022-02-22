@@ -167,7 +167,13 @@ class _DeliveryHistoryCardState extends State<DeliveryHistoryCard> {
                   Flexible(
                     flex: 2,
                     child: AdaptiveText(
-                      '${widget.history.price.getOrEmpty}'.asCurrency(),
+                      '${widget.history.paymentMethod!.maybeWhen(
+                        deliveryWithCard: () =>
+                            widget.history.price.getOrNull! <= 0 ? 'PAID' : '${widget.history.price.getOrEmpty}'.asCurrency(),
+                        deliveryWithCash: () =>
+                            widget.history.price.getOrNull! <= 0 ? 'PAID' : '${widget.history.price.getOrEmpty}'.asCurrency(),
+                        orElse: () => 'PAID',
+                      )}',
                       maxLines: 1,
                       minFontSize: 13,
                       maxFontSize: 17,

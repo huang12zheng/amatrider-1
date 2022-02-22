@@ -28,7 +28,7 @@ class ResetPaswordDialog extends StatelessWidget {
           () => null,
           (th) => th?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(

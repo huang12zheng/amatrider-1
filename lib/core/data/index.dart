@@ -6,3 +6,4 @@ export 'sources/sources.dart';
 export 'websocket_event.dart';
 export 'websocket_response_type.dart';
 export 'models/store/store_dto.dart';
+export 'repository/firebase_messaging_service.dart';

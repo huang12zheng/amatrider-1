@@ -22,6 +22,7 @@ class SuccessScreen extends StatefulWidget with AutoRouteWrapper {
   final VoidCallback? onButtonPressed;
   final VoidCallback? onBackPressed;
   final Future<void> Function()? onInitState;
+  final bool hasAppBar;
 
   const SuccessScreen({
     Key? key,
@@ -38,6 +39,7 @@ class SuccessScreen extends StatefulWidget with AutoRouteWrapper {
     this.onButtonPressed,
     this.onBackPressed,
     this.onInitState,
+    this.hasAppBar = false,
   })  : assert((svg != null && image == null && lottieJson == null) ||
             (svg == null && image != null && lottieJson == null) ||
             (svg == null && image == null && lottieJson != null)),
@@ -93,6 +95,7 @@ class _SuccessScreenState extends State<SuccessScreen>
     super.build(context);
 
     return AdaptiveScaffold(
+      adaptiveToolbar: widget.hasAppBar ? const AdaptiveToolbar() : null,
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(App.sidePadding),

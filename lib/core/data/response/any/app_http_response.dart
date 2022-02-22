@@ -65,6 +65,9 @@ class AppHttpResponse extends AppNetworkResponseException<DioError, dynamic> wit
   String get message => response.message;
 
   @override
+  bool get show => response.maybeMap(orElse: () => true, error: (e) => e.show);
+
+  @override
   String? get status => response.status;
 
   static AppHttpResponse? fromDioResponse<T>(_d.Response<T>? response) {
@@ -84,6 +87,7 @@ class AppHttpResponse extends AppNetworkResponseException<DioError, dynamic> wit
             status: e.status,
             exception: e.exception,
             pop: e.pop,
+            show: e.show,
           ),
           orElse: () => _value.response,
         ),

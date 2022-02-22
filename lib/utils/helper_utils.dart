@@ -8,6 +8,7 @@ import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -703,6 +704,18 @@ class Utils {
     return age;
   }
 
+  Future<void> logEvent(
+    String event, {
+    Map<String, Object?>? parameters,
+    bool? global,
+  }) async {
+    await getIt<FirebaseAnalytics>().logEvent(
+      name: event,
+      parameters: parameters,
+      callOptions: global != null ? AnalyticsCallOptions(global: global) : null,
+    );
+  }
+
   Future<void> report<T>({
     required T exception,
     required StackTrace stack,
@@ -716,5 +729,25 @@ class Utils {
         printDetails: printDetails,
         reason: reason,
       );
+  }
+
+  Future<void> reportFlutterError<T>(
+    T exception,
+    StackTrace? stack, {
+    String reason = 'Non-fatal Try/Catch Exception',
+  }) async {
+    if (getIt<FirebaseCrashlytics>().isCrashlyticsCollectionEnabled) {
+      final details = FlutterErrorDetails(
+        exception: exception as Object,
+        stack: stack,
+        library: 'Flutter',
+        context: ErrorDescription('$reason'),
+        informationCollector: () sync* {
+          yield DiagnosticsStackTrace('$reason', stack);
+        },
+      );
+
+      await getIt<FirebaseCrashlytics>().recordFlutterError(details);
+    }
   }
 }

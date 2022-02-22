@@ -8,15 +8,12 @@ class AnyResponseSerializer implements JsonConverter<AnyResponse, Map<String, dy
 
   @override
   AnyResponse fromJson(Map<String, dynamic>? json) {
-    if (json == null)
-      return const ErrorResponse(
-        messageTxt: 'Fatal: No response from server! Pls contact support.',
-      );
+    if (json == null) return const ErrorResponse(messageTxt: 'Fatal: No response from server! Pls contact support.');
 
     if (!json.containsKey('status'))
-      return ErrorResponse.fromJson(json);
+      return ErrorResponse.fromJson(json).copyWith(show: json.containsKey('status'));
     else if ((json.containsKey('status') && json['status'] is num)) {
-      return ErrorResponse.fromJson(json);
+      return ErrorResponse.fromJson(json).copyWith(show: json.containsKey('status'));
     } else
       switch (json['status'] as String) {
         case 'success':
@@ -25,7 +22,7 @@ class AnyResponseSerializer implements JsonConverter<AnyResponse, Map<String, dy
           return InfoResponseType.fromJson(json);
         case 'error':
         default:
-          return ErrorResponse.fromJson(json);
+          return ErrorResponse.fromJson(json).copyWith(show: json.containsKey('status'));
       }
   }
 

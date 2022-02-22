@@ -1,11 +1,15 @@
 library home_page.dart;
 
+import 'dart:async';
+
 import 'package:amatrider/core/domain/entities/entities.dart';
+import 'package:amatrider/core/domain/facades/index.dart';
 import 'package:amatrider/core/presentation/index.dart';
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/features/home/presentation/widgets/index.dart';
+import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
 import 'package:dartz/dartz.dart' hide State;
@@ -30,6 +34,8 @@ class HomePage extends ConsumerStatefulWidget {
         await c.read<RequestCubit>().allInTransit(c);
         if (controller != null) controller = controller!..refreshCompleted();
       });
+
+      unawaited(getIt<MessagingFacade>().setup(c));
     });
   }
 
@@ -82,7 +88,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               () => null,
               (it) => it?.response.map(
                 info: (i) => PopupDialog.error(message: i.message).render(c),
-                error: (f) => PopupDialog.error(message: f.message).render(c),
+                error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
                 success: (s) => PopupDialog.success(duration: const Duration(seconds: 2), message: s.message).render(c),
               ),
             ),

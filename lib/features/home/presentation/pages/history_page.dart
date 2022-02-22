@@ -64,7 +64,7 @@ class _HistoryPageState extends State<HistoryPage> {
           () => null,
           (it) => it?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.error(message: s.message).render(c),
           ),
         ),

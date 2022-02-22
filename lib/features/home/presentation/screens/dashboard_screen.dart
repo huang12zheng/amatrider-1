@@ -179,7 +179,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> with Automati
                             cubit.subscribeToProfileUpdate();
 
                             // Start laravel echo (notifications) & Fetch latest notifications
-                            BlocProvider.of<NotificationCubit>(context).echo();
+                            BlocProvider.of<NotificationCubit>(App.context).echo();
                           },
                         ),
                         builder: (_, snapshot) => AdaptiveScaffold(

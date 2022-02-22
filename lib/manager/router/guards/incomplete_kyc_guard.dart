@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class IncompleteKYCGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final s = BlocProvider.of<AuthWatcherCubit>(App.context).state.status;
+    final s = BlocProvider.of<AuthWatcherCubit>(router.navigatorKey.currentContext!).state.status;
 
     s.fold(
       () => resolver.next(),

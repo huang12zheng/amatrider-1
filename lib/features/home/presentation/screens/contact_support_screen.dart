@@ -38,7 +38,7 @@ class ContactSupportScreen extends StatefulWidget with AutoRouteWrapper {
                 },
               ),
             ).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(duration: const Duration(seconds: 3), message: s.message).render(c),
           ),
         ),

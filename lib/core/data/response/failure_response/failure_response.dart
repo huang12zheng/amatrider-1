@@ -23,6 +23,7 @@ class FailureResponse with _$FailureResponse implements Failure {
     @JsonKey(defaultValue: '') required String message,
     @JsonKey(ignore: true) String? details,
     @JsonKey(ignore: true) @Default(true) bool pop,
+    @JsonKey(ignore: true) @Default(true) bool show,
   }) = _FailureResponse;
 
   const FailureResponse._();
@@ -46,10 +47,7 @@ class FailureResponse with _$FailureResponse implements Failure {
 
   factory FailureResponse.unImplemented(String message) => FailureResponse(message: message);
 
-  factory FailureResponse.unknown({
-    required String? message,
-    int? code,
-  }) =>
+  factory FailureResponse.unknown({required String? message, int? code}) =>
       FailureResponse(message: '${message ?? 'Unknown error! Please contact support.'}', code: code);
 
   @override

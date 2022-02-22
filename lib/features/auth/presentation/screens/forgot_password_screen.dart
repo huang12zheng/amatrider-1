@@ -41,7 +41,7 @@ class ForgotPasswordScreen extends StatelessWidget with AutoRouteWrapper {
           () => null,
           (th) => th?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (p0) => PopupDialog.success(
               message: p0.message,
               listener: (_) => _?.fold(

@@ -61,7 +61,7 @@ class _InsightsPageState extends State<InsightsPage> {
           () => null,
           (it) => it?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
         ),

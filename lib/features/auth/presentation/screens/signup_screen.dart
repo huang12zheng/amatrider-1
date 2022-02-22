@@ -45,7 +45,7 @@ class SignupScreen extends StatefulWidget with AutoRouteWrapper {
           () => null,
           (it) => it?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(duration: env.greetingDuration, message: s.message).render(c),
           ),
         ),

@@ -49,8 +49,8 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   }
 
   void subscribeToPlayback({
-    Future<void> Function()? before,
-    Future<void> Function()? after,
+    FutureOr<void> Function()? before,
+    FutureOr<void> Function()? after,
   }) async {
     // if (state.playbackEnded) after?.call();
     // if (!state.playbackEnded) before?.call();

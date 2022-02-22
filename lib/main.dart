@@ -1,15 +1,28 @@
 import 'dart:async';
 
 import 'package:amatrider/app.dart';
+import 'package:amatrider/core/data/index.dart';
+import 'package:amatrider/core/domain/facades/index.dart';
 import 'package:amatrider/manager/locator/locator.dart';
 import 'package:amatrider/utils/utils.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  log.w('Background message received ==> ${message.data}\n'
+      'Notification body ==> Title ==> ${message.notification?.title?.length},, --> BODY => ${message.notification?.body?.length}\n'
+      'Content available ==> ${message.contentAvailable}\n'
+      'Mutable content ==> ${message.mutableContent}');
+  // Use this method to automatically convert the push data, in case you gonna use our data standard
+  await AwesomeNotifications().createNotificationFromJsonData(message.data);
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,11 +49,19 @@ void main() async {
       () async {
         WidgetsFlutterBinding.ensureInitialized();
 
+        // Initialize awesome notifications
+        await AwesomeNotifications().initialize(
+          'resource://drawable/res_notification_app_icon',
+          MessagingFacade.channels,
+        );
+
         // Setup Environmental variables & Service provider
         await BuildEnvironment.init(flavor: BuildFlavor.prod);
 
         // Pass all uncaught errors from the framework to Crashlytics.
         FlutterError.onError = getIt<FirebaseCrashlytics>().recordFlutterError;
+
+        FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
         runApp(const ProviderScope(child: AmatRider()));
       },

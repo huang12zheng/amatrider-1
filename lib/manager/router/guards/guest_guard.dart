@@ -6,14 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class GuestGuard extends AutoRouteGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) async {
-    final authenticated =
-        BlocProvider.of<AuthWatcherCubit>(router.navigatorKey.currentContext!)
-            .state
-            .isAuthenticated;
+    final authenticated = BlocProvider.of<AuthWatcherCubit>(router.navigatorKey.currentContext!).state.isAuthenticated;
 
     if (authenticated)
       await router.replaceAll([const DashboardRoute()]);
     else
-      resolver.next(true);
+      resolver.next();
   }
 }

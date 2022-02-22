@@ -1,3 +1,5 @@
+library social_auth_mixin.dart;
+
 import 'package:amatrider/core/data/http_client/index.dart';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/core/domain/entities/entities.dart';
@@ -11,6 +13,7 @@ import 'package:dio/dio.dart' as _dio;
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 typedef SignInWithSocials = Future<_dio.Response<dynamic>> Function();
 
@@ -63,17 +66,32 @@ mixin SocialAuthMixin on AuthFacade {
 
   @override
   Future<Option<AppHttpResponse?>> appleAuthentication([bool notify = false]) async {
-    try {
-      return some(const AppHttpResponse(AnyResponse.info(messageTxt: 'Coming soon')));
-    } on AppHttpResponse catch (e) {
-      log.e(e);
-      return some(e);
-    } on PlatformException catch (e) {
-      log.e(e);
-      return some(AppHttpResponse(AnyResponse.fromFailure(
-        FailureResponse.unknown(message: e.message),
-      )));
-    }
+    final _conn = await checkInternetConnectivity();
+
+    return await _conn.fold(
+      (f) => some(f),
+      (_) async {
+        try {
+          final credential = await SignInWithApple.getAppleIDCredential(
+            scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+          );
+
+          // Attempt to authenticate the user with apple credentials
+          return _authenticateUser(
+            () => remote.signInWithApple(credential.identityToken),
+            provider: AuthProvider.apple,
+          );
+        } on AppHttpResponse catch (e) {
+          return some(e);
+        } on AppNetworkException catch (e) {
+          return some(e.asResponse());
+        } on SignInWithAppleNotSupportedException catch (e) {
+          return some(AppHttpResponse.failure('${e.message}'));
+        } on SignInWithAppleException catch (_) {
+          return some(AppHttpResponse(AnyResponse.fromFailure(FailureResponse.aborted())));
+        }
+      },
+    );
   }
 
   Future<Option<AppHttpResponse?>> _authenticateUser(
@@ -88,23 +106,25 @@ mixin SocialAuthMixin on AuthFacade {
     // Get Authenticated Rider account
     final _rider = await remote.getRider();
 
+    final signInError = AppHttpResponse.fromDioResponse(response);
+
     return _rider.fold(
       (failure) async {
         final _data = failure.data as Map<String, dynamic>;
         final _socialDto = SocialUserDTO.fromJson(_data);
 
         // Log Firebase Analytics Login event
-        await analytics.logLogin(loginMethod: 'google');
+        await analytics.logLogin(loginMethod: provider.name);
 
         await retrieveAndCacheUpdatedRider(dto: _socialDto.dto);
 
         await sink(left(failure));
 
-        return some(failure);
+        return some(signInError ?? failure);
       },
       (dto) async {
         // Log Firebase Analytics Login event
-        await analytics.logLogin(loginMethod: 'google');
+        await analytics.logLogin(loginMethod: provider.name);
 
         await sink(right(optionOf(dto?.domain)));
 

@@ -229,6 +229,9 @@ class __DeliverableCardState extends State<_DeliverableCard> {
                     child: AdaptiveText(
                       widget.item.type.when(
                         order: () => widget.item.status.maybeWhen(
+                          pending: () => '${widget.item.store.name.getOrEmpty}',
+                          accepted: () => '${widget.item.store.name.getOrEmpty}',
+                          processing: () => '${widget.item.store.name.getOrEmpty}',
                           active: () => '${widget.item.store.name.getOrEmpty}',
                           enrouteToStoreOrSender: () => '${widget.item.store.name.getOrEmpty}',
                           orElse: () => '${widget.item.receiver.fullName.getOrEmpty}',
@@ -251,7 +254,11 @@ class __DeliverableCardState extends State<_DeliverableCard> {
                   Flexible(
                     flex: 4,
                     child: AdaptiveText(
-                      '${widget.item.price.getOrEmpty}'.asCurrency(),
+                      '${widget.item.paymentMethod!.maybeWhen(
+                        deliveryWithCard: () => widget.item.price.getOrNull! <= 0 ? 'PAID' : '${widget.item.price.getOrEmpty}'.asCurrency(),
+                        deliveryWithCash: () => widget.item.price.getOrNull! <= 0 ? 'PAID' : '${widget.item.price.getOrEmpty}'.asCurrency(),
+                        orElse: () => 'PAID',
+                      )}',
                       maxLines: 1,
                       minFontSize: 13,
                       maxFontSize: 17,

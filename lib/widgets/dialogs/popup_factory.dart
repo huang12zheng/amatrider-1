@@ -10,6 +10,7 @@ class PopupDialog extends _$PopupDialog {
     bool? autoDismiss,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
+    bool? show,
     void Function(dynamic)? onTap,
     PopupDialogStyle? alertStyle,
     PopupDialogPosition? position,
@@ -21,6 +22,7 @@ class PopupDialog extends _$PopupDialog {
           title: title,
           titleWidget: titleWidget,
           message: message,
+          show: show,
           messageWidget: messageWidget,
           popupIcon: Icon(
             Utils.platform_(
@@ -57,6 +59,7 @@ class PopupDialog extends _$PopupDialog {
     Duration? duration,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
+    bool? show,
     PopupDialogPosition? position,
     void Function(dynamic)? callbackOnShow,
     void Function(dynamic)? callback,
@@ -64,6 +67,7 @@ class PopupDialog extends _$PopupDialog {
   }) : super(
           type: _PopupDialogType.flushbar,
           title: title,
+          show: show,
           message: message,
           popupIcon: Icon(
             Utils.platform_(
@@ -97,6 +101,7 @@ class PopupDialog extends _$PopupDialog {
     bool? autoDismiss,
     TextStyle? titleStyle,
     TextStyle? messageStyle,
+    bool? show,
     void Function(dynamic)? onTap,
     PopupDialogStyle? alertStyle,
     PopupDialogPosition? position,
@@ -107,6 +112,7 @@ class PopupDialog extends _$PopupDialog {
   }) : super(
           type: _PopupDialogType.flushbar,
           title: title,
+          show: show,
           titleWidget: titleWidget,
           message: message,
           messageWidget: messageWidget,

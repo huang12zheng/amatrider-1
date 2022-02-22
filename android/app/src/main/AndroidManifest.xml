@@ -39,8 +39,8 @@
        android:extractNativeLibs="true"
        android:requestLegacyExternalStorage="true"
        android:usesCleartextTraffic="true"
+       tools:replace="android:extractNativeLibs"
        tools:targetApi="m">
-       <!-- tools:replace="android:extractNativeLibs" -->
 
         <activity
             android:name=".MainActivity"

@@ -214,13 +214,6 @@ dependencies:
     git:
       url: git://github.com/Flutter-Fox/flutter_masked_text.git
       ref: hotfix-0.9.1
-  # A Flutter plugin for making payments via Paystack Payment Gateway.
-  flutter_paystack: ^1.0.5+1
-  # Flutterwave official flutter library to accept payment via card, USSD, Mobile Money etc.
-  flutterwave_standard:
-    git:
-      url: git://github.com/f0rx/flutter_standard.git
-      ref: fix-exception
   # Port of official Laravel Echo package for your Flutter apps.
   laravel_echo: ^1.0.0-beta.1
   # A Pusher Channels client plugin for Flutter targeting Android and iOS.

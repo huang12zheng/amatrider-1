@@ -28,7 +28,7 @@ class PhoneUpdateBottomSheet extends StatelessWidget {
           () => null,
           (it) => it?.response.map(
             info: (f) => PopupDialog.info(message: f.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(
               message: s.message,
               listener: (_) => _?.fold(

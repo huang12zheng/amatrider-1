@@ -8,12 +8,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'any_response.g.dart';
 part 'any_response.freezed.dart';
 
-@Freezed(
-  unionKey: 'status',
-  unionValueCase: FreezedUnionCase.snake,
-  fallbackUnion: 'error',
-)
 @immutable
+@Freezed(unionKey: 'status', unionValueCase: FreezedUnionCase.snake, fallbackUnion: 'error')
 class AnyResponse extends Response with _$AnyResponse {
   static const String _kdefaultMsg = 'Oops Bad request! No Response.';
 
@@ -28,6 +24,7 @@ class AnyResponse extends Response with _$AnyResponse {
     String? error,
     ServerFieldErrors? errors,
     @JsonKey(ignore: true) @Default(false) bool pop,
+    @JsonKey(ignore: true) @Default(true) bool show,
     @JsonKey(ignore: true) Exception? exception,
   }) = ErrorResponse;
 

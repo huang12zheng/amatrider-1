@@ -29,7 +29,7 @@ class EditBankDetailsScreen extends StatelessWidget with AutoRouteWrapper {
           () => null,
           (it) => it?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (res) => PopupDialog.success(
               duration: const Duration(seconds: 2),
               message: res.message,

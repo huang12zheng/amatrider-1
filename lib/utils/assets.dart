@@ -43,6 +43,7 @@ mixin AppAssets {
   static const String hoorayAnimation = '$RAW_DIR/hooray_lottie_anim.json';
   static const String amatCircularLoader = '$RAW_DIR/amat_circular_loader.json';
   static const String amatLogoLoader = '$RAW_DIR/amat_logo_loader.json';
+  static const String instantNotifications = '$RAW_DIR/instant_notifications.json';
 
   /// USER
   static const String user = '$IMAGES_DIR/user.png';

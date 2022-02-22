@@ -25,6 +25,7 @@ abstract class Failure with _FailureMixin implements Response {
   static const int INCOMPLETE_KYC = 41101;
 
   int? get code;
+  bool get show;
   Exception? get exception;
 }
 
@@ -52,6 +53,9 @@ class UnExpectedFailure implements Failure {
   final String? error;
 
   @override
+  final bool show;
+
+  @override
   final String message;
 
   @override
@@ -61,6 +65,7 @@ class UnExpectedFailure implements Failure {
     required this.message,
     this.status,
     this.error,
+    this.show = true,
     this.code,
     this.details,
   });

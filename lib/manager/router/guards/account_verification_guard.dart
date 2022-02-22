@@ -18,6 +18,7 @@ class AccountVerificationGuard extends AutoRouteGuard {
             title: 'Verfication Successful!',
             description: 'Your account has been verified\nsuccessfully!',
             lottieJson: AppAssets.checkAnimation,
+            hasAppBar: true,
             onInitState: () async {
               await Future.delayed(
                 const Duration(seconds: 3),

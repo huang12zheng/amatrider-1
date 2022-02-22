@@ -456,7 +456,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   Future<void> googleAuth([bool notify = false]) async {
     emit(state.copyWith(isGoogleAuthLoading: true, status: none()));
 
-    var result = await _auth.googleAuthentication(notify);
+    final result = await _auth.googleAuthentication(notify);
 
     emit(state.copyWith(status: result));
     emit(state.copyWith(isGoogleAuthLoading: false));
@@ -465,7 +465,7 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit<AuthState>, _ImagePicker
   Future<void> appleAuth([bool notify = false]) async {
     emit(state.copyWith(isAppleAuthLoading: true, status: none()));
 
-    var result = await _auth.appleAuthentication(notify);
+    final result = await _auth.appleAuthentication(notify);
 
     emit(state.copyWith(status: result));
     emit(state.copyWith(isAppleAuthLoading: false));

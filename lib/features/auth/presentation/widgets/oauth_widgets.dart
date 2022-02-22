@@ -1,19 +1,19 @@
+library oauth_widgets.dart;
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:amatrider/features/auth/presentation/managers/managers.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:amatrider/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class OAuthWidgets extends StatelessWidget {
   final AuthCubit cubit;
   final bool email;
   final bool google;
-  final bool facebook;
-  final bool twitter;
   final bool apple;
 
   const OAuthWidgets({
@@ -21,9 +21,7 @@ class OAuthWidgets extends StatelessWidget {
     required this.cubit,
     this.email = false,
     this.google = true,
-    this.facebook = false,
     this.apple = true,
-    this.twitter = false,
   }) : super(key: key);
 
   @override
@@ -74,40 +72,27 @@ class OAuthWidgets extends StatelessWidget {
                 ),
               ),
               //
-              Flexible(
-                child: SocialBuilder(
-                  visiblility: facebook,
-                  text: 'Continue with Facebook',
-                  color: App.resolveColor(Palette.fbButton),
-                  bgColor: App.resolveColor(Palette.fbButton),
-                  splashLight: Colors.white30,
-                  icon: AppAssets.facebook(
-                    App.resolveColor(
-                      App.theme.scaffoldBackgroundColor,
-                      dark: Colors.white70,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              //
-              if (Platform.isIOS || Platform.isMacOS)
+              if (Platform.isIOS || Platform.isMacOS) ...[
+                if (apple) HorizontalSpace(width: 0.07.sw),
+                //
                 Flexible(
                   child: BlocSelector<AuthCubit, AuthState, bool>(
                     selector: (s) => s.isAppleAuthLoading,
-                    builder: (c, isLoading) => SocialBuilder(
-                      isLoading: !isLoading,
-                      visiblility: apple,
-                      text: 'Continue with Apple',
-                      color: App.resolveColor(
-                        null,
-                        dark: Palette.secondaryColor.shade400,
+                    builder: (c, isLoading) => AnimatedVisibility(
+                      visible: apple,
+                      child: AnimatedVisibility(
+                        visible: !isLoading,
+                        replacement: App.loadingSpinningLines,
+                        child: SignInWithAppleButton(
+                          onPressed: context.read<AuthCubit>().appleAuth,
+                          borderRadius: Utils.buttonRadius.br,
+                          style: SignInWithAppleButtonStyle.white,
+                        ),
                       ),
-                      icon: AppAssets.apple(App.resolveColor(null, dark: CupertinoColors.black)),
-                      onPressed: BlocProvider.of<AuthCubit>(context).appleAuth,
                     ),
                   ),
                 ),
+              ]
             ],
           ),
         ),

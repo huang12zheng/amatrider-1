@@ -38,7 +38,7 @@ class SocialsAuthScreen extends StatefulWidget with AutoRouteWrapper {
           () => null,
           (th) => th?.response.map(
             info: (i) => PopupDialog.info(message: i.message).render(c),
-            error: (f) => PopupDialog.error(message: f.message).render(c),
+            error: (f) => PopupDialog.error(message: f.message, show: f.show).render(c),
             success: (s) => PopupDialog.success(message: s.message).render(c),
           ),
         ),
@@ -55,7 +55,6 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
   DateTime _timestampPressed = DateTime.now();
   final firstNameFocus = FocusNode();
   final lastNameFocus = FocusNode();
-  final usernameFocus = FocusNode();
   final phoneFocus = FocusNode();
 
   Future<bool> maybePop() async {
@@ -100,7 +99,7 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                     letterSpacing: Utils.letterSpacing,
                   ),
                   //
-                  VerticalSpace(height: 0.03.sw),
+                  0.014.verticalh,
                   //
                   BlocSelector<AuthCubit, AuthState, Rider>(
                     selector: (s) => s.rider,
@@ -138,7 +137,7 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                         //
                         BlocBuilder<AuthCubit, AuthState>(
                           builder: (c, s) => AnimatedVisibility(
-                            visible: s.isLoading && !s.rider.email.isValid,
+                            visible: (s.isLoading && !s.rider.email.isValid) || s.isGoogleAuthLoading,
                             child: const Padding(
                               padding: EdgeInsets.all(3.0),
                               child: CircularProgressBar.adaptive(
@@ -153,7 +152,7 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                     ),
                   ),
                   //
-                  VerticalSpace(height: 0.02.sw),
+                  0.008.verticalh,
                   //
                   AutofillGroup(
                     child: Column(
@@ -199,7 +198,6 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                                     validate: (s) => s.validate,
                                     field: (s) => s.rider.lastName,
                                     focus: lastNameFocus,
-                                    next: usernameFocus,
                                     onChanged: (it, str) => it.lastNameChanged(str),
                                   ),
                                 ],
@@ -208,7 +206,7 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                           ],
                         ),
                         //
-                        VerticalSpace(height: 0.04.sw),
+                        0.018.verticalh,
                         //
                         const Align(
                           alignment: Alignment.centerLeft,
@@ -222,12 +220,10 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
                             useHero: false,
                             disabled: (s) => true,
                             readOnly: (_) => true,
-                            validate: (s) => s.validate,
-                            response: (s) => s.status,
                           ),
                         ),
                         //
-                        VerticalSpace(height: 0.04.sw),
+                        0.018.verticalh,
                         //
                         const Align(
                           alignment: Alignment.centerLeft,
@@ -255,59 +251,54 @@ class _SocialsAuthScreenState extends State<SocialsAuthScreen> {
               ),
             ),
             //
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.06.h),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate.fixed([
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (c, s) => Hero(
-                      tag: Const.authButtonHeroTag,
-                      child: AppButton(
-                        text: 'Continue',
-                        isLoading: s.isLoading && s.rider.email.isNotNull((_) => true, orElse: (_) => false),
-                        onPressed: () {
-                          TextInput.finishAutofillContext();
-                          c.read<AuthCubit>().updateSocialsProfile();
-                        },
+            SliverSafeArea(
+              top: false,
+              left: false,
+              right: false,
+              sliver: SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: App.sidePadding).copyWith(top: 0.06.h),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate.fixed([
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (c, s) => Hero(
+                        tag: Const.authButtonHeroTag,
+                        child: AppButton(
+                          text: 'Continue',
+                          isLoading: s.isLoading && s.rider.email.isNotNull((_) => true, orElse: (_) => false),
+                          onPressed: () {
+                            TextInput.finishAutofillContext();
+                            c.read<AuthCubit>().updateSocialsProfile();
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  //
-                  BlocSelector<AuthCubit, AuthState, Rider?>(
-                    selector: (s) => s.rider,
-                    builder: (c, rider) => Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          VerticalSpace(height: 0.06.sw),
-                          //
-                          const OrWidget(),
-                          //
-                          VerticalSpace(height: 0.06.sw),
-                          //
-                          if (rider != null)
-                            rider.provider.when(
-                              regular: () => Utils.nothing,
-                              google: () => OAuthWidgets(
-                                cubit: c.read<AuthCubit>(),
-                                google: false,
-                                email: true,
-                                apple: true,
-                              ),
-                              apple: () => OAuthWidgets(
-                                cubit: c.read<AuthCubit>(),
-                                apple: false,
-                                email: true,
-                                google: true,
-                              ),
+                    //
+                    BlocSelector<AuthCubit, AuthState, Rider?>(
+                      selector: (s) => s.rider,
+                      builder: (c, rider) => Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            VerticalSpace(height: 0.06.sw),
+                            //
+                            const OrWidget(),
+                            //
+                            VerticalSpace(height: 0.06.sw),
+
+                            OAuthWidgets(
+                              cubit: c.read<AuthCubit>(),
+                              google: rider?.provider != AuthProvider.google,
+                              email: rider?.provider != AuthProvider.regular,
+                              apple: rider?.provider != AuthProvider.apple,
                             ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  //
-                  VerticalSpace(height: 0.04.sw),
-                ]),
+                    //
+                    0.01.verticalh,
+                  ]),
+                ),
               ),
             ),
           ],
