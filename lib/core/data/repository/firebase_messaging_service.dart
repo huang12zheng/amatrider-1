@@ -111,7 +111,7 @@ class InAppMessaging extends MessagingFacade with BaseRepository {
 
       if (isAllowed) {
         await _continueIfAllowed();
-        final isAuthenticated = BlocProvider.of<AuthWatcherCubit>(context).state.isAuthenticated;
+        final isAuthenticated = context.read<AuthWatcherCubit>().state.isAuthenticated;
         if (isAuthenticated) await registerDevice();
       }
     } catch (e) {

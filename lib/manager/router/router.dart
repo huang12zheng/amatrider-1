@@ -75,7 +75,7 @@ import 'package:amatrider/_404.dart';
       page: ForgotPasswordScreen,
       path: 'forgot-password-screen',
       cupertinoPageTitle: 'Password Reset',
-      guards: [GuestGuard, IncompleteKYCGuard],
+      guards: [GuestGuard],
     ),
     //
     AdaptiveRoute(
