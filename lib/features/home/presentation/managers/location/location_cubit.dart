@@ -66,43 +66,55 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
 
   void disableBackgroundLocation() => _service.requestBackgroundMode(false);
 
-  Future<dynamic> showPermissionRationale(BuildContext context, {Future<void> Function()? callback}) async {
+  Future<dynamic> showPermissionRationale(
+    BuildContext context, {
+    void Function()? onAccepted,
+    void Function()? onDeclined,
+    void Function(RiderLocation)? onLocation,
+    void Function()? onFailure,
+    bool clear = false,
+    bool getAddress = true,
+    bool beforeAddress = true,
+    bool fresh = false,
+  }) async {
     if (!(await hasPermission)) {
-      if (navigator.current.name != AccessRoute.name)
-        return await navigator.push(AccessRoute(
-          title: 'Kindly Grant Location Access',
-          onWillPop: requestPermission,
-          content: 'Your location is needed in calculating '
-              'accurate distance and delivery time.',
-          additionalContent: AdaptiveText.rich(
-            const TextSpan(children: [
-              TextSpan(text: 'It’s safe to grant '),
-              TextSpan(
-                text: '${Const.appName}',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              TextSpan(text: ' location access. '),
-              TextSpan(text: 'It makes the system work better. '),
-              TextSpan(text: 'Thank you.'),
-            ]),
-            fontSize: 17.sp,
-            fontWeight: FontWeight.w400,
-            letterSpacing: Utils.letterSpacing,
-            softWrap: true,
-          ),
-          onAccept: () async {
+      if (navigator.current.name != LocationPermissionRoute.name)
+        await navigator.push(LocationPermissionRoute(
+          onAccepted: () async {
             final _granted = await requestPermission();
 
             if (_granted) {
-              await navigator.pop(true);
-              await callback?.call();
-            }
+              onAccepted?.call();
 
-            return false;
+              unawaited(getRiderLocation(
+                context,
+                callback: onLocation ?? (RiderLocation p) => null,
+                callbackBeforeAddress: beforeAddress,
+                clear: clear,
+                getAddress: getAddress,
+                fresh: fresh,
+                onFailure: onFailure,
+              ));
+            }
+          },
+          onDeclined: () {
+            onDeclined?.call();
+            onFailure?.call();
+            // onLocation?.call(null);
           },
         ));
     } else {
-      return callback?.call();
+      onAccepted?.call();
+
+      unawaited(getRiderLocation(
+        context,
+        callback: onLocation ?? (RiderLocation p) => null,
+        callbackBeforeAddress: beforeAddress,
+        clear: clear,
+        getAddress: getAddress,
+        fresh: fresh,
+        onFailure: onFailure,
+      ));
     }
   }
 
@@ -111,19 +123,26 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     bool background = false,
     Future<void> Function(bool)? future,
     bool awaitBackground = false,
+    void Function()? onFailure,
   }) async {
-    if (!state.isRequestingService) await requestService(c, future: !awaitBackground ? future : null, service: _service);
+    if (!state.isRequestingService)
+      await requestService(
+        c,
+        future: !awaitBackground ? future : null,
+        service: _service,
+        onFailure: onFailure,
+      );
 
     // Update request state
     emit(state.copyWith(isRequestingService: false));
-
-    if (background) await requestBackground(c, future: awaitBackground ? future : null);
   }
 
   Future<void> getRiderLocation(
     BuildContext c, {
     required void Function(RiderLocation) callback,
-    bool getAddress = false,
+    void Function()? onFailure,
+    bool clear = false,
+    bool getAddress = true,
     bool callbackBeforeAddress = true,
     bool fresh = false,
   }) async {
@@ -153,12 +172,26 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
         }
       },
       prod: () async {
+        if (clear) emit(state.copyWith(position: null, status: none()));
+
         if (fresh) {
-          await _getRiderLocation(c, callback: callback, getAddress: getAddress, callbackBeforeAddress: callbackBeforeAddress);
+          await _getRiderLocation(
+            c,
+            callback: callback,
+            getAddress: getAddress,
+            beforeAddress: callbackBeforeAddress,
+            onFailure: onFailure,
+          );
         } else if (wasUpdatedRecently) {
           callback(state.position!);
         } else {
-          await _getRiderLocation(c, callback: callback, getAddress: getAddress, callbackBeforeAddress: callbackBeforeAddress);
+          await _getRiderLocation(
+            c,
+            callback: callback,
+            getAddress: getAddress,
+            beforeAddress: callbackBeforeAddress,
+            onFailure: onFailure,
+          );
         }
       },
     );
@@ -167,41 +200,70 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
   Future<void> _getRiderLocation(
     BuildContext c, {
     required void Function(RiderLocation) callback,
-    bool getAddress = false,
-    bool callbackBeforeAddress = true,
+    void Function()? onFailure,
+    bool getAddress = true,
+    bool beforeAddress = true,
   }) async {
-    await request(c, future: (granted) async {
+    await request(c, onFailure: onFailure, future: (granted) async {
       toggleLoading(true);
+
+      Future.delayed(const Duration(seconds: 8), () {
+        toggleLoading(false);
+      });
+
+      if (!granted) {
+        // callback(null);
+        toggleLoading(false);
+        return;
+      }
 
       final _conn = await connection();
 
       await _conn.fold(
         () async {
-          final _result = await _service.getLocation();
+          await _service.getLocation(
+            onData: (location) async {
+              emit(state.copyWith(position: location.copyWith(place: state.position?.place), lastUpdate: DateTime.now()));
 
-          await _result.fold(
-            (error) async => emit(state.copyWith(status: some(AppHttpResponse(error)))),
-            (location) async {
-              emit(state.copyWith(position: location?.copyWith(place: state.position?.place), lastUpdate: DateTime.now()));
+              await _runAfterLocationService(location, callback, getAddress, beforeAddress);
+            },
+            onError: (err) async {
+              emit(state.copyWith(status: some(AppHttpResponse(err)), isLoading: false));
 
-              if (callbackBeforeAddress) callback.call(location!);
+              final _result = await _service.getLastKnownLocation();
 
-              if (getAddress) {
-                // Find address from lat, lng
-                final place = await findFromLatlng(location!);
-
-                emit(state.copyWith(position: state.position?.copyWith(place: place)));
-
-                if (!callbackBeforeAddress) callback.call(state.position!);
-              }
+              await _result.fold(
+                (f) async => emit(state.copyWith(status: some(AppHttpResponse(f)), isLoading: false)),
+                (_lastKnownLocation) async {
+                  await _runAfterLocationService(_lastKnownLocation, callback, getAddress, beforeAddress);
+                },
+              );
             },
           );
         },
-        (status) async => emit(state.copyWith(status: optionOf(status))),
+        (status) async => emit(state.copyWith(status: optionOf(status), isLoading: false)),
       );
 
       toggleLoading(false);
     });
+  }
+
+  Future<void> _runAfterLocationService(
+    RiderLocation location,
+    void Function(RiderLocation) callback, [
+    bool getAddress = true,
+    bool beforeAddress = true,
+  ]) async {
+    if (beforeAddress) callback.call(location);
+
+    if (getAddress) {
+      // Find address from lat, lng
+      final place = await findFromLatlng(location);
+
+      emit(state.copyWith(position: state.position?.copyWith(place: place)));
+
+      if (!beforeAddress) callback.call(state.position!);
+    }
   }
 
   Future<PlaceDetail?> findFromLatlng(RiderLocation location) async {
@@ -221,6 +283,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     BuildContext c, {
     Future<void> Function(bool)? future,
     required LocationService service,
+    void Function()? onFailure,
   }) async {
     final _hasService = await serviceEnabled();
 
@@ -246,7 +309,7 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
 
           if (_enabled) await future?.call(_enabled);
 
-          return _enabled;
+          return navigator.pop(_enabled);
         },
       ));
       //
@@ -302,10 +365,6 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
     return await App.showAlertDialog<B>(
       context: ctx,
       barrierDismissible: false,
-      barrierColor: App.resolveColor(
-        Colors.grey.shade800.withOpacity(0.55),
-        dark: Colors.white54,
-      ),
       builder: (_) => AdaptiveAlertdialog<B>(
         title: title,
         content: content,
@@ -313,9 +372,11 @@ class LocationCubit extends Cubit<LocationState> with BaseCubit<LocationState> {
         firstButtonText: btnText ?? 'Grant Access',
         minContentFontSize: 15,
         contentFontSize: 17.sp,
-        onFirstPressed: onAccept.call,
+        onFirstPressed: onAccept,
         buttonDirection: Axis.horizontal,
         disableSecondButton: true,
+        autoPopFirstButton: false,
+        autoPopSecondButton: false,
       ),
     );
   }

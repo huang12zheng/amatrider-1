@@ -38,7 +38,14 @@ class __DeliverableCardState extends State<_DeliverableCard> {
           secondTextStyle: const TextStyle(color: Colors.white),
           secondBgColor: Palette.accentColor,
           onSecondPressed: () async {
-            await context.read<RequestCubit>().acceptDeliverable(context, widget.item, onAccepted: widget.onAccept);
+            await context.read<LocationCubit>().showPermissionRationale(context, onLocation: (location) async {
+              await context.read<RequestCubit>().acceptDeliverable(
+                    context,
+                    widget.item,
+                    onAccepted: widget.onAccept,
+                    location: location,
+                  );
+            });
           },
           materialFirstButton: AppOutlinedButton(
             text: '${tr.noGoBack}',
@@ -67,7 +74,14 @@ class __DeliverableCardState extends State<_DeliverableCard> {
         secondTextStyle: const TextStyle(color: Colors.white),
         secondBgColor: Palette.accentColor,
         onSecondPressed: () async {
-          await context.read<RequestCubit>().declineDeliverable(context, widget.item, onDeclined: widget.onDecline);
+          await context.read<LocationCubit>().showPermissionRationale(context, onLocation: (location) async {
+            await context.read<RequestCubit>().declineDeliverable(
+                  context,
+                  widget.item,
+                  onDeclined: widget.onDecline,
+                  location: location,
+                );
+          });
         },
         materialFirstButton: AppOutlinedButton(
           text: '${tr.noGoBack}',

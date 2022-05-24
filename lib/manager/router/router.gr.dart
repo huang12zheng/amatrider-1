@@ -10,14 +10,14 @@
 //
 // ignore_for_file: type=lint
 
-import 'dart:async' as _i14;
+import 'dart:async' as _i15;
 
 import 'package:amatrider/_404.dart' as _i7;
 import 'package:amatrider/core/presentation/index.dart' as _i6;
 import 'package:amatrider/features/auth/presentation/managers/managers.dart'
-    as _i12;
+    as _i13;
 import 'package:amatrider/features/auth/presentation/screens/index.dart' as _i2;
-import 'package:amatrider/features/home/domain/entities/index.dart' as _i13;
+import 'package:amatrider/features/home/domain/entities/index.dart' as _i14;
 import 'package:amatrider/features/home/presentation/pages/index.dart' as _i9;
 import 'package:amatrider/features/home/presentation/screens/edit_bank_details_screen.dart'
     as _i4;
@@ -26,8 +26,9 @@ import 'package:amatrider/features/home/presentation/widgets/index.dart' as _i5;
 import 'package:amatrider/features/onborading/presentation/screens/index.dart'
     as _i1;
 import 'package:amatrider/manager/router/guards/guards.dart' as _i11;
-import 'package:amatrider/widgets/widgets.dart' as _i15;
+import 'package:amatrider/widgets/widgets.dart' as _i16;
 import 'package:auto_route/auto_route.dart' as _i8;
+import 'package:flutter/cupertino.dart' as _i12;
 import 'package:flutter/material.dart' as _i10;
 
 class AppRouter extends _i8.RootStackRouter {
@@ -187,6 +188,16 @@ class AppRouter extends _i8.RootStackRouter {
               additionalContent: args.additionalContent),
           fullscreenDialog: true);
     },
+    LocationPermissionRoute.name: (routeData) {
+      final args = routeData.argsAs<LocationPermissionRouteArgs>();
+      return _i8.AdaptivePage<dynamic>(
+          routeData: routeData,
+          child: _i3.LocationPermissionScreen(
+              key: args.key,
+              onAccepted: args.onAccepted,
+              onDeclined: args.onDeclined),
+          fullscreenDialog: true);
+    },
     SuccessRoute.name: (routeData) {
       final args = routeData.argsAs<SuccessRouteArgs>();
       return _i8.AdaptivePage<dynamic>(
@@ -294,7 +305,7 @@ class AppRouter extends _i8.RootStackRouter {
             path: 'forgot-password-screen',
             fullMatch: true,
             usesPathAsKey: true,
-            guards: [guestGuard, incompleteKYCGuard]),
+            guards: [guestGuard]),
         _i8.RouteConfig(OTPVerificationRoute.name,
             path: 'otp-verification-screen',
             fullMatch: true,
@@ -413,6 +424,8 @@ class AppRouter extends _i8.RootStackRouter {
             guards: [authGuard]),
         _i8.RouteConfig(AccessRoute.name,
             path: 'service-access-widget', fullMatch: true),
+        _i8.RouteConfig(LocationPermissionRoute.name,
+            path: '/location-permission-screen', fullMatch: true),
         _i8.RouteConfig(SuccessRoute.name,
             path: 'success-screen', fullMatch: true),
         _i8.RouteConfig(NotificationRoute.name,
@@ -492,7 +505,7 @@ class ForgotPasswordRoute extends _i8.PageRouteInfo<void> {
 /// [_i2.OTPVerificationScreen]
 class OTPVerificationRoute extends _i8.PageRouteInfo<OTPVerificationRouteArgs> {
   OTPVerificationRoute(
-      {_i10.Key? key, void Function()? onEnter, void Function()? onBackPressed})
+      {_i12.Key? key, void Function()? onEnter, void Function()? onBackPressed})
       : super(OTPVerificationRoute.name,
             path: 'otp-verification-screen',
             args: OTPVerificationRouteArgs(
@@ -504,7 +517,7 @@ class OTPVerificationRoute extends _i8.PageRouteInfo<OTPVerificationRouteArgs> {
 class OTPVerificationRouteArgs {
   const OTPVerificationRouteArgs({this.key, this.onEnter, this.onBackPressed});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   final void Function()? onEnter;
 
@@ -539,7 +552,7 @@ class AccountVerificationRoute extends _i8.PageRouteInfo<void> {
 /// generated route for
 /// [_i3.DocumentUploadScreen]
 class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
-  DocumentUploadRoute({required _i12.VerificationCubit cubit})
+  DocumentUploadRoute({required _i13.VerificationCubit cubit})
       : super(DocumentUploadRoute.name,
             path: 'document-upload-screen',
             args: DocumentUploadRouteArgs(cubit: cubit));
@@ -550,7 +563,7 @@ class DocumentUploadRoute extends _i8.PageRouteInfo<DocumentUploadRouteArgs> {
 class DocumentUploadRouteArgs {
   const DocumentUploadRouteArgs({required this.cubit});
 
-  final _i12.VerificationCubit cubit;
+  final _i13.VerificationCubit cubit;
 
   @override
   String toString() {
@@ -588,9 +601,9 @@ class EditBankDetailsRoute extends _i8.PageRouteInfo<void> {
 class PackageDeliveryAcceptedRoute
     extends _i8.PageRouteInfo<PackageDeliveryAcceptedRouteArgs> {
   PackageDeliveryAcceptedRoute(
-      {_i10.Key? key,
-      required _i13.Logistics deliverable,
-      void Function(_i13.Logistics)? onDelivered})
+      {_i12.Key? key,
+      required _i14.Logistics deliverable,
+      void Function(_i14.Logistics)? onDelivered})
       : super(PackageDeliveryAcceptedRoute.name,
             path: 'package-delivery-accepted-screen',
             args: PackageDeliveryAcceptedRouteArgs(
@@ -603,11 +616,11 @@ class PackageDeliveryAcceptedRouteArgs {
   const PackageDeliveryAcceptedRouteArgs(
       {this.key, required this.deliverable, this.onDelivered});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i13.Logistics deliverable;
+  final _i14.Logistics deliverable;
 
-  final void Function(_i13.Logistics)? onDelivered;
+  final void Function(_i14.Logistics)? onDelivered;
 
   @override
   String toString() {
@@ -673,15 +686,15 @@ class PromotionsRoute extends _i8.PageRouteInfo<void> {
 /// [_i5.AccessScreen]
 class AccessRoute extends _i8.PageRouteInfo<AccessRouteArgs> {
   AccessRoute(
-      {_i10.Key? key,
+      {_i12.Key? key,
       required String title,
       required String content,
       String firstButtonText = 'Grant Access',
       String? secondButtonText,
-      required _i14.Future<bool> Function() onAccept,
-      _i14.Future<bool> Function()? onWillPop,
-      _i14.Future<bool> Function()? onDecline,
-      _i15.AdaptiveText? additionalContent})
+      required _i15.Future<bool> Function() onAccept,
+      _i15.Future<bool> Function()? onWillPop,
+      _i15.Future<bool> Function()? onDecline,
+      _i16.AdaptiveText? additionalContent})
       : super(AccessRoute.name,
             path: 'service-access-widget',
             args: AccessRouteArgs(
@@ -710,7 +723,7 @@ class AccessRouteArgs {
       this.onDecline,
       this.additionalContent});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   final String title;
 
@@ -720,13 +733,13 @@ class AccessRouteArgs {
 
   final String? secondButtonText;
 
-  final _i14.Future<bool> Function() onAccept;
+  final _i15.Future<bool> Function() onAccept;
 
-  final _i14.Future<bool> Function()? onWillPop;
+  final _i15.Future<bool> Function()? onWillPop;
 
-  final _i14.Future<bool> Function()? onDecline;
+  final _i15.Future<bool> Function()? onDecline;
 
-  final _i15.AdaptiveText? additionalContent;
+  final _i16.AdaptiveText? additionalContent;
 
   @override
   String toString() {
@@ -735,23 +748,55 @@ class AccessRouteArgs {
 }
 
 /// generated route for
+/// [_i3.LocationPermissionScreen]
+class LocationPermissionRoute
+    extends _i8.PageRouteInfo<LocationPermissionRouteArgs> {
+  LocationPermissionRoute(
+      {_i12.Key? key,
+      required void Function() onAccepted,
+      required void Function() onDeclined})
+      : super(LocationPermissionRoute.name,
+            path: '/location-permission-screen',
+            args: LocationPermissionRouteArgs(
+                key: key, onAccepted: onAccepted, onDeclined: onDeclined));
+
+  static const String name = 'LocationPermissionRoute';
+}
+
+class LocationPermissionRouteArgs {
+  const LocationPermissionRouteArgs(
+      {this.key, required this.onAccepted, required this.onDeclined});
+
+  final _i12.Key? key;
+
+  final void Function() onAccepted;
+
+  final void Function() onDeclined;
+
+  @override
+  String toString() {
+    return 'LocationPermissionRouteArgs{key: $key, onAccepted: $onAccepted, onDeclined: $onDeclined}';
+  }
+}
+
+/// generated route for
 /// [_i6.SuccessScreen]
 class SuccessRoute extends _i8.PageRouteInfo<SuccessRouteArgs> {
   SuccessRoute(
-      {_i10.Key? key,
-      _i10.Widget? svg,
-      _i10.Widget? image,
+      {_i12.Key? key,
+      _i12.Widget? svg,
+      _i12.Widget? image,
       String? lottieJson,
       required String title,
       String? description,
       String? buttonText,
       Duration animationDuration = const Duration(milliseconds: 1600),
-      _i10.BoxFit fit = _i10.BoxFit.cover,
+      _i12.BoxFit fit = _i12.BoxFit.cover,
       double? width,
       double? height,
       void Function()? onButtonPressed,
       void Function()? onBackPressed,
-      _i14.Future<void> Function()? onInitState,
+      _i15.Future<void> Function()? onInitState,
       bool hasAppBar = false})
       : super(SuccessRoute.name,
             path: 'success-screen',
@@ -785,7 +830,7 @@ class SuccessRouteArgs {
       this.description,
       this.buttonText,
       this.animationDuration = const Duration(milliseconds: 1600),
-      this.fit = _i10.BoxFit.cover,
+      this.fit = _i12.BoxFit.cover,
       this.width,
       this.height,
       this.onButtonPressed,
@@ -793,11 +838,11 @@ class SuccessRouteArgs {
       this.onInitState,
       this.hasAppBar = false});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i10.Widget? svg;
+  final _i12.Widget? svg;
 
-  final _i10.Widget? image;
+  final _i12.Widget? image;
 
   final String? lottieJson;
 
@@ -809,7 +854,7 @@ class SuccessRouteArgs {
 
   final Duration animationDuration;
 
-  final _i10.BoxFit fit;
+  final _i12.BoxFit fit;
 
   final double? width;
 
@@ -819,7 +864,7 @@ class SuccessRouteArgs {
 
   final void Function()? onBackPressed;
 
-  final _i14.Future<void> Function()? onInitState;
+  final _i15.Future<void> Function()? onInitState;
 
   final bool hasAppBar;
 
@@ -841,7 +886,7 @@ class NotificationRoute extends _i8.PageRouteInfo<void> {
 /// generated route for
 /// [_i6.NotConnectedScreen]
 class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
-  NotConnectedRoute({_i10.Key? key, required _i14.Future<dynamic> future})
+  NotConnectedRoute({_i12.Key? key, required _i15.Future<dynamic> future})
       : super(NotConnectedRoute.name,
             path: 'not-connected-screen',
             args: NotConnectedRouteArgs(key: key, future: future));
@@ -852,9 +897,9 @@ class NotConnectedRoute extends _i8.PageRouteInfo<NotConnectedRouteArgs> {
 class NotConnectedRouteArgs {
   const NotConnectedRouteArgs({this.key, required this.future});
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
-  final _i14.Future<dynamic> future;
+  final _i15.Future<dynamic> future;
 
   @override
   String toString() {

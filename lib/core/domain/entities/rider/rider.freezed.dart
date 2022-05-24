@@ -31,6 +31,7 @@ class _$RiderTearOff {
       ProfileVerificationStatus verificationStatus =
           ProfileVerificationStatus.unverified,
       bool phoneVerified = false,
+      bool flexible = false,
       required BasicTextField<double?> avgRating,
       AuthProvider provider = AuthProvider.regular,
       DateTime? createdAt,
@@ -48,6 +49,7 @@ class _$RiderTearOff {
       location: location,
       verificationStatus: verificationStatus,
       phoneVerified: phoneVerified,
+      flexible: flexible,
       avgRating: avgRating,
       provider: provider,
       createdAt: createdAt,
@@ -74,6 +76,7 @@ mixin _$Rider {
   ProfileVerificationStatus get verificationStatus =>
       throw _privateConstructorUsedError;
   bool get phoneVerified => throw _privateConstructorUsedError;
+  bool get flexible => throw _privateConstructorUsedError;
   BasicTextField<double?> get avgRating => throw _privateConstructorUsedError;
   AuthProvider get provider => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -100,6 +103,7 @@ abstract class $RiderCopyWith<$Res> {
       RiderLocation location,
       ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      bool flexible,
       BasicTextField<double?> avgRating,
       AuthProvider provider,
       DateTime? createdAt,
@@ -130,6 +134,7 @@ class _$RiderCopyWithImpl<$Res> implements $RiderCopyWith<$Res> {
     Object? location = freezed,
     Object? verificationStatus = freezed,
     Object? phoneVerified = freezed,
+    Object? flexible = freezed,
     Object? avgRating = freezed,
     Object? provider = freezed,
     Object? createdAt = freezed,
@@ -181,6 +186,10 @@ class _$RiderCopyWithImpl<$Res> implements $RiderCopyWith<$Res> {
           ? _value.phoneVerified
           : phoneVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      flexible: flexible == freezed
+          ? _value.flexible
+          : flexible // ignore: cast_nullable_to_non_nullable
+              as bool,
       avgRating: avgRating == freezed
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
@@ -229,6 +238,7 @@ abstract class _$RiderCopyWith<$Res> implements $RiderCopyWith<$Res> {
       RiderLocation location,
       ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      bool flexible,
       BasicTextField<double?> avgRating,
       AuthProvider provider,
       DateTime? createdAt,
@@ -261,6 +271,7 @@ class __$RiderCopyWithImpl<$Res> extends _$RiderCopyWithImpl<$Res>
     Object? location = freezed,
     Object? verificationStatus = freezed,
     Object? phoneVerified = freezed,
+    Object? flexible = freezed,
     Object? avgRating = freezed,
     Object? provider = freezed,
     Object? createdAt = freezed,
@@ -312,6 +323,10 @@ class __$RiderCopyWithImpl<$Res> extends _$RiderCopyWithImpl<$Res>
           ? _value.phoneVerified
           : phoneVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      flexible: flexible == freezed
+          ? _value.flexible
+          : flexible // ignore: cast_nullable_to_non_nullable
+              as bool,
       avgRating: avgRating == freezed
           ? _value.avgRating
           : avgRating // ignore: cast_nullable_to_non_nullable
@@ -351,6 +366,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       required this.location,
       this.verificationStatus = ProfileVerificationStatus.unverified,
       this.phoneVerified = false,
+      this.flexible = false,
       required this.avgRating,
       this.provider = AuthProvider.regular,
       this.createdAt,
@@ -383,6 +399,9 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
   @JsonKey()
   @override
   final bool phoneVerified;
+  @JsonKey()
+  @override
+  final bool flexible;
   @override
   final BasicTextField<double?> avgRating;
   @JsonKey()
@@ -397,7 +416,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Rider(uid: $uid, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, photo: $photo, availability: $availability, location: $location, verificationStatus: $verificationStatus, phoneVerified: $phoneVerified, avgRating: $avgRating, provider: $provider, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'Rider(uid: $uid, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, photo: $photo, availability: $availability, location: $location, verificationStatus: $verificationStatus, phoneVerified: $phoneVerified, flexible: $flexible, avgRating: $avgRating, provider: $provider, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -416,6 +435,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('location', location))
       ..add(DiagnosticsProperty('verificationStatus', verificationStatus))
       ..add(DiagnosticsProperty('phoneVerified', phoneVerified))
+      ..add(DiagnosticsProperty('flexible', flexible))
       ..add(DiagnosticsProperty('avgRating', avgRating))
       ..add(DiagnosticsProperty('provider', provider))
       ..add(DiagnosticsProperty('createdAt', createdAt))
@@ -442,6 +462,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
                 .equals(other.verificationStatus, verificationStatus) &&
             const DeepCollectionEquality()
                 .equals(other.phoneVerified, phoneVerified) &&
+            const DeepCollectionEquality().equals(other.flexible, flexible) &&
             const DeepCollectionEquality().equals(other.avgRating, avgRating) &&
             const DeepCollectionEquality().equals(other.provider, provider) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
@@ -463,6 +484,7 @@ class _$_Rider extends _Rider with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(location),
       const DeepCollectionEquality().hash(verificationStatus),
       const DeepCollectionEquality().hash(phoneVerified),
+      const DeepCollectionEquality().hash(flexible),
       const DeepCollectionEquality().hash(avgRating),
       const DeepCollectionEquality().hash(provider),
       const DeepCollectionEquality().hash(createdAt),
@@ -488,6 +510,7 @@ abstract class _Rider extends Rider {
       required RiderLocation location,
       ProfileVerificationStatus verificationStatus,
       bool phoneVerified,
+      bool flexible,
       required BasicTextField<double?> avgRating,
       AuthProvider provider,
       DateTime? createdAt,
@@ -517,6 +540,8 @@ abstract class _Rider extends Rider {
   ProfileVerificationStatus get verificationStatus;
   @override
   bool get phoneVerified;
+  @override
+  bool get flexible;
   @override
   BasicTextField<double?> get avgRating;
   @override

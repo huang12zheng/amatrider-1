@@ -178,6 +178,8 @@ class AuthWatcherCubit extends Cubit<AuthWatcherState> {
         emit(state.copyWith(status: optionOf(httpResponse)));
       },
       (_) {
+        if (_rider != null) AppUpdate.checkForUpdates(_rider.flexible);
+
         emit(state.copyWith(
           isAuthenticated: _rider != null,
           rider: _rider,

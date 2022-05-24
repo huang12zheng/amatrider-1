@@ -14,6 +14,7 @@ class RiderDTO with _$RiderDTO {
     String? email,
     String? phone,
     String? password,
+    @ignore @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize) bool? flexible,
     @JsonKey(name: 'current_password') String? oldPassword,
     @JsonKey(name: 'password_confirmation') String? confirmation,
     @JsonKey(name: 'image') String? image,
@@ -52,6 +53,7 @@ class RiderDTO with _$RiderDTO {
         password: Password(password),
         photo: MediaField(image),
         availability: availability!,
+        flexible: flexible ?? true,
         location: RiderLocation(
           lat: BasicTextField(lat),
           lng: BasicTextField(lng),
@@ -78,6 +80,7 @@ class RiderDTO with _$RiderDTO {
         phone: phone,
         image: image,
         availability: availability,
+        flexible: flexible!,
         lat: lat,
         lng: lng,
         phoneVerifiedAt: phoneVerifiedAt,

@@ -33,6 +33,9 @@ class _$RiderDTOTearOff {
       String? email,
       String? phone,
       String? password,
+      @ignore
+      @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+          bool? flexible,
       @JsonKey(name: 'current_password')
           String? oldPassword,
       @JsonKey(name: 'password_confirmation')
@@ -79,6 +82,7 @@ class _$RiderDTOTearOff {
       email: email,
       phone: phone,
       password: password,
+      flexible: flexible,
       oldPassword: oldPassword,
       confirmation: confirmation,
       image: image,
@@ -116,6 +120,9 @@ mixin _$RiderDTO {
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
+  @ignore
+  @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+  bool? get flexible => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_password')
   String? get oldPassword => throw _privateConstructorUsedError;
   @JsonKey(name: 'password_confirmation')
@@ -177,6 +184,9 @@ abstract class $RiderDTOCopyWith<$Res> {
       String? email,
       String? phone,
       String? password,
+      @ignore
+      @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+          bool? flexible,
       @JsonKey(name: 'current_password')
           String? oldPassword,
       @JsonKey(name: 'password_confirmation')
@@ -234,6 +244,7 @@ class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
     Object? email = freezed,
     Object? phone = freezed,
     Object? password = freezed,
+    Object? flexible = freezed,
     Object? oldPassword = freezed,
     Object? confirmation = freezed,
     Object? image = freezed,
@@ -278,6 +289,10 @@ class _$RiderDTOCopyWithImpl<$Res> implements $RiderDTOCopyWith<$Res> {
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
+      flexible: flexible == freezed
+          ? _value.flexible
+          : flexible // ignore: cast_nullable_to_non_nullable
+              as bool?,
       oldPassword: oldPassword == freezed
           ? _value.oldPassword
           : oldPassword // ignore: cast_nullable_to_non_nullable
@@ -354,6 +369,9 @@ abstract class _$RiderDTOCopyWith<$Res> implements $RiderDTOCopyWith<$Res> {
       String? email,
       String? phone,
       String? password,
+      @ignore
+      @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+          bool? flexible,
       @JsonKey(name: 'current_password')
           String? oldPassword,
       @JsonKey(name: 'password_confirmation')
@@ -412,6 +430,7 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
     Object? email = freezed,
     Object? phone = freezed,
     Object? password = freezed,
+    Object? flexible = freezed,
     Object? oldPassword = freezed,
     Object? confirmation = freezed,
     Object? image = freezed,
@@ -456,6 +475,10 @@ class __$RiderDTOCopyWithImpl<$Res> extends _$RiderDTOCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String?,
+      flexible: flexible == freezed
+          ? _value.flexible
+          : flexible // ignore: cast_nullable_to_non_nullable
+              as bool?,
       oldPassword: oldPassword == freezed
           ? _value.oldPassword
           : oldPassword // ignore: cast_nullable_to_non_nullable
@@ -531,6 +554,9 @@ class _$_RiderDTO extends _RiderDTO {
       this.email,
       this.phone,
       this.password,
+      @ignore
+      @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+          this.flexible,
       @JsonKey(name: 'current_password')
           this.oldPassword,
       @JsonKey(name: 'password_confirmation')
@@ -592,6 +618,10 @@ class _$_RiderDTO extends _RiderDTO {
   @override
   final String? password;
   @override
+  @ignore
+  @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+  final bool? flexible;
+  @override
   @JsonKey(name: 'current_password')
   final String? oldPassword;
   @override
@@ -646,7 +676,7 @@ class _$_RiderDTO extends _RiderDTO {
 
   @override
   String toString() {
-    return 'RiderDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, availability: $availability, lat: $lat, lng: $lng, phoneVerifiedAt: $phoneVerifiedAt, avgRating: $avgRating, isVerified: $isVerified, verificationStatus: $verificationStatus, provider: $provider, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'RiderDTO(id: $id, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, flexible: $flexible, oldPassword: $oldPassword, confirmation: $confirmation, image: $image, availability: $availability, lat: $lat, lng: $lng, phoneVerifiedAt: $phoneVerifiedAt, avgRating: $avgRating, isVerified: $isVerified, verificationStatus: $verificationStatus, provider: $provider, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -661,6 +691,7 @@ class _$_RiderDTO extends _RiderDTO {
             const DeepCollectionEquality().equals(other.email, email) &&
             const DeepCollectionEquality().equals(other.phone, phone) &&
             const DeepCollectionEquality().equals(other.password, password) &&
+            const DeepCollectionEquality().equals(other.flexible, flexible) &&
             const DeepCollectionEquality()
                 .equals(other.oldPassword, oldPassword) &&
             const DeepCollectionEquality()
@@ -693,6 +724,7 @@ class _$_RiderDTO extends _RiderDTO {
         const DeepCollectionEquality().hash(email),
         const DeepCollectionEquality().hash(phone),
         const DeepCollectionEquality().hash(password),
+        const DeepCollectionEquality().hash(flexible),
         const DeepCollectionEquality().hash(oldPassword),
         const DeepCollectionEquality().hash(confirmation),
         const DeepCollectionEquality().hash(image),
@@ -732,6 +764,9 @@ abstract class _RiderDTO extends RiderDTO {
       String? email,
       String? phone,
       String? password,
+      @ignore
+      @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+          bool? flexible,
       @JsonKey(name: 'current_password')
           String? oldPassword,
       @JsonKey(name: 'password_confirmation')
@@ -791,6 +826,10 @@ abstract class _RiderDTO extends RiderDTO {
   String? get phone;
   @override
   String? get password;
+  @override
+  @ignore
+  @JsonKey(defaultValue: true, fromJson: BooleanSerializer.deserialize)
+  bool? get flexible;
   @override
   @JsonKey(name: 'current_password')
   String? get oldPassword;

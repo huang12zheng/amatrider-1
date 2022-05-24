@@ -205,6 +205,13 @@ import 'package:amatrider/_404.dart';
       fullMatch: true,
       maintainState: true,
       fullscreenDialog: true,
+      page: LocationPermissionScreen,
+    ),
+    //
+    AdaptiveRoute(
+      fullMatch: true,
+      maintainState: true,
+      fullscreenDialog: true,
       page: SuccessScreen,
       path: 'success-screen',
     ),

@@ -3,142 +3,59 @@ import 'dart:async';
 import 'package:amatrider/core/data/response/index.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/services.dart';
-import 'package:location/location.dart' hide PermissionStatus;
+import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rxdart/rxdart.dart';
 
-enum PositionAccuracy { balanced, high, low, navigation, powerSave, reduced }
+enum PositionAccuracy { balanced, high, low, best, navigation, powerSave, reduced }
 
-class LocationService {
-  final Location _location = Location();
-
+abstract class LocationService {
   Future<bool> get isServiceEnabled => Permission.locationAlways.serviceStatus.isEnabled;
 
   Future<bool> get hasPermission => Permission.locationWhenInUse.isGranted;
 
   Future<bool> get hasAlwaysPermission => Permission.locationAlways.isGranted;
 
-  Future<bool> get backgroundEnabled => _location.isBackgroundModeEnabled();
+  Future<bool> get backgroundEnabled;
 
-  Future<bool> requestService() async {
-    var _serviceEnabled = await Permission.locationAlways.serviceStatus.isEnabled;
+  Future<bool> requestService([Future<void> Function()? prompt]);
 
-    if (!_serviceEnabled) {
-      await _location.requestService();
-      _serviceEnabled = await Permission.locationAlways.serviceStatus.isEnabled;
-    }
+  Future<bool> requestPermissions();
 
-    return _serviceEnabled;
-  }
-
-  Future<bool> requestPermissions() async {
-    final _whenInUse = await Permission.locationWhenInUse.request();
-
-    // User granted access to "location when in use"
-    if (_whenInUse.isGranted) return await _requestPermissionAlways();
-    if (_whenInUse.isLimited) return await _requestPermissionAlways();
-    // "is denied", "is restricted" & "is permanently denied"
-    await openAppSettings();
-    // return false until granted
-    return false;
-  }
-
-  Future<bool> _requestPermissionAlways() async {
-    final _alwaysGranted = await Permission.locationAlways.isGranted;
-
-    if (!_alwaysGranted) {
-      final _alwaysRequest = await Permission.locationAlways.request();
-      if (_alwaysRequest.isGranted)
-        return true;
-      else if (_alwaysRequest.isPermanentlyDenied)
-        return await openAppSettings();
-      else
-        return false;
-    }
-
-    return true;
-  }
-
-  Future<bool> requestBackgroundMode([bool enable = true]) async {
-    var _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
-
-    if (!enable) await _location.enableBackgroundMode(enable: enable);
-
-    if (enable && !_isBackgroundModeEnabled) {
-      await _location.enableBackgroundMode(enable: enable);
-      _isBackgroundModeEnabled = await _location.isBackgroundModeEnabled();
-    }
-
-    return _isBackgroundModeEnabled;
-  }
+  Future<bool> requestBackgroundMode([bool enable = true]);
 
   Future<LocationService> changeSettings({
     PositionAccuracy accuracy = PositionAccuracy.high,
-    int interval = 10500,
-    double distanceFilter = 5,
-  }) async {
-    await _location.changeSettings(
-      interval: interval,
-      distanceFilter: distanceFilter,
-      accuracy: accuracy.fold(
-        balanced: LocationAccuracy.balanced,
-        high: LocationAccuracy.high,
-        low: LocationAccuracy.low,
-        navigation: LocationAccuracy.navigation,
-        powerSave: LocationAccuracy.powerSave,
-        reduced: LocationAccuracy.reduced,
-      ),
-    );
-    return this;
-  }
+    Duration interval = const Duration(seconds: 5),
+    int distanceFilter = 5,
+    Duration timeout = const Duration(seconds: 16),
+  });
 
-  Future<Either<AnyResponse, RiderLocation?>> getLocation({
+  Future<Either<AnyResponse, RiderLocation>> getLastKnownLocation({
     void Function(RiderLocation)? onData,
-  }) async {
-    try {
-      final _result = await _location.getLocation();
+    void Function(AnyResponse)? onError,
+  });
 
-      final location = RiderLocation.fromLocation(_result);
+  Future<Either<AnyResponse, RiderLocation>> getLocation({
+    void Function(RiderLocation)? onData,
+    void Function(AnyResponse)? onError,
+  });
 
-      onData?.call(location);
+  Stream<Either<AnyResponse, RiderLocation>> liveLocation();
 
-      return right(location);
-    } on PlatformException catch (e, trace) {
-      return _handleException(e, trace);
-    }
-  }
+  @protected
+  Either<AnyResponse, R> handleException<R>(Object? e, StackTrace trace);
 
-  Stream<Either<AnyResponse, RiderLocation>> liveLocation() async* {
-    yield* _location.onLocationChanged
-        .transform(
-          StreamTransformer<LocationData, Either<AnyResponse, RiderLocation>>.fromHandlers(
-            handleData: (data, event) => event.add(
-              right(RiderLocation.fromLocation(data)),
-            ),
-          ),
-        )
-        .onErrorReturnWith(_handleException);
-  }
-
-  Either<AnyResponse, R> _handleException<R>(Object? e, StackTrace trace) {
-    if (e is PlatformException) {
-      return left(AnyResponse.error(
-        messageTxt: '${e.code}: ${e.message}',
-        details: '${e.details}',
-      ));
-    }
-    return left(AnyResponse.error(
-      messageTxt: 'Invalid type returned! - ${e.runtimeType}',
-    ));
-  }
+  @disposeMethod
+  void dispose();
 }
 
-extension on PositionAccuracy {
+extension PositionAccuracyX on PositionAccuracy {
   T fold<T>({
     required T balanced,
     required T high,
     required T low,
+    required T best,
     required T navigation,
     required T powerSave,
     required T reduced,
@@ -150,6 +67,8 @@ extension on PositionAccuracy {
         return high;
       case PositionAccuracy.low:
         return low;
+      case PositionAccuracy.best:
+        return best;
       case PositionAccuracy.navigation:
         return navigation;
       case PositionAccuracy.powerSave:

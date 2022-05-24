@@ -3,7 +3,7 @@ library rider_location.dart;
 import 'package:amatrider/core/domain/entities/entities.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 part 'rider_location.freezed.dart';
 
@@ -38,24 +38,20 @@ class RiderLocation extends LocationBase with _$RiderLocation {
         address: BasicTextField(null),
       );
 
-  factory RiderLocation.fromLocation(LocationData data) {
+  bool get isValid => lat.isValid && lng.isValid;
+
+  factory RiderLocation.fromService(Position data) {
     return RiderLocation(
       accuracy: data.accuracy,
       altitude: data.altitude,
       heading: data.heading,
-      isMock: data.isMock,
+      isMock: data.isMocked,
       lat: BasicTextField(data.latitude),
       lng: BasicTextField(data.longitude),
       address: BasicTextField(null),
       speed: data.speed,
       speedAccuracy: data.speedAccuracy,
-      time: data.time,
-      elapsedRealtimeNanos: data.elapsedRealtimeNanos,
-      elapsedRealtimeUncertaintyNanos: data.elapsedRealtimeUncertaintyNanos,
-      headingAccuracy: data.headingAccuracy,
-      provider: data.provider,
-      satelliteNumber: data.satelliteNumber,
-      verticalAccuracy: data.verticalAccuracy,
+      time: data.timestamp?.millisecondsSinceEpoch.toDouble(),
     );
   }
 }

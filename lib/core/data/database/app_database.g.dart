@@ -403,6 +403,9 @@ _$_RiderDTO _$$_RiderDTOFromJson(Map<String, dynamic> json) => _$_RiderDTO(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       password: json['password'] as String?,
+      flexible: json['flexible'] == null
+          ? true
+          : BooleanSerializer.deserialize(json['flexible']),
       oldPassword: json['current_password'] as String?,
       confirmation: json['password_confirmation'] as String?,
       image: json['image'] as String?,
@@ -439,6 +442,7 @@ Map<String, dynamic> _$$_RiderDTOToJson(_$_RiderDTO instance) {
   writeNotNull('email', instance.email);
   writeNotNull('phone', instance.phone);
   writeNotNull('password', instance.password);
+  writeNotNull('flexible', instance.flexible);
   writeNotNull('current_password', instance.oldPassword);
   writeNotNull('password_confirmation', instance.confirmation);
   writeNotNull('image', instance.image);

@@ -9,7 +9,6 @@ import 'package:amatrider/features/home/data/models/models.dart';
 import 'package:amatrider/features/home/data/repositories/laravel_echo_repository.dart';
 import 'package:amatrider/features/home/data/repositories/logistics/logistics_repository.dart';
 import 'package:amatrider/features/home/domain/entities/index.dart';
-import 'package:amatrider/features/home/presentation/managers/index.dart';
 import 'package:amatrider/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
@@ -101,61 +100,47 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     );
   }
 
-  Future<void> allInTransit(BuildContext context, {RiderLocation? location}) async {
+  Future<void> allInTransit(BuildContext context, RiderLocation location) async {
     emit(state.copyWith(isLoadingInTransit: true, status: none()));
 
-    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+    final _result = await _logisticsRepository.allInTransit(
+      lat: '${location.lat.getOrEmpty}',
+      lng: '${location.lng.getOrEmpty}',
+    );
 
-    await _locationCubit.getRiderLocation(
-      context,
-      callback: (location) async {
-        final _result = await _logisticsRepository.allInTransit(
-          lat: '${location.lat.getOrEmpty}',
-          lng: '${location.lng.getOrEmpty}',
-        );
-
-        _result.fold(
-          (e) => emit(state.copyWith(
-            status: optionOf(e),
-            isLoadingInTransit: false,
-          )),
-          (list) => emit(state.copyWith(
-            isLoadingInTransit: false,
-            inTransit: list.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
-          )),
-        );
-      },
+    _result.fold(
+      (e) => emit(state.copyWith(
+        status: optionOf(e),
+        isLoadingInTransit: false,
+      )),
+      (list) => emit(state.copyWith(
+        isLoadingInTransit: false,
+        inTransit: list.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+      )),
     );
   }
 
-  Future<void> allDeliverables(BuildContext context, {RiderLocation? location}) async {
+  Future<void> allDeliverables(BuildContext context, RiderLocation location) async {
     emit(state.copyWith(isLoadingActive: true, status: none()));
 
-    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+    final _result = await _logisticsRepository.allActive(
+      lat: '${location.lat.getOrEmpty}',
+      lng: '${location.lng.getOrEmpty}',
+    );
 
-    await _locationCubit.getRiderLocation(
-      context,
-      callback: (location) async {
-        final _result = await _logisticsRepository.allActive(
-          lat: '${location.lat.getOrEmpty}',
-          lng: '${location.lng.getOrEmpty}',
-        );
+    _result.fold(
+      (e) => emit(state.copyWith(status: optionOf(e), isLoadingActive: false)),
+      (list) {
+        final active = list.value1.filter((it) =>
+            !ParcelStatus.packageInTransit.contains(it.status) &&
+            !ParcelStatus.orderWithRider.contains(it.status) &&
+            !ParcelStatus.delivered.contains(it.status));
 
-        _result.fold(
-          (e) => emit(state.copyWith(status: optionOf(e), isLoadingActive: false)),
-          (list) {
-            final active = list.value1.filter((it) =>
-                !ParcelStatus.packageInTransit.contains(it.status) &&
-                !ParcelStatus.orderWithRider.contains(it.status) &&
-                !ParcelStatus.delivered.contains(it.status));
-
-            emit(state.copyWith(
-              isLoadingActive: false,
-              active: active.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
-              potential: list.value2.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
-            ));
-          },
-        );
+        emit(state.copyWith(
+          isLoadingActive: false,
+          active: active.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+          potential: list.value2.sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+        ));
       },
     );
   }
@@ -164,61 +149,55 @@ class RequestCubit extends Cubit<RequestState> with BaseCubit<RequestState> {
     BuildContext context,
     Logistics item, {
     required void Function() onAccepted,
+    required RiderLocation location,
   }) async {
     emit(state.copyWith(isLoading: true, isAccepting: true, status: none()));
 
-    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+    final _result = await _logisticsRepository.acceptDeliverable(
+      item,
+      lat: '${location.lat.getOrNull}',
+      lng: '${location.lng.getOrNull}',
+    );
 
-    await _locationCubit.getRiderLocation(context, callback: (location) async {
-      final _result = await _logisticsRepository.acceptDeliverable(
-        item,
-        lat: '${location.lat.getOrNull}',
-        lng: '${location.lng.getOrNull}',
-      );
+    _result.response.mapOrNull(
+      error: (_) => emit(state.copyWith(isLoading: false, isAccepting: false, status: optionOf(_result))),
+      success: (_) {
+        // Check if RiderID in deliverable is the same as the authenticated Rider
+        // If TRUE -> Add to "Packages in Transit"
+        final match = state.active.firstOrNull((it) => it.id == item.id);
 
-      _result.response.mapOrNull(
-        error: (_) => emit(state.copyWith(isLoading: false, isAccepting: false, status: optionOf(_result))),
-        success: (_) {
-          // Check if RiderID in deliverable is the same as the authenticated Rider
-          // If TRUE -> Add to "Packages in Transit"
-          final match = state.active.firstOrNull((it) => it.id == item.id);
+        // Update in transit
+        emit(state.copyWith(
+          isLoading: false,
+          isAccepting: false,
+          active: state.active.minusElementIfPresent(match!),
+          inTransit: state.inTransit.plusElementIfAbsent(match).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
+        ));
 
-          // Update in transit
-          emit(state.copyWith(
-            isLoading: false,
-            isAccepting: false,
-            active: state.active.minusElementIfPresent(match!),
-            inTransit: state.inTransit.plusElementIfAbsent(match).sortedWith((a, b) => b.createdAt!.compareTo(a.createdAt!)),
-          ));
+        // Set current
+        setCurrent(match);
 
-          // Set current
-          setCurrent(match);
-
-          onAccepted.call();
-        },
-      );
-    });
+        onAccepted.call();
+      },
+    );
   }
 
   Future<void> declineDeliverable(
     BuildContext context,
     Logistics item, {
     required void Function() onDeclined,
+    required RiderLocation location,
   }) async {
     emit(state.copyWith(isLoading: true, isDeclining: true, status: none()));
 
-    final _locationCubit = BlocProvider.of<LocationCubit>(context);
+    final _result = await _logisticsRepository.declineDeliverable(
+      item,
+      lat: '${location.lat.getOrNull}',
+      lng: '${location.lng.getOrNull}',
+    );
 
-    await _locationCubit.getRiderLocation(context, callback: (location) async {
-      final _result = await _logisticsRepository.declineDeliverable(
-        item,
-        lat: '${location.lat.getOrNull}',
-        lng: '${location.lng.getOrNull}',
-      );
+    emit(state.copyWith(isLoading: false, isDeclining: false, status: optionOf(_result)));
 
-      emit(state.copyWith(isLoading: false, isDeclining: false, status: optionOf(_result)));
-
-      _result.response.mapOrNull(success: (_) => onDeclined());
-    });
+    _result.response.mapOrNull(success: (_) => onDeclined());
   }
 }

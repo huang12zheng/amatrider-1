@@ -24,3 +24,4 @@ export 'clipboard_manager.dart';
 export 'date_time_utils.dart';
 export 'toast_manager.dart';
 export 'url_launcher.dart';
+export 'app_update.dart';

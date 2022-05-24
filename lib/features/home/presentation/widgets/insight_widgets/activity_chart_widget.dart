@@ -173,7 +173,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: (rod.y).toString().asCurrency(),
+                text: (rod.toY).toString().asCurrency(),
                 style: const TextStyle(
                   color: Palette.accentColor,
                   fontWeight: FontWeight.w500,
@@ -245,7 +245,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           x: 0,
           barRods: [
             BarChartRodData(
-              y: activities.deliveryWithCard.amount.getOrNull ?? 0,
+              toY: activities.deliveryWithCard.amount.getOrNull ?? 0,
               width: 60,
               colors: [const Color(0xffD4E6FF)],
               borderRadius: const BorderRadius.only(
@@ -260,7 +260,7 @@ class __ActivityChartWidgetState extends State<_ActivityChartWidget> {
           x: 1,
           barRods: [
             BarChartRodData(
-              y: activities.deliveryWithCash.amount.getOrNull ?? 0,
+              toY: activities.deliveryWithCash.amount.getOrNull ?? 0,
               width: 60,
               colors: [const Color(0xff79F2C0)],
               borderRadius: const BorderRadius.only(

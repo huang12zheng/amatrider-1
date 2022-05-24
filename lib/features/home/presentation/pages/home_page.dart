@@ -28,10 +28,10 @@ class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static Future<void> onRefresh(BuildContext c, [DragToRefreshState? controller]) async {
-    await c.read<LocationCubit>().showPermissionRationale(c, callback: () async {
+    await c.read<LocationCubit>().showPermissionRationale(c, onLocation: (location) async {
       Future.delayed(const Duration(seconds: 1, milliseconds: 500), () async {
-        await c.read<RequestCubit>().allDeliverables(c);
-        await c.read<RequestCubit>().allInTransit(c);
+        await c.read<RequestCubit>().allDeliverables(c, location);
+        await c.read<RequestCubit>().allInTransit(c, location);
         if (controller != null) controller = controller!..refreshCompleted();
       });
 
